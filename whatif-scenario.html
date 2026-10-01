@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIBizVan360 — What-If Scenario Engine</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --radius: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* ========== HEADER ========== */
+.bvs-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,18,18,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(78,205,196,0.15);
+}
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a {
+  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s;
+}
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.bvs-live { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--primary-border); font-size: 10px; color: var(--primary); }
+.bvs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+/* ========== CARDS ========== */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.bvs-card:hover { border-color: var(--primary-border); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-card-text { font-size: 13px; color: var(--fg2); line-height: 1.6; }
+
+/* ========== SECTION TITLE ========== */
+.bvs-section-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 24px; }
+
+/* ========== GRID ========== */
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.bvs-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ========== METRIC CARDS ========== */
+.bvs-metric { padding: 12px; }
+.bvs-metric-label { font-size: 10px; color: var(--fg3); margin-bottom: 4px; }
+.bvs-metric-value { font-size: 18px; font-weight: 800; }
+.bvs-metric-change { font-size: 10px; color: var(--green); margin-top: 2px; }
+.bvs-metric-change.down { color: var(--red); }
+
+/* ========== HERO ========== */
+.bvs-hero {
+  background: linear-gradient(135deg, #0d1f1f 0%, #142828 50%, #0f1a1a 100%);
+  padding: 64px 0; position: relative; overflow: hidden;
+}
+.bvs-hero::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(78,205,196,0.15) 0%, transparent 60%); }
+.bvs-hero::after { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 30%, rgba(240,165,0,0.08) 0%, transparent 50%); }
+.bvs-hero-content { position: relative; z-index: 1; }
+.bvs-hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+.bvs-hero h1 em { font-style: normal; color: var(--primary); }
+.bvs-hero p { font-size: 16px; color: var(--fg2); max-width: 640px; margin-bottom: 24px; line-height: 1.65; }
+
+/* ========== FOOTER ========== */
+.bvs-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 40px 0; margin-top: 64px; }
+.bvs-footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.bvs-footer p { font-size: 11px; color: var(--fg3); }
+.bvs-footer-links { display: flex; gap: 16px; }
+.bvs-footer-links a { font-size: 11px; color: var(--fg3); text-decoration: none; transition: color 0.15s; }
+.bvs-footer-links a:hover { color: var(--primary); text-decoration: none; }
+
+/* ========== PROGRESS BAR ========== */
+.bvs-bar { height: 6px; border-radius: 3px; background: var(--bg4); overflow: hidden; }
+.bvs-bar-fill { height: 100%; border-radius: 3px; background: var(--primary); transition: width 0.4s ease; }
+
+/* ========== BADGES ========== */
+.bvs-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+.bvs-badge-amber { background: rgba(240,165,0,0.12); color: var(--amber); border: 1px solid rgba(240,165,0,0.3); }
+.bvs-badge-red { background: rgba(255,107,107,0.12); color: var(--red); border: 1px solid rgba(255,107,107,0.3); }
+.bvs-badge-blue { background: rgba(108,155,255,0.12); color: var(--blue); border: 1px solid rgba(108,155,255,0.3); }
+
+/* ========== WHAT-IF PRESETS ========== */
+.wif-presets { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+.wif-preset-btn {
+  padding: 10px 20px; border-radius: var(--radius); border: 1px solid var(--primary-border);
+  background: var(--primary-dim); color: var(--primary); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: inherit; position: relative; overflow: hidden;
+}
+.wif-preset-btn::before {
+  content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(78,205,196,0.08) 100%);
+  pointer-events: none;
+}
+.wif-preset-btn:hover { background: rgba(78,205,196,0.2); border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(78,205,196,0.15); }
+.wif-preset-btn:active { transform: scale(0.97) translateY(0); }
+.wif-preset-btn.active-preset { background: rgba(78,205,196,0.25); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-dim); }
+.wif-preset-btn .preset-icon { margin-right: 6px; font-size: 14px; }
+.wif-preset-btn.reset-btn { background: transparent; color: var(--fg2); border-color: rgba(255,255,255,0.1); }
+.wif-preset-btn.reset-btn::before { display: none; }
+.wif-preset-btn.reset-btn:hover { color: var(--fg); border-color: rgba(255,255,255,0.2); box-shadow: none; }
+
+/* ========== SLIDER COLUMNS ========== */
+.wif-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; }
+@media (max-width: 768px) { .wif-columns { grid-template-columns: 1fr; } }
+
+.wif-col-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s; }
+.wif-col-card:hover { border-color: var(--primary-border); }
+.wif-col-card.bc-card { border-left: 3px solid var(--primary); }
+.wif-col-card.wa-card { border-left: 3px solid var(--blue); }
+
+.wif-col-header { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.wif-col-header .region-tag {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.wif-col-header .region-tag.bc { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+.wif-col-header .region-tag.wa { background: rgba(108,155,255,0.12); color: var(--blue); border: 1px solid rgba(108,155,255,0.3); }
+.wif-col-desc { font-size: 12px; color: var(--fg3); margin-bottom: 20px; line-height: 1.5; }
+
+/* ========== SLIDER GROUP ========== */
+.wif-slider-group { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.wif-slider-group:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.wif-slider-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.wif-slider-label-left { display: flex; flex-direction: column; gap: 2px; }
+.wif-slider-name { font-size: 13px; color: var(--fg); font-weight: 600; }
+.wif-slider-desc { font-size: 10px; color: var(--fg3); line-height: 1.4; }
+.wif-slider-right { text-align: right; }
+.wif-slider-val { font-size: 18px; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.wif-slider-delta { font-size: 10px; font-weight: 600; margin-top: 2px; transition: color 0.2s; }
+.wif-slider-delta.positive { color: var(--green); }
+.wif-slider-delta.negative { color: var(--red); }
+.wif-slider-delta.neutral { color: var(--fg3); }
+
+/* ========== RANGE INPUTS ========== */
+input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 4px;
+  background: var(--bg4); outline: none; cursor: pointer; position: relative;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--primary); border: 3px solid var(--bg2); cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 0 0 0 rgba(78,205,196,0.3);
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(78,205,196,0.15); transform: scale(1.1);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+  box-shadow: 0 0 0 8px rgba(78,205,196,0.2); transform: scale(1.05);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--primary); border: 3px solid var(--bg2); cursor: pointer;
+}
+input[type="range"]::-moz-range-track {
+  height: 8px; border-radius: 4px; background: var(--bg4); border: none;
+}
+.wa-card input[type="range"]::-webkit-slider-thumb { background: var(--blue); box-shadow: 0 0 0 0 rgba(108,155,255,0.3); }
+.wa-card input[type="range"]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 6px rgba(108,155,255,0.15); }
+.wa-card input[type="range"]::-moz-range-thumb { background: var(--blue); }
+
+/* ========== SLIDER RANGE LABELS ========== */
+.wif-slider-range { display: flex; justify-content: space-between; margin-top: 4px; }
+.wif-slider-range span { font-size: 9px; color: var(--fg3); font-variant-numeric: tabular-nums; }
+
+/* ========== METRIC SECTIONS ========== */
+.wif-metric-section { margin-bottom: 28px; }
+.wif-metric-cat-label {
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.wif-metric-cat-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+.wif-metric-cat-label .cat-icon { font-size: 14px; width: 24px; height: 24px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; background: var(--primary-dim); }
+.wif-metric-cat-label .cat-icon.amber-bg { background: rgba(240,165,0,0.12); }
+.wif-metric-cat-label .cat-icon.blue-bg { background: rgba(108,155,255,0.12); }
+.wif-metric-cat-label .cat-icon.red-bg { background: rgba(255,107,107,0.12); }
+.wif-metric-cat-label .cat-icon.green-bg { background: rgba(78,205,196,0.12); }
+
+.wif-metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 1100px) { .wif-metrics-grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) { .wif-metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .wif-metrics-grid { grid-template-columns: 1fr; } }
+
+/* ========== METRIC CARD ========== */
+.wif-metric-card {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius);
+  padding: 14px 16px; transition: all 0.2s; position: relative; overflow: hidden;
+}
+.wif-metric-card:hover { border-color: var(--primary-border); background: var(--bg3); transform: translateY(-1px); }
+.wif-metric-card .mc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.wif-metric-card .mc-label { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.3; flex: 1; }
+.wif-metric-card .mc-region { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; margin-left: 6px; }
+.wif-metric-card .mc-region.bc { background: var(--primary-dim); color: var(--primary); }
+.wif-metric-card .mc-region.wa { background: rgba(108,155,255,0.12); color: var(--blue); }
+.wif-metric-card .mc-region.both { background: rgba(240,165,0,0.12); color: var(--amber); }
+.wif-metric-card .mc-value { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.3; margin-bottom: 4px; transition: color 0.3s; }
+.wif-metric-card .mc-value.positive-val { color: var(--green); }
+.wif-metric-card .mc-value.negative-val { color: var(--red); }
+.wif-metric-card .mc-value.neutral-val { color: var(--fg); }
+.wif-metric-card .mc-change { font-size: 11px; font-weight: 600; transition: color 0.3s; }
+.wif-metric-card .mc-change.positive { color: var(--green); }
+.wif-metric-card .mc-change.negative { color: var(--red); }
+.wif-metric-card .mc-change.neutral { color: var(--fg3); }
+.wif-metric-card .mc-bar { margin-top: 8px; height: 3px; border-radius: 2px; background: var(--bg4); overflow: hidden; }
+.wif-metric-card .mc-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease, background 0.3s; }
+.wif-metric-card .mc-bar-fill.bar-positive { background: var(--green); }
+.wif-metric-card .mc-bar-fill.bar-negative { background: var(--red); }
+.wif-metric-card .mc-bar-fill.bar-neutral { background: var(--fg3); }
+
+/* ========== NARRATIVE ========== */
+.wif-narrative-card {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius);
+  padding: 28px 32px; margin-bottom: 48px; line-height: 1.75; position: relative;
+}
+.wif-narrative-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--blue), var(--amber)); border-radius: 2px 2px 0 0;
+}
+.wif-narrative-card .narrative-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.wif-narrative-card .narrative-header .nh-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--primary-dim); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.wif-narrative-card .narrative-header .nh-text { font-size: 13px; font-weight: 700; color: var(--fg); }
+.wif-narrative-card .narrative-header .nh-badge { margin-left: auto; }
+.wif-narrative-card p { font-size: 13px; color: var(--fg2); margin-bottom: 14px; }
+.wif-narrative-card p:last-child { margin-bottom: 0; }
+.wif-narrative-card strong { color: var(--fg); }
+.wif-narrative-card .narrative-highlight { color: var(--primary); font-weight: 600; }
+.wif-narrative-card .narrative-warn { color: var(--amber); font-weight: 600; }
+.wif-narrative-card .narrative-negative { color: var(--red); font-weight: 600; }
+.wif-narrative-card .narrative-blue { color: var(--blue); font-weight: 600; }
+
+/* ========== SCENARIO SAVE PANEL ========== */
+.wif-scenario-bar {
+  display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.wif-scenario-bar .sb-label { font-size: 12px; color: var(--fg3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.wif-scenario-bar .sb-slots { display: flex; gap: 8px; flex: 1; min-width: 200px; flex-wrap: wrap; }
+.wif-scenario-bar .sb-slot {
+  padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1px dashed rgba(255,255,255,0.12); background: transparent; color: var(--fg3);
+  transition: all 0.2s; font-family: inherit;
+}
+.wif-scenario-bar .sb-slot:hover { border-color: var(--primary-border); color: var(--fg2); }
+.wif-scenario-bar .sb-slot.saved { border-style: solid; border-color: var(--primary-border); color: var(--primary); background: var(--primary-dim); }
+.wif-scenario-bar .sb-slot.active-slot { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-dim); }
+
+/* ========== METHODOLOGY ========== */
+.wif-methodology { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 24px; margin-bottom: 48px; }
+.wif-methodology h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--fg); }
+.wif-methodology-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 768px) { .wif-methodology-grid { grid-template-columns: 1fr; } }
+.wif-methodology-item { padding: 12px; background: var(--bg3); border-radius: 6px; }
+.wif-methodology-item h4 { font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+.wif-methodology-item p { font-size: 12px; color: var(--fg3); line-height: 1.5; }
+
+/* ========== SUMMARY STRIP ========== */
+.wif-summary-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 40px;
+}
+@media (max-width: 900px) { .wif-summary-strip { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 500px) { .wif-summary-strip { grid-template-columns: 1fr 1fr; } }
+.wif-summary-item {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius);
+  padding: 16px; text-align: center; transition: all 0.2s;
+}
+.wif-summary-item:hover { border-color: var(--primary-border); }
+.wif-summary-item .si-icon { font-size: 20px; margin-bottom: 6px; }
+.wif-summary-item .si-value { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.wif-summary-item .si-label { font-size: 10px; color: var(--fg3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ========== DIVIDER ========== */
+.wif-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 48px 0; }
+
+/* ========== TOAST ========== */
+.wif-toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200; padding: 12px 20px;
+  background: var(--bg3); border: 1px solid var(--primary-border); border-radius: var(--radius);
+  font-size: 12px; color: var(--primary); font-weight: 600; opacity: 0; transform: translateY(8px);
+  transition: all 0.3s ease; pointer-events: none;
+}
+.wif-toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg3); }
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.wif-animate-in { animation: fadeSlideUp 0.4s ease forwards; opacity: 0; }
+.wif-animate-in:nth-child(2) { animation-delay: 0.05s; }
+.wif-animate-in:nth-child(3) { animation-delay: 0.1s; }
+.wif-animate-in:nth-child(4) { animation-delay: 0.15s; }
+
+@keyframes barGrow { from { width: 0; } }
+.mc-bar-fill { animation: barGrow 0.6s ease forwards; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.wif-narrative-card .narrative-header .nh-badge {
+  position: relative; overflow: hidden;
+}
+.wif-narrative-card .narrative-header .nh-badge.analyzing::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+
+/* ========== TOOLTIP ========== */
+.wif-slider-group:hover .wif-slider-desc { color: var(--fg2); transition: color 0.3s; }
+.wif-metric-card:hover .mc-label { color: var(--fg2); transition: color 0.2s; }
+.wif-metric-card:hover .mc-value { transform: scale(1.02); transition: transform 0.2s; }
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  .bvs-header, .bvs-nav, .bvs-footer, .wif-presets, .wif-scenario-bar, .wif-slider-group input[type="range"] { display: none !important; }
+  body { background: white; color: black; }
+  .bvs-card, .wif-col-card, .wif-metric-card, .wif-narrative-card, .wif-methodology { border: 1px solid #ccc; background: #f9f9f9; }
+  .wif-hero { background: #eee; padding: 24px 0; }
+  .wif-hero h1, .wif-hero p { color: black; }
+  .wif-hero::before, .wif-hero::after { display: none; }
+}
+
+/* === SHARED CSS (vban+footer+theme) === */
+
+/* === vban banners === */
+.vban-wrap { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; pointer-events: none; }
+.vban { pointer-events: auto; display: block; transition: opacity .2s; }
+.vban:hover { opacity: 0.85; }
+.vban-left { left: 0; }
+.vban-right { right: 0; }
+.vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
+.vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
+.vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
+.vban-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #4ecdc4; font-size: 9px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 600; letter-spacing: 0.03em; }
+[data-theme="light"] .vban-label { background: rgba(255,255,255,0.85); color: #0d1212; }
+[data-theme="light"] .vban-left { border-right-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .vban-right { border-left-color: rgba(0,0,0,0.06); }
+@media (max-width: 1400px) { .vban-wrap { display: none; } }
+
+/* === theme toggle === */
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2, #a0a0a0); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3, #1a2626); color: var(--fg, #e8e8e8); }
+[data-theme="light"] .ai-theme-toggle { border-color: rgba(0,0,0,0.1); color: #666; }
+[data-theme="light"] .ai-theme-toggle:hover { background: #f0f4f4; color: #333; }
+
+/* === footer === */
+.bvs-site-footer { background: var(--bg2, #111919); border-top: 1px solid rgba(78,205,196,0.15); margin-top: 48px; color: var(--fg2, #a0a0a0); }
+.footer-ribbon { height: 3px; background: linear-gradient(90deg, #4ecdc4, #6c9bff, #f0a500, #4ecdc4); background-size: 200% 100%; animation: footerGradient 8s linear infinite; }
+@keyframes footerGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 32px; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg, #e8e8e8); margin-bottom: 12px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3, #666); text-decoration: none; padding: 3px 0; transition: color .15s; }
+.footer-col a:hover { color: var(--primary, #4ecdc4); }
+.footer-logo { font-size: 18px; font-weight: 800; color: var(--fg, #e8e8e8); margin-bottom: 10px; }
+.footer-logo span { color: var(--primary, #4ecdc4); }
+.footer-about { font-size: 12px; color: var(--fg3, #666); line-height: 1.6; margin-bottom: 12px; }
+.footer-social { display: flex; gap: 8px; }
+.footer-social a { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--fg3, #666); text-decoration: none; transition: all .15s; }
+.footer-social a:hover { border-color: var(--primary, #4ecdc4); color: var(--primary, #4ecdc4); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: var(--fg3, #666); }
+.footer-bottom-left, .footer-bottom-right { display: flex; align-items: center; gap: 6px; }
+.footer-sep { color: var(--fg3, #444); }
+[data-theme="light"] .bvs-site-footer { background: #f0f4f4; border-top-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .footer-col a { color: #666; }
+[data-theme="light"] .footer-col a:hover { color: #0d9488; }
+[data-theme="light"] .footer-social a { border-color: rgba(0,0,0,0.1); color: #666; }
+[data-theme="light"] .footer-bottom { border-top-color: rgba(0,0,0,0.08); }
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* === END SHARED CSS === */
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="bvs-header">
+  <div class="container bvs-header-inner">
+    <a href="index.html" class="bvs-logo">
+      <div class="bvs-logo-mark">AI</div>
+      <div class="bvs-logo-text"><span>AI</span>BizVan360</div>
+    </a>
+    <nav class="bvs-nav">
+      <a href="index.html">Home</a>
+      <a href="government.html">Government</a>
+      <a href="dashboard.html">Dashboard</a><a href="dashboard-2.html">Dashboard 2</a>
+      <a href="economics.html">Economics</a>
+      <a href="leisure.html">Leisure</a>
+      <a href="travel.html">Travel</a>
+      <a href="technology.html">Technology</a>
+      <a href="transportation.html">Transport</a>
+      <a href="demographics.html">Demographics</a>
+      <a href="resources.html">Resources</a>
+      <a href="environment.html">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+      <a href="sports.html">Sports</a>
+      <a href="whatif-scenario.html" class="active">What-If</a>
+      <a href="city-compare.html">Compare</a>
+    </nav>
+      <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="bvs-hero">
+  <div class="container bvs-hero-content">
+    <div class="bvs-live" style="margin-bottom:16px;"><div class="bvs-dot"></div> Live Scenario Modeling</div>
+    <h1>What-If <em>Scenario Engine</em></h1>
+    <p>Explore policy scenarios across British Columbia and Washington State. Adjust tax rates, healthcare premiums, housing incentives, and labor regulations to model real-time fiscal, economic, and cross-border impact projections for the Cascadia Innovation Corridor spanning Vancouver, Seattle, Portland, and 20+ cities.</p>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;">
+      <div class="bvs-badge bvs-badge-primary">8 Policy Levers</div>
+      <div class="bvs-badge bvs-badge-blue">29 Impact Metrics</div>
+      <div class="bvs-badge bvs-badge-amber">AI Narrative</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MAIN ==================== -->
+<main class="container" style="padding-top:48px; padding-bottom:32px;">
+
+  <!-- PRESETS -->
+  <h2 class="bvs-section-title">Quick Scenarios</h2>
+  <p class="bvs-section-sub">One-click policy presets to explore common reform proposals across the corridor</p>
+  <div class="wif-presets">
+    <button class="wif-preset-btn" id="preset-eliminate-msp" onclick="applyPreset('eliminate-msp')"><span class="preset-icon">&#x2715;</span>Eliminate MSP</button>
+    <button class="wif-preset-btn" id="preset-carbon-double" onclick="applyPreset('carbon-double')"><span class="preset-icon">&#x2191;</span>Carbon Tax Double</button>
+    <button class="wif-preset-btn" id="preset-bo-reform" onclick="applyPreset('bo-reform')"><span class="preset-icon">&#x2699;</span>WA B&O Reform</button>
+    <button class="wif-preset-btn" id="preset-free-trade" onclick="applyPreset('free-trade')"><span class="preset-icon">&#x2601;</span>Cascadia Free Trade Zone</button>
+    <button class="wif-preset-btn reset-btn" id="preset-reset" onclick="applyPreset('reset')"><span class="preset-icon">&#x21BA;</span>Reset to Defaults</button>
+  </div>
+
+  <!-- SCENARIO SAVE BAR -->
+  <div class="wif-scenario-bar">
+    <span class="sb-label">Saved Scenarios</span>
+    <div class="sb-slots">
+      <button class="sb-slot" id="slot-0" onclick="saveOrLoad(0)">Slot A</button>
+      <button class="sb-slot" id="slot-1" onclick="saveOrLoad(1)">Slot B</button>
+      <button class="sb-slot" id="slot-2" onclick="saveOrLoad(2)">Slot C</button>
+    </div>
+    <button class="wif-preset-btn" style="padding:6px 14px; font-size:11px;" onclick="saveCurrent()"><span class="preset-icon">&#x1F4BE;</span>Save Current</button>
+  </div>
+
+  <!-- SLIDER COLUMNS -->
+  <div class="wif-columns">
+    <!-- BC Column -->
+    <div class="wif-col-card bc-card">
+      <div class="wif-col-header">
+        British Columbia <span class="region-tag bc">BC</span>
+      </div>
+      <p class="wif-col-desc">Adjust provincial policy levers affecting taxation, healthcare premiums, carbon pricing, and housing investment for British Columbia's 5.3 million residents.</p>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">MSP Premium Rate</span>
+            <span class="wif-slider-desc">Monthly healthcare services premium per individual</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-msp">$75/mo</span>
+            <span class="wif-slider-delta neutral" id="delta-msp"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-msp" min="0" max="100" value="75" step="1" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>$0/mo</span><span>$100/mo</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Corporate Tax Rate</span>
+            <span class="wif-slider-desc">Provincial corporate income tax on business profits</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-corp-tax">27%</span>
+            <span class="wif-slider-delta neutral" id="delta-corp-tax"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-corp-tax" min="0" max="30" value="27" step="0.5" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>0%</span><span>30%</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Carbon Tax Rate</span>
+            <span class="wif-slider-desc">Price per tonne of CO2-equivalent emissions</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-carbon-tax">$80/tonne</span>
+            <span class="wif-slider-delta neutral" id="delta-carbon-tax"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-carbon-tax" min="0" max="200" value="80" step="1" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>$0/tonne</span><span>$200/tonne</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Housing Incentive Fund</span>
+            <span class="wif-slider-desc">Provincial investment in housing supply programs</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-housing-fund">$2.0B</span>
+            <span class="wif-slider-delta neutral" id="delta-housing-fund"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-housing-fund" min="0" max="10" value="2" step="0.1" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>$0B</span><span>$10B</span></div>
+      </div>
+    </div>
+
+    <!-- WA Column -->
+    <div class="wif-col-card wa-card">
+      <div class="wif-col-header">
+        Washington State <span class="region-tag wa">WA</span>
+      </div>
+      <p class="wif-col-desc">Adjust state-level policy levers affecting business taxation, sales tax, minimum wage, and capital gains for Washington's 7.8 million residents.</p>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">B&O Tax Rate</span>
+            <span class="wif-slider-desc">Business & Occupation gross receipts tax rate</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-bo-tax">0.484%</span>
+            <span class="wif-slider-delta neutral" id="delta-bo-tax"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-bo-tax" min="0" max="2" value="0.484" step="0.001" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>0%</span><span>2%</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Sales Tax Rate</span>
+            <span class="wif-slider-desc">State-level retail sales tax (excludes local add-ons)</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-sales-tax">6.5%</span>
+            <span class="wif-slider-delta neutral" id="delta-sales-tax"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-sales-tax" min="0" max="15" value="6.5" step="0.1" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>0%</span><span>15%</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Minimum Wage</span>
+            <span class="wif-slider-desc">State minimum hourly wage rate</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-min-wage">$16.66/hr</span>
+            <span class="wif-slider-delta neutral" id="delta-min-wage"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-min-wage" min="0" max="25" value="16.66" step="0.01" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>$0/hr</span><span>$25/hr</span></div>
+      </div>
+
+      <div class="wif-slider-group">
+        <div class="wif-slider-label">
+          <div class="wif-slider-label-left">
+            <span class="wif-slider-name">Capital Gains Tax</span>
+            <span class="wif-slider-desc">Tax rate on investment gains (currently 0% in WA)</span>
+          </div>
+          <div class="wif-slider-right">
+            <span class="wif-slider-val" id="val-cap-gains">0%</span>
+            <span class="wif-slider-delta neutral" id="delta-cap-gains"></span>
+          </div>
+        </div>
+        <input type="range" id="slider-cap-gains" min="0" max="15" value="0" step="0.1" oninput="onSliderChange()">
+        <div class="wif-slider-range"><span>0%</span><span>15%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wif-divider"></div>
+
+  <!-- SUMMARY STRIP -->
+  <h2 class="bvs-section-title">Corridor Impact Summary</h2>
+  <p class="bvs-section-sub">Key headline indicators for the current scenario configuration</p>
+  <div class="wif-summary-strip">
+    <div class="wif-summary-item">
+      <div class="si-icon">&#x1F4B0;</div>
+      <div class="si-value" id="s-fiscal">-$0.0B</div>
+      <div class="si-label">Net Fiscal Impact</div>
+    </div>
+    <div class="wif-summary-item">
+      <div class="si-icon">&#x1F4C8;</div>
+      <div class="si-value" id="s-gdp">+0.0%</div>
+      <div class="si-label">Corridor GDP</div>
+    </div>
+    <div class="wif-summary-item">
+      <div class="si-icon">&#x1F477;</div>
+      <div class="si-value" id="s-jobs">0</div>
+      <div class="si-label">Net Jobs</div>
+    </div>
+    <div class="wif-summary-item">
+      <div class="si-icon">&#x1F30D;</div>
+      <div class="si-value" id="s-carbon">0%</div>
+      <div class="si-label">Emissions Δ</div>
+    </div>
+    <div class="wif-summary-item">
+      <div class="si-icon">&#x1F3C6;</div>
+      <div class="si-value" id="s-rank">#12</div>
+      <div class="si-label">Competitiveness</div>
+    </div>
+  </div>
+
+  <div class="wif-divider"></div>
+
+  <!-- ==================== OUTPUT METRICS ==================== -->
+  <h2 class="bvs-section-title">Detailed Impact Metrics</h2>
+  <p class="bvs-section-sub">28 real-time indicators recalculated as you adjust policy levers above</p>
+
+  <!-- Fiscal Impact -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon">&#x1F4B2;</span> Fiscal Impact</div>
+    <div class="wif-metrics-grid">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Revenue Change</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-bc-rev">-$0.0B</div><div class="mc-change neutral" id="mc-bc-rev">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-bc-rev" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">WA Revenue Change</span><span class="mc-region wa">WA</span></div><div class="mc-value neutral-val" id="m-wa-rev">-$0.0B</div><div class="mc-change neutral" id="mc-wa-rev">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-wa-rev" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Net Fiscal Impact</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-net-fiscal">-$0.0B</div><div class="mc-change neutral" id="mc-net-fiscal">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-net-fiscal" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">GDP Impact BC</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-gdp-bc">+0.0%</div><div class="mc-change neutral" id="mc-gdp-bc">Baseline</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-gdp-bc" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">GDP Impact WA</span><span class="mc-region wa">WA</span></div><div class="mc-value neutral-val" id="m-gdp-wa">+0.0%</div><div class="mc-change neutral" id="mc-gdp-wa">Baseline</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-gdp-wa" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Combined Corridor GDP</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-gdp-combined">+0.0%</div><div class="mc-change neutral" id="mc-gdp-combined">Baseline</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-gdp-combined" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Jobs -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon amber-bg">&#x1F477;</span> Jobs</div>
+    <div class="wif-metrics-grid cols-3">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Jobs Created/Lost</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-jobs-bc">0</div><div class="mc-change neutral" id="mc-jobs-bc">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-jobs-bc" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">WA Jobs Created/Lost</span><span class="mc-region wa">WA</span></div><div class="mc-value neutral-val" id="m-jobs-wa">0</div><div class="mc-change neutral" id="mc-jobs-wa">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-jobs-wa" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Net Corridor Jobs</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-jobs-net">0</div><div class="mc-change neutral" id="mc-jobs-net">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-jobs-net" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Healthcare -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon red-bg">&#x1FA7A;</span> Healthcare</div>
+    <div class="wif-metrics-grid cols-3">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Healthcare Cost/Capita</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-hc-cost">$0</div><div class="mc-change neutral" id="mc-hc-cost">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-hc-cost" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Wait Time Change</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-hc-wait">0%</div><div class="mc-change neutral" id="mc-hc-wait">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-hc-wait" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Uninsured Rate Change</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-hc-uninsured">0.0pp</div><div class="mc-change neutral" id="mc-hc-uninsured">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-hc-uninsured" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Housing -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon blue-bg">&#x1F3E0;</span> Housing</div>
+    <div class="wif-metrics-grid">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC Median Home Price Δ</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-house-bc">0%</div><div class="mc-change neutral" id="mc-house-bc">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-house-bc" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">WA Median Home Price Δ</span><span class="mc-region wa">WA</span></div><div class="mc-value neutral-val" id="m-house-wa">0%</div><div class="mc-change neutral" id="mc-house-wa">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-house-wa" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Rental Vacancy Rate Δ</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-vacancy">0.0pp</div><div class="mc-change neutral" id="mc-vacancy">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-vacancy" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">New Housing Units/Year</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-housing-units">0</div><div class="mc-change neutral" id="mc-housing-units">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-housing-units" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Cross-Border -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon green-bg">&#x1F30D;</span> Cross-Border</div>
+    <div class="wif-metrics-grid">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Trade Volume Change</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-trade">0%</div><div class="mc-change neutral" id="mc-trade">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-trade" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Border Crossing Volume</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-border">0%</div><div class="mc-change neutral" id="mc-border">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-border" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Business Relocations</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-relocations">0</div><div class="mc-change neutral" id="mc-relocations">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-relocations" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Talent Flow Direction</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-talent-flow">Balanced</div><div class="mc-change neutral" id="mc-talent-flow">No net flow</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-talent-flow" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Environment -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon green-bg">&#x1F33F;</span> Environment</div>
+    <div class="wif-metrics-grid cols-3">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Carbon Emissions Change</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-carbon">0%</div><div class="mc-change neutral" id="mc-carbon">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-carbon" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Renewable Energy Adoption</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-renewable">0%</div><div class="mc-change neutral" id="mc-renewable">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-renewable" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Clean Tech Investment</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-cleantech">$0M</div><div class="mc-change neutral" id="mc-cleantech">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-cleantech" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Cost of Living -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon amber-bg">&#x1F4B3;</span> Cost of Living</div>
+    <div class="wif-metrics-grid cols-3">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">BC COL Index Change</span><span class="mc-region bc">BC</span></div><div class="mc-value neutral-val" id="m-col-bc">0.00</div><div class="mc-change neutral" id="mc-col-bc">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-col-bc" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">WA COL Index Change</span><span class="mc-region wa">WA</span></div><div class="mc-value neutral-val" id="m-col-wa">0.00</div><div class="mc-change neutral" id="mc-col-wa">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-col-wa" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Corridor Competitiveness</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-competitive">#12</div><div class="mc-change neutral" id="mc-competitive">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-competitive" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <!-- Investment -->
+  <div class="wif-metric-section">
+    <div class="wif-metric-cat-label"><span class="cat-icon blue-bg">&#x1F4C8;</span> Investment</div>
+    <div class="wif-metrics-grid cols-3">
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">VC Investment Change</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-vc">$0M</div><div class="mc-change neutral" id="mc-vc">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-vc" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">New Business Formations</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-businesses">0</div><div class="mc-change neutral" id="mc-businesses">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-businesses" style="width:50%"></div></div></div>
+      <div class="wif-metric-card wif-animate-in"><div class="mc-top"><span class="mc-label">Corporate Relocations</span><span class="mc-region both">CORR</span></div><div class="mc-value neutral-val" id="m-corp-reloc">0</div><div class="mc-change neutral" id="mc-corp-reloc">No change</div><div class="mc-bar"><div class="mc-bar-fill bar-neutral" id="mb-corp-reloc" style="width:50%"></div></div></div>
+    </div>
+  </div>
+
+  <div class="wif-divider"></div>
+
+  <!-- AI NARRATIVE -->
+  <h2 class="bvs-section-title">Scenario Analysis</h2>
+  <p class="bvs-section-sub">AI-generated narrative assessment of combined policy changes across the Cascadia corridor</p>
+  <div class="wif-narrative-card" id="narrative-output">
+    <div class="narrative-header">
+      <div class="nh-icon">&#x1F916;</div>
+      <span class="nh-text">AI Scenario Assessment</span>
+      <span class="bvs-badge bvs-badge-primary nh-badge">Idle</span>
+    </div>
+    <p>Adjust the policy sliders above to generate a real-time scenario analysis. The engine will evaluate the combined impact of your chosen policy parameters across fiscal, economic, healthcare, housing, cross-border, environmental, cost of living, and investment dimensions for the Cascadia Innovation Corridor. All projections update instantly using linear econometric models calibrated to regional data from Statistics Canada, the US Bureau of Economic Analysis, and state/provincial revenue authorities. This tool is designed for policy analysts, government officials, journalists, and business leaders exploring the Cascadia region's economic future.</p>
+  </div>
+
+  <div class="wif-divider"></div>
+
+  <!-- METHODOLOGY -->
+  <h2 class="bvs-section-title">Model Methodology</h2>
+  <p class="bvs-section-sub">Understanding the linear projection models behind the scenario engine</p>
+  <div class="wif-methodology">
+    <div class="wif-methodology-grid">
+      <div class="wif-methodology-item">
+        <h4>Fiscal Models</h4>
+        <p>Revenue impacts are modeled using population-weighted baseline figures. BC revenue uses 5.1M population multiplied by 12 months for MSP premium calculations, yielding approximately $4.6B in annual MSP revenue at the default $75/month rate. The corporate tax base of approximately $70B in taxable corporate income generates ~$18.9B at the 27% rate. Carbon tax revenue uses the Province of British Columbia's published carbon tax yield data, averaging ~$45M per $1/tonne increment across all taxed emissions sources including transportation, buildings, and industry. WA revenue modeling uses the state's $1.8T gross state product for B&O tax calculations, a $400B retail sales base for sales tax projections, and an estimated $30B annual realized capital gains base derived from IRS and WA DOR data.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Employment Elasticity</h4>
+        <p>Job creation/loss estimates use sectoral employment multipliers derived from BC Stats and WA ESD historical data. Corporate tax changes yield approximately 8,500 jobs per percentage point in BC, reflecting the province's 2.6M-person labor force and the concentration of employment in tax-sensitive sectors like technology, natural resources, and professional services. B&O tax changes yield approximately 45,000 jobs per percentage point in WA due to the broad base of the gross receipts tax and its outsized impact on small and medium enterprises. Minimum wage effects model both the positive income effect (increased consumer spending power driving service sector demand) and negative employment displacement effect (reduced hiring at the margin by labor-intensive businesses), with a net elasticity calibrated to Pacific Northwest regional studies.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Cross-Border Dynamics</h4>
+        <p>Talent flow and business relocation models compare relative tax competitiveness between BC and WA using a composite tax burden index. The model incorporates corporate income tax, personal income tax (BC only), sales/excise taxes, property tax differentials, and payroll tax differentials. When one jurisdiction becomes significantly more favorable on the composite index, a proportional talent and business migration is projected based on historical Cascadia corridor flow patterns observed between 2015-2024. The model accounts for the friction of cross-border relocations including regulatory compliance costs, immigration processing, and cultural/quality-of-life factors that create natural stickiness. Trade volume projections incorporate the direct effects of tax changes on export competitiveness and import demand, as well as secondary effects through GDP and exchange rate channels.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Environmental Projections</h4>
+        <p>Carbon emission changes are derived from the empirically observed carbon tax price elasticity of demand of approximately 0.18% reduction per $10/tonne increase, based on BC's own experience since implementing carbon pricing in 2008—the longest-running carbon tax in North America. This elasticity captures fuel switching, efficiency improvements, and behavioral changes across transportation, building heating, and industrial processes. Renewable energy adoption projections use the historical deployment response to policy signals in BC and WA, where renewable portfolio standards, clean fuel standards, and electrification mandates have driven steady adoption rates of 1-2% annually per major policy intervention. Clean tech investment projections are modeled based on venture capital and corporate R&D spending patterns in the Pacific Northwest, where climate-tech and clean-energy startups have attracted increasing shares of regional VC funding.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Housing Market Model</h4>
+        <p>Housing price impacts model supply-side effects of the incentive fund at approximately 15,000 additional units per $1B in provincial investment, calibrated against BC Housing's annual construction completion data and CMHC housing supply reports. The price elasticity of approximately 2.8% per $1B in new supply is derived from the observed relationship between housing starts and price movements in Metro Vancouver and the Fraser Valley between 2010-2024, controlling for interest rate effects and population growth. WA housing effects capture minimum wage and tax impacts on household purchasing power and demand, using the National Association of Realtors' housing affordability index methodology adapted for the Puget Sound region. Vacancy rate projections incorporate both new supply additions and demand-side changes from population growth, income effects, and cross-border migration patterns.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Cost of Living Model</h4>
+        <p>The cost of living index captures direct tax burden changes on households as well as indirect effects through price transmission. BC COL incorporates MSP premiums, corporate tax pass-through to consumer prices (estimated at 10-15% incidence), carbon tax pass-through to fuel and heating costs, and housing cost changes from supply-side interventions. WA COL incorporates sales tax burden on household consumption baskets (weighted by BLS Consumer Expenditure Survey data for the Seattle-Tacoma-Bellevue MSA), B&O tax incidence on consumer prices, minimum wage effects on service sector pricing, and capital gains tax effects on investment returns. The competitiveness ranking aggregates these factors with GDP growth, jobs, environmental performance, and cross-border trade efficiency to produce a composite score benchmarked against 50 North American metro regions.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Limitations</h4>
+        <p>This engine uses simplified linear models for illustration. Real-world policy impacts involve complex nonlinear dynamics, time lags, behavioral responses, and federal policy interactions. Projections are directional estimates and should not be used as precise forecasts for fiscal planning or investment decisions. The model does not account for federal tax policy changes, interest rate movements, commodity price fluctuations, or external macroeconomic shocks. Interaction effects between simultaneous policy changes are approximated additively rather than multiplicatively. All baseline figures are derived from 2024 Statistics Canada, US Bureau of Economic Analysis, WA Department of Revenue, BC Ministry of Finance, and CMHC public data. The model assumes ceteris paribus conditions and does not incorporate game-theoretic responses from other jurisdictions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA SOURCES & KEYBOARD SHORTCUTS -->
+  <div class="wif-divider"></div>
+  <h2 class="bvs-section-title">Reference Information</h2>
+  <p class="bvs-section-sub">Data sources, keyboard shortcuts, and usage notes for the scenario engine</p>
+  <div class="wif-methodology">
+    <div class="wif-methodology-grid">
+      <div class="wif-methodology-item">
+        <h4>Keyboard Shortcuts</h4>
+        <p>Press <strong>1</strong> for Eliminate MSP, <strong>2</strong> for Carbon Tax Double, <strong>3</strong> for WA B&O Reform, <strong>4</strong> for Cascadia Free Trade Zone, <strong>R</strong> to reset all sliders. Press <strong>S</strong> to save current scenario, <strong>A</strong>/<strong>B</strong>/<strong>C</strong> to load saved slots. These shortcuts enable rapid scenario comparison during policy workshops and presentations.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Scenario Save System</h4>
+        <p>Use the three save slots (A, B, C) to compare different scenarios. Click a slot to load it, or use the Save Current button to store the active configuration. Saved scenarios persist within the current browser session. This feature enables side-by-side policy comparison during stakeholder consultations and legislative committee reviews.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Primary Data Sources</h4>
+        <p>BC data: Statistics Canada (CANSIM), BC Ministry of Finance Quarterly Report, BC Real Estate Association, Health Canada. WA data: US Bureau of Economic Analysis, WA Department of Revenue, WA Employment Security Department, US Census Bureau ACS. Cross-border: Canada Border Services Agency, US Customs and Border Protection, PNWER annual reports.</p>
+      </div>
+      <div class="wif-methodology-item">
+        <h4>Corridor Context</h4>
+        <p>The Cascadia Innovation Corridor encompasses Metro Vancouver (population 2.8M), the Puget Sound region including Seattle, Bellevue, and Tacoma (population 4.0M), and Portland Metro (population 2.5M). The combined economy generates approximately $850B in GDP annually, making it one of the largest cross-border economic zones in North America. Key sectors include technology (Microsoft, Amazon, SAP, Hootsuite, Slack/Salesforce), aerospace (Boeing), clean energy, life sciences, and advanced manufacturing. The corridor processes over $30B in bilateral trade annually through 14 major border crossings. The region shares common geographic, cultural, and economic characteristics including proximity to the Pacific Rim, strong environmental values, highly educated workforces, and a growing innovation ecosystem that competes globally for talent and capital.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="bvs-footer">
+  <div class="container bvs-footer-inner">
+    <p>AIBizVan360 &mdash; Cascadia Innovation Corridor Intelligence Platform &copy; 2025. What-If Scenario Engine projections are modeled estimates for illustrative purposes only.</p>
+    <div class="bvs-footer-links">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a><a href="dashboard-2.html">Dashboard 2</a>
+      <a href="economics.html">Economics</a>
+      <a href="technology.html">Technology</a>
+      <a href="city-compare.html">Compare</a>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="wif-toast" id="toast"></div>
+
+<script>
+/* ==============================================================================
+   AIBizVan360 — What-If Scenario Engine
+   ==============================================================================
+   A fully client-side policy simulation engine for the Cascadia Innovation Corridor.
+   Models 8 policy levers (4 BC, 4 WA) and projects 28 impact metrics across
+   fiscal, employment, healthcare, housing, cross-border, environmental, cost of
+   living, and investment dimensions. Uses simplified linear econometric models
+   calibrated to publicly available data from Statistics Canada, US BEA, and
+   state/provincial revenue authorities. All calculations run in the browser
+   with no server-side dependencies.
+   ============================================================================== */
+
+/* ==============================================
+   DEFAULT VALUES
+   ============================================== */
+var DEFAULTS = {
+  msp: 75,
+  corpTax: 27,
+  carbonTax: 80,
+  housingFund: 2,
+  boTax: 0.484,
+  salesTax: 6.5,
+  minWage: 16.66,
+  capGains: 0
+};
+
+var savedScenarios = [null, null, null];
+var activeSlot = -1;
+var activePreset = null;
+
+/* ==============================================
+   TOAST NOTIFICATIONS
+   ============================================== */
+var toastTimer = null;
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 2500);
+}
+
+/* ==============================================
+   GET / SET SLIDER VALUES
+   ============================================== */
+function getVals() {
+  return {
+    msp: parseFloat(document.getElementById('slider-msp').value),
+    corpTax: parseFloat(document.getElementById('slider-corp-tax').value),
+    carbonTax: parseFloat(document.getElementById('slider-carbon-tax').value),
+    housingFund: parseFloat(document.getElementById('slider-housing-fund').value),
+    boTax: parseFloat(document.getElementById('slider-bo-tax').value),
+    salesTax: parseFloat(document.getElementById('slider-sales-tax').value),
+    minWage: parseFloat(document.getElementById('slider-min-wage').value),
+    capGains: parseFloat(document.getElementById('slider-cap-gains').value)
+  };
+}
+
+function setSlider(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function setAllSliders(v) {
+  setSlider('slider-msp', v.msp);
+  setSlider('slider-corp-tax', v.corpTax);
+  setSlider('slider-carbon-tax', v.carbonTax);
+  setSlider('slider-housing-fund', v.housingFund);
+  setSlider('slider-bo-tax', v.boTax);
+  setSlider('slider-sales-tax', v.salesTax);
+  setSlider('slider-min-wage', v.minWage);
+  setSlider('slider-cap-gains', v.capGains);
+}
+
+/* ==============================================
+   SCENARIO SAVE / LOAD
+   ============================================== */
+function saveCurrent() {
+  var v = getVals();
+  var slotIdx = activeSlot >= 0 ? activeSlot : 0;
+  if (activeSlot < 0) {
+    for (var i = 0; i < 3; i++) {
+      if (!savedScenarios[i]) { slotIdx = i; break; }
+    }
+  }
+  savedScenarios[slotIdx] = JSON.parse(JSON.stringify(v));
+  updateSlotUI();
+  activeSlot = slotIdx;
+  updateSlotUI();
+  showToast('Scenario saved to Slot ' + ['A','B','C'][slotIdx]);
+}
+
+function saveOrLoad(idx) {
+  var slotEl = document.getElementById('slot-' + idx);
+  if (!slotEl) return;
+  if (savedScenarios[idx]) {
+    setAllSliders(savedScenarios[idx]);
+    activeSlot = idx;
+    onSliderChange();
+    showToast('Loaded scenario from Slot ' + ['A','B','C'][idx]);
+  } else {
+    activeSlot = idx;
+    updateSlotUI();
+    showToast('Slot ' + ['A','B','C'][idx] + ' selected — click Save to store current scenario');
+  }
+}
+
+function updateSlotUI() {
+  for (var i = 0; i < 3; i++) {
+    var el = document.getElementById('slot-' + i);
+    if (!el) continue;
+    el.classList.toggle('saved', !!savedScenarios[i]);
+    el.classList.toggle('active-slot', activeSlot === i);
+  }
+}
+
+/* ==============================================
+   PRESETS
+   ============================================== */
+function clearPresetHighlights() {
+  var btns = document.querySelectorAll('.wif-preset-btn');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active-preset'); }
+  activePreset = null;
+}
+
+function applyPreset(name) {
+  clearPresetHighlights();
+  switch(name) {
+    case 'eliminate-msp':
+      setSlider('slider-msp', 0);
+      activePreset = 'eliminate-msp';
+      break;
+    case 'carbon-double':
+      setSlider('slider-carbon-tax', 160);
+      activePreset = 'carbon-double';
+      break;
+    case 'bo-reform':
+      setSlider('slider-bo-tax', 0.15);
+      activePreset = 'bo-reform';
+      break;
+    case 'free-trade':
+      setSlider('slider-msp', 0);
+      setSlider('slider-corp-tax', 0);
+      setSlider('slider-carbon-tax', 0);
+      setSlider('slider-bo-tax', 0);
+      setSlider('slider-sales-tax', 0);
+      setSlider('slider-cap-gains', 0);
+      activePreset = 'free-trade';
+      break;
+    case 'reset':
+      setAllSliders(DEFAULTS);
+      activePreset = null;
+      break;
+  }
+  var btn = document.getElementById('preset-' + name);
+  if (btn) btn.classList.add('active-preset');
+  onSliderChange();
+  showToast(name === 'reset' ? 'All sliders reset to defaults' : 'Applied: ' + name.replace(/-/g, ' '));
+}
+
+/* ==============================================
+   MAIN CALCULATION ENGINE
+   ============================================== */
+var calcTimeout = null;
+function onSliderChange() {
+  // Clear any preset highlight if user manually adjusts a non-preset slider
+  if (calcTimeout) clearTimeout(calcTimeout);
+  calcTimeout = setTimeout(_doCalc, 16);
+}
+
+function _doCalc() {
+  var v = getVals();
+
+  // Update slider value displays
+  document.getElementById('val-msp').textContent = '$' + v.msp + '/mo';
+  document.getElementById('val-corp-tax').textContent = v.corpTax + '%';
+  document.getElementById('val-carbon-tax').textContent = '$' + v.carbonTax + '/tonne';
+  document.getElementById('val-housing-fund').textContent = '$' + v.housingFund.toFixed(1) + 'B';
+  document.getElementById('val-bo-tax').textContent = v.boTax.toFixed(3) + '%';
+  document.getElementById('val-sales-tax').textContent = v.salesTax + '%';
+  document.getElementById('val-min-wage').textContent = '$' + v.minWage.toFixed(2) + '/hr';
+  document.getElementById('val-cap-gains').textContent = v.capGains + '%';
+
+  // Delta displays
+  updateDelta('delta-msp', v.msp, DEFAULTS.msp, '$', '/mo');
+  updateDelta('delta-corp-tax', v.corpTax, DEFAULTS.corpTax, '', '%');
+  updateDelta('delta-carbon-tax', v.carbonTax, DEFAULTS.carbonTax, '$', '/t');
+  updateDelta('delta-housing-fund', v.housingFund, DEFAULTS.housingFund, '$', 'B');
+  updateDelta('delta-bo-tax', v.boTax, DEFAULTS.boTax, '', '%');
+  updateDelta('delta-sales-tax', v.salesTax, DEFAULTS.salesTax, '', '%');
+  updateDelta('delta-min-wage', v.minWage, DEFAULTS.minWage, '$', '/hr');
+  updateDelta('delta-cap-gains', v.capGains, DEFAULTS.capGains, '', '%');
+
+  // Delta from defaults
+  var d = {
+    msp: v.msp - DEFAULTS.msp,
+    corpTax: v.corpTax - DEFAULTS.corpTax,
+    carbonTax: v.carbonTax - DEFAULTS.carbonTax,
+    housingFund: v.housingFund - DEFAULTS.housingFund,
+    boTax: v.boTax - DEFAULTS.boTax,
+    salesTax: v.salesTax - DEFAULTS.salesTax,
+    minWage: v.minWage - DEFAULTS.minWage,
+    capGains: v.capGains - DEFAULTS.capGains
+  };
+
+  /* ---- FISCAL IMPACT ---- */
+  var bcMspRev = d.msp * 5.1e6 * 12 / 1e9;
+  var bcCorpRev = d.corpTax * 70 / 100;
+  var bcCarbonRev = d.carbonTax * 0.045;
+  var bcRevenueChange = -(bcMspRev + bcCorpRev + bcCarbonRev);
+
+  var waBoRev = d.boTax * 1800 / 100;
+  var waSalesRev = d.salesTax * 400 / 100;
+  var waCapRev = d.capGains * 30 / 100;
+  var waRevenueChange = -(waBoRev + waSalesRev + waCapRev);
+
+  var netFiscal = bcRevenueChange + waRevenueChange;
+
+  var gdpBC = d.corpTax * -0.12 + d.carbonTax * -0.015 + d.housingFund * 0.25 + d.msp * -0.008;
+  var gdpWA = d.boTax * -8.0 + d.salesTax * -0.18 + d.minWage * 0.05 + d.capGains * -0.12;
+  var gdpCombined = gdpBC * 0.42 + gdpWA * 0.58;
+
+  setMetricFull('m-bc-rev', 'mc-bc-rev', 'mb-bc-rev', fmtB(bcRevenueChange), fmtB(bcRevenueChange) === '-$0.0B' ? 'No change' : (bcRevenueChange < 0 ? 'Revenue loss' : 'Revenue gain'), bcRevenueChange > 0.01, bcRevenueChange, -15, 15);
+  setMetricFull('m-wa-rev', 'mc-wa-rev', 'mb-wa-rev', fmtB(waRevenueChange), fmtB(waRevenueChange) === '-$0.0B' ? 'No change' : (waRevenueChange < 0 ? 'Revenue loss' : 'Revenue gain'), waRevenueChange > 0.01, waRevenueChange, -25, 25);
+  setMetricFull('m-net-fiscal', 'mc-net-fiscal', 'mb-net-fiscal', fmtB(netFiscal), fmtB(netFiscal) === '-$0.0B' ? 'No change' : (netFiscal < 0 ? 'Net fiscal loss' : 'Net fiscal gain'), netFiscal > 0.01, netFiscal, -30, 30);
+  setMetricFull('m-gdp-bc', 'mc-gdp-bc', 'mb-gdp-bc', (gdpBC >= 0 ? '+' : '') + gdpBC.toFixed(1) + '%', gdpBC === 0 ? 'Baseline' : (gdpBC > 0 ? 'Expansionary' : 'Contractionary'), gdpBC > 0.01, gdpBC, -5, 5);
+  setMetricFull('m-gdp-wa', 'mc-gdp-wa', 'mb-gdp-wa', (gdpWA >= 0 ? '+' : '') + gdpWA.toFixed(1) + '%', gdpWA === 0 ? 'Baseline' : (gdpWA > 0 ? 'Expansionary' : 'Contractionary'), gdpWA > 0.01, gdpWA, -20, 20);
+  setMetricFull('m-gdp-combined', 'mc-gdp-combined', 'mb-gdp-combined', (gdpCombined >= 0 ? '+' : '') + gdpCombined.toFixed(1) + '%', gdpCombined === 0 ? 'Baseline' : (gdpCombined > 0 ? 'Expansionary' : 'Contractionary'), gdpCombined > 0.01, gdpCombined, -10, 10);
+
+  /* ---- JOBS ---- */
+  var jobsBC = Math.round(d.corpTax * -8500 + d.carbonTax * -320 + d.housingFund * 18000 + d.msp * -2100);
+  var jobsWA = Math.round(d.boTax * -45000 + d.salesTax * -12000 + d.minWage * 4800 + d.capGains * -6200);
+  var jobsNet = jobsBC + jobsWA;
+
+  setMetricFull('m-jobs-bc', 'mc-jobs-bc', 'mb-jobs-bc', (jobsBC >= 0 ? '+' : '') + fmtK(jobsBC), jobsBC === 0 ? 'No change' : (jobsBC > 0 ? 'Jobs created' : 'Jobs at risk'), jobsBC > 0, jobsBC, -500000, 500000);
+  setMetricFull('m-jobs-wa', 'mc-jobs-wa', 'mb-jobs-wa', (jobsWA >= 0 ? '+' : '') + fmtK(jobsWA), jobsWA === 0 ? 'No change' : (jobsWA > 0 ? 'Jobs created' : 'Jobs at risk'), jobsWA > 0, jobsWA, -500000, 500000);
+  setMetricFull('m-jobs-net', 'mc-jobs-net', 'mb-jobs-net', (jobsNet >= 0 ? '+' : '') + fmtK(jobsNet), jobsNet === 0 ? 'No change' : (jobsNet > 0 ? 'Net corridor gain' : 'Net corridor loss'), jobsNet > 0, jobsNet, -800000, 800000);
+
+  /* ---- HEALTHCARE ---- */
+  var hcCost = Math.round(d.msp * -8.4);
+  var hcWait = d.msp * -0.15;
+  var hcUninsured = d.msp * -0.12;
+
+  setMetricFull('m-hc-cost', 'mc-hc-cost', 'mb-hc-cost', (hcCost >= 0 ? '+$' : '-$') + Math.abs(hcCost), hcCost === 0 ? 'No change' : (hcCost < 0 ? 'Per capita savings' : 'Per capita increase'), hcCost < 0, hcCost, -900, 200);
+  setMetricFull('m-hc-wait', 'mc-hc-wait', 'mb-hc-wait', (hcWait >= 0 ? '+' : '') + hcWait.toFixed(1) + '%', hcWait === 0 ? 'No change' : (hcWait > 0 ? 'Longer waits' : 'Reduced waits'), hcWait < 0, hcWait, -15, 5);
+  setMetricFull('m-hc-uninsured', 'mc-hc-uninsured', 'mb-hc-uninsured', (hcUninsured >= 0 ? '+' : '') + hcUninsured.toFixed(1) + 'pp', hcUninsured === 0 ? 'No change' : (hcUninsured < 0 ? 'More insured' : 'Less insured'), hcUninsured < 0, hcUninsured, -15, 5);
+
+  /* ---- HOUSING ---- */
+  var houseBC = d.housingFund * -2.8 + d.msp * 0.05 + d.corpTax * -0.3;
+  var houseWA = d.minWage * 0.18 + d.salesTax * -0.12 + d.boTax * 0.5;
+  var vacancy = d.housingFund * 0.35 + (v.housingFund > 5 ? 0.5 : 0);
+  var housingUnits = Math.round(d.housingFund * 15000);
+
+  setMetricFull('m-house-bc', 'mc-house-bc', 'mb-house-bc', (houseBC >= 0 ? '+' : '') + houseBC.toFixed(1) + '%', houseBC === 0 ? 'No change' : (houseBC < 0 ? 'Price relief' : 'Price pressure'), houseBC < 0, houseBC, -30, 10);
+  setMetricFull('m-house-wa', 'mc-house-wa', 'mb-house-wa', (houseWA >= 0 ? '+' : '') + houseWA.toFixed(1) + '%', houseWA === 0 ? 'No change' : (houseWA < 0 ? 'Price relief' : 'Price pressure'), houseWA < 0, houseWA, -15, 15);
+  setMetricFull('m-vacancy', 'mc-vacancy', 'mb-vacancy', (vacancy >= 0 ? '+' : '') + vacancy.toFixed(1) + 'pp', vacancy === 0 ? 'No change' : (vacancy > 0 ? 'More available' : 'Tighter market'), vacancy > 0, vacancy, -5, 10);
+  setMetricFull('m-housing-units', 'mc-housing-units', 'mb-housing-units', (housingUnits >= 0 ? '+' : '') + fmtK(housingUnits), housingUnits === 0 ? 'No change' : (housingUnits > 0 ? 'Additional supply' : 'Reduced supply'), housingUnits > 0, housingUnits, -50000, 200000);
+
+  /* ---- CROSS-BORDER ---- */
+  var tradeVol = d.corpTax * -0.4 + d.boTax * -6 + d.carbonTax * -0.15 + d.capGains * -0.8;
+  var borderVol = tradeVol * 0.6;
+  var relocations = Math.round(-Math.abs(d.corpTax) * 120 - Math.abs(d.boTax) * 2000 - Math.abs(d.salesTax) * 300 + Math.abs(d.housingFund) * 50);
+  if (netFiscal > 5) relocations = Math.abs(relocations);
+  var talentFlow = (d.corpTax * -0.6 + d.boTax * -8 + d.minWage * 0.3 + d.capGains * -1.2);
+  var talentDir = talentFlow > 0.5 ? 'BC \u2192 WA' : (talentFlow < -0.5 ? 'WA \u2192 BC' : 'Balanced');
+
+  setMetricFull('m-trade', 'mc-trade', 'mb-trade', (tradeVol >= 0 ? '+' : '') + tradeVol.toFixed(1) + '%', tradeVol === 0 ? 'No change' : (tradeVol > 0 ? 'Increased trade' : 'Reduced trade'), tradeVol > 0, tradeVol, -20, 20);
+  setMetricFull('m-border', 'mc-border', 'mb-border', (borderVol >= 0 ? '+' : '') + borderVol.toFixed(1) + '%', borderVol === 0 ? 'No change' : (borderVol > 0 ? 'More crossings' : 'Fewer crossings'), borderVol > 0, borderVol, -15, 15);
+  setMetricFull('m-relocations', 'mc-relocations', 'mb-relocations', (relocations >= 0 ? '+' : '') + relocations, relocations === 0 ? 'No change' : (relocations > 0 ? 'Inflow to corridor' : 'Outflow from corridor'), relocations > 0, relocations, -5000, 5000);
+  setMetricFull('m-talent-flow', 'mc-talent-flow', 'mb-talent-flow', talentDir, talentFlow === 0 ? 'No net flow' : (talentFlow > 0 ? 'Talent moves south' : 'Talent moves north'), Math.abs(talentFlow) < 0.5, talentFlow, -10, 10);
+
+  /* ---- ENVIRONMENT ---- */
+  var carbonEmissions = d.carbonTax * -0.18 + d.housingFund * 0.05;
+  var renewable = d.carbonTax * 0.12 + d.housingFund * 0.04;
+  var cleantech = Math.round(d.carbonTax * 85 + d.housingFund * 320);
+
+  setMetricFull('m-carbon', 'mc-carbon', 'mb-carbon', (carbonEmissions >= 0 ? '+' : '') + carbonEmissions.toFixed(1) + '%', carbonEmissions === 0 ? 'No change' : (carbonEmissions < 0 ? 'Emissions reduced' : 'Emissions increased'), carbonEmissions < 0, carbonEmissions, -40, 10);
+  setMetricFull('m-renewable', 'mc-renewable', 'mb-renewable', (renewable >= 0 ? '+' : '') + renewable.toFixed(1) + '%', renewable === 0 ? 'No change' : (renewable > 0 ? 'More adoption' : 'Less adoption'), renewable > 0, renewable, -5, 30);
+  setMetricFull('m-cleantech', 'mc-cleantech', 'mb-cleantech', '$' + fmtK(cleantech), cleantech === 0 ? 'No change' : (cleantech > 0 ? 'More investment' : 'Less investment'), cleantech > 0, cleantech, -5000, 30000);
+
+  /* ---- COST OF LIVING ---- */
+  var colBC = d.msp * 0.002 + d.corpTax * 0.01 + d.carbonTax * 0.005 - d.housingFund * 0.015;
+  var colWA = d.salesTax * 0.018 + d.boTax * 0.08 + d.minWage * 0.004 + d.capGains * 0.003;
+  var compRank = 12 - Math.round((colBC + colWA) * -8 + gdpCombined * 0.5 + (renewable > 0 ? renewable * 0.1 : 0));
+  compRank = Math.max(1, Math.min(50, compRank));
+
+  setMetricFull('m-col-bc', 'mc-col-bc', 'mb-col-bc', (colBC >= 0 ? '+' : '') + colBC.toFixed(2), colBC === 0 ? 'No change' : (colBC < 0 ? 'More affordable' : 'More expensive'), colBC < 0, colBC, -3, 3);
+  setMetricFull('m-col-wa', 'mc-col-wa', 'mb-col-wa', (colWA >= 0 ? '+' : '') + colWA.toFixed(2), colWA === 0 ? 'No change' : (colWA < 0 ? 'More affordable' : 'More expensive'), colWA < 0, colWA, -3, 3);
+  setMetricFull('m-competitive', 'mc-competitive', 'mb-competitive', '#' + compRank, compRank === 12 ? 'No change' : (compRank < 12 ? 'Improving' : 'Declining'), compRank < 12, 12 - compRank, -20, 20);
+
+  /* ---- INVESTMENT ---- */
+  var vc = Math.round(d.corpTax * -420 + d.boTax * -8500 + d.capGains * -1800 + d.carbonTax * 60 + d.housingFund * 450);
+  var businesses = Math.round(d.corpTax * -1200 + d.boTax * -15000 + d.minWage * 600 + d.housingFund * 2000);
+  var corpReloc = Math.round(d.corpTax * -150 + d.boTax * -3000 + d.capGains * -500);
+
+  setMetricFull('m-vc', 'mc-vc', 'mb-vc', (vc >= 0 ? '+$' : '-$') + fmtK(Math.abs(vc)), vc === 0 ? 'No change' : (vc > 0 ? 'More VC inflow' : 'VC outflow'), vc > 0, vc, -30000, 30000);
+  setMetricFull('m-businesses', 'mc-businesses', 'mb-businesses', (businesses >= 0 ? '+' : '') + fmtK(businesses), businesses === 0 ? 'No change' : (businesses > 0 ? 'More formations' : 'Fewer formations'), businesses > 0, businesses, -100000, 100000);
+  setMetricFull('m-corp-reloc', 'mc-corp-reloc', 'mb-corp-reloc', (corpReloc >= 0 ? '+' : '') + corpReloc, corpReloc === 0 ? 'No change' : (corpReloc > 0 ? 'Inflow' : 'Outflow'), corpReloc > 0, corpReloc, -10000, 10000);
+
+  /* ---- SUMMARY STRIP ---- */
+  document.getElementById('s-fiscal').textContent = fmtB(netFiscal);
+  document.getElementById('s-fiscal').style.color = netFiscal === 0 ? 'var(--fg)' : (netFiscal > 0 ? 'var(--green)' : 'var(--red)');
+  document.getElementById('s-gdp').textContent = (gdpCombined >= 0 ? '+' : '') + gdpCombined.toFixed(1) + '%';
+  document.getElementById('s-gdp').style.color = gdpCombined === 0 ? 'var(--fg)' : (gdpCombined > 0 ? 'var(--green)' : 'var(--red)');
+  document.getElementById('s-jobs').textContent = (jobsNet >= 0 ? '+' : '') + fmtK(jobsNet);
+  document.getElementById('s-jobs').style.color = jobsNet === 0 ? 'var(--fg)' : (jobsNet > 0 ? 'var(--green)' : 'var(--red)');
+  document.getElementById('s-carbon').textContent = (carbonEmissions >= 0 ? '+' : '') + carbonEmissions.toFixed(1) + '%';
+  document.getElementById('s-carbon').style.color = carbonEmissions === 0 ? 'var(--fg)' : (carbonEmissions < 0 ? 'var(--green)' : 'var(--red)');
+  document.getElementById('s-rank').textContent = '#' + compRank;
+  document.getElementById('s-rank').style.color = compRank < 12 ? 'var(--green)' : (compRank > 12 ? 'var(--red)' : 'var(--fg)');
+
+  /* ---- NARRATIVE ---- */
+  generateNarrative(v, d, {
+    bcRevenueChange: bcRevenueChange, waRevenueChange: waRevenueChange, netFiscal: netFiscal,
+    gdpBC: gdpBC, gdpWA: gdpWA, gdpCombined: gdpCombined,
+    jobsBC: jobsBC, jobsWA: jobsWA, jobsNet: jobsNet,
+    hcCost: hcCost, talentDir: talentDir, talentFlow: talentFlow,
+    carbonEmissions: carbonEmissions, renewable: renewable, cleantech: cleantech,
+    colBC: colBC, colWA: colWA, compRank: compRank,
+    vc: vc, businesses: businesses, relocations: relocations,
+    tradeVol: tradeVol, housingUnits: housingUnits, houseBC: houseBC,
+    houseWA: houseWA, hcWait: hcWait, hcUninsured: hcUninsured,
+    vacancy: vacancy, borderVol: borderVol, corpReloc: corpReloc
+  });
+}
+
+/* ==============================================
+   HELPERS
+   ============================================== */
+function fmtB(val) {
+  if (Math.abs(val) < 0.05) return '-$0.0B';
+  return (val >= 0 ? '+$' : '-$') + Math.abs(val).toFixed(1) + 'B';
+}
+
+function fmtK(val) {
+  var abs = Math.abs(val);
+  if (abs >= 1000000) return (val >= 0 ? '' : '-') + (abs / 1000000).toFixed(1) + 'M';
+  if (abs >= 1000) return (val >= 0 ? '' : '-') + (abs / 1000).toFixed(1) + 'K';
+  return val.toString();
+}
+
+function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+function barPct(val, min, max) { return Math.max(2, Math.min(98, 50 + ((val - 0) / (max - min)) * 50)); }
+
+function updateDelta(id, current, def, prefix, suffix) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var delta = current - def;
+  if (Math.abs(delta) < 0.005) {
+    el.textContent = 'at default';
+    el.className = 'wif-slider-delta neutral';
+  } else {
+    var sign = delta > 0 ? '+' : '';
+    if (prefix === '$' && suffix === 'B') {
+      el.textContent = sign + '$' + Math.abs(delta).toFixed(1) + suffix;
+    } else if (prefix === '$') {
+      el.textContent = sign + prefix + Math.abs(delta).toFixed(2) + suffix;
+    } else if (id === 'delta-bo-tax') {
+      el.textContent = sign + Math.abs(delta).toFixed(3) + suffix;
+    } else {
+      el.textContent = sign + Math.abs(delta).toFixed(1) + suffix;
+    }
+    el.className = 'wif-slider-delta ' + (delta > 0 ? 'positive' : 'negative');
+  }
+}
+
+function setMetricFull(valId, changeId, barId, value, changeText, isPositive, rawVal, barMin, barMax) {
+  var valEl = document.getElementById(valId);
+  var chEl = document.getElementById(changeId);
+  var barEl = document.getElementById(barId);
+  var isNeutral = (Math.abs(rawVal) < 0.01);
+
+  if (valEl) {
+    valEl.textContent = value;
+    valEl.className = 'mc-value ' + (isNeutral ? 'neutral-val' : (isPositive ? 'positive-val' : 'negative-val'));
+  }
+  if (chEl) {
+    chEl.textContent = changeText;
+    chEl.className = 'mc-change ' + (isNeutral ? 'neutral' : (isPositive ? 'positive' : 'negative'));
+  }
+  if (barEl) {
+    var pct = barPct(rawVal, barMin, barMax);
+    barEl.style.width = pct + '%';
+    barEl.className = 'mc-bar-fill ' + (isNeutral ? 'bar-neutral' : (isPositive ? 'bar-positive' : 'bar-negative'));
+  }
+}
+
+function isSig(d, key, threshold) {
+  threshold = threshold || 0.01;
+  return Math.abs(d[key]) > threshold;
+}
+
+/* ==============================================
+   NARRATIVE GENERATOR
+   ============================================== */
+function generateNarrative(v, d, m) {
+  var anyChange = Object.keys(d).some(function(k) { return Math.abs(d[k]) > 0.01; });
+  var parts = [];
+
+  if (!anyChange) {
+    document.getElementById('narrative-output').innerHTML =
+      '<div class="narrative-header"><div class="nh-icon">&#x1F916;</div><span class="nh-text">AI Scenario Assessment</span><span class="bvs-badge bvs-badge-primary nh-badge">Idle</span></div>' +
+      '<p>Adjust the policy sliders above to generate a real-time scenario analysis. The engine will evaluate the combined impact of your chosen policy parameters across fiscal, economic, healthcare, housing, cross-border, environmental, cost of living, and investment dimensions for the Cascadia Innovation Corridor.</p>';
+    return;
+  }
+
+  // Sentiment assessment
+  var overallSentiment = 'neutral';
+  var score = m.gdpCombined * 0.3 + (m.jobsNet / 100000) * 0.2 + (m.netFiscal > 0 ? 1 : -1) * 0.2 + (m.compRank < 12 ? 0.3 : -0.3);
+  if (score > 1.5) overallSentiment = 'positive';
+  else if (score < -1.5) overallSentiment = 'negative';
+  else if (score > 0.5) overallSentiment = 'mildly-positive';
+  else if (m.netFiscal < -3) overallSentiment = 'cautionary';
+
+  var badgeText = 'Analyzing';
+  var badgeClass = 'bvs-badge-amber';
+  if (overallSentiment === 'positive') { badgeText = 'Favorable'; badgeClass = 'bvs-badge-primary'; }
+  else if (overallSentiment === 'negative') { badgeText = 'Risk Detected'; badgeClass = 'bvs-badge-red'; }
+  else if (overallSentiment === 'mildly-positive') { badgeText = 'Constructive'; badgeClass = 'bvs-badge-primary'; }
+  else if (overallSentiment === 'cautionary') { badgeText = 'Caution'; badgeClass = 'bvs-badge-amber'; }
+  else { badgeText = 'Mixed'; badgeClass = 'bvs-badge-blue'; }
+
+  // Opening assessment
+  var opening = '';
+  if (overallSentiment === 'positive') {
+    opening = '<p>This scenario projects <strong class="narrative-highlight">favorable outcomes</strong> for the Cascadia Innovation Corridor. Combined GDP growth of <strong class="narrative-highlight">' + m.gdpCombined.toFixed(1) + '%</strong> alongside the creation of approximately <strong class="narrative-highlight">' + fmtK(m.jobsNet) + ' jobs</strong> suggests a broadly stimulative policy mix. The corridor, spanning from Vancouver through Seattle to Portland, stands to benefit from this configuration, though the fiscal implications require careful examination to ensure long-term sustainability.</p>';
+  } else if (overallSentiment === 'negative') {
+    opening = '<p>This scenario presents <strong class="narrative-negative">significant challenges</strong> for the Cascadia corridor economy. Projected GDP contraction of <strong class="narrative-negative">' + Math.abs(m.gdpCombined).toFixed(1) + '%</strong> with <strong class="narrative-negative">' + fmtK(Math.abs(m.jobsNet)) + ' jobs at risk</strong> indicates the current policy parameters may create headwinds for growth across the BC-WA border region. A recalibration of tax and incentive structures is strongly advisable before implementation.</p>';
+  } else if (overallSentiment === 'mildly-positive') {
+    opening = '<p>This scenario presents a <strong class="narrative-highlight">moderately constructive</strong> outlook for the Cascadia Innovation Corridor. The policy configuration yields a combined GDP shift of <strong class="narrative-highlight">' + (m.gdpCombined >= 0 ? '+' : '') + m.gdpCombined.toFixed(1) + '%</strong> with <strong>' + fmtK(m.jobsNet) + ' net jobs</strong> projected across the corridor. While not transformational, the direction is positive and positions the region well against competing North American innovation corridors such as the Bay Area and Toronto-Waterloo.</p>';
+  } else if (overallSentiment === 'cautionary') {
+    opening = '<p>This scenario warrants <strong class="narrative-warn">cautious evaluation</strong>. While certain economic indicators may appear favorable, the fiscal impact of <strong class="narrative-negative">' + fmtB(Math.abs(m.netFiscal)) + ' in projected revenue changes</strong> raises sustainability concerns for both provincial and state budgets. Policymakers should consider phased implementation with clear revenue replacement strategies and sunset clauses for any temporary measures.</p>';
+  } else {
+    opening = '<p>This scenario reflects a <strong>mixed policy environment</strong> across the Cascadia corridor. The combined GDP impact of <strong>' + (m.gdpCombined >= 0 ? '+' : '') + m.gdpCombined.toFixed(1) + '%</strong> and <strong>' + fmtK(m.jobsNet) + ' net jobs</strong> suggest the policy levers are pulling in different directions. Some measures stimulate growth while others create friction. The net effect depends heavily on implementation timing, complementary measures, and the relative pace of reform on each side of the border.</p>';
+  }
+  parts.push(opening);
+
+  // Fiscal analysis
+  var fiscalParts = [];
+  if (isSig(d, 'msp')) {
+    if (d.msp < 0) {
+      fiscalParts.push('Eliminating the MSP premium at $' + v.msp + '/month would reduce provincial healthcare fee revenue by approximately <strong class="narrative-negative">' + fmtB(Math.abs(m.bcRevenueChange * 0.4)) + '</strong>, but directly benefits BC\'s 5.1 million residents with annual household savings of $' + Math.abs(d.msp * 12) + ' per person. This regressive tax removal would disproportionately benefit lower-income households and reduce the effective tax burden on the median Vancouver-area family by roughly $' + (Math.abs(d.msp) * 12 * 2.5).toFixed(0) + ' per year.');
+    } else if (d.msp > 0) {
+      fiscalParts.push('Increasing the MSP premium to <strong class="narrative-warn">$' + v.msp + '/month</strong> generates additional provincial revenue but places upward pressure on household healthcare costs across BC. This regressive measure would impact median households by approximately $' + (Math.abs(d.msp) * 12).toFixed(0) + ' annually and may increase the uninsured rate as some residents forgo supplementary coverage.');
+    }
+  }
+  if (isSig(d, 'corpTax')) {
+    if (d.corpTax < 0) {
+      fiscalParts.push('Reducing BC\'s corporate tax rate to <strong class="narrative-highlight">' + v.corpTax + '%</strong> from the baseline 27% is estimated to boost BC GDP by <strong class="narrative-highlight">' + Math.abs(m.gdpBC).toFixed(1) + '%</strong> and create approximately <strong class="narrative-highlight">' + fmtK(Math.abs(m.jobsBC)) + ' jobs</strong>. This positions BC more competitively against Washington\'s corporate tax environment and could attract head offices from Toronto and Calgary seeking lower-tax jurisdictions with high quality of life.');
+    } else {
+      fiscalParts.push('Raising the corporate tax rate to <strong class="narrative-warn">' + v.corpTax + '%</strong> would generate additional revenue but may dampen business investment and job creation in the province. The technology sector in Vancouver, which has been a key growth driver, could be particularly sensitive to corporate tax increases given the mobile nature of tech talent and capital.');
+    }
+  }
+  if (isSig(d, 'boTax')) {
+    fiscalParts.push('Adjusting Washington\'s B&O tax to <strong>' + v.boTax.toFixed(3) + '%</strong> ' + (d.boTax < 0 ? 'represents a significant pro-business reform that would relieve the gross receipts tax burden on WA businesses, particularly benefiting startups and small enterprises in the Seattle-Bellevue tech corridor' : 'increases the tax burden on WA businesses at the gross receipts level, which disproportionately affects low-margin enterprises') + '. The estimated fiscal impact is ' + fmtB(Math.abs(m.waRevenueChange * 0.3)) + '.');
+  }
+  if (isSig(d, 'salesTax')) {
+    fiscalParts.push('The sales tax adjustment to <strong>' + v.salesTax + '%</strong> ' + (d.salesTax > 0 ? 'would increase consumer costs across Washington and may suppress retail activity, particularly in border communities like Bellingham and Blaine that depend on Canadian cross-border shoppers. The effective tax burden on Washington households would increase by approximately $' + (Math.abs(d.salesTax) * 400).toFixed(0) + ' per capita annually.' : 'provides meaningful consumer relief and could stimulate retail spending, particularly benefiting communities along the I-5 corridor. Washington households would see estimated annual savings of $' + (Math.abs(d.salesTax) * 400).toFixed(0) + ' per capita.'));
+  }
+  if (isSig(d, 'capGains')) {
+    fiscalParts.push('Introducing a capital gains tax of <strong class="narrative-warn">' + v.capGains + '%</strong> in Washington represents a structural shift in the state\'s tax code. While generating revenue of approximately ' + fmtB(Math.abs(d.capGains * 30 / 100)) + ', it may create capital flight risk as investors seek tax-favorable jurisdictions. The Seattle tech ecosystem, home to Amazon, Microsoft, and thousands of startups, could see investment reallocation toward no-capital-gains-tax states like Texas and Florida.');
+  }
+  if (isSig(d, 'carbonTax')) {
+    fiscalParts.push('The carbon tax at <strong>$' + v.carbonTax + '/tonne</strong> ' + (d.carbonTax > 0 ? 'strengthens BC\'s position as a North American climate leader, projecting carbon emission reductions of <strong class="narrative-highlight">' + Math.abs(m.carbonEmissions).toFixed(1) + '%</strong> and driving <strong class="narrative-highlight">$' + fmtK(m.cleantech) + '</strong> in clean tech investment. However, it increases costs for energy-intensive industries and transportation across the province.' : (d.carbonTax < 0 ? 'reduces BC\'s carbon pricing signal, potentially undermining the province\'s CleanBC climate commitments. While this provides short-term cost relief, it may slow the transition to a low-carbon economy and reduce the region\'s attractiveness to ESG-focused investors.' : '')));
+  }
+
+  if (fiscalParts.length > 0) {
+    parts.push('<p><strong>Fiscal Analysis:</strong> ' + fiscalParts.join(' ') + '</p>');
+  }
+
+  // Economic impact
+  var econParts = [];
+  if (isSig(d, 'minWage')) {
+    econParts.push('The minimum wage setting of <strong>$' + v.minWage.toFixed(2) + '/hr</strong> in Washington ' + (d.minWage > 0 ? 'increases annual earnings for approximately 1 million WA workers by an average of $' + (Math.abs(d.minWage) * 2080).toFixed(0) + ' per full-time employee. This stimulates consumer spending but may compress small business margins, particularly in the service and hospitality sectors of Seattle, Tacoma, and Spokane.' : 'reduces labor costs but affects worker spending power across the state. Lower-wage workers in the retail and food service sectors would see reduced annual income of approximately $' + (Math.abs(d.minWage) * 2080).toFixed(0) + ' per full-time equivalent.'));
+  }
+  if (isSig(d, 'housingFund')) {
+    econParts.push('The housing incentive fund of <strong class="narrative-highlight">$' + v.housingFund.toFixed(1) + 'B</strong> ' + (d.housingFund > 0 ? 'is projected to add <strong class="narrative-highlight">' + fmtK(m.housingUnits) + ' housing units per year</strong> to BC\'s supply, reducing median home prices by <strong class="narrative-highlight">' + Math.abs(m.houseBC).toFixed(1) + '%</strong>. This directly addresses the affordability crisis in Metro Vancouver where the median home price exceeds $1.1M. Increased supply also improves rental vacancy rates by <strong>' + m.vacancy.toFixed(1) + ' percentage points</strong>, providing relief to the 35% of BC residents who rent.' : 'represents a significant reduction in housing investment that could worsen the supply shortage. With BC\'s population growing by approximately 100,000 per year, reduced housing investment would accelerate price appreciation and vacancy compression.'));
+  }
+  if (Math.abs(m.vc) > 10) {
+    econParts.push('VC investment flows are projected to shift by <strong>' + (m.vc >= 0 ? '+' : '') + '$' + fmtK(Math.abs(m.vc)) + '</strong>, ' + (m.vc > 0 ? 'indicating increased investor confidence in the corridor. Vancouver and Seattle together attracted over $12B in venture capital last year, and this scenario would enhance the region\'s ability to compete with Silicon Valley, Austin, and New York for high-growth startup funding.' : 'suggesting capital may seek more favorable environments. The Cascadia corridor\'s tech ecosystem, which includes over 15,000 startups, could see a reduction in Series A and B funding rounds, particularly in climate tech and enterprise SaaS sectors.'));
+  }
+  if (Math.abs(m.businesses) > 100) {
+    econParts.push('New business formations are expected to change by <strong>' + (m.businesses >= 0 ? '+' : '') + fmtK(m.businesses) + '</strong>, reflecting the entrepreneurial response to the regulatory and tax environment. The corridor\'s startup formation rate has been a key economic indicator, with the Seattle MSA and Metro Vancouver accounting for over 60% of new business registrations in the Pacific Northwest.');
+  }
+  if (econParts.length > 0) {
+    parts.push('<p><strong>Economic Impact:</strong> ' + econParts.join(' ') + '</p>');
+  }
+
+  // Cross-border effects
+  var crossParts = [];
+  if (Math.abs(m.tradeVol) > 0.5 || m.talentDir !== 'Balanced') {
+    crossParts.push('Cross-border dynamics show trade volume shifting by <strong>' + (m.tradeVol >= 0 ? '+' : '') + m.tradeVol.toFixed(1) + '%</strong>');
+    if (m.talentDir !== 'Balanced') {
+      crossParts.push('with a net talent flow of <strong class="narrative-blue">' + m.talentDir + '</strong>');
+    }
+    crossParts.push('. '); 
+    if (Math.abs(m.relocations) > 0) {
+      crossParts.push('Approximately <strong>' + Math.abs(m.relocations) + ' business relocations</strong> are modeled across the border. ');
+    }
+    crossParts.push('Border crossing volumes adjust by <strong>' + (m.borderVol >= 0 ? '+' : '') + m.borderVol.toFixed(1) + '%</strong>, affecting the Peace Arch, Pacific Highway, and Lynden crossing points that collectively process over 15 million crossings annually.');
+  }
+  if (m.compRank !== 12) {
+    crossParts.push('The corridor\'s competitiveness ranking shifts to <strong class="narrative-highlight">#' + m.compRank + '</strong> ' + (m.compRank < 12 ? '— an improvement that enhances the region\'s ability to attract investment, talent, and corporate headquarters relative to peer corridors like the Bay Area, Toronto-Waterloo, and Austin. This ranking considers tax burden, talent availability, housing affordability, environmental quality, and cross-border trade efficiency.' : '— a decline that could affect the corridor\'s standing relative to competing regions. Maintaining top-15 competitiveness is critical for the corridor\'s $850B combined GDP economy and its 13 million residents.'));
+  }
+  if (crossParts.length > 0) {
+    parts.push('<p><strong>Cross-Border Effects:</strong> ' + crossParts.join(' ') + '</p>');
+  }
+
+  // Recommendation
+  var rec = '';
+  if (overallSentiment === 'positive' || overallSentiment === 'mildly-positive') {
+    rec = '<p><strong>Recommendation:</strong> This policy configuration demonstrates <strong class="narrative-highlight">strategic alignment</strong> with corridor growth objectives. ';
+    if (m.netFiscal < -2) {
+      rec += 'However, the fiscal gap of ' + fmtB(Math.abs(m.netFiscal)) + ' should be addressed through phased implementation and revenue diversification. Consider pairing tax reductions with broadened tax bases or efficiency gains in public spending. ';
+    }
+    rec += 'Policymakers should consider a 3-5 year rollout with annual impact assessments to calibrate the optimal policy mix for sustainable corridor-wide growth. Coordination between Victoria and Olympia on complementary reforms would amplify positive effects. ';
+    if (m.talentDir !== 'Balanced') {
+      rec += 'The asymmetric talent flow (' + m.talentDir + ') should be monitored and addressed through bilateral workforce development agreements.';
+    }
+    rec += '</p>';
+  } else if (overallSentiment === 'negative') {
+    rec = '<p><strong>Recommendation:</strong> The current parameter combination creates <strong class="narrative-negative">adverse economic conditions</strong> for the Cascadia corridor. A review of the tax and regulatory burden is recommended, with focus on reducing the highest-impact cost drivers. Consider incremental reforms targeting corporate tax competitiveness and cross-border trade facilitation before implementing broader changes. The combined fiscal and employment impacts suggest this scenario should not be implemented without significant modifications. Engaging with the business community through the Cascadia Business Council and Pacific Northwest Economic Region (PNWER) would help identify the most impactful refinements.</p>';
+  } else if (overallSentiment === 'cautionary') {
+    rec = '<p><strong>Recommendation:</strong> While elements of this scenario are constructive, the <strong class="narrative-warn">fiscal sustainability concern</strong> warrants a phased approach. Consider implementing revenue-positive measures alongside expenditure reductions to maintain fiscal balance. The corridor\'s long-term competitiveness depends on both economic growth AND fiscal responsibility. A recommended approach: implement the growth-positive measures first (e.g., housing fund, B&O reform), allow 12-18 months for economic response, then evaluate whether revenue-recapturing measures are necessary. This sequenced approach minimizes risk while capturing upside potential.</p>';
+  } else {
+    rec = '<p><strong>Recommendation:</strong> This scenario represents a <strong>moderately balanced</strong> policy approach with competing forces. To maximize corridor outcomes, consider coordinating BC and WA policy reforms to reduce cross-border friction and create a more unified economic zone. The most impactful levers in this configuration appear to be ' + getTopLever(d) + '. Targeted adjustments to these parameters—moving them further in their current positive direction—could shift the overall outlook significantly. Additionally, consider the temporal sequencing of reforms: implementing growth-oriented measures first, then introducing revenue measures once the economic base has expanded.</p>';
+  }
+  parts.push(rec);
+
+  // Assemble narrative HTML
+  var narrativeHTML =
+    '<div class="narrative-header">' +
+      '<div class="nh-icon">&#x1F916;</div>' +
+      '<span class="nh-text">AI Scenario Assessment</span>' +
+      '<span class="bvs-badge ' + badgeClass + ' nh-badge">' + badgeText + '</span>' +
+    '</div>' +
+    parts.join('');
+
+  document.getElementById('narrative-output').innerHTML = narrativeHTML;
+}
+
+function getTopLever(d) {
+  var levers = [];
+  if (Math.abs(d.corpTax) > 2) levers.push('corporate tax rates');
+  if (Math.abs(d.boTax) > 0.1) levers.push('B&O tax reform');
+  if (Math.abs(d.housingFund) > 1) levers.push('housing investment');
+  if (Math.abs(d.carbonTax) > 20) levers.push('carbon pricing');
+  if (Math.abs(d.minWage) > 2) levers.push('minimum wage policy');
+  if (Math.abs(d.salesTax) > 1) levers.push('sales tax rates');
+  if (Math.abs(d.msp) > 20) levers.push('MSP premiums');
+  if (Math.abs(d.capGains) > 2) levers.push('capital gains taxation');
+  if (levers.length === 0) levers.push('the current policy mix');
+  if (levers.length === 1) return levers[0];
+  return levers.slice(0, -1).join(', ') + ' and ' + levers[levers.length - 1];
+}
+
+/* ==============================================
+   KEYBOARD SHORTCUTS
+   ============================================== */
+/* Keyboard shortcut handler for power users and presentation mode.
+   Shortcuts: 1-4 for presets, R for reset, S for save, A/B/C for slots.
+   These are disabled when text inputs are focused to prevent conflicts. */
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' && e.target.type !== 'range') return;
+  switch(e.key) {
+    case '1': applyPreset('eliminate-msp'); break;
+    case '2': applyPreset('carbon-double'); break;
+    case '3': applyPreset('bo-reform'); break;
+    case '4': applyPreset('free-trade'); break;
+    case 'r': case 'R': applyPreset('reset'); break;
+    case 's': case 'S': saveCurrent(); break;
+    case 'a': case 'A': saveOrLoad(0); break;
+    case 'b': case 'B': saveOrLoad(1); break;
+    case 'c': case 'C': saveOrLoad(2); break;
+  }
+});
+
+/* ==============================================
+   INIT
+   ============================================== */
+onSliderChange();
+</script>
+<div class='vban-wrap' id='vban-wrap'>
+  <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision'>
+    <img src='images/banners/banner-left-cascadia-intelligence.png' alt='Cascadia Intelligence Vision' loading='lazy' />
+    <div class='vban-label'>Cascadia Intelligence</div>
+  </a>
+  <a class='vban vban-right' href='MARKET_ASSESSMENT.md' target='_blank' title='Cross-Border Economic Bridge'>
+    <img src='images/banners/banner-right-cross-border-intel.png' alt='Cross-Border Economic Bridge' loading='lazy' />
+    <div class='vban-label'>Cross-Border Bridge</div>
+  </a>
+</div>
+
+<script>
+(function(){
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(b){
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon(document.getElementById('ai-theme-btn'));
+  }
+  var btn = document.getElementById('ai-theme-btn');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  setIcon(btn);
+})();
+</script>
+
+</body>
+</html>

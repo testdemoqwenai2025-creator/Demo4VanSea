@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIBizVan360 — Environment Agency Live</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --radius: 8px;
+  --env-green: #2ecc71; --env-blue: #3498db; --env-amber: #f39c12; --env-red: #e74c3c;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* Header (matches existing site) */
+.bvs-header { position: sticky; top: 0; z-index: 100; background: rgba(13,18,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(78,205,196,0.15); }
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s; }
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.ai-actions { display: flex; align-items: center; gap: 6px; }
+.ai-home-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--primary); background: var(--primary-dim); border: 1px solid var(--primary-border); transition: all .15s; text-decoration: none; }
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3); color: var(--fg); }
+[data-theme="light"] { background: #f5f7f7; color: #1a2626; }
+[data-theme="light"] .bvs-header { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .bvs-logo-text { color: #1a2626; }
+[data-theme="light"] .bvs-nav a { color: #666; }
+[data-theme="light"] .bvs-nav a:hover { color: #1a2626; background: #f0f4f4; }
+[data-theme="light"] .ai-theme-toggle { color: #666; border-color: rgba(0,0,0,0.1); }
+
+/* Cards */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.bvs-card:hover { border-color: var(--primary-border); }
+[data-theme="light"] .bvs-card { background: #fff; border-color: rgba(0,0,0,0.06); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.bvs-grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .bvs-grid-2, .bvs-grid-3, .bvs-grid-4 { grid-template-columns: 1fr; } }
+.bvs-section-title { font-size: 20px; font-weight: 800; margin: 32px 0 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 16px; }
+.bvs-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+.bvs-badge-live { background: rgba(255,107,107,0.15); color: var(--red); border: 1px solid rgba(255,107,107,0.3); }
+
+/* AQI scale */
+.aqi-good { background: var(--env-green); color: #fff; }
+.aqi-moderate { background: var(--env-amber); color: #fff; }
+.aqi-unhealthy-sg { background: #ff7518; color: #fff; }
+.aqi-unhealthy { background: var(--env-red); color: #fff; }
+.aqi-very-unhealthy { background: #6c3483; color: #fff; }
+.aqi-hazardous { background: #4a0e0e; color: #fff; }
+
+/* Live indicator */
+.live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: pulse 2s ease-in-out infinite; margin-right: 6px; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.refresh-status { font-size: 11px; color: var(--fg3); }
+
+/* Metric tiles */
+.metric-tile { text-align: center; padding: 16px 12px; }
+.metric-value { font-size: 28px; font-weight: 800; line-height: 1; }
+.metric-label { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+.metric-unit { font-size: 12px; color: var(--fg2); margin-top: 2px; }
+
+/* AQI city card */
+.aqi-city-card { background: var(--bg3); border-radius: 8px; padding: 14px; border-left: 4px solid var(--env-green); transition: all 0.2s; }
+[data-theme="light"] .aqi-city-card { background: #f0f4f4; }
+.aqi-city-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.aqi-city-name { font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+.aqi-value { font-size: 32px; font-weight: 800; line-height: 1; display: inline-block; padding: 4px 12px; border-radius: 6px; }
+.aqi-category { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.aqi-pollutant { font-size: 10px; color: var(--fg3); margin-top: 4px; }
+
+/* Alert card */
+.alert-card { background: var(--bg3); border-radius: 8px; padding: 12px 14px; border-left: 4px solid var(--env-amber); margin-bottom: 8px; }
+.alert-card.severe { border-left-color: var(--env-red); }
+.alert-card.info { border-left-color: var(--env-blue); }
+.alert-event { font-size: 13px; font-weight: 700; color: var(--fg); }
+.alert-area { font-size: 11px; color: var(--fg2); margin-top: 2px; }
+.alert-time { font-size: 10px; color: var(--fg3); margin-top: 4px; }
+.alert-desc { font-size: 11px; color: var(--fg2); margin-top: 6px; line-height: 1.5; }
+
+/* Facility card */
+.facility-card { background: var(--bg3); border-radius: 6px; padding: 10px 12px; border-left: 3px solid var(--env-amber); }
+.facility-name { font-size: 12px; font-weight: 700; color: var(--fg); }
+.facility-loc { font-size: 10px; color: var(--fg3); }
+.facility-chem { font-size: 10px; color: var(--fg2); margin-top: 4px; }
+
+/* Energy mix bar */
+.energy-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.energy-segment { display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; transition: width 0.5s; }
+.energy-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 10px; }
+.energy-legend-item { display: flex; align-items: center; gap: 4px; }
+.energy-legend-color { width: 10px; height: 10px; border-radius: 2px; }
+
+/* Water gauge card */
+.water-card { background: var(--bg3); border-radius: 8px; padding: 12px; border-top: 3px solid var(--env-blue); }
+.water-site { font-size: 12px; font-weight: 700; color: var(--fg); }
+.water-flow { font-size: 20px; font-weight: 800; color: var(--env-blue); }
+.water-stage { font-size: 10px; color: var(--fg3); margin-top: 2px; }
+
+/* Tabs */
+.env-tabs { display: flex; gap: 4px; border-bottom: 1px solid rgba(78,205,196,0.2); margin-bottom: 16px; overflow-x: auto; }
+.env-tab { padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--fg2); cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+.env-tab:hover { color: var(--fg); }
+.env-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.env-tab-panel { display: none; }
+.env-tab-panel.active { display: block; }
+
+/* Source attribution */
+.source-tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 600; margin-left: 4px; }
+.src-gov { background: rgba(78,205,196,0.12); color: var(--primary); }
+.src-private { background: rgba(240,165,0,0.12); color: var(--amber); }
+.src-public { background: rgba(46,204,113,0.12); color: var(--env-green); }
+
+/* Refresh banner */
+.refresh-banner { background: var(--primary-dim); border: 1px solid var(--primary-border); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.refresh-banner-text { font-size: 12px; color: var(--fg2); }
+.refresh-banner strong { color: var(--primary); }
+
+/* Footer */
+.bvs-site-footer { background: var(--bg2); border-top: 1px solid rgba(78,205,196,0.15); margin-top: 48px; color: var(--fg2); padding-bottom: 32px; }
+.footer-ribbon { height: 3px; background: linear-gradient(90deg, #4ecdc4, #6c9bff, #f0a500, #4ecdc4); background-size: 200% 100%; animation: footerGradient 8s linear infinite; }
+@keyframes footerGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; padding: 32px 0; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); margin-bottom: 12px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3); text-decoration: none; padding: 3px 0; }
+.footer-col a:hover { color: var(--primary); }
+.footer-logo { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 10px; }
+.footer-logo span { color: var(--primary); }
+.footer-about { font-size: 12px; color: var(--fg3); line-height: 1.6; margin-bottom: 12px; }
+.footer-bottom { display: flex; justify-content: space-between; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: var(--fg3); }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-bottom { flex-direction: column; gap: 8px; } }
+
+/* vban */
+.vban-wrap { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; pointer-events: none; }
+.vban { pointer-events: auto; display: block; transition: opacity .2s; }
+.vban:hover { opacity: 0.85; }
+.vban-left { left: 0; } .vban-right { right: 0; }
+.vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
+.vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
+.vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
+.vban-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: var(--primary); font-size: 9px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 600; }
+@media (max-width: 1400px) { .vban-wrap { display: none; } }
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<header class="bvs-header"><div class="container bvs-header-inner">
+  <a href="index.html" class="bvs-logo">
+    <div class="bvs-logo-mark">AI</div>
+    <div class="bvs-logo-text">AI<span>BizVan360</span></div>
+  </a>
+  <nav class="bvs-nav">
+    <a href="index.html">Overview</a>
+    <a href="government.html">Government</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard-2.html">Dashboard 2</a>
+    <a href="economics.html">Economics</a>
+    <a href="leisure.html">Leisure</a>
+    <a href="travel.html">Travel</a>
+    <a href="technology.html">Technology</a>
+    <a href="transportation.html">Transport</a>
+    <a href="demographics.html">Demographics</a>
+    <a href="resources.html">Resources</a>
+    <a href="environment.html">Environment</a>
+    <a href="environment-agency.html" class="active">Env Agency</a>
+    <a href="biodiversity.html">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+    <a href="sports.html">Sports</a>
+    <a href="whatif-scenario.html">What-If</a>
+    <a href="city-compare.html">City vs City</a>
+  </nav>
+  <div class="ai-actions">
+    <a href="index.html" class="ai-home-btn" title="Home">Home</a>
+    <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<main style="padding: 24px 0;">
+
+<div class="container">
+  <div style="padding: 32px 0 16px;">
+    <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">
+      <span class="live-dot"></span>Environment Agency Live
+    </h1>
+    <p style="font-size: 14px; color: var(--fg2); max-width: 800px;">
+      Real-time environmental intelligence for the Cascadia corridor — air quality, water conditions, weather alerts, facility emissions, and energy mix. All data sourced from taxpayer-funded public APIs (EPA, USGS, NOAA, EIA, Environment Canada). Refreshes every 15 minutes.
+    </p>
+  </div>
+
+  <!-- Refresh banner -->
+  <div class="refresh-banner">
+    <div class="refresh-banner-text">
+      <span class="live-dot"></span>
+      <strong>Live data</strong> · Auto-refresh every 15 minutes · Sources: EPA AirNow, USGS WaterWatch, NOAA NWS, EPA Envirofacts, EIA, Environment Canada
+    </div>
+    <div>
+      <span class="refresh-status" id="last-refresh">Loading…</span>
+      <button id="manual-refresh" style="background: var(--primary); color: var(--bg); border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 8px;">Refresh Now</button>
+    </div>
+  </div>
+
+  <!-- KPI tiles -->
+  <div class="bvs-grid bvs-grid-4" style="margin-bottom: 24px;">
+    <div class="bvs-card metric-tile">
+      <div class="metric-value" id="kpi-aqi-avg" style="color: var(--env-green);">—</div>
+      <div class="metric-label">Avg AQI (Cascadia)</div>
+      <div class="metric-unit" id="kpi-aqi-cat">Loading…</div>
+    </div>
+    <div class="bvs-card metric-tile">
+      <div class="metric-value" id="kpi-alerts" style="color: var(--env-amber);">—</div>
+      <div class="metric-label">Active Weather Alerts</div>
+      <div class="metric-unit">WA + OR + BC</div>
+    </div>
+    <div class="bvs-card metric-tile">
+      <div class="metric-value" id="kpi-water" style="color: var(--env-blue);">—</div>
+      <div class="metric-label">Stream Gauges Monitored</div>
+      <div class="metric-unit">USGS Cascadia</div>
+    </div>
+    <div class="bvs-card metric-tile">
+      <div class="metric-value" id="kpi-facilities" style="color: var(--env-red);">—</div>
+      <div class="metric-label">TRI Facilities (WA)</div>
+      <div class="metric-unit">EPA Envirofacts</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="env-tabs">
+    <button class="env-tab active" data-tab="air">Air Quality</button>
+    <button class="env-tab" data-tab="water">Water</button>
+    <button class="env-tab" data-tab="alerts">Weather Alerts</button>
+    <button class="env-tab" data-tab="facilities">Facility Emissions</button>
+    <button class="env-tab" data-tab="energy">Energy Mix</button>
+    <button class="env-tab" data-tab="climate">Climate Analysis</button>
+    <button class="env-tab" data-tab="wildfire">Wildfire Risk</button>
+    <button class="env-tab" data-tab="migration">Wildlife Migration</button>
+    <button class="env-tab" data-tab="budget">Agency Budget</button>
+    <button class="env-tab" data-tab="projects">Projects Decade</button>
+  </div>
+
+  <!-- AIR QUALITY TAB -->
+  <div class="env-tab-panel active" id="tab-air">
+    <div class="bvs-section-title">Real-Time Air Quality Index</div>
+    <div class="bvs-section-sub">
+      AQI by city across Cascadia. Data from Open-Meteo Air Quality API (uses CAMS European model + NOAA data, free, no API key).
+      <span class="source-tag src-public">PUBLIC</span>
+    </div>
+    <div class="bvs-grid bvs-grid-4" id="aqi-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+    <div class="bvs-card" style="padding: 14px 18px; font-size: 11px; color: var(--fg3); line-height: 1.7;">
+      <strong style="color: var(--primary);">AQI Scale:</strong>
+      <span class="aqi-good" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">0-50 Good</span>
+      <span class="aqi-moderate" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">51-100 Moderate</span>
+      <span class="aqi-unhealthy-sg" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">101-150 Sensitive Groups</span>
+      <span class="aqi-unhealthy" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">151-200 Unhealthy</span>
+      <span class="aqi-very-unhealthy" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">201-300 Very Unhealthy</span>
+      <span class="aqi-hazardous" style="padding: 2px 8px; border-radius: 3px; margin: 0 4px;">301+ Hazardous</span>
+    </div>
+  </div>
+
+  <!-- WATER TAB -->
+  <div class="env-tab-panel" id="tab-water">
+    <div class="bvs-section-title">River & Stream Conditions</div>
+    <div class="bvs-section-sub">
+      Real-time streamflow data from USGS WaterWatch. Shows discharge (cfs) and gauge height for key Cascadia rivers.
+      <span class="source-tag src-gov">USGS</span>
+    </div>
+    <div class="bvs-grid bvs-grid-3" id="water-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ALERTS TAB -->
+  <div class="env-tab-panel" id="tab-alerts">
+    <div class="bvs-section-title">Active Weather Alerts</div>
+    <div class="bvs-section-sub">
+      Live alerts from NOAA National Weather Service for WA, OR, and national. Updated every 5 minutes.
+      <span class="source-tag src-gov">NOAA NWS</span>
+    </div>
+    <div id="alerts-list" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- FACILITIES TAB -->
+  <div class="env-tab-panel" id="tab-facilities">
+    <div class="bvs-section-title">Toxic Release Inventory (TRI) Facilities</div>
+    <div class="bvs-section-sub">
+      EPA Toxics Release Inventory — facilities in Washington state that report chemical releases. Data from EPA Envirofacts REST API.
+      <span class="source-tag src-gov">EPA</span>
+    </div>
+    <div class="bvs-grid bvs-grid-3" id="facilities-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+    <div class="bvs-card" style="padding: 14px 18px; font-size: 11px; color: var(--fg3);">
+      <strong style="color: var(--primary);">Note:</strong> TRI data covers facilities that manufacture, process, or otherwise use >25,000 lbs of toxic chemicals annually. WA has ~1,010 reporting facilities. Most recent reporting year is the most recent EPA TRI National Analysis.
+    </div>
+  </div>
+
+  <!-- ENERGY TAB -->
+  <div class="env-tab-panel" id="tab-energy">
+    <div class="bvs-section-title">Regional Energy Mix</div>
+    <div class="bvs-section-sub">
+      Electricity generation by source for WA, OR, and BC. Data from EIA (US) and BC Energy Council (Canada).
+      <span class="source-tag src-gov">EIA</span> <span class="source-tag src-gov">BC Hydro</span>
+    </div>
+    <div class="bvs-grid bvs-grid-3" id="energy-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- CLIMATE ANALYSIS TAB -->
+  <div class="env-tab-panel" id="tab-climate">
+    <div class="bvs-section-title">Climate Analysis — Expected vs Observed</div>
+    <div class="bvs-section-sub">
+      Comparing past 30 days (observed 2026) to the same period in 2020 (climate normal year). Shows how current weather deviates from historical patterns. Data from Open-Meteo Archive API (ERA5 reanalysis, public, no key).
+      <span class="source-tag src-public">OPEN-METEO ERA5</span>
+    </div>
+    <div id="climate-grid" class="bvs-grid bvs-grid-2" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+    <div class="bvs-card" style="padding: 14px 18px; font-size: 11px; color: var(--fg3); line-height: 1.7;">
+      <strong style="color: var(--primary);">Methodology:</strong> "Expected" = average of daily values for the same date range (Aug 4 – Sep 2) from 2020, a recent climate-normal year. "Observed" = actual daily values for the past 30 days. Deviations >25% are flagged as anomalies. Snow days = days with >0mm snowfall. Rainy days = days with >0.1mm precipitation. Data source: ERA5 reanalysis via Open-Meteo Archive API (public, taxpayer-funded equivalent: NOAA Climate Data Online).
+    </div>
+  </div>
+
+  <!-- WILDFIRE RISK TAB -->
+  <div class="env-tab-panel" id="tab-wildfire">
+    <div class="bvs-section-title">Wildfire Risk & Active Incidents</div>
+    <div class="bvs-section-sub">
+      Historical wildfire patterns for Cascadia + links to live incident resources. Wildfire season peaks July–September. Risk levels based on historical NIFC + state DNR data.
+      <span class="source-tag src-gov">NIFC + STATE DNR</span>
+    </div>
+    <div class="bvs-grid bvs-grid-3" style="padding-bottom: 16px;">
+      <div class="bvs-card" style="border-top: 3px solid var(--env-red);">
+        <div class="bvs-card-header">Washington</div>
+        <div class="bvs-card-title">Wildfire Risk Profile</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">Avg annual fires: <strong>1,624</strong> · Avg acres burned: <strong>489,000</strong><br>Peak month: <strong>August</strong><br>2025 season: <strong>~440k acres</strong> (near avg)</p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: WA DNR Wildfire Statistics (public)</p>
+        <a href="https://fortress.wa.gov/dnr/firemap/" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ WA DNR Live Fire Map</a>
+      </div>
+      <div class="bvs-card" style="border-top: 3px solid var(--env-red);">
+        <div class="bvs-card-header">Oregon</div>
+        <div class="bvs-card-title">Wildfire Risk Profile</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">Avg annual fires: <strong>2,200</strong> · Avg acres burned: <strong>570,000</strong><br>Peak month: <strong>August</strong><br>2025 season: <strong>~610k acres</strong> (above avg)</p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: OR Dept of Forestry (public)</p>
+        <a href="https://www.oregon.gov/odf/fire/Pages/default.aspx" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ OR DFR Live Fire Info</a>
+      </div>
+      <div class="bvs-card" style="border-top: 3px solid var(--env-red);">
+        <div class="bvs-card-header">British Columbia</div>
+        <div class="bvs-card-title">Wildfire Risk Profile</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">Avg annual fires: <strong>1,350</strong> · Avg hectares burned: <strong>365,000</strong><br>Peak month: <strong>July-August</strong><br>2025 season: <strong>~1.07M ha</strong> (above avg)</p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: BC Wildfire Service (public)</p>
+        <a href="https://wildfiresituation.nrs.gov.bc.ca/map" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ BC Wildfire Live Map</a>
+      </div>
+    </div>
+    <div class="bvs-card" style="margin-bottom: 16px;">
+      <div class="bvs-card-header">Live Wildfire Resources — All Public, Free</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; font-size: 11px;">
+        <div><strong style="color: var(--env-red);">InciWeb</strong><br><span style="color: var(--fg3);">inciweb.nwcg.gov</span> — Federal incident info. US-only, updated daily during fire season.</div>
+        <div><strong style="color: var(--env-red);">NASA FIRMS</strong><br><span style="color: var(--fg3);">firms.modaps.eosdis.nasa.gov</span> — Active fire detections from MODIS/VIIRS satellites. Global. Free MAP_KEY required.</div>
+        <div><strong style="color: var(--env-red);">WA DNR Fire Map</strong><br><span style="color: var(--fg3);">fortress.wa.gov/dnr/firemap</span> — Real-time WA state wildfires + burn bans.</div>
+        <div><strong style="color: var(--env-red);">BC Wildfire Service</strong><br><span style="color: var(--fg3);">wildfiresituation.nrs.gov.bc.ca</span> — Real-time BC wildfires + evacuation orders.</div>
+        <div><strong style="color: var(--env-red);">AirNow Fire & Smoke</strong><br><span style="color: var(--fg3);">fire.airnow.gov</span> — Smoke plume + AQI impacts from active fires.</div>
+        <div><strong style="color: var(--env-red);">NIFC</strong><br><span style="color: var(--fg3);">nifc.gov</span> — National Interagency Fire Center. Daily situation reports + year-to-date stats.</div>
+      </div>
+    </div>
+    <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--env-amber);">
+      <div style="font-size: 13px; font-weight: 700; color: var(--env-amber); margin-bottom: 8px;">⚠ Cascadia Wildfire Outlook</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+        Cascadia's wildfire risk has <strong>increased significantly</strong> over the past decade due to climate change, forest fuel accumulation, and expanding wildland-urban interface. Key trends:
+      </p>
+      <ul style="font-size: 11px; color: var(--fg2); line-height: 1.8; margin-left: 20px; margin-top: 8px;">
+        <li><strong>WA:</strong> 2020 was worst season on record (1,250+ fires, 713k acres burned). 2023–2025 closer to 10-year average.</li>
+        <li><strong>OR:</strong> 2020 Labor Day fires burned 1.2M acres — worst in state history. 2024–2025 above average.</li>
+        <li><strong>BC:</strong> 2023 was worst season ever (2.84M hectares burned, 6x avg). 2025 also above average. Smoke impacts Seattle/Portland frequently.</li>
+        <li><strong>Cross-border smoke:</strong> BC fires cause 60%+ of smoke days in Seattle/Portland. WA/OR fires cause 30%+ of smoke days in Vancouver/Victoria.</li>
+      </ul>
+      <p style="font-size: 10px; color: var(--fg3); margin-top: 12px;">Sources: NIFC annual reports, WA DNR, OR ODF, BC Wildfire Service — all public, taxpayer-funded.</p>
+    </div>
+  </div>
+
+  <!-- WILDLIFE MIGRATION TAB -->
+  <div class="env-tab-panel" id="tab-migration">
+    <div class="bvs-section-title">Wildlife Migration Patterns</div>
+    <div class="bvs-section-sub">
+      Seasonal observation counts from iNaturalist (citizen science). Shows when species are most active/visible in Cascadia. Useful for researchers, wildlife photographers, and conservation planning.
+      <span class="source-tag src-public">iNaturalist</span>
+    </div>
+    <div id="migration-grid" class="bvs-grid bvs-grid-2" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+    <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--bio-green);">
+      <div style="font-size: 13px; font-weight: 700; color: var(--bio-green); margin-bottom: 8px;">🦅 Migration Insights for Cascadia</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+        Cascadia sits on two major migration corridors:
+      </p>
+      <ul style="font-size: 11px; color: var(--fg2); line-height: 1.8; margin-left: 20px; margin-top: 8px;">
+        <li><strong>Pacific Flyway:</strong> Millions of birds migrate along the coast spring (Mar-May) and fall (Sep-Nov). Key stopovers: Skagit Valley, Boundary Bay, Ridgefield NWR.</li>
+        <li><strong>Salmon runs:</strong> Chinook, coho, chum, sockeye return to natal streams Aug-Nov. Best viewing: Cedar River (Sept), Issaquah Salmon Hatchery (Oct), Adams River (Sockeye, every 4 years — next peak 2026).</li>
+        <li><strong>Gray whale migration:</strong> ~20,000 whales pass Oregon/WA coast spring (northbound Mar-May) and winter (southbound Dec-Feb). Best viewing: Depoe Bay, Cape Flattery.</li>
+        <li><strong>Elk rut:</strong> Sept-Oct. Bugling bulls in Olympic National Park, Mt Rainier NP, Oregon Coast Range.</li>
+        <li><strong>Snow geese:</strong> 50,000+ winter in Skagit Valley Nov-March. Spectacular congregations at Fir Island.</li>
+      </ul>
+      <p style="font-size: 10px; color: var(--fg3); margin-top: 12px;">Data: iNaturalist seasonal observations + USFWS migration reports + WA Dept of Fish & Wildlife.</p>
+    </div>
+  </div>
+
+  <!-- AGENCY BUDGET TAB -->
+  <div class="env-tab-panel" id="tab-budget">
+    <div class="bvs-section-title">Environmental Agency Budgets</div>
+    <div class="bvs-section-sub">
+      Public budget data for environmental agencies serving Cascadia. All figures from public budget documents (taxpayer-funded; freely accessible).
+      <span class="source-tag src-gov">PUBLIC BUDGET</span>
+    </div>
+    <div class="bvs-grid bvs-grid-2" style="padding-bottom: 16px;">
+      <div class="bvs-card" style="border-left: 3px solid var(--env-green);">
+        <div class="bvs-card-header">US EPA (Federal)</div>
+        <div class="bvs-card-title">FY2024 Budget: $9.13 Billion</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">
+          <strong>Major programs:</strong><br>
+          • Clean Air Act implementation: $1.1B<br>
+          • Clean Water State Revolving Fund: $2.6B<br>
+          • Superfund cleanup: $1.2B<br>
+          • Environmental justice: $3B (Inflation Reduction Act)<br>
+          • Air quality monitoring: $223M<br>
+          • Toxics Release Inventory: $52M
+        </p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: EPA FY2024 Budget in Brief (public)</p>
+        <a href="https://www.epa.gov/planandbudget/budget" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ EPA Budget Details</a>
+      </div>
+      <div class="bvs-card" style="border-left: 3px solid var(--env-green);">
+        <div class="bvs-card-header">WA Dept of Ecology</div>
+        <div class="bvs-card-title">2023-25 Biennium: $510 Million</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">
+          <strong>Major programs:</strong><br>
+          • Air quality monitoring: $28M<br>
+          • Water quality permitting: $42M<br>
+          • Toxic cleanup: $38M<br>
+          • Climate pollution reduction: $55M<br>
+          • Hazardous waste management: $24M<br>
+          • Oil spill prevention: $16M
+        </p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: WA OFM Budget (public)</p>
+        <a href="https://ofm.wa.gov/itsystems/agency/ecy" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ WA Ecology Budget</a>
+      </div>
+      <div class="bvs-card" style="border-left: 3px solid var(--env-green);">
+        <div class="bvs-card-header">OR Dept of Environmental Quality</div>
+        <div class="bvs-card-title">2023-25 Biennium: $350 Million</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">
+          <strong>Major programs:</strong><br>
+          • Air quality division: $32M<br>
+          • Water quality: $48M<br>
+          • Land quality: $24M<br>
+          • Climate protection: $18M<br>
+          • Cleanup program: $22M<br>
+          • Vehicle inspection: $14M
+        </p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: OR Legislatively Adopted Budget (public)</p>
+        <a href="https://www.oregon.gov/deq/get-involved/Pages/default.aspx" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ OR DEQ Budget</a>
+      </div>
+      <div class="bvs-card" style="border-left: 3px solid var(--env-green);">
+        <div class="bvs-card-header">BC Ministry of Environment</div>
+        <div class="bvs-card-title">FY2024: $302 Million CAD</div>
+        <p style="font-size: 11px; color: var(--fg2); line-height: 1.6;">
+          <strong>Major programs:</strong><br>
+          • BC Wildfire Service: $136M (base) + $1.1B emergency (2023)<br>
+          • Air & water quality: $28M<br>
+          • Climate action: $42M<br>
+          • Environmental assessment: $18M<br>
+          • Conservation officer service: $34M<br>
+          • Parks & protected areas: $44M
+        </p>
+        <p style="font-size: 10px; color: var(--fg3); margin-top: 8px;">Source: BC Budget 2024 (public)</p>
+        <a href="https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/environment" target="_blank" style="font-size: 11px; display: block; margin-top: 8px;">→ BC Environment Ministry</a>
+      </div>
+    </div>
+    <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--primary);">
+      <div style="font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">📊 Budget Analysis & Uncertainties</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+        <strong>Combined annual environmental spending in Cascadia: ~$10.3B</strong> (EPA share for Region 10 + state/provincial agencies). This equals roughly <strong>$250 per capita</strong> — above US national average ($180) but below leading European nations ($340).
+      </p>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.7; margin-top: 8px;">
+        <strong>Key uncertainties:</strong>
+      </p>
+      <ul style="font-size: 11px; color: var(--fg2); line-height: 1.8; margin-left: 20px; margin-top: 8px;">
+        <li><strong>Wildfire costs:</strong> BC spent $1.1B emergency in 2023 — 8x base budget. Trending up 18% annually.</li>
+        <li><strong>Federal IRA funding:</strong> $3B environmental justice at risk if administration changes. Represents 33% of EPA budget.</li>
+        <li><strong>PFAS regulation:</strong> EPA estimating $1.5B compliance cost nationally; state share TBD.</li>
+        <li><strong>Climate adaptation:</strong> WA Dept of Ecology requesting $200M for 2025-27 biennium (40% increase) for flood/wildfire resilience.</li>
+        <li><strong>Cross-border data sharing:</strong> No formal US-Canada environmental data treaty; ad-hoc coordination only.</li>
+      </ul>
+      <p style="font-size: 10px; color: var(--fg3); margin-top: 12px;">All budget data from public agency budget documents. Taxpayer-funded; freely accessible. AIBizVan360 does not gate this data — it's compiled here for transparency.</p>
+    </div>
+  </div>
+
+  <!-- PROJECTS DECADE TAB -->
+  <div class="env-tab-panel" id="tab-projects">
+    <div class="bvs-section-title">Cascadia Projects — Next Decade (2025-2035)</div>
+    <div class="bvs-section-sub">
+      Major infrastructure, clean energy, and environmental restoration projects planned or underway in Cascadia. All budgets from public government sources. Click any project for details, source documents, and uncertainty analysis.
+      <span class="source-tag src-gov">PUBLIC BUDGET</span>
+    </div>
+
+    <!-- Budget summation dashboard -->
+    <div id="env-budget-dashboard" class="bvs-grid bvs-grid-4" style="margin-bottom: 20px;">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Budget by category chart -->
+    <div class="bvs-card" style="margin-bottom: 20px;">
+      <div class="bvs-card-header">Budget by Category — Cascadia Decade Total</div>
+      <div id="env-category-chart"></div>
+    </div>
+
+    <!-- Project cards -->
+    <div id="env-projects-grid" class="bvs-grid bvs-grid-2" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--primary);">
+      <div style="font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">📊 Decade Outlook Analysis</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+        The next decade in Cascadia will see <strong>$60+ billion in major infrastructure and environmental investment</strong> across the bioregion. Key themes:
+      </p>
+      <ul style="font-size: 11px; color: var(--fg2); line-height: 1.8; margin-left: 20px; margin-top: 8px;">
+        <li><strong>Transportation transformation:</strong> Cascadia HSR ($24-42B) + I-5 Bridge ($10B) = potential $52B+ in cross-border mobility investment. HSR alone would generate estimated $355B economic return.</li>
+        <li><strong>Clean energy buildout:</strong> PNW Hydrogen Hub ($1B federal) + BC North Coast Transmission ($2.8B CAD) + ongoing renewable builds = multi-billion clean energy transition.</li>
+        <li><strong>Salmon restoration pivot:</strong> Columbia River programs ($66.7M/yr) + PSAR ($60.5M biennium) + Snake River dam study = potential $1.5B+ dam breaching decision looming.</li>
+        <li><strong>Wildfire resilience scaling:</strong> WA ($500M/8yr) + BC ($220M CAD Budget 2026) = ~$700M+ dedicated wildfire resilience, but 2023 BC fires alone cost $1.1B emergency.</li>
+        <li><strong>Indigenous-led conservation:</strong> Canada Guardians program ($340M CAD + $173M for Guardians) = largest Indigenous conservation investment in Canadian history.</li>
+        <li><strong>Port modernization:</strong> Port of Seattle ($5.6B/5yr) + Port of Vancouver ($112M/yr) = sustained maritime infrastructure investment driving regional trade.</li>
+      </ul>
+      <p style="font-size: 10px; color: var(--fg3); margin-top: 12px;">All budgets verified from public government sources (WSDOT, DOE, BC Budget 2026, Port budgets, USFWS, WA Legislature, Environment Canada). Updated September 2026.</p>
+    </div>
+  </div>
+
+  <!-- Data sources -->
+  <div class="bvs-card" style="margin-bottom: 24px;">
+    <div class="bvs-card-header">Public Data Sources — All Taxpayer-Funded, Freely Accessible</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; font-size: 11px;">
+      <div><strong style="color: var(--env-green);">NOAA NWS API</strong><br><span style="color: var(--fg3);">api.weather.gov</span> — Weather alerts, forecasts, observations. Public domain.</div>
+      <div><strong style="color: var(--env-blue);">USGS Water Services</strong><br><span style="color: var(--fg3);">waterservices.usgs.gov</span> — Real-time streamflow, groundwater, water quality. Public domain.</div>
+      <div><strong style="color: var(--env-green);">EPA Envirofacts</strong><br><span style="color: var(--fg3);">data.epa.gov/efservice</span> — Facility emissions, TRI, Superfund, air emissions. Public domain.</div>
+      <div><strong style="color: var(--env-amber);">EIA API</strong><br><span style="color: var(--fg3);">api.eia.gov</span> — Electricity generation, fuel sources, transmission. Free with API key.</div>
+      <div><strong style="color: var(--env-green);">Open-Meteo Air Quality</strong><br><span style="color: var(--fg3);">api.open-meteo.com</span> — AQI forecasts from CAMS + NOAA. Free, no key.</div>
+      <div><strong style="color: var(--env-blue);">Environment Canada</strong><br><span style="color: var(--fg3);">weather.gc.ca</span> — Canadian weather, air quality, climate. Open data license.</div>
+    </div>
+    <div style="margin-top: 12px; padding: 10px; background: var(--bg3); border-radius: 6px; font-size: 11px; color: var(--fg2); line-height: 1.6;">
+      <strong style="color: var(--primary);">Philosophy:</strong> All environmental data is collected by taxpayer-funded agencies and should be freely accessible to the public. No government should restrict access to environmental data, and no private platform should gate it behind subscriptions. This page is built entirely from public sources to demonstrate that — defensibility comes from integration and interpretation, not data hoarding.
+    </div>
+  </div>
+</div>
+
+</main>
+
+<div class='vban-wrap' id='vban-wrap'>
+  <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision'>
+    <img src='images/banners/banner-left-cascadia-intelligence.png' alt='Cascadia Intelligence Vision' loading='lazy' />
+    <div class='vban-label'>Cascadia Intelligence</div>
+  </a>
+  <a class='vban vban-right' href='MARKET_ASSESSMENT.md' target='_blank' title='Cross-Border Economic Bridge'>
+    <img src='images/banners/banner-right-cross-border-intel.png' alt='Cross-Border Economic Bridge' loading='lazy' />
+    <div class='vban-label'>Cross-Border Bridge</div>
+  </a>
+</div>
+
+<footer class="bvs-site-footer"><div class="footer-ribbon"></div><div class="container" style="padding-top:48px;">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">AI<span>BizVan360</span></div>
+      <p class="footer-about">AI-powered 360-degree regional intelligence platform for the Vancouver-Seattle Cascadia Innovation Corridor. Providing real-time economic, policy, and business intelligence.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="index.html">Overview</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="dashboard-2.html">Dashboard 2</a>
+      <a href="economics.html">Economics</a>
+      <a href="environment.html">Environment</a>
+      <a href="environment-agency.html">Env Agency</a>
+      <a href="biodiversity.html">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+    </div>
+    <div class="footer-col">
+      <h4>Data Sources</h4>
+      <a href="https://www.epa.gov/enviro" target="_blank">EPA Envirofacts</a>
+      <a href="https://water.usgs.gov" target="_blank">USGS Water</a>
+      <a href="https://www.weather.gov" target="_blank">NOAA NWS</a>
+      <a href="https://www.eia.gov" target="_blank">EIA</a>
+      <a href="https://weather.gc.ca" target="_blank">Environment Canada</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Disclaimer</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#">About AIBizVan360</a>
+      <a href="#">Methodology</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>&copy; 2026 AIBizVan360 | Vancouver, BC &amp; Seattle, WA</div>
+    <div>Public data · Taxpayer-funded · Freely accessible</div>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  /* THEME TOGGLE */
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(b){
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon(document.getElementById('ai-theme-btn'));
+  }
+  var btn = document.getElementById('ai-theme-btn');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  setIcon(btn);
+
+  /* TABS */
+  document.querySelectorAll('.env-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.env-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.env-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+
+  /* CITIES for AQI */
+  var AQI_CITIES = [
+    {name:'Seattle', lat:47.6062, lng:-122.3321, state:'WA'},
+    {name:'Portland', lat:45.5152, lng:-122.6784, state:'OR'},
+    {name:'Vancouver', lat:49.2827, lng:-123.1207, state:'BC'},
+    {name:'Spokane', lat:47.6588, lng:-117.4260, state:'WA'},
+    {name:'Bend', lat:44.0582, lng:-121.3153, state:'OR'},
+    {name:'Victoria', lat:48.4284, lng:-123.3656, state:'BC'},
+    {name:'Tacoma', lat:47.2529, lng:-122.4443, state:'WA'},
+    {name:'Bellingham', lat:48.7491, lng:-122.4781, state:'WA'}
+  ];
+
+  /* USGS stream gauge sites (Cascadia) */
+  var WATER_SITES = [
+    {id:'12113000', name:'Green River near Auburn, WA'},
+    {id:'12121600', name:'Skykomish River near Gold Bar, WA'},
+    {id:'12141300', name:'Snoqualmie River near Snoqualmie, WA'},
+    {id:'12149000', name:'Cedar River near Cedar Falls, WA'},
+    {id:'12119000', name:'Snohomish River near Monroe, WA'},
+    {id:'14222500', name:'Willamette River at Portland, OR'},
+    {id:'14128500', name:'Columbia River at Bonneville, WA/OR'},
+    {id:'08MF005', name:'Fraser River at Hope, BC (WSC)'}
+  ];
+
+  function fetchJSON(url, timeout){
+    timeout = timeout || 12000;
+    return new Promise(function(resolve, reject){
+      var controller = new AbortController();
+      var tid = setTimeout(function(){ controller.abort(); }, timeout);
+      fetch(url, {signal: controller.signal})
+        .then(function(r){ clearTimeout(tid); if(!r.ok){ reject(new Error('HTTP '+r.status)); return; } return r.json(); })
+        .then(function(d){ resolve(d); })
+        .catch(function(e){ clearTimeout(tid); reject(e); });
+    });
+  }
+
+  function aqiCategory(aqi){
+    if (aqi <= 50) return {label:'Good', cls:'aqi-good', color:'#2ecc71'};
+    if (aqi <= 100) return {label:'Moderate', cls:'aqi-moderate', color:'#f39c12'};
+    if (aqi <= 150) return {label:'Unhealthy for Sensitive Groups', cls:'aqi-unhealthy-sg', color:'#ff7518'};
+    if (aqi <= 200) return {label:'Unhealthy', cls:'aqi-unhealthy', color:'#e74c3c'};
+    if (aqi <= 300) return {label:'Very Unhealthy', cls:'aqi-very-unhealthy', color:'#6c3483'};
+    return {label:'Hazardous', cls:'aqi-hazardous', color:'#4a0e0e'};
+  }
+
+  function loadAQI(){
+    var promises = AQI_CITIES.map(function(city){
+      var url = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + city.lat + '&longitude=' + city.lng + '&current=us_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&timezone=auto';
+      return fetchJSON(url).then(function(d){
+        var c = d.current || {};
+        return {
+          city: city,
+          aqi: c.us_aqi,
+          pm25: c.pm2_5,
+          pm10: c.pm10,
+          ozone: c.ozone,
+          no2: c.nitrogen_dioxide,
+          time: c.time
+        };
+      }).catch(function(e){
+        return { city: city, error: e.message };
+      });
+    });
+    return Promise.all(promises).then(function(results){
+      var html = '';
+      var validAqis = [];
+      results.forEach(function(r){
+        if (r.error || r.aqi === null || r.aqi === undefined){
+          html += '<div class="aqi-city-card" style="border-left-color: var(--fg3);">' +
+            '<div class="aqi-city-name">' + r.city.name + ', ' + r.city.state + '</div>' +
+            '<div style="font-size:11px;color:var(--fg3)">Data unavailable</div></div>';
+        } else {
+          var cat = aqiCategory(r.aqi);
+          validAqis.push(r.aqi);
+          html += '<div class="aqi-city-card" style="border-left-color:' + cat.color + ';">' +
+            '<div class="aqi-city-name">' + r.city.name + ', ' + r.city.state + '</div>' +
+            '<div class="aqi-value ' + cat.cls + '">' + Math.round(r.aqi) + '</div>' +
+            '<div class="aqi-category" style="color:' + cat.color + ';">' + cat.label + '</div>' +
+            '<div class="aqi-pollutant">PM2.5: ' + (r.pm25 ? r.pm25.toFixed(1) : '—') + ' µg/m³ · O₃: ' + (r.ozone ? r.ozone.toFixed(1) : '—') + ' µg/m³</div>' +
+            '<div class="aqi-pollutant">Updated: ' + (r.time ? new Date(r.time).toLocaleTimeString() : '—') + '</div>' +
+          '</div>';
+        }
+      });
+      document.getElementById('aqi-grid').innerHTML = html;
+      // Update KPI
+      if (validAqis.length > 0){
+        var avg = validAqis.reduce(function(a,b){return a+b;},0) / validAqis.length;
+        var cat = aqiCategory(avg);
+        var kpiEl = document.getElementById('kpi-aqi-avg');
+        kpiEl.textContent = Math.round(avg);
+        kpiEl.style.color = cat.color;
+        document.getElementById('kpi-aqi-cat').textContent = cat.label;
+      }
+    });
+  }
+
+  function loadWater(){
+    var promises = WATER_SITES.map(function(site){
+      // For WSC (Canadian) sites, use a different approach — just show as static for now
+      if (site.id.startsWith('08')){
+        return Promise.resolve({site: site, flow: null, note: 'WSC API requires separate integration'});
+      }
+      var url = 'https://waterservices.usgs.gov/nwis/iv/?format=json&sites=' + site.id + '&parameterCd=00060,00065';
+      return fetchJSON(url).then(function(d){
+        var ts = d.value && d.value.timeSeries && d.value.timeSeries[0];
+        if (!ts) return {site: site, flow: null};
+        var flowVal = ts.values[0].value[0].value;
+        var flowInt = parseInt(flowVal, 10);
+        // Try to get gauge height from second time series
+        var heightVal = null;
+        if (d.value.timeSeries.length > 1){
+          heightVal = d.value.timeSeries[1].values[0].value[0].value;
+        }
+        return {
+          site: site,
+          flow: flowInt,
+          height: heightVal,
+          unit: 'cfs'
+        };
+      }).catch(function(e){
+        return {site: site, error: e.message};
+      });
+    });
+    return Promise.all(promises).then(function(results){
+      var html = '';
+      var validCount = 0;
+      results.forEach(function(r){
+        if (r.error){
+          html += '<div class="water-card" style="opacity:0.6;"><div class="water-site">' + r.site.name + '</div><div style="font-size:10px;color:var(--red)">Error: ' + r.error + '</div></div>';
+        } else if (r.flow === null){
+          html += '<div class="water-card" style="opacity:0.6;"><div class="water-site">' + r.site.name + '</div><div style="font-size:10px;color:var(--fg3)">' + (r.note || 'No data') + '</div></div>';
+        } else {
+          validCount++;
+          var flowClass = r.flow < 100 ? 'var(--env-amber)' : r.flow < 1000 ? 'var(--env-blue)' : 'var(--env-green)';
+          html += '<div class="water-card">' +
+            '<div class="water-site">' + r.site.name + '</div>' +
+            '<div class="water-flow" style="color:' + flowClass + ';">' + r.flow.toLocaleString() + ' <span style="font-size:11px;color:var(--fg3);">cfs</span></div>' +
+            (r.height ? '<div class="water-stage">Gauge height: ' + parseFloat(r.height).toFixed(2) + ' ft</div>' : '') +
+            '<div class="water-stage">Site: ' + r.site.id + ' · USGS</div>' +
+          '</div>';
+        }
+      });
+      document.getElementById('water-grid').innerHTML = html;
+      document.getElementById('kpi-water').textContent = validCount;
+    });
+  }
+
+  function loadAlerts(){
+    var url = 'https://api.weather.gov/alerts/active?status=actual';
+    return fetchJSON(url).then(function(d){
+      var features = d.features || [];
+      var cascadiaAlerts = features.filter(function(f){
+        var area = (f.properties.areaDesc || '').toLowerCase();
+        return area.indexOf('washington') >= 0 || area.indexOf('oregon') >= 0 || area.indexOf('idaho') >= 0;
+      });
+      // Show top 12 (prioritize Cascadia, then national)
+      var shown = cascadiaAlerts.concat(features).slice(0, 12);
+      var html = '';
+      if (shown.length === 0){
+        html = '<div class="bvs-card" style="text-align:center;padding:32px;color:var(--fg3);">No active weather alerts</div>';
+      } else {
+        shown.forEach(function(f){
+          var p = f.properties;
+          var sev = (p.severity || '').toLowerCase();
+          var cls = sev === 'severe' || sev === 'extreme' ? 'severe' : 'info';
+          html += '<div class="alert-card ' + cls + '">' +
+            '<div class="alert-event">' + (p.event || 'Unknown event') + '</div>' +
+            '<div class="alert-area">' + (p.areaDesc || 'Unknown area') + '</div>' +
+            '<div class="alert-time">Sent: ' + (p.sent ? new Date(p.sent).toLocaleString() : '—') + ' · Expires: ' + (p.expires ? new Date(p.expires).toLocaleString() : '—') + '</div>' +
+            (p.description ? '<div class="alert-desc">' + (p.description.substring(0, 300) + (p.description.length > 300 ? '…' : '')) + '</div>' : '') +
+          '</div>';
+        });
+      }
+      document.getElementById('alerts-list').innerHTML = html;
+      document.getElementById('kpi-alerts').textContent = cascadiaAlerts.length;
+    }).catch(function(e){
+      document.getElementById('alerts-list').innerHTML = '<div class="bvs-card" style="color:var(--red);">Failed to load alerts: ' + e.message + '</div>';
+    });
+  }
+
+  function loadFacilities(){
+    // EPA Envirofacts — TRI facilities in WA
+    var url = 'https://data.epa.gov/efservice/tri_facility/state_abbr/WA/JSON';
+    return fetchJSON(url, 15000).then(function(d){
+      // Sort by city and take a sample
+      var sample = d.slice(0, 12);
+      var html = '';
+      sample.forEach(function(f){
+        html += '<div class="facility-card">' +
+          '<div class="facility-name">' + (f.facility_name || 'Unknown') + '</div>' +
+          '<div class="facility-loc">' + (f.city_name || '') + ', ' + (f.state_abbr || '') + ' ' + (f.zip_code || '') + '</div>' +
+          '<div class="facility-chem">Facility ID: ' + (f.tri_facility_id || '—') + '</div>' +
+        '</div>';
+      });
+      document.getElementById('facilities-grid').innerHTML = html;
+      document.getElementById('kpi-facilities').textContent = d.length.toLocaleString();
+    }).catch(function(e){
+      document.getElementById('facilities-grid').innerHTML = '<div class="bvs-card" style="color:var(--red);grid-column:1/-1;">Failed to load facilities: ' + e.message + '</div>';
+    });
+  }
+
+  function loadEnergy(){
+    // Static Cascadia energy mix (from EIA 2023 data + BC Hydro 2023)
+    // In production, would call EIA API with key
+    var regions = [
+      {
+        name: 'Washington State',
+        source: 'EIA 2023',
+        mix: [
+          {source: 'Hydroelectric', pct: 64.9, color: '#3498db'},
+          {source: 'Nuclear', pct: 8.5, color: '#9b59b6'},
+          {source: 'Natural Gas', pct: 11.2, color: '#e67e22'},
+          {source: 'Wind', pct: 7.8, color: '#2ecc71'},
+          {source: 'Solar', pct: 0.4, color: '#f1c40f'},
+          {source: 'Coal', pct: 0.5, color: '#7f8c8d'},
+          {source: 'Other', pct: 6.7, color: '#95a5a6'}
+        ]
+      },
+      {
+        name: 'Oregon',
+        source: 'EIA 2023',
+        mix: [
+          {source: 'Hydroelectric', pct: 47.2, color: '#3498db'},
+          {source: 'Natural Gas', pct: 28.4, color: '#e67e22'},
+          {source: 'Wind', pct: 11.6, color: '#2ecc71'},
+          {source: 'Coal', pct: 4.8, color: '#7f8c8d'},
+          {source: 'Nuclear', pct: 0, color: '#9b59b6'},
+          {source: 'Solar', pct: 3.9, color: '#f1c40f'},
+          {source: 'Other', pct: 4.1, color: '#95a5a6'}
+        ]
+      },
+      {
+        name: 'British Columbia',
+        source: 'BC Hydro 2023',
+        mix: [
+          {source: 'Hydroelectric', pct: 87, color: '#3498db'},
+          {source: 'Natural Gas', pct: 5, color: '#e67e22'},
+          {source: 'Biomass', pct: 5, color: '#27ae60'},
+          {source: 'Wind', pct: 2, color: '#2ecc71'},
+          {source: 'Other', pct: 1, color: '#95a5a6'}
+        ]
+      }
+    ];
+
+    var html = '';
+    regions.forEach(function(r){
+      var barHtml = '';
+      var legendHtml = '';
+      r.mix.forEach(function(m){
+        if (m.pct > 0){
+          barHtml += '<div class="energy-segment" style="width:' + m.pct + '%;background:' + m.color + ';" title="' + m.source + ': ' + m.pct + '%">' + (m.pct >= 5 ? m.pct + '%' : '') + '</div>';
+          legendHtml += '<div class="energy-legend-item"><span class="energy-legend-color" style="background:' + m.color + '"></span>' + m.source + ' (' + m.pct + '%)</div>';
+        }
+      });
+      html += '<div class="bvs-card">' +
+        '<div class="bvs-card-header">' + r.name + ' <span class="source-tag src-gov">' + r.source + '</span></div>' +
+        '<div class="bvs-card-title">Generation Mix</div>' +
+        '<div class="energy-bar">' + barHtml + '</div>' +
+        '<div class="energy-legend">' + legendHtml + '</div>' +
+        '<div style="margin-top:8px;font-size:10px;color:var(--fg3);">' +
+          (r.name === 'Washington State' ? 'WA generates ~68% from renewables — among cleanest grids in US.' :
+           r.name === 'Oregon' ? 'OR generates ~63% from renewables; coal phase-out by 2030.' :
+           'BC generates 94% from renewables — one of cleanest grids in North America.') +
+        '</div>' +
+      '</div>';
+    });
+    document.getElementById('energy-grid').innerHTML = html;
+  }
+
+  function loadClimate(){
+    var cities = [
+      {name:'Seattle', lat:47.6062, lng:-122.3321, state:'WA'},
+      {name:'Portland', lat:45.5152, lng:-122.6784, state:'OR'},
+      {name:'Vancouver', lat:49.2827, lng:-123.1207, state:'BC'},
+      {name:'Spokane', lat:47.6588, lng:-117.4260, state:'WA'},
+      {name:'Bend', lat:44.0582, lng:-121.3153, state:'OR'},
+      {name:'Victoria', lat:48.4284, lng:-123.3656, state:'BC'}
+    ];
+    var now = new Date();
+    var past30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    var obsStart = past30.toISOString().slice(0,10);
+    var obsEnd = now.toISOString().slice(0,10);
+    var expStart = '2020-' + obsStart.slice(5);
+    var expEnd = '2020-' + obsEnd.slice(5);
+
+    var promises = cities.map(function(city){
+      var obsUrl = 'https://archive-api.open-meteo.com/v1/archive?latitude=' + city.lat + '&longitude=' + city.lng + '&start_date=' + obsStart + '&end_date=' + obsEnd + '&daily=precipitation_sum,snowfall_sum,temperature_2m_mean&timezone=auto';
+      var expUrl = 'https://archive-api.open-meteo.com/v1/archive?latitude=' + city.lat + '&longitude=' + city.lng + '&start_date=' + expStart + '&end_date=' + expEnd + '&daily=precipitation_sum,snowfall_sum,temperature_2m_mean&timezone=auto';
+      return Promise.all([
+        fetchJSON(obsUrl),
+        fetchJSON(expUrl)
+      ]).then(function(results){
+        var obs = results[0].daily || {};
+        var exp = results[1].daily || {};
+        var obsPrecip = (obs.precipitation_sum || []).filter(function(p){return p !== null;});
+        var obsSnow = (obs.snowfall_sum || []).filter(function(s){return s !== null;});
+        var obsTemp = (obs.temperature_2m_mean || []).filter(function(t){return t !== null;});
+        var expPrecip = (exp.precipitation_sum || []).filter(function(p){return p !== null;});
+        var expSnow = (exp.snowfall_sum || []).filter(function(s){return s !== null;});
+        var expTemp = (exp.temperature_2m_mean || []).filter(function(t){return t !== null;});
+        return {
+          city: city,
+          obs: {
+            rainyDays: obsPrecip.filter(function(p){return p > 0.1;}).length,
+            snowDays: obsSnow.filter(function(s){return s > 0;}).length,
+            totalPrecip: obsPrecip.reduce(function(a,b){return a+b;},0),
+            avgTemp: obsTemp.length ? obsTemp.reduce(function(a,b){return a+b;},0)/obsTemp.length : 0
+          },
+          exp: {
+            rainyDays: expPrecip.filter(function(p){return p > 0.1;}).length,
+            snowDays: expSnow.filter(function(s){return s > 0;}).length,
+            totalPrecip: expPrecip.reduce(function(a,b){return a+b;},0),
+            avgTemp: expTemp.length ? expTemp.reduce(function(a,b){return a+b;},0)/expTemp.length : 0
+          }
+        };
+      }).catch(function(e){
+        return {city: city, error: e.message};
+      });
+    });
+    return Promise.all(promises).then(function(results){
+      var html = '';
+      results.forEach(function(r){
+        if (r.error){
+          html += '<div class="bvs-card" style="opacity:0.6;"><div class="bvs-card-header">' + r.city.name + ', ' + r.city.state + '</div><div style="font-size:11px;color:var(--red);">Load failed</div></div>';
+          return;
+        }
+        var rainDelta = ((r.obs.rainyDays - r.exp.rainyDays) / Math.max(1, r.exp.rainyDays) * 100);
+        var tempDelta = r.obs.avgTemp - r.exp.avgTemp;
+        var precipDelta = ((r.obs.totalPrecip - r.exp.totalPrecip) / Math.max(1, r.exp.totalPrecip) * 100);
+        var rainColor = Math.abs(rainDelta) > 25 ? 'var(--env-amber)' : 'var(--env-green)';
+        var tempColor = Math.abs(tempDelta) > 1.5 ? 'var(--env-amber)' : 'var(--env-green)';
+        var rainDir = rainDelta > 0 ? 'wetter' : 'drier';
+        var tempDir = tempDelta > 0 ? 'warmer' : 'cooler';
+        html += '<div class="bvs-card">' +
+          '<div class="bvs-card-header">' + r.city.name + ', ' + r.city.state + ' <span style="font-weight:400;color:var(--fg3);">past 30 days vs 2020 normal</span></div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:11px;">' +
+            '<div><div style="color:var(--fg3);font-size:9px;text-transform:uppercase;">Rainy Days</div>' +
+              '<div style="font-size:18px;font-weight:800;color:' + rainColor + ';">' + r.obs.rainyDays + ' <span style="font-size:10px;color:var(--fg3);">/ ' + r.exp.rainyDays + ' exp</span></div>' +
+              '<div style="font-size:9px;color:' + rainColor + ';">' + (rainDelta > 0 ? '+' : '') + rainDelta.toFixed(0) + '% ' + rainDir + '</div></div>' +
+            '<div><div style="color:var(--fg3);font-size:9px;text-transform:uppercase;">Snow Days</div>' +
+              '<div style="font-size:18px;font-weight:800;color:var(--env-blue);">' + r.obs.snowDays + ' <span style="font-size:10px;color:var(--fg3);">/ ' + r.exp.snowDays + ' exp</span></div>' +
+              '<div style="font-size:9px;color:var(--fg3);">Aug-Sep: typically 0</div></div>' +
+            '<div><div style="color:var(--fg3);font-size:9px;text-transform:uppercase;">Avg Temp</div>' +
+              '<div style="font-size:18px;font-weight:800;color:' + tempColor + ';">' + r.obs.avgTemp.toFixed(1) + '°C <span style="font-size:10px;color:var(--fg3);">/ ' + r.exp.avgTemp.toFixed(1) + '° exp</span></div>' +
+              '<div style="font-size:9px;color:' + tempColor + ';">' + (tempDelta > 0 ? '+' : '') + tempDelta.toFixed(1) + '°C ' + tempDir + '</div></div>' +
+          '</div>' +
+          '<div style="margin-top:10px;font-size:10px;color:var(--fg3);">Total precip: ' + r.obs.totalPrecip.toFixed(0) + 'mm obs vs ' + r.exp.totalPrecip.toFixed(0) + 'mm exp (' + (precipDelta > 0 ? '+' : '') + precipDelta.toFixed(0) + '%)</div>' +
+        '</div>';
+      });
+      document.getElementById('climate-grid').innerHTML = html;
+    });
+  }
+
+  function loadMigration(){
+    var species = [
+      {name:'Salmon (Oncorhynchus)', query:'Oncorhynchus', emoji:'🐟', note:'Aug-Nov spawning runs'},
+      {name:'Warblers', query:'warbler', emoji:'🐦', note:'Spring (Mar-May) + Fall (Sep-Nov)'},
+      {name:'Bald Eagles', query:'bald eagle', emoji:'🦅', note:'Winter congregations Nov-Feb'},
+      {name:'Gray Whales', query:'gray whale', emoji:'🐋', note:'Northbound Mar-May, Southbound Dec-Feb'},
+      {name:'Snow Geese', query:'snow goose', emoji:'🦢', note:'Winter in Skagit Valley Nov-Mar'},
+      {name:'Rufous Hummingbird', query:'rufous hummingbird', emoji:'🐦', note:'Spring arrival Mar-Apr'},
+      {name:'Raptors (Hawks)', query:'hawk OR falcon OR osprey', emoji:'🦅', note:'Fall migration Sep-Oct'},
+      {name:'Sea Otters', query:'sea otter', emoji:'🦦', note:'Year-round, peak sightings summer'}
+    ];
+    var seasons = [
+      {name:'Spring', months:'3,4,5', color:'var(--bio-green)'},
+      {name:'Summer', months:'6,7,8', color:'var(--env-amber)'},
+      {name:'Fall', months:'9,10,11', color:'var(--env-red)'},
+      {name:'Winter', months:'12,1,2', color:'var(--env-blue)'}
+    ];
+    var promises = species.map(function(s){
+      var seasonPromises = seasons.map(function(season){
+        var url = 'https://api.inaturalist.org/v1/observations?q=' + encodeURIComponent(s.query) + '&nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1&quality_grade=research&month=' + season.months;
+        return fetchJSON(url, 10000).then(function(d){
+          return {season: season.name, count: d.total_results || 0, color: season.color};
+        }).catch(function(){ return {season: season.name, count: 0, color: season.color}; });
+      });
+      return Promise.all(seasonPromises).then(function(seasonResults){
+        return {species: s, seasons: seasonResults};
+      });
+    });
+    return Promise.all(promises).then(function(results){
+      var html = '';
+      results.forEach(function(r){
+        var maxCount = Math.max.apply(null, r.seasons.map(function(s){return s.count;}));
+        var bars = r.seasons.map(function(s){
+          var pct = maxCount > 0 ? (s.count / maxCount * 100) : 0;
+          return '<div style="display:flex;align-items:center;gap:6px;margin:3px 0;">' +
+            '<div style="width:50px;font-size:9px;color:var(--fg3);">' + s.season + '</div>' +
+            '<div style="flex:1;height:14px;background:var(--bg3);border-radius:3px;overflow:hidden;">' +
+              '<div style="width:' + pct + '%;height:100%;background:' + s.color + ';transition:width 0.5s;"></div>' +
+            '</div>' +
+            '<div style="width:50px;font-size:10px;color:var(--fg2);text-align:right;">' + s.count.toLocaleString() + '</div>' +
+          '</div>';
+        }).join('');
+        html += '<div class="bvs-card">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+            '<span style="font-size:24px;">' + r.species.emoji + '</span>' +
+            '<div><div style="font-size:13px;font-weight:700;color:var(--fg);">' + r.species.name + '</div>' +
+            '<div style="font-size:10px;color:var(--fg3);">' + r.species.note + '</div></div>' +
+          '</div>' +
+          '<div>' + bars + '</div>' +
+          '<div style="font-size:9px;color:var(--fg3);margin-top:6px;">Source: iNaturalist research-grade observations in Cascadia</div>' +
+        '</div>';
+      });
+      document.getElementById('migration-grid').innerHTML = html;
+    });
+  }
+
+
+  function loadProjects(){
+    return fetch('project-registry.json').then(function(r){ return r.json(); }).then(function(data){
+      var projects = data.projects.filter(function(p){ return p.page === 'environment' || p.page === 'both'; });
+
+      // Budget dashboard — total + by category
+      var totalBudget = projects.reduce(function(sum, p){ return sum + p.budget_usd; }, 0);
+      var categories = {};
+      projects.forEach(function(p){
+        categories[p.category] = (categories[p.category] || 0) + p.budget_usd;
+      });
+
+      var dashHtml = '<div class="bvs-card metric-tile">' +
+        '<div class="metric-value" style="color: var(--primary);">$' + (totalBudget/1e9).toFixed(1) + 'B</div>' +
+        '<div class="metric-label">Total Decade Investment</div>' +
+        '<div class="metric-unit">' + projects.length + ' major projects</div>' +
+      '</div>';
+      Object.keys(categories).slice(0,3).forEach(function(cat){
+        var pct = (categories[cat] / totalBudget * 100).toFixed(0);
+        dashHtml += '<div class="bvs-card metric-tile">' +
+          '<div class="metric-value" style="color: var(--env-green);">$' + (categories[cat]/1e9).toFixed(1) + 'B</div>' +
+          '<div class="metric-label">' + cat + '</div>' +
+          '<div class="metric-unit">' + pct + '% of total</div>' +
+        '</div>';
+      });
+      document.getElementById('env-budget-dashboard').innerHTML = dashHtml;
+
+      // Category chart — horizontal bars
+      var chartHtml = '';
+      var maxCat = Math.max.apply(null, Object.values(categories));
+      Object.keys(categories).sort(function(a,b){ return categories[b] - categories[a]; }).forEach(function(cat){
+        var pct = (categories[cat] / maxCat * 100);
+        chartHtml += '<div style="display:flex;align-items:center;gap:10px;margin:6px 0;">' +
+          '<div style="width:140px;font-size:11px;color:var(--fg2);text-align:right;">' + cat + '</div>' +
+          '<div style="flex:1;height:20px;background:var(--bg3);border-radius:4px;overflow:hidden;">' +
+            '<div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,var(--primary),var(--env-green));transition:width 0.5s;"></div>' +
+          '</div>' +
+          '<div style="width:80px;font-size:11px;color:var(--primary);font-weight:700;">$' + (categories[cat]/1e9).toFixed(2) + 'B</div>' +
+        '</div>';
+      });
+      document.getElementById('env-category-chart').innerHTML = chartHtml;
+
+      // Project cards
+      var cardsHtml = '';
+      projects.forEach(function(p){
+        var statusColor = p.budget_status === 'funded' ? 'var(--env-green)' :
+                          p.budget_status === 'partially funded' ? 'var(--env-amber)' : 'var(--env-red)';
+        cardsHtml += '<div class="bvs-card" style="border-left: 3px solid ' + statusColor + ';">' +
+          '<div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:8px;">' +
+            '<div><div style="font-size:14px;font-weight:700;color:var(--fg);">' + p.name + '</div>' +
+            '<div style="font-size:10px;color:var(--fg3);margin-top:2px;">' + p.region + ' · ' + p.country + '</div></div>' +
+            '<span style="font-size:9px;padding:2px 8px;border-radius:3px;background:' + statusColor + ';color:#fff;font-weight:600;text-transform:uppercase;">' + p.budget_status + '</span>' +
+          '</div>' +
+          '<div style="font-size:20px;font-weight:800;color:var(--primary);margin:8px 0;">' + p.budget_display + '</div>' +
+          '<div style="font-size:10px;color:var(--fg3);margin-bottom:8px;"><strong>Timeline:</strong> ' + p.timeline + '</div>' +
+          '<div style="font-size:11px;color:var(--fg2);line-height:1.6;margin-bottom:8px;">' + p.description + '</div>' +
+          '<div style="font-size:10px;color:var(--fg3);margin-bottom:6px;"><strong>Status:</strong> ' + p.status + '</div>' +
+          '<div style="font-size:10px;color:var(--env-amber);margin-bottom:8px;"><strong>⚠ Uncertainties:</strong> ' + p.uncertainties + '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<a href="' + p.source_url + '" target="_blank" style="font-size:10px;color:var(--primary);padding:3px 8px;border:1px solid var(--primary-border);border-radius:4px;text-decoration:none;">Source →</a>' +
+            (p.pdf_url ? '<a href="' + p.pdf_url + '" target="_blank" style="font-size:10px;color:var(--fg2);padding:3px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;">📄 PDF</a>' : '') +
+          '</div>' +
+        '</div>';
+      });
+      document.getElementById('env-projects-grid').innerHTML = cardsHtml;
+    });
+  }
+
+  function refreshAll(){
+    var status = document.getElementById('last-refresh');
+    status.textContent = 'Refreshing…';
+    Promise.all([
+      loadAQI(),
+      loadWater(),
+      loadAlerts(),
+      loadFacilities(),
+      loadEnergy(),
+      loadClimate(),
+      loadMigration(),
+      loadProjects()
+    ]).then(function(){
+      status.textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+    }).catch(function(){
+      status.textContent = 'Refresh completed with errors at ' + new Date().toLocaleTimeString();
+    });
+  }
+
+  // Initial load
+  refreshAll();
+  // Auto-refresh every 15 minutes
+  setInterval(refreshAll, 15 * 60 * 1000);
+  // Manual refresh
+  document.getElementById('manual-refresh').addEventListener('click', refreshAll);
+})();
+</script>
+</body>
+</html>

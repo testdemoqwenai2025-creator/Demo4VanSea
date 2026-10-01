@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burnaby City Intelligence | AIBizVan360</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>AI</text></svg>">
+  <style>*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --radius: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.bvs-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,18,18,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(78,205,196,0.15);
+}
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a {
+  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s;
+}
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.bvs-live { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--primary-border); font-size: 10px; color: var(--primary); }
+.bvs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+/* Ticker */
+.bvs-ticker { background: var(--primary-dim); padding: 6px 0; overflow: hidden; }
+.bvs-ticker-inner { display: flex; animation: ticker 40s linear infinite; white-space: nowrap; }
+.bvs-ticker-inner span { margin: 0 32px; font-size: 11px; color: var(--fg2); }
+.bvs-ticker-inner strong { color: var(--primary); }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Cards */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.bvs-card:hover { border-color: var(--primary-border); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-card-text { font-size: 13px; color: var(--fg2); line-height: 1.6; }
+.bvs-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+.bvs-badge-secondary { background: var(--bg4); color: var(--fg2); }
+.bvs-badge-live { background: rgba(255,107,107,0.15); color: var(--red); border: 1px solid rgba(255,107,107,0.3); }
+.bvs-badge-sea { background: rgba(108,155,255,0.12); color: var(--blue); }
+.bvs-badge-yvr { background: var(--primary-dim); color: var(--primary); }
+.bvs-badge-cb { background: rgba(240,165,0,0.12); color: var(--amber); }
+
+/* Grid */
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.bvs-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.bvs-grid-8 { grid-template-columns: repeat(8, 1fr); }
+
+/* Page sections */
+.bvs-page-header { padding: 32px 0 24px; }
+.bvs-page-header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.bvs-page-header p { font-size: 14px; color: var(--fg2); max-width: 640px; }
+
+/* Metric cards */
+.bvs-metric { padding: 12px; }
+.bvs-metric-label { font-size: 10px; color: var(--fg3); margin-bottom: 4px; }
+.bvs-metric-value { font-size: 18px; font-weight: 800; }
+.bvs-metric-change { font-size: 10px; color: var(--green); margin-top: 2px; }
+.bvs-metric-change.down { color: var(--red); }
+
+/* News items */
+.bvs-news-item { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.bvs-news-item:last-child { border-bottom: none; }
+.bvs-news-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.bvs-news-source { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.03em; }
+.bvs-news-time { font-size: 10px; color: var(--fg3); }
+.bvs-news-headline { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; }
+.bvs-news-excerpt { font-size: 12px; color: var(--fg2); line-height: 1.5; }
+.bvs-news-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+
+/* Table */
+.bvs-table { width: 100%; border-collapse: collapse; }
+.bvs-table th { text-align: left; padding: 8px 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.bvs-table td { padding: 12px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.bvs-table tr:hover td { background: var(--bg3); }
+
+/* Hero */
+.bvs-hero {
+  background: linear-gradient(135deg, #0d1f1f 0%, #142828 50%, #0f1a1a 100%);
+  padding: 64px 0; position: relative; overflow: hidden;
+}
+.bvs-hero::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(78,205,196,0.15) 0%, transparent 60%); }
+.bvs-hero::after { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 30%, rgba(240,165,0,0.08) 0%, transparent 50%); }
+.bvs-hero-content { position: relative; z-index: 1; }
+.bvs-hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+.bvs-hero h1 span { color: var(--primary); }
+.bvs-hero p { font-size: 16px; color: var(--fg2); max-width: 560px; margin-bottom: 24px; }
+.bvs-hero-stats { display: flex; gap: 32px; margin-top: 24px; }
+.bvs-hero-stats div { text-align: left; }
+.bvs-hero-stats .val { font-size: 24px; font-weight: 800; color: var(--primary); }
+.bvs-hero-stats .lbl { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Image slots */
+.bvs-img-slot { width:100%; min-height:180px; aspect-ratio: 4/3; border-radius: 12px; position: relative; overflow: hidden; }
+.bvs-img-slot img { width:100%; height:100%; object-fit:cover; display:block; }
+.bvs-img-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; z-index: 2; background: linear-gradient(transparent, rgba(0,0,0,0.7)); }
+
+/* Section title */
+.bvs-section-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 24px; }
+
+/* Impact dots */
+.bvs-dots { display: flex; gap: 3px; }
+.bvs-dot-fill { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+.bvs-dot-empty { width: 6px; height: 6px; border-radius: 50%; background: var(--bg4); }
+
+/* Progress bar */
+.bvs-bar { height: 6px; border-radius: 3px; background: var(--bg4); overflow: hidden; }
+.bvs-bar-fill { height: 100%; border-radius: 3px; background: var(--primary); }
+
+/* Footer */
+.bvs-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 0; margin-top: 64px; text-align: center; }
+.bvs-footer p { font-size: 11px; color: var(--fg3); }
+
+/* Score bar for news */
+.score-bar { width: 48px; height: 4px; border-radius: 2px; background: var(--bg4); display: inline-block; vertical-align: middle; margin-left: 4px; }
+.score-bar-fill { height: 100%; border-radius: 2px; }
+.nw-score { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; }
+.nw-high { color: #4ecdc4; }
+.nw-med { color: #f0a500; }
+.nw-low { color: #666; }
+
+/* Gazette card */
+.gaz-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 16px; transition: border-color 0.2s; }
+.gaz-card:hover { border-color: var(--primary-border); }
+
+/* Tech card */
+.tech-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.tech-card:hover { border-color: var(--primary-border); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bvs-hero h1 { font-size: 32px; }
+  .bvs-grid-3, .bvs-grid-4, .bvs-grid-8 { grid-template-columns: repeat(2, 1fr); }
+  .bvs-nav { display: none; }
+  .bvs-hero-stats { flex-wrap: wrap; gap: 16px; }
+}
+@media (max-width: 480px) {
+  .bvs-grid-2, .bvs-grid-3, .bvs-grid-4, .bvs-grid-8 { grid-template-columns: 1fr; }
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg: #f4f7f7; --bg2: #ffffff; --bg3: #e8edee; --bg4: #dde2e3;
+  --fg: #1a1a2e; --fg2: #4a4a5a; --fg3: #888;
+  --primary: #0d9488; --primary-dim: rgba(13,148,136,0.08); --primary-border: rgba(13,148,136,0.25);
+  --amber: #d97706; --red: #dc2626; --green: #0d9488; --blue: #2563eb;
+}
+[data-theme="light"] .bvs-header { background: rgba(244,247,247,0.92); border-bottom-color: rgba(13,148,136,0.15); }
+[data-theme="light"] .bvs-card { background: #fff; border-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .bvs-card:hover { border-color: var(--primary-border); }
+[data-theme="light"] .bvs-table th { border-bottom-color: rgba(0,0,0,0.1); color: var(--fg3); }
+[data-theme="light"] .bvs-table td { border-bottom-color: rgba(0,0,0,0.05); color: var(--fg); }
+[data-theme="light"] .bvs-table tr:hover td { background: var(--bg3); }
+[data-theme="light"] .bvs-news-item { border-bottom-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .bvs-ticker { background: var(--primary-dim); }
+[data-theme="light"] .bvs-footer { border-top-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+[data-theme="light"] .bvs-badge-secondary { background: var(--bg4); color: var(--fg2); }
+[data-theme="light"] .bvs-badge-live { background: rgba(220,38,38,0.08); color: var(--red); border: 1px solid rgba(220,38,38,0.2); }
+[data-theme="light"] .bvs-badge-sea { background: rgba(37,99,235,0.08); color: var(--blue); }
+[data-theme="light"] .bvs-badge-yvr { background: var(--primary-dim); color: var(--primary); }
+[data-theme="light"] .bvs-badge-cb { background: rgba(217,119,6,0.08); color: var(--amber); }
+[data-theme="light"] .bvs-hero { background: linear-gradient(135deg, #e0f2f1 0%, #eef8f7 50%, #e5f5f4 100%); }
+[data-theme="light"] .bvs-hero::before { background: radial-gradient(ellipse at 20% 50%, rgba(13,148,136,0.08) 0%, transparent 60%); }
+[data-theme="light"] .bvs-hero::after { background: radial-gradient(ellipse at 80% 30%, rgba(217,119,6,0.05) 0%, transparent 50%); }
+[data-theme="light"] .bvs-img-label { background: linear-gradient(transparent, rgba(255,255,255,0.88)); }
+[data-theme="light"] .bvs-img-label div { color: var(--fg) !important; }
+[data-theme="light"] .gaz-card { background: #fff; border-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .gaz-card:hover { border-color: var(--primary-border); }
+[data-theme="light"] .tech-card { background: #fff; border-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .tech-card:hover { border-color: var(--primary-border); }
+[data-theme="light"] .score-bar { background: var(--bg4); }
+[data-theme="light"] .nw-score { color: var(--fg); }
+
+/* ==================== LOGIN / SIGNUP ==================== */
+.auth-page { display:flex; min-height:calc(100vh - 52px - 200px); align-items:center; justify-content:center; padding:48px 24px; }
+.auth-container { width:100%; max-width:480px; }
+.auth-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:40px 32px; position:relative; overflow:hidden; }
+.auth-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--primary), var(--amber), var(--blue)); }
+.auth-logo { text-align:center; margin-bottom:24px; }
+.auth-logo-mark { width:48px; height:48px; border-radius:12px; background:var(--primary); display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; color:var(--bg); margin-bottom:12px; }
+.auth-title { font-size:24px; font-weight:800; text-align:center; margin-bottom:4px; }
+.auth-subtitle { font-size:13px; color:var(--fg2); text-align:center; margin-bottom:28px; }
+.auth-tabs { display:flex; gap:4px; margin-bottom:24px; background:var(--bg3); border-radius:8px; padding:3px; }
+.auth-tab { flex:1; padding:10px; text-align:center; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; color:var(--fg3); transition:all .15s; border:none; background:transparent; font-family:inherit; }
+.auth-tab.active { background:var(--primary); color:var(--bg); font-weight:700; }
+.auth-tab:hover:not(.active) { color:var(--fg); }
+.auth-form { display:none; }
+.auth-form.active { display:block; }
+.auth-field { margin-bottom:16px; }
+.auth-field label { display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg2); margin-bottom:6px; }
+.auth-field label .req { color:var(--red); margin-left:2px; }
+.auth-field label .opt { color:var(--fg3); font-weight:400; text-transform:none; letter-spacing:0; font-size:10px; }
+.auth-input-wrap { position:relative; }
+.auth-input-wrap svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--fg3); pointer-events:none; }
+.auth-input { width:100%; padding:11px 12px 11px 38px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--bg3); color:var(--fg); font-size:14px; outline:none; transition:border-color .15s; font-family:inherit; box-sizing:border-box; }
+.auth-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-dim); }
+.auth-input::placeholder { color:var(--fg3); }
+.auth-input-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.auth-select { width:100%; padding:11px 12px 11px 38px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--bg3); color:var(--fg); font-size:14px; outline:none; transition:border-color .15s; font-family:inherit; appearance:none; cursor:pointer; box-sizing:border-box; }
+.auth-select:focus { border-color:var(--primary); }
+.auth-checkbox { display:flex; align-items:flex-start; gap:8px; margin-bottom:16px; cursor:pointer; }
+.auth-checkbox input { margin-top:3px; accent-color:var(--primary); width:16px; height:16px; cursor:pointer; flex-shrink:0; }
+.auth-checkbox span { font-size:12px; color:var(--fg2); line-height:1.5; }
+.auth-checkbox a { color:var(--primary); text-decoration:none; }
+.auth-checkbox a:hover { text-decoration:underline; }
+.auth-btn { width:100%; padding:13px; border-radius:8px; border:none; background:var(--primary); color:var(--bg); font-size:14px; font-weight:700; cursor:pointer; transition:all .15s; font-family:inherit; margin-top:8px; }
+.auth-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+.auth-btn:active { transform:translateY(0); }
+.auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--fg3); font-size:11px; }
+.auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.08); }
+.auth-social { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:20px; }
+.auth-social-btn { display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:var(--fg2); font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; font-family:inherit; }
+.auth-social-btn:hover { background:var(--bg3); border-color:var(--primary-border); color:var(--fg); }
+.auth-social-btn svg { width:16px; height:16px; }
+.auth-strength { display:flex; gap:4px; margin-top:6px; }
+.auth-strength-bar { height:3px; flex:1; border-radius:2px; background:var(--bg4); transition:background .2s; }
+.auth-strength-bar.filled { background:var(--primary); }
+.auth-strength-bar.warn { background:var(--amber); }
+.auth-strength-bar.weak { background:var(--red); }
+.auth-strength-text { font-size:10px; color:var(--fg3); margin-top:4px; }
+.auth-extras { margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06); }
+.auth-extras-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:var(--fg3); background:none; border:none; font-family:inherit; padding:0; }
+.auth-extras-toggle svg { width:14px; height:14px; transition:transform .2s; }
+.auth-extras-toggle.open svg { transform:rotate(180deg); }
+.auth-extras-body { display:none; margin-top:12px; }
+.auth-extras-body.open { display:block; }
+[data-theme="light"] .auth-card { background:#fff; border-color:rgba(0,0,0,0.08); }
+[data-theme="light"] .auth-card::before { background:linear-gradient(90deg, var(--primary), var(--amber), var(--blue)); }
+[data-theme="light"] .auth-input { background:var(--bg3); border-color:rgba(0,0,0,0.12); color:var(--fg); }
+[data-theme="light"] .auth-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-dim); }
+[data-theme="light"] .auth-select { background:var(--bg3); border-color:rgba(0,0,0,0.12); color:var(--fg); }
+[data-theme="light"] .auth-social-btn { border-color:rgba(0,0,0,0.1); color:var(--fg2); }
+[data-theme="light"] .auth-social-btn:hover { background:var(--bg3); }
+[data-theme="light"] .auth-divider::before, [data-theme="light"] .auth-divider::after { background:rgba(0,0,0,0.08); }
+@media (max-width:480px) { .auth-card { padding:28px 20px; } .auth-input-row { grid-template-columns:1fr; } }
+
+/* ==================== GOVERNMENT ALERTS ==================== */
+.gov-alert-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.gov-alert { border-radius:var(--radius); padding:16px; border-left:3px solid; position:relative; overflow:hidden; }
+.gov-alert-weather { background:rgba(78,205,196,0.06); border-left-color:var(--primary); }
+.gov-alert-traffic { background:rgba(240,165,0,0.06); border-left-color:var(--amber); }
+.gov-alert-airport { background:rgba(108,155,255,0.06); border-left-color:var(--blue); }
+.gov-alert-public { background:rgba(255,107,107,0.06); border-left-color:var(--red); }
+.gov-alert-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.gov-alert-icon { font-size:18px; }
+.gov-alert-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; }
+.gov-alert-value { font-size:22px; font-weight:800; margin-bottom:4px; }
+.gov-alert-detail { font-size:11px; color:var(--fg2); line-height:1.5; }
+.gov-tender-table { width:100%; border-collapse:collapse; }
+.gov-tender-table th { text-align:left; padding:10px 12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); border-bottom:1px solid rgba(255,255,255,0.08); }
+.gov-tender-table td { padding:12px; font-size:13px; border-bottom:1px solid rgba(255,255,255,0.04); }
+.gov-tender-table tr:hover td { background:var(--bg3); }
+.gov-status { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:700; }
+.gov-status-open { background:rgba(78,205,196,0.12); color:var(--primary); }
+.gov-status-closing { background:rgba(240,165,0,0.12); color:var(--amber); }
+.gov-status-awarded { background:rgba(108,155,255,0.12); color:var(--blue); }
+.gov-status-planned { background:rgba(255,255,255,0.06); color:var(--fg3); }
+@media (max-width:768px) { .gov-alert-grid { grid-template-columns:1fr; } }
+[data-theme="light"] .gov-alert-weather { background:rgba(13,148,136,0.06); }
+[data-theme="light"] .gov-alert-traffic { background:rgba(217,119,6,0.06); }
+[data-theme="light"] .gov-alert-airport { background:rgba(37,99,235,0.06); }
+[data-theme="light"] .gov-alert-public { background:rgba(220,38,38,0.06); }
+[data-theme="light"] .bvs-site-footer { background: #f0f4f4; border-top-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .footer-sep { color: rgba(0,0,0,0.12); }
+[data-theme="light"] .footer-social a { border-color: rgba(0,0,0,0.1); color: var(--fg3); }
+
+/* Action bar + Chat panel */
+.ai-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.ai-action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--fg2); background: transparent; border: 1px solid rgba(255,255,255,0.1); transition: all .15s; white-space: nowrap; text-decoration: none; font-family: inherit; }
+.ai-action-btn:hover { background: var(--bg3); color: var(--fg); text-decoration: none; }
+.ai-action-btn.primary-btn { background: var(--primary); color: #0d1212; border-color: var(--primary); font-weight: 700; }
+.ai-action-btn.primary-btn:hover { filter: brightness(1.1); text-decoration: none; }
+.ai-action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+[data-theme="light"] .ai-action-btn { color: var(--fg2); border-color: rgba(0,0,0,0.12); }
+[data-theme="light"] .ai-action-btn:hover { background: var(--bg3) !important; }
+[data-theme="light"] .ai-action-btn.primary-btn { background: var(--primary) !important; color: #fff !important; border-color: var(--primary) !important; }
+.ai-home-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--primary); background: var(--primary-dim); border: 1px solid var(--primary-border); transition: all .15s; text-decoration: none; }
+.ai-home-btn:hover { background: var(--primary); color: #0d1212; text-decoration: none; }
+.ai-home-btn svg { width: 14px; height: 14px; }
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3); color: var(--fg); }
+.ai-mobile-toggle { display: none; width: 32px; height: 32px; border-radius: 8px; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2); transition: all .15s; padding: 0; }
+.ai-mobile-toggle:hover { background: var(--bg3); color: var(--fg); }
+.ai-chat-panel { position: fixed; top: 0; right: -420px; width: 400px; height: 100vh; background: var(--bg2); border-left: 1px solid rgba(255,255,255,0.08); box-shadow: -4px 0 24px rgba(0,0,0,0.3); z-index: 1000; display: flex; flex-direction: column; transition: right .3s ease; }
+.ai-chat-panel.open { right: 0; }
+[data-theme="light"] .ai-chat-panel { background: #fff; border-left-color: rgba(0,0,0,0.1); box-shadow: -4px 0 32px rgba(0,0,0,0.1); }
+.ai-chat-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+[data-theme="light"] .ai-chat-header { border-bottom-color: rgba(0,0,0,0.08); }
+.ai-chat-header h3 { font-size: 13px; font-weight: 700; color: var(--fg); }
+.ai-chat-close { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; color: var(--fg2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all .15s; }
+.ai-chat-close:hover { background: var(--bg3); color: var(--fg); }
+.ai-models { display: flex; gap: 6px; padding: 10px 16px; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,0.04); scrollbar-width: none; }
+.ai-models::-webkit-scrollbar { display: none; }
+.ai-model-card { flex-shrink: 0; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: var(--bg3); cursor: pointer; transition: all .15s; text-align: center; min-width: 64px; }
+[data-theme="light"] .ai-model-card { background: var(--bg3); border-color: rgba(0,0,0,0.08); }
+.ai-model-card:hover { border-color: var(--primary-border); }
+.ai-model-card.active { border-color: var(--primary); background: var(--primary-dim); }
+[data-theme="light"] .ai-model-card.active { border-color: var(--primary); background: var(--primary-dim); }
+.ai-model-card .model-name { font-size: 10px; font-weight: 700; color: var(--fg); line-height: 1.2; }
+.ai-model-card .model-by { font-size: 8px; color: var(--fg3); margin-top: 2px; }
+.ai-chat-messages { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.ai-chat-msg { max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.55; word-wrap: break-word; }
+.ai-chat-msg.bot { align-self: flex-start; background: var(--bg3); color: var(--fg); border-bottom-left-radius: 4px; }
+[data-theme="light"] .ai-chat-msg.bot { background: var(--bg3); color: var(--fg); }
+.ai-chat-msg.user { align-self: flex-end; background: var(--primary); color: #0d1212; border-bottom-right-radius: 4px; font-weight: 500; }
+.ai-chat-msg .model-tag { display: inline-block; font-size: 9px; font-weight: 700; color: var(--primary); background: var(--primary-dim); padding: 1px 6px; border-radius: 4px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .03em; }
+.ai-typing { align-self: flex-start; padding: 10px 16px; border-radius: 12px; background: var(--bg3); color: var(--fg3); font-size: 12px; border-bottom-left-radius: 4px; }
+.ai-typing span { animation: blink 1.2s infinite; }
+.ai-typing span:nth-child(2) { animation-delay: .2s; }
+.ai-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+.ai-chat-input-area { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 8px; }
+[data-theme="light"] .ai-chat-input-area { border-top-color: rgba(0,0,0,0.08); }
+.ai-chat-input-area input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg3); color: var(--fg); font-size: 13px; outline: none; transition: border-color .15s; font-family: inherit; }
+[data-theme="light"] .ai-chat-panel input { background: var(--bg3); color: var(--fg); border-color: rgba(0,0,0,0.1); }
+.ai-chat-input-area input:focus { border-color: var(--primary); }
+.ai-chat-input-area input::placeholder { color: var(--fg3); }
+.ai-chat-input-area button { padding: 10px 16px; border-radius: 8px; border: none; background: var(--primary); color: #0d1212; font-weight: 700; font-size: 13px; cursor: pointer; transition: filter .15s; font-family: inherit; }
+.ai-chat-input-area button:hover { filter: brightness(1.1); }
+.ai-chat-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; display: none; }
+.ai-chat-overlay.open { display: block; }
+.bvs-mobile-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg2); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 24px; flex-direction: column; gap: 4px; z-index: 99; }
+[data-theme="light"] .bvs-mobile-menu { background: #fff; border-bottom-color: rgba(0,0,0,0.08); }
+.bvs-mobile-menu.open { display: flex; }
+.bvs-mobile-menu a { padding: 8px 12px; border-radius: 6px; font-size: 13px; color: var(--fg2); text-decoration: none; }
+.bvs-mobile-menu a:hover { background: var(--bg3); color: var(--fg); }
+.bvs-mobile-menu a.active { color: var(--primary); background: var(--primary-dim); }
+
+/* ==================== SITE FOOTER ==================== */
+.footer-ribbon { height:4px; background:linear-gradient(90deg, var(--primary) 0%, var(--amber) 25%, var(--blue) 50%, var(--primary) 75%, var(--amber) 100%); background-size:200% 100%; animation:ribbon-shift 8s linear infinite; }
+@keyframes ribbon-shift { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+.bvs-site-footer { background: var(--bg2); margin-top: 64px; padding: 0; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.footer-logo { font-size: 16px; font-weight: 800; color: var(--fg); margin-bottom: 12px; }
+.footer-logo span { color: var(--primary); }
+.footer-about { font-size: 12px; color: var(--fg3); line-height: 1.7; margin-bottom: 16px; max-width: 280px; }
+.footer-social { display: flex; gap: 8px; }
+.footer-social a { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--fg3); text-decoration: none; transition: all .15s; }
+.footer-social a:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); text-decoration: none; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3); text-decoration: none; padding: 3px 0; transition: color .15s; }
+.footer-col a:hover { color: var(--primary); text-decoration: none; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; flex-wrap: wrap; gap: 8px; }
+.footer-bottom-left, .footer-bottom-right { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--fg3); flex-wrap: wrap; }
+.footer-bottom a { color: var(--fg3); text-decoration: none; }
+.footer-bottom a:hover { color: var(--primary); text-decoration: none; }
+.footer-sep { color: rgba(255,255,255,0.12); }
+@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
+
+/* ==================== SUBSCRIPTION TIERS ==================== */
+.sub-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.sub-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:28px 24px; position:relative; transition:all .2s; }
+.sub-card:hover { border-color:var(--primary-border); transform:translateY(-2px); }
+.sub-card.featured { border-color:var(--primary); box-shadow:0 0 24px var(--primary-dim); }
+.sub-card.featured::before { content:'MOST POPULAR'; position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:var(--primary); color:var(--bg); font-size:9px; font-weight:800; padding:3px 12px; border-radius:0 0 6px 6px; letter-spacing:0.08em; }
+.sub-name { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg3); margin-bottom:4px; }
+.sub-price { font-size:36px; font-weight:800; color:var(--fg); margin-bottom:2px; }
+.sub-price span { font-size:14px; font-weight:400; color:var(--fg3); }
+.sub-desc { font-size:12px; color:var(--fg2); margin-bottom:20px; line-height:1.5; }
+.sub-features { list-style:none; margin-bottom:24px; }
+.sub-features li { font-size:12px; color:var(--fg2); padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; gap:8px; }
+.sub-features li::before { content:'\2713'; color:var(--primary); font-weight:700; font-size:13px; flex-shrink:0; }
+.sub-features li.locked::before { content:'\2717'; color:var(--fg3); }
+.sub-features li.locked { color:var(--fg3); }
+.sub-btn { width:100%; padding:11px; border-radius:8px; border:none; font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; font-family:inherit; text-align:center; text-decoration:none; display:block; }
+.sub-btn-primary { background:var(--primary); color:var(--bg); }
+.sub-btn-primary:hover { filter:brightness(1.1); }
+.sub-btn-outline { background:transparent; color:var(--primary); border:1px solid var(--primary-border); }
+.sub-btn-outline:hover { background:var(--primary-dim); }
+@media (max-width:768px) { .sub-grid { grid-template-columns:1fr; } }
+[data-theme="light"] .sub-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .sub-card:hover { border-color:var(--primary-border); }
+[data-theme="light"] .sub-card.featured { border-color:var(--primary); box-shadow:0 0 24px var(--primary-dim); }
+[data-theme="light"] .sub-features li { border-bottom-color:rgba(0,0,0,0.05); }
+
+/* ==================== VENUE / PLACE CARDS ==================== */
+.venue-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.venue-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; transition:all .2s; cursor:pointer; }
+.venue-card:hover { border-color:var(--primary-border); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+.venue-img { width:100%; height:180px; background-size:cover; background-position:center; position:relative; }
+.venue-img .venue-badge { position:absolute; top:12px; left:12px; }
+.venue-img .venue-lock { position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); color:#fff; padding:3px 8px; border-radius:4px; font-size:10px; font-weight:600; display:flex; align-items:center; gap:4px; }
+.venue-body { padding:16px; }
+.venue-name { font-size:15px; font-weight:700; margin-bottom:4px; }
+.venue-loc { font-size:11px; color:var(--fg3); margin-bottom:8px; display:flex; align-items:center; gap:4px; }
+.venue-desc { font-size:12px; color:var(--fg2); line-height:1.5; margin-bottom:10px; }
+.venue-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.venue-meta { display:flex; align-items:center; gap:12px; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04); font-size:11px; color:var(--fg3); }
+@media (max-width:768px) { .venue-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px) { .venue-grid { grid-template-columns:1fr; } }
+[data-theme="light"] .venue-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .venue-card:hover { border-color:var(--primary-border); }
+[data-theme="light"] .venue-meta { border-top-color:rgba(0,0,0,0.06); }
+
+/* ==================== NEWS SOURCE INDICATOR ==================== */
+.nw-src { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; padding:2px 6px; border-radius:4px; }
+.nw-src-local { background:rgba(78,205,196,0.1); color:var(--primary); }
+.nw-src-regional { background:rgba(240,165,0,0.1); color:var(--amber); }
+.nw-src-national { background:rgba(108,155,255,0.1); color:var(--blue); }
+.nw-src-ai { background:rgba(255,107,107,0.1); color:var(--red); }
+.nw-parse-badge { display:inline-flex; align-items:center; gap:3px; font-size:9px; color:var(--fg3); background:var(--bg3); padding:2px 6px; border-radius:3px; margin-left:4px; }
+
+/* ==================== DASHBOARD ADVANCED ==================== */
+.dash-grid-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.dash-grid-6 { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+.dash-grid-15 { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+@media (max-width:1200px) { .dash-grid-5,.dash-grid-6 { grid-template-columns:repeat(3,1fr); } .dash-grid-15 { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:768px) { .dash-grid-5,.dash-grid-6 { grid-template-columns:repeat(2,1fr); } .dash-grid-15 { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px) { .dash-grid-5,.dash-grid-6,.dash-grid-15 { grid-template-columns:1fr; } }
+
+/* City cards */
+.city-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:16px; transition:all .25s; cursor:pointer; position:relative; overflow:hidden; }
+.city-card:hover { border-color:var(--primary-border); transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.25); }
+.city-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
+.city-card.city-yvr::before { background:var(--primary); }
+.city-card.city-sea::before { background:var(--blue); }
+.city-card.city-pdx::before { background:var(--amber); }
+.city-card.city-bc::before { background:#8b5cf6; }
+.city-card.city-wa::before { background:var(--blue); }
+.city-card.city-or::before { background:var(--amber); }
+.city-name { font-size:14px; font-weight:700; margin-bottom:2px; display:flex; align-items:center; justify-content:space-between; }
+.city-region { font-size:10px; color:var(--fg3); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.04em; }
+.city-stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.city-stat-label { font-size:9px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; }
+.city-stat-val { font-size:13px; font-weight:700; color:var(--fg); }
+.city-stat-val.city-up { color:var(--green); }
+.city-sparkline { display:flex; align-items:flex-end; gap:2px; height:28px; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.04); }
+.city-spark-bar { flex:1; border-radius:2px 2px 0 0; background:var(--primary); opacity:0.5; transition:opacity .15s; min-width:3px; }
+.city-card:hover .city-spark-bar { opacity:0.8; }
+.city-rank { font-size:10px; font-weight:800; color:var(--primary); background:var(--primary-dim); padding:2px 6px; border-radius:4px; }
+
+/* Project tracker */
+.proj-table { width:100%; border-collapse:collapse; font-size:12px; }
+.proj-table th { text-align:left; padding:10px 12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); border-bottom:1px solid rgba(255,255,255,0.08); white-space:nowrap; }
+.proj-table td { padding:12px; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:top; }
+.proj-table tr:hover td { background:var(--bg3); }
+.proj-type { display:inline-block; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; }
+.proj-type-gov { background:rgba(108,155,255,0.12); color:var(--blue); }
+.proj-type-private { background:rgba(78,205,196,0.12); color:var(--primary); }
+.proj-type-charity { background:rgba(240,165,0,0.12); color:var(--amber); }
+.proj-type-infra { background:rgba(139,92,246,0.12); color:#8b5cf6; }
+.proj-amount { font-weight:700; color:var(--fg); white-space:nowrap; }
+.proj-progress { width:100%; max-width:120px; height:5px; border-radius:3px; background:var(--bg4); overflow:hidden; display:inline-block; vertical-align:middle; margin-right:6px; }
+.proj-progress-fill { height:100%; border-radius:3px; transition:width .6s ease; }
+
+/* Sector heatmap */
+.sector-heat { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.sector-cell { border-radius:8px; padding:14px; text-align:center; transition:all .2s; cursor:pointer; border:1px solid transparent; }
+.sector-cell:hover { transform:scale(1.04); border-color:rgba(255,255,255,0.15); }
+.sector-cell-name { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.9); margin-bottom:4px; }
+.sector-cell-val { font-size:20px; font-weight:800; color:#fff; }
+.sector-cell-change { font-size:10px; margin-top:2px; color:rgba(255,255,255,0.7); }
+.heat-1 { background:rgba(78,205,196,0.15); } .heat-1 .sector-cell-val { color:var(--primary); }
+.heat-2 { background:rgba(78,205,196,0.25); } .heat-2 .sector-cell-val { color:#6ee7de; }
+.heat-3 { background:rgba(240,165,0,0.2); } .heat-3 .sector-cell-val { color:var(--amber); }
+.heat-4 { background:rgba(240,165,0,0.35); } .heat-4 .sector-cell-val { color:#fbbf24; }
+.heat-5 { background:rgba(255,107,107,0.2); } .heat-5 .sector-cell-val { color:var(--red); }
+@media (max-width:768px) { .sector-heat { grid-template-columns:repeat(2,1fr); } }
+
+/* Opportunity cards */
+.opp-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:18px; transition:all .2s; position:relative; overflow:hidden; }
+.opp-card:hover { border-color:var(--primary-border); }
+.opp-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
+.opp-card.opp-high::after { background:var(--primary); }
+.opp-card.opp-med::after { background:var(--amber); }
+.opp-card.opp-emerging::after { background:#8b5cf6; }
+.opp-score { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:8px; font-size:16px; font-weight:800; margin-bottom:10px; }
+.opp-score.opp-s-high { background:rgba(78,205,196,0.12); color:var(--primary); }
+.opp-score.opp-s-med { background:rgba(240,165,0,0.12); color:var(--amber); }
+.opp-score.opp-s-em { background:rgba(139,92,246,0.12); color:#8b5cf6; }
+.opp-title { font-size:14px; font-weight:700; margin-bottom:4px; }
+.opp-desc { font-size:12px; color:var(--fg2); line-height:1.5; margin-bottom:8px; }
+.opp-tags { display:flex; gap:4px; flex-wrap:wrap; }
+
+/* Flow visualization */
+.flow-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.flow-row:last-child { border-bottom:none; }
+.flow-label { width:140px; font-size:12px; font-weight:600; color:var(--fg2); flex-shrink:0; }
+.flow-bar-wrap { flex:1; height:24px; background:var(--bg4); border-radius:4px; overflow:hidden; position:relative; }
+.flow-bar { height:100%; border-radius:4px; transition:width 1s ease; display:flex; align-items:center; padding-left:8px; font-size:10px; font-weight:700; color:rgba(255,255,255,0.9); min-width:fit-content; }
+.flow-val { width:80px; text-align:right; font-size:13px; font-weight:700; flex-shrink:0; }
+
+/* AI insight box */
+.ai-insight { background:linear-gradient(135deg, rgba(78,205,196,0.06), rgba(108,155,255,0.04)); border:1px solid var(--primary-border); border-radius:10px; padding:20px; position:relative; }
+.ai-insight::before { content:'AI INSIGHT'; position:absolute; top:-1px; left:16px; background:var(--primary); color:var(--bg); font-size:9px; font-weight:800; padding:2px 10px; border-radius:0 0 4px 4px; letter-spacing:0.06em; }
+.ai-insight h4 { font-size:14px; font-weight:700; margin:8px 0 6px; }
+.ai-insight p { font-size:12px; color:var(--fg2); line-height:1.6; }
+
+/* Gauge */
+.gauge-row { display:flex; align-items:center; gap:16px; padding:10px 0; }
+.gauge-label { width:120px; font-size:12px; color:var(--fg2); flex-shrink:0; }
+.gauge-track { flex:1; height:8px; background:var(--bg4); border-radius:4px; overflow:hidden; }
+.gauge-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+.gauge-val { width:48px; text-align:right; font-size:13px; font-weight:700; flex-shrink:0; }
+
+/* Tab nav for dashboard */
+.dash-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--bg3); border-radius:8px; padding:3px; width:fit-content; }
+.dash-tab { padding:8px 16px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; color:var(--fg3); transition:all .15s; border:none; background:transparent; font-family:inherit; }
+.dash-tab.active { background:var(--primary); color:var(--bg); font-weight:700; }
+.dash-tab:hover:not(.active) { color:var(--fg); }
+.dash-tab-panel { display:none; }
+.dash-tab-panel.active { display:block; }
+
+/* Floating KPI */
+.kpi-float { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+.kpi-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:16px; position:relative; overflow:hidden; transition:all .2s; }
+.kpi-card:hover { border-color:var(--primary-border); }
+.kpi-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; margin-bottom:10px; }
+.kpi-val { font-size:22px; font-weight:800; margin-bottom:2px; }
+.kpi-label { font-size:10px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+.kpi-trend { font-size:11px; font-weight:600; display:flex; align-items:center; gap:4px; }
+.kpi-trend.up { color:var(--green); }
+.kpi-trend.down { color:var(--red); }
+.kpi-spark { position:absolute; bottom:0; right:0; width:80px; height:32px; opacity:0.3; }
+.kpi-spark svg { width:100%; height:100%; }
+@media (max-width:1024px) { .kpi-float { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:768px) { .kpi-float { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px) { .kpi-float { grid-template-columns:1fr; } }
+
+/* Data table with sort */
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th { text-align:left; padding:10px 12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); border-bottom:1px solid rgba(255,255,255,0.08); cursor:pointer; user-select:none; white-space:nowrap; }
+.data-table th:hover { color:var(--primary); }
+.data-table td { padding:10px 12px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.04); }
+.data-table tr:hover td { background:var(--bg3); }
+
+/* Responsive dashboard helpers */
+.dash-2col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.dash-3col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+.dash-2-1 { display:grid; grid-template-columns:2fr 1fr; gap:16px; }
+.dash-1-2 { display:grid; grid-template-columns:1fr 2fr; gap:16px; }
+@media (max-width:900px) { .dash-2col,.dash-3col,.dash-2-1,.dash-1-2 { grid-template-columns:1fr; } }
+
+/* Computation badge */
+.comp-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:700; background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.25); }
+.comp-badge.neural { background:rgba(78,205,196,0.1); color:var(--primary); border-color:var(--primary-border); }
+
+/* Mini chart bars */
+.mini-bars { display:flex; align-items:flex-end; gap:2px; height:40px; }
+.mini-bar { width:6px; border-radius:2px 2px 0 0; background:var(--primary); opacity:0.6; transition:all .3s; }
+.mini-bar:hover { opacity:1; }
+
+[data-theme="light"] .city-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .city-card:hover { border-color:var(--primary-border); }
+[data-theme="light"] .sector-cell { border-color:rgba(0,0,0,0.05); }
+[data-theme="light"] .opp-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .ai-insight { background:linear-gradient(135deg, rgba(13,148,136,0.04), rgba(37,99,235,0.03)); }
+[data-theme="light"] .kpi-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .proj-table td { border-bottom-color:rgba(0,0,0,0.05); }
+[data-theme="light"] .proj-table th { border-bottom-color:rgba(0,0,0,0.1); }
+[data-theme="light"] .proj-table tr:hover td { background:var(--bg3); }
+[data-theme="light"] .flow-bar-wrap { background:var(--bg4); }
+[data-theme="light"] .gauge-track { background:var(--bg4); }
+
+/* ==================== IMAGE GALLERY ==================== */
+.img-gallery { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.img-gallery-item { border-radius:10px; overflow:hidden; position:relative; aspect-ratio:4/3; cursor:pointer; transition:transform .2s; }
+.img-gallery-item:hover { transform:scale(1.03); }
+.img-gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
+.img-gallery-item .img-overlay { position:absolute; inset:0; background:linear-gradient(transparent 50%, rgba(0,0,0,0.7)); opacity:0; transition:opacity .2s; display:flex; align-items:flex-end; padding:12px; }
+.img-gallery-item:hover .img-overlay { opacity:1; }
+.img-overlay-text { color:#fff; font-size:12px; font-weight:600; }
+.img-overlay-src { color:rgba(255,255,255,0.6); font-size:10px; margin-top:2px; }
+.img-ai-badge { position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); color:#fff; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:700; display:flex; align-items:center; gap:3px; }
+@media (max-width:768px) { .img-gallery { grid-template-columns:repeat(2,1fr); } }
+
+/* ==================== EVENT CALENDAR ==================== */
+.event-list { display:flex; flex-direction:column; gap:12px; }
+.event-item { display:grid; grid-template-columns:80px 1fr auto; gap:16px; align-items:center; background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); padding:16px; transition:border-color .2s; }
+.event-item:hover { border-color:var(--primary-border); }
+.event-date { text-align:center; }
+.event-date .day { font-size:28px; font-weight:800; color:var(--primary); line-height:1; }
+.event-date .month { font-size:11px; font-weight:600; text-transform:uppercase; color:var(--fg3); margin-top:2px; }
+.event-date .year { font-size:10px; color:var(--fg3); }
+.event-info h4 { font-size:14px; font-weight:700; margin-bottom:4px; }
+.event-info p { font-size:12px; color:var(--fg2); line-height:1.4; }
+.event-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; padding:4px 10px; border-radius:4px; white-space:nowrap; }
+.event-free { background:rgba(78,205,196,0.1); color:var(--primary); }
+.event-paid { background:rgba(240,165,0,0.1); color:var(--amber); }
+.event-sub { background:rgba(108,155,255,0.1); color:var(--blue); }
+@media (max-width:640px) { .event-item { grid-template-columns:60px 1fr; } .event-type { display:none; } }
+[data-theme="light"] .event-item { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .event-item:hover { border-color:var(--primary-border); }
+
+/* ==================== ENVIRONMENT & ENERGY ==================== */
+.env-mix-bar { display:flex; height:28px; border-radius:6px; overflow:hidden; gap:2px; }
+.env-mix-seg { height:100%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:#fff; transition:all .3s; cursor:pointer; min-width:20px; }
+.env-mix-seg:hover { opacity:0.85; filter:brightness(1.15); }
+.env-mix-hydro { background:linear-gradient(135deg, #0ea5e9, #0284c7); }
+.env-mix-wind { background:linear-gradient(135deg, #6366f1, #4f46e5); }
+.env-mix-solar { background:linear-gradient(135deg, #f59e0b, #d97706); }
+.env-mix-nuclear { background:linear-gradient(135deg, #a855f7, #9333ea); }
+.env-mix-geo { background:linear-gradient(135deg, #ef4444, #dc2626); }
+.env-mix-gas { background:linear-gradient(135deg, #78716c, #57534e); }
+.env-mix-coal { background:linear-gradient(135deg, #44403c, #292524); }
+.env-mix-biomass { background:linear-gradient(135deg, #22c55e, #16a34a); }
+.env-mix-other { background:linear-gradient(135deg, #94a3b8, #64748b); }
+
+.env-prob-bar { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.env-prob-bar:last-child { border-bottom:none; }
+.env-proj-name { width:200px; font-size:12px; font-weight:600; color:var(--fg); flex-shrink:0; }
+.env-proj-name small { display:block; font-size:10px; color:var(--fg3); font-weight:400; }
+.env-prob-track { flex:1; height:20px; background:var(--bg4); border-radius:4px; position:relative; overflow:hidden; }
+.env-prob-fill { height:100%; border-radius:4px; transition:width 1.2s ease; position:relative; }
+.env-prob-label { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.4); }
+.env-prob-meta { width:100px; text-align:right; flex-shrink:0; }
+.env-prob-pct { font-size:14px; font-weight:800; }
+.env-prob-date { font-size:9px; color:var(--fg3); }
+
+.env-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; }
+.env-card:hover { border-color:var(--primary-border); }
+.env-card-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:12px; }
+.env-card-val { font-size:24px; font-weight:800; margin-bottom:2px; }
+.env-card-label { font-size:10px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+.env-card-trend { font-size:11px; font-weight:600; display:flex; align-items:center; gap:4px; }
+
+.env-proj-timeline { position:relative; padding-left:28px; }
+.env-proj-timeline::before { content:''; position:absolute; left:10px; top:0; bottom:0; width:2px; background:var(--bg4); }
+.env-tl-item { position:relative; padding-bottom:24px; }
+.env-tl-item:last-child { padding-bottom:0; }
+.env-tl-dot { position:absolute; left:-22px; top:4px; width:12px; height:12px; border-radius:50%; border:2px solid; background:var(--bg2); }
+.env-tl-dot.dot-active { background:var(--primary); border-color:var(--primary); }
+.env-tl-dot.dot-planned { border-color:var(--amber); }
+.env-tl-dot.dot-completed { border-color:var(--green); background:var(--green); }
+.env-tl-date { font-size:10px; color:var(--fg3); margin-bottom:2px; }
+.env-tl-title { font-size:13px; font-weight:700; margin-bottom:4px; }
+.env-tl-desc { font-size:11px; color:var(--fg2); line-height:1.5; }
+
+.env-carbon-ring { width:120px; height:120px; position:relative; margin:0 auto 12px; }
+.env-carbon-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+.env-carbon-ring-text { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.env-carbon-ring-val { font-size:24px; font-weight:800; }
+.env-carbon-ring-label { font-size:9px; color:var(--fg3); text-transform:uppercase; }
+
+.env-forecast-row { display:grid; grid-template-columns:100px repeat(7,1fr); gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px; }
+.env-forecast-row:last-child { border-bottom:none; }
+.env-forecast-label { font-weight:600; color:var(--fg2); }
+.env-forecast-val { text-align:center; font-weight:700; }
+.env-forecast-header { font-size:9px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
+.env-forecast-now { color:var(--primary); background:var(--primary-dim); border-radius:4px; padding:2px 0; }
+
+@media (max-width:768px) { .env-proj-name { width:120px; } .env-forecast-row { grid-template-columns:80px repeat(7,1fr); gap:4px; font-size:10px; } }
+[data-theme="light"] .env-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .env-card:hover { border-color:var(--primary-border); }
+[data-theme="light"] .env-prob-track { background:var(--bg4); }
+[data-theme="light"] .env-tl-dot { background:#fff; }
+
+/* ==================== DATA REFRESH FRAMEWORK ==================== */
+.data-refresh-bar { display:flex; align-items:center; gap:12px; padding:10px 16px; background:var(--bg3); border-radius:8px; margin-bottom:20px; flex-wrap:wrap; }
+.data-refresh-bar .dr-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); }
+.dr-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:600; }
+.dr-badge-live { background:rgba(78,205,196,0.12); color:var(--primary); border:1px solid var(--primary-border); }
+.dr-badge-daily { background:rgba(108,155,255,0.1); color:var(--blue); border:1px solid rgba(108,155,255,0.2); }
+.dr-badge-quarterly { background:rgba(240,165,0,0.1); color:var(--amber); border:1px solid rgba(240,165,0,0.2); }
+.dr-badge-annual { background:rgba(139,92,246,0.1); color:#8b5cf6; border:1px solid rgba(139,92,246,0.2); }
+.dr-time { font-size:10px; color:var(--fg3); margin-left:auto; }
+.dr-pulse { width:6px; height:6px; border-radius:50%; background:var(--primary); animation:pulse 2s ease-in-out infinite; }
+.dr-source-tag { display:inline-flex; align-items:center; gap:3px; font-size:9px; color:var(--fg3); padding:2px 6px; border-radius:3px; background:var(--bg4); }
+.dr-source-tag.src-gov { border-left:2px solid var(--blue); }
+.dr-source-tag.src-private { border-left:2px solid var(--amber); }
+.dr-source-tag.src-ai { border-left:2px solid var(--red); }
+[data-theme="light"] .data-refresh-bar { background:var(--bg3); }
+[data-theme="light"] .dr-badge-live { background:rgba(13,148,136,0.08); color:var(--primary); border-color:rgba(13,148,136,0.2); }
+[data-theme="light"] .dr-badge-daily { background:rgba(37,99,235,0.06); color:var(--blue); border-color:rgba(37,99,235,0.15); }
+[data-theme="light"] .dr-badge-quarterly { background:rgba(217,119,6,0.06); color:var(--amber); border-color:rgba(217,119,6,0.15); }
+
+
+/* ==================== UNIVERSAL DETAIL PANEL ==================== */
+.dp-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; backdrop-filter:blur(4px); }
+.dp-overlay.open { opacity:1; pointer-events:auto; }
+.dp-panel { position:fixed; top:0; right:0; width:520px; max-width:92vw; height:100vh; background:var(--bg2); border-left:1px solid rgba(255,255,255,0.08); z-index:201; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); overflow-y:auto; box-shadow:-8px 0 40px rgba(0,0,0,0.4); }
+.dp-panel.open { transform:translateX(0); }
+.dp-header { position:sticky; top:0; z-index:2; background:var(--bg2); border-bottom:1px solid rgba(255,255,255,0.06); padding:20px 24px; display:flex; align-items:center; justify-content:space-between; }
+.dp-header h3 { font-size:16px; font-weight:700; flex:1; padding-right:12px; }
+.dp-close { width:32px; height:32px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--bg3); color:var(--fg2); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+.dp-close:hover { background:var(--primary-dim); color:var(--primary); border-color:var(--primary-border); }
+.dp-body { padding:24px; }
+.dp-state { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; }
+.dp-state-live { background:rgba(78,205,196,0.1); color:var(--primary); border:1px solid var(--primary-border); }
+.dp-state-beta { background:rgba(240,165,0,0.1); color:var(--amber); border:1px solid rgba(240,165,0,0.2); }
+.dp-state-planned { background:rgba(255,255,255,0.05); color:var(--fg3); border:1px solid rgba(255,255,255,0.1); }
+.dp-ai-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:4px; font-size:9px; font-weight:700; background:rgba(255,107,107,0.1); color:var(--red); border:1px solid rgba(255,107,107,0.2); margin-bottom:16px; }
+.dp-section { margin-bottom:24px; }
+.dp-section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); margin-bottom:12px; }
+.dp-text { font-size:13px; color:var(--fg2); line-height:1.7; margin-bottom:12px; }
+.dp-metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
+.dp-metric-item { background:var(--bg3); border-radius:8px; padding:14px; text-align:center; }
+.dp-metric-item .val { font-size:20px; font-weight:800; color:var(--primary); }
+.dp-metric-item .lbl { font-size:9px; color:var(--fg3); text-transform:uppercase; margin-top:4px; letter-spacing:0.03em; }
+.dp-progress-bar { height:6px; background:var(--bg4); border-radius:3px; overflow:hidden; margin:12px 0; }
+.dp-progress-fill { height:100%; border-radius:3px; }
+.fill-beta { background:linear-gradient(90deg, var(--amber), #fcd34d); width:65%; animation:dp-pulse 2s ease-in-out infinite; }
+.fill-planned { background:linear-gradient(90deg, var(--fg3), rgba(255,255,255,0.15)); width:15%; }
+@keyframes dp-pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+.dp-tag { display:inline-block; padding:3px 10px; border-radius:4px; font-size:10px; font-weight:600; margin:2px 4px 2px 0; background:var(--bg4); color:var(--fg2); }
+.dp-notify-btn { display:inline-flex; align-items:center; gap:6px; padding:10px 20px; border-radius:8px; border:1px solid var(--primary-border); background:var(--primary-dim); color:var(--primary); font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; margin-top:12px; text-decoration:none; }
+.dp-notify-btn:hover { background:var(--primary); color:var(--bg); }
+.bvs-clickable { cursor:pointer; position:relative; }
+.bvs-clickable:hover { border-color:var(--primary-border) !important; }
+.click-hint { position:absolute; bottom:8px; right:10px; font-size:9px; color:var(--primary); opacity:0; transition:opacity .2s; pointer-events:none; }
+.bvs-clickable:hover .click-hint { opacity:0.7; }
+@media (max-width:640px) { .dp-panel { width:100vw; } .dp-metric-grid { grid-template-columns:1fr; } }
+[data-theme="light"] .dp-panel { background:#fff; border-color:rgba(0,0,0,0.08); }
+[data-theme="light"] .dp-header { background:#fff; }
+[data-theme="light"] .dp-metric-item { background:#f5f5f5; }
+
+
+
+
+/* ==================== DASHBOARD V2 REDESIGN ==================== */
+.dash-tier-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:4px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+.tier-mega { background:rgba(78,205,196,0.15); color:var(--primary); border:1px solid var(--primary-border); }
+.tier-growth { background:rgba(108,155,255,0.12); color:var(--blue); border:1px solid rgba(108,155,255,0.3); }
+.tier-emerging { background:rgba(240,165,0,0.12); color:var(--amber); border:1px solid rgba(240,165,0,0.3); }
+.ai-score { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0; }
+.ai-score.score-high { background:rgba(78,205,196,0.15); color:var(--primary); border:2px solid var(--primary); }
+.ai-score.score-mid { background:rgba(108,155,255,0.12); color:var(--blue); border:2px solid rgba(108,155,255,0.4); }
+.ai-score.score-low { background:rgba(240,165,0,0.10); color:var(--amber); border:2px solid rgba(240,165,0,0.3); }
+.ai-score-sm { display:inline-block; width:28px; height:28px; border-radius:50%; text-align:center; line-height:28px; font-size:11px; font-weight:800; }
+.ai-score-sm.score-high { background:rgba(78,205,196,0.15); color:var(--primary); }
+.ai-score-sm.score-mid { background:rgba(108,155,255,0.12); color:var(--blue); }
+.ai-score-sm.score-low { background:rgba(240,165,0,0.10); color:var(--amber); }
+.city-improve { padding:0 12px 8px; border-top:1px solid rgba(255,255,255,0.04); margin-top:8px; padding-top:8px; display:flex; flex-wrap:wrap; align-items:center; gap:4px; }
+.improve-label { font-size:9px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; margin-right:2px; }
+.improve-pill { display:inline-block; padding:2px 7px; border-radius:3px; font-size:9px; font-weight:600; }
+.improve-pill.p-critical { background:rgba(255,107,107,0.12); color:var(--red); border:1px solid rgba(255,107,107,0.25); }
+.improve-pill.p-high { background:rgba(240,165,0,0.10); color:var(--amber); border:1px solid rgba(240,165,0,0.25); }
+.improve-pill.p-med { background:rgba(108,155,255,0.08); color:var(--blue); border:1px solid rgba(108,155,255,0.2); }
+[data-theme="light"] .dash-tier-badge.tier-mega { background:rgba(13,148,136,0.08); }
+[data-theme="light"] .dash-tier-badge.tier-growth { background:rgba(37,99,235,0.06); }
+[data-theme="light"] .dash-tier-badge.tier-emerging { background:rgba(217,119,6,0.06); }
+[data-theme="light"] .ai-score.score-high { background:rgba(13,148,136,0.08); color:#0d9488; }
+[data-theme="light"] .ai-score.score-mid { background:rgba(37,99,235,0.06); color:#2563eb; }
+[data-theme="light"] .ai-score.score-low { background:rgba(217,119,6,0.06); color:#d97706; }
+[data-theme="light"] .improve-pill.p-critical { background:rgba(220,38,38,0.06); color:#dc2626; }
+[data-theme="light"] .improve-pill.p-high { background:rgba(217,119,6,0.06); color:#d97706; }
+[data-theme="light"] .improve-pill.p-med { background:rgba(37,99,235,0.04); color:#2563eb; }
+.gdp-regional-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+.gdp-region-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:16px; position:relative; overflow:hidden; }
+.gdp-region-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.gdp-wa::before { background:var(--blue); }
+.gdp-or::before { background:var(--amber); }
+.gdp-bc::before { background:var(--primary); }
+.gdp-pct { font-size:24px; font-weight:800; opacity:0.15; line-height:1; }
+.gdp-mini-bar { width:100%; height:6px; background:var(--bg4); border-radius:3px; overflow:hidden; }
+.gdp-mini-fill { height:100%; border-radius:3px; background:linear-gradient(90deg, var(--primary), var(--blue)); }
+.gdp-insight-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px; }
+@media (max-width:900px) { .gdp-regional-row, .gdp-insight-row { grid-template-columns:1fr; } }
+[data-theme="light"] .gdp-region-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .gdp-mini-bar { background:rgba(0,0,0,0.06); }
+
+
+
+/* ==================== SPORTS V2 EXPANSION ==================== */
+/* Government Contribution Tracker */
+.gov-track-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; }
+.gov-track-card:hover { border-color:var(--primary-border); }
+.gov-track-jurisdiction { font-size:16px; font-weight:800; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+.gov-track-flag { font-size:22px; }
+.gov-track-total { font-size:22px; font-weight:800; color:var(--primary); margin-bottom:12px; }
+.gov-track-pct { font-size:12px; color:var(--fg3); font-weight:400; }
+.gov-track-items { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.gov-track-item { display:grid; grid-template-columns:90px 80px 1fr; gap:8px; align-items:start; padding:8px 10px; background:var(--bg3); border-radius:6px; font-size:11px; }
+.gov-track-cat { padding:2px 6px; border-radius:3px; font-size:9px; font-weight:700; text-transform:uppercase; text-align:center; }
+.cat-infra { background:rgba(108,155,255,0.12); color:var(--blue); }
+.cat-tax { background:rgba(78,205,196,0.12); color:var(--primary); }
+.cat-grant { background:rgba(240,165,0,0.12); color:var(--amber); }
+.cat-policy { background:rgba(168,85,247,0.12); color:#a855f7; }
+.gov-track-amount { font-weight:700; color:var(--fg); text-align:right; }
+.gov-track-desc { color:var(--fg2); line-height:1.4; font-size:10px; }
+.gov-track-footer { font-size:10px; color:var(--fg3); padding-top:10px; border-top:1px solid rgba(255,255,255,0.04); }
+
+/* Sports Leaders */
+.leaders-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.leader-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; display:flex; gap:16px; transition:all .2s; }
+.leader-card:hover { border-color:var(--primary-border); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+.leader-avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.leader-info { flex:1; min-width:0; }
+.leader-name { font-size:14px; font-weight:700; margin-bottom:2px; }
+.leader-role { font-size:11px; color:var(--primary); margin-bottom:2px; }
+.leader-org { font-size:10px; color:var(--fg3); margin-bottom:8px; }
+.leader-quote { font-size:11px; color:var(--fg2); line-height:1.6; font-style:italic; margin-bottom:8px; border-left:2px solid var(--primary-border); padding-left:10px; }
+.leader-impact { display:flex; gap:6px; flex-wrap:wrap; }
+.leader-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:600; }
+.tag-franchise { background:rgba(108,155,255,0.12); color:var(--blue); }
+.tag-vision { background:rgba(78,205,196,0.12); color:var(--primary); }
+.tag-athlete { background:rgba(240,165,0,0.12); color:var(--amber); }
+.tag-esports { background:rgba(236,72,153,0.12); color:#ec4899; }
+
+/* Event Calendar */
+.evt-cal-list { display:flex; flex-direction:column; gap:8px; }
+.evt-cal-row { display:grid; grid-template-columns:70px 1fr; gap:12px; align-items:start; padding:12px; background:var(--bg3); border-radius:8px; border-left:3px solid var(--bg4); transition:all .15s; }
+.evt-cal-row:hover { border-left-color:var(--primary); background:var(--bg4); }
+.evt-priority-critical { border-left-color:var(--red) !important; }
+.evt-priority-high { border-left-color:var(--amber) !important; }
+.evt-priority-med { border-left-color:var(--blue) !important; }
+.evt-cal-date { text-align:center; padding:6px 0; }
+.evt-cal-month { font-size:10px; font-weight:700; text-transform:uppercase; color:var(--primary); }
+.evt-cal-day { font-size:20px; font-weight:800; color:var(--fg); line-height:1.1; }
+.evt-cal-name { font-size:13px; font-weight:700; margin-bottom:3px; }
+.evt-cal-meta { font-size:10px; color:var(--fg3); margin-bottom:4px; }
+.evt-cal-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.evt-tag { display:inline-block; padding:2px 7px; border-radius:3px; font-size:9px; font-weight:700; text-transform:uppercase; }
+.evt-tag-fifa { background:rgba(78,205,196,0.15); color:var(--primary); }
+.evt-tag-mega { background:rgba(255,107,107,0.15); color:var(--red); }
+.evt-tag-sea { background:rgba(108,155,255,0.12); color:var(--blue); }
+.evt-tag-yvr { background:var(--primary-dim); color:var(--primary); }
+.evt-tag-pdx { background:rgba(240,165,0,0.12); color:var(--amber); }
+.evt-tag-mlb { background:rgba(108,155,255,0.12); color:var(--blue); }
+.evt-tag-ncaa { background:rgba(240,165,0,0.12); color:var(--amber); }
+.evt-tag-esports { background:rgba(236,72,153,0.12); color:#ec4899; }
+.evt-tag-concacaf { background:rgba(34,197,94,0.12); color:#22c55e; }
+.evt-tag-nhl { background:rgba(108,155,255,0.12); color:var(--blue); }
+.evt-tag-nba { background:rgba(240,165,0,0.12); color:var(--amber); }
+.evt-tag-mls { background:rgba(34,197,94,0.12); color:#22c55e; }
+.evt-tag-ioc { background:rgba(168,85,247,0.12); color:#a855f7; }
+.evt-tag-rugby { background:rgba(240,165,0,0.12); color:var(--amber); }
+
+/* Bid rows */
+.evt-bid-row { display:grid; grid-template-columns:60px 1fr; gap:12px; align-items:start; padding:12px; background:var(--bg3); border-radius:8px; transition:all .15s; }
+.evt-bid-row:hover { background:var(--bg4); }
+.evt-bid-prob { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+.evt-bid-name { font-size:13px; font-weight:700; margin-bottom:3px; }
+.evt-bid-meta { font-size:10px; color:var(--fg3); margin-bottom:4px; }
+.evt-bid-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.evt-bid-status { background:var(--bg4); color:var(--fg3); }
+
+/* AI Platform Insights */
+.ai-plat-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; }
+.ai-plat-card:hover { border-color:var(--primary-border); }
+.ai-plat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.ai-plat-source { font-size:11px; font-weight:700; color:var(--primary); }
+.ai-plat-confidence { font-size:10px; color:var(--fg3); background:var(--bg3); padding:2px 8px; border-radius:4px; }
+.ai-plat-title { font-size:15px; font-weight:700; margin-bottom:8px; }
+.ai-plat-body { font-size:12px; color:var(--fg2); line-height:1.65; margin-bottom:12px; }
+.ai-plat-models { display:flex; gap:6px; flex-wrap:wrap; }
+.ai-model-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:600; background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.25); }
+
+/* City-Sport Identity Map */
+.identity-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.identity-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; position:relative; overflow:hidden; }
+.identity-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.identity-seattle::before { background:var(--blue); }
+.identity-vancouver::before { background:var(--primary); }
+.identity-portland::before { background:var(--amber); }
+.identity-card:hover { border-color:var(--primary-border); transform:translateY(-2px); }
+.identity-city { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg3); margin-bottom:4px; }
+.identity-sport { font-size:18px; font-weight:800; margin-bottom:14px; }
+.identity-bars { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.identity-bar-item { display:grid; grid-template-columns:120px 1fr 50px; gap:8px; align-items:center; font-size:10px; color:var(--fg2); }
+.identity-track { height:6px; background:var(--bg4); border-radius:3px; overflow:hidden; }
+.identity-fill { height:100%; border-radius:3px; transition:width 1.2s ease; }
+.identity-dna { font-size:11px; color:var(--fg2); line-height:1.6; border-top:1px solid rgba(255,255,255,0.04); padding-top:10px; }
+
+/* Green Sports */
+.green-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; }
+.green-card:hover { border-color:var(--primary-border); }
+.green-card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.green-venue { font-size:15px; font-weight:700; }
+.green-badge { display:inline-block; padding:3px 10px; border-radius:4px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; background:rgba(34,197,94,0.15); color:#22c55e; }
+.green-score-row { display:grid; grid-template-columns:100px 1fr 36px; gap:10px; align-items:center; font-size:11px; color:var(--fg2); margin-bottom:14px; }
+.green-score-bar { height:8px; background:var(--bg4); border-radius:4px; overflow:hidden; }
+.green-score-fill { height:100%; border-radius:4px; }
+.green-metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.green-metric { text-align:center; padding:8px 4px; background:var(--bg3); border-radius:6px; }
+.green-metric-label { font-size:9px; color:var(--fg3); margin-bottom:4px; }
+.green-metric-val { font-size:13px; font-weight:700; color:var(--fg); }
+.green-innovation { font-size:11px; color:var(--fg2); line-height:1.6; border-top:1px solid rgba(255,255,255,0.04); padding-top:10px; }
+
+/* Youth Pipeline */
+.youth-academy-list { display:flex; flex-direction:column; gap:10px; }
+.youth-academy-row { display:grid; grid-template-columns:40px 1fr; gap:12px; align-items:start; padding:12px; background:var(--bg3); border-radius:8px; }
+.youth-academy-franchise { font-size:22px; text-align:center; padding-top:4px; }
+.youth-academy-name { font-size:13px; font-weight:700; margin-bottom:3px; }
+.youth-academy-stats { font-size:10px; color:var(--primary); font-weight:600; margin-bottom:6px; }
+.youth-academy-detail { font-size:11px; color:var(--fg2); line-height:1.55; }
+
+/* Media & Finance */
+.media-rights-list { display:flex; flex-direction:column; gap:0; }
+.media-rights-row { display:grid; grid-template-columns:1fr 1fr auto; gap:8px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px; align-items:center; }
+.media-rights-row:last-child { border-bottom:none; }
+.media-rights-asset { font-weight:600; color:var(--fg); }
+.media-rights-holder { color:var(--fg2); }
+.media-rights-val { font-weight:700; color:var(--primary); text-align:right; white-space:nowrap; }
+
+.finance-flow-list { display:flex; flex-direction:column; gap:10px; }
+.finance-flow-row { display:grid; grid-template-columns:80px 70px 1fr 70px; gap:10px; align-items:center; font-size:11px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.finance-flow-row:last-child { border-bottom:none; }
+.finance-flow-year { font-weight:600; color:var(--fg2); }
+.finance-flow-amount { font-weight:700; color:var(--primary); }
+.finance-flow-bar-wrap { height:18px; background:var(--bg4); border-radius:4px; overflow:hidden; }
+.finance-flow-bar { height:100%; border-radius:4px; transition:width 1s ease; min-width:fit-content; }
+.finance-flow-deals { font-size:10px; color:var(--fg3); text-align:right; }
+
+.revenue-model-list { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+.revenue-model-row { display:grid; grid-template-columns:120px 1fr auto; gap:12px; align-items:center; font-size:11px; }
+.revenue-model-sector { font-weight:600; color:var(--fg); }
+.revenue-model-breakdown { display:flex; height:16px; border-radius:4px; overflow:hidden; gap:2px; }
+.rev-bar { height:100%; transition:width .8s ease; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; color:rgba(255,255,255,0.9); min-width:fit-content; padding:0 4px; }
+.revenue-model-total { font-weight:700; color:var(--primary); text-align:right; white-space:nowrap; }
+
+/* Responsive for new sports sections */
+@media (max-width:768px) {
+  .gov-track-item { grid-template-columns:70px 60px 1fr; font-size:10px; }
+  .leaders-grid { grid-template-columns:1fr; }
+  .identity-grid { grid-template-columns:1fr; }
+  .green-metrics { grid-template-columns:repeat(2,1fr); }
+  .finance-flow-row { grid-template-columns:60px 55px 1fr 55px; font-size:10px; }
+  .revenue-model-row { grid-template-columns:90px 1fr auto; }
+  .media-rights-row { grid-template-columns:1fr; gap:4px; }
+}
+@media (max-width:480px) {
+  .evt-cal-row { grid-template-columns:50px 1fr; }
+  .evt-bid-row { grid-template-columns:46px 1fr; }
+  .evt-bid-prob { width:42px; height:42px; font-size:12px; }
+  .gov-track-item { grid-template-columns:1fr; }
+  .finance-flow-row { grid-template-columns:1fr; }
+  .revenue-model-row { grid-template-columns:1fr; }
+  .revenue-model-breakdown { height:12px; }
+}
+[data-theme="light"] .gov-track-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .leader-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .evt-cal-row { background:var(--bg3); }
+[data-theme="light"] .evt-bid-row { background:var(--bg3); }
+[data-theme="light"] .ai-plat-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .identity-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .green-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .green-metric { background:#f5f5f5; }
+[data-theme="light"] .youth-academy-row { background:var(--bg3); }
+[data-theme="light"] .finance-flow-bar-wrap { background:rgba(0,0,0,0.06); }
+[data-theme="light"] .revenue-model-breakdown .rev-bar { opacity:0.8; }
+
+/* ==================== SPORTS BUSINESS INTELLIGENCE ==================== */
+.sports-biz-hero { position:relative; overflow:hidden; padding:48px 0; }
+.sports-biz-hero::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(13,18,18,0.92) 0%, rgba(22,32,32,0.88) 50%, rgba(13,18,18,0.95) 100%); z-index:1; }
+.sports-biz-hero > * { position:relative; z-index:2; }
+.sports-deal-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .25s; position:relative; overflow:hidden; }
+.sports-deal-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.sports-deal-card:hover { border-color:var(--primary-border); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+.sports-deal-card .deal-type { display:inline-block; padding:3px 10px; border-radius:4px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+.deal-merger { background:rgba(240,165,0,0.15); color:var(--amber); }
+.deal-innovation { background:rgba(78,205,196,0.12); color:var(--primary); }
+.deal-tech { background:rgba(108,155,255,0.12); color:var(--blue); }
+.deal-media { background:rgba(168,85,247,0.12); color:#a855f7; }
+.deal-analytics { background:rgba(34,197,94,0.12); color:#22c55e; }
+.deal-esports { background:rgba(236,72,153,0.12); color:#ec4899; }
+.sports-deal-card .deal-title { font-size:15px; font-weight:700; margin-bottom:6px; line-height:1.3; }
+.sports-deal-card .deal-detail { font-size:12px; color:var(--fg2); line-height:1.5; margin-bottom:10px; }
+.sports-deal-card .deal-meta { display:flex; gap:12px; flex-wrap:wrap; font-size:10px; color:var(--fg3); }
+.sports-deal-card .deal-meta span { display:inline-flex; align-items:center; gap:3px; }
+.sports-valuation { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.sports-val-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; text-align:center; transition:all .2s; }
+.sports-val-card:hover { border-color:var(--primary-border); }
+.sports-val-card .val-logo { font-size:28px; margin-bottom:8px; }
+.sports-val-card .val-name { font-size:13px; font-weight:700; margin-bottom:2px; }
+.sports-val-card .val-sport { font-size:10px; color:var(--fg3); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+.sports-val-card .val-price { font-size:22px; font-weight:800; color:var(--primary); }
+.sports-val-card .val-change { font-size:10px; color:var(--green); margin-top:4px; }
+.sports-flow { display:flex; align-items:center; gap:0; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.sports-flow:last-child { border-bottom:none; }
+.sports-flow-from { width:140px; text-align:right; font-size:12px; font-weight:600; padding-right:16px; flex-shrink:0; }
+.sports-flow-arrow { width:40px; height:2px; background:var(--primary-border); position:relative; flex-shrink:0; }
+.sports-flow-arrow::after { content:''; position:absolute; right:0; top:-4px; border:5px solid transparent; border-left-color:var(--primary); }
+.sports-flow-to { width:140px; font-size:12px; font-weight:600; padding-left:16px; flex-shrink:0; }
+.sports-flow-amount { font-size:14px; font-weight:800; color:var(--primary); text-align:center; flex:1; }
+.sports-tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.sports-tech-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; transition:all .2s; }
+.sports-tech-card:hover { border-color:var(--primary-border); transform:translateY(-2px); }
+.sports-tech-card .tech-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:12px; }
+.sports-tech-card .tech-name { font-size:14px; font-weight:700; margin-bottom:4px; }
+.sports-tech-card .tech-desc { font-size:11px; color:var(--fg2); line-height:1.5; margin-bottom:10px; }
+.sports-tech-card .tech-stats { display:flex; gap:12px; font-size:10px; }
+.sports-tech-card .tech-stats span { padding:2px 8px; border-radius:4px; background:var(--bg4); color:var(--fg2); }
+.sports-esports-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:12px; align-items:center; padding:12px 16px; background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:8px; margin-bottom:8px; transition:all .2s; }
+.sports-esports-row:hover { border-color:var(--primary-border); }
+.sports-esports-row .esports-name { font-size:13px; font-weight:700; }
+.sports-esports-row .esports-game { font-size:10px; color:var(--fg3); }
+.sports-esports-row .esports-val { font-size:15px; font-weight:800; text-align:center; }
+.sports-esports-row .esports-label { font-size:9px; color:var(--fg3); text-align:center; text-transform:uppercase; }
+.sports-insight-box { background:linear-gradient(135deg, rgba(78,205,196,0.06) 0%, rgba(108,155,255,0.06) 100%); border:1px solid var(--primary-border); border-radius:12px; padding:24px; position:relative; }
+.sports-insight-box .insight-tag { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:4px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; background:rgba(78,205,196,0.12); color:var(--primary); margin-bottom:12px; }
+.sports-insight-box .insight-title { font-size:16px; font-weight:800; margin-bottom:8px; }
+.sports-insight-box .insight-text { font-size:12px; color:var(--fg2); line-height:1.7; }
+@media (max-width:768px) { .sports-valuation { grid-template-columns:repeat(2,1fr); } .sports-tech-grid { grid-template-columns:1fr; } .sports-esports-row { grid-template-columns:1fr; } .sports-flow-from, .sports-flow-to { width:auto; text-align:left; padding:0; } }
+[data-theme="light"] .sports-deal-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .sports-val-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .sports-tech-card { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .sports-esports-row { background:#fff; border-color:rgba(0,0,0,0.07); }
+[data-theme="light"] .sports-insight-box { background:linear-gradient(135deg, rgba(13,148,136,0.04) 0%, rgba(37,99,235,0.04) 100%); }
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+<header class="bvs-header"><div class="bvs-header-inner">
+    <a href="index.html" class="bvs-logo">
+      <div class="bvs-logo-mark">AI</div>
+      <div class="bvs-logo-text">AI<span>BizVan360</span></div>
+    </a>
+    <nav class="bvs-nav"><a href="index.html" class="">Overview</a><a href="government.html" class="">Government</a><a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html" class="">Dashboard 2</a><a href="economics.html" class="">Economics</a><a href="leisure.html" class="">Leisure</a><a href="travel.html" class="">Travel</a><a href="technology.html" class="">Technology</a><a href="transportation.html" class="">Transport</a><a href="demographics.html" class="">Demographics</a><a href="resources.html" class="">Resources</a><a href="environment.html" class="">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a><a href="sports.html" class="">Sports</a></nav>
+    <div class="ai-actions">
+      <a href="index.html" class="ai-home-btn" title="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      </a>
+      <button class="ai-theme-toggle" id="theme-toggle" title="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <a href="dashboard.html" class="ai-action-btn" title="Back to Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        <span class="btn-label">Dashboard</span>
+      </a>
+      <a href="city-vancouver.html" class="ai-action-btn" title="Back to Hub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+        <span class="btn-label">BC Hub</span>
+      </a>
+      <a href="#" class="ai-action-btn primary-btn" id="ai-chat-btn" title="AI Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <span class="btn-label">AI Search</span>
+      </a>
+            <button class="ai-mobile-toggle" id="mobile-toggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="bvs-mobile-menu" id="mobile-menu">
+    <a href="index.html" class="">Overview</a>
+    <a href="government.html" class="">Government</a>
+    <a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html" class="">Dashboard 2</a>
+    <a href="economics.html" class="">Economics</a>
+    <a href="leisure.html" class="">Leisure</a>
+    <a href="travel.html" class="">Travel</a>
+    <a href="technology.html" class="">Technology</a>
+    <a href="transportation.html" class="">Transport</a>
+    <a href="demographics.html" class="">Demographics</a>
+    <a href="resources.html" class="">Resources</a>
+    <a href="environment.html" class="">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+    <a href="sports.html" class="">Sports</a></div>
+  </div></header>
+  <div class="ai-chat-overlay" id="chat-overlay"></div>
+  <div class="ai-chat-panel" id="chat-panel">
+    <div class="ai-chat-header"><h3>AI Intelligence Search</h3><button class="ai-chat-close" id="chat-close">&times;</button></div>
+    <div class="ai-models"><div class="ai-model-card active"><div class="model-name">GLM-4</div><div class="model-by">Z.ai</div></div><div class="ai-model-card"><div class="model-name">GPT-4o</div><div class="model-by">OpenAI</div></div><div class="ai-model-card"><div class="model-name">Claude 4</div><div class="model-by">Anthropic</div></div><div class="ai-model-card"><div class="model-name">Gemini</div><div class="model-by">Google</div></div></div>
+    <div class="ai-chat-messages" id="chat-messages"></div>
+    <div class="ai-chat-input-area"><input type="text" id="chat-input" placeholder="Ask about Burnaby..." /><button id="chat-send">Send</button></div>
+  </div>
+<main><section class='bvs-hero'>
+  <div class='container bvs-hero-content'>
+    <div class='bvs-live'><span class='bvs-dot'></span> CITY INTELLIGENCE</div>
+    <h1 style='margin-top:16px'>Burnaby <span>Regional Profile</span></h1>
+    <p>AI-powered economic, sports, and business intelligence for Burnaby, BC. Part of the Cascadia Innovation Corridor.</p>
+    <div class='bvs-hero-stats'>
+      <div><div class='val'>C$18B</div><div class='lbl'>Metro GDP</div></div>
+      <div><div class='val'>260K</div><div class='lbl'>Population</div></div>
+      <div><div class='val'>+2.8%</div><div class='lbl'>GDP Growth</div></div>
+      <div><div class='val'>C$74K</div><div class='lbl'>Median Income</div></div>
+    </div>
+  </div>
+</section>
+
+<section class='container' style='padding:32px 24px 0'>
+  <div style='display:flex;align-items:center;gap:12px;margin-bottom:16px'>
+    <span class='dash-tier-badge tier-emerging'>EXTENDED NETWORK</span>
+    <div class='ai-score score-mid' title='AI Opportunity Score'>63</div>
+    <span style='font-size:12px;color:var(--fg3)'>AI Opportunity Score</span>
+    <span style='font-size:11px;color:var(--fg2);margin-left:auto'>Extended Network City</span>
+  </div>
+  <div style='display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px'><span class='bvs-badge bvs-badge-sea'>Film Studio</span><span class='bvs-badge bvs-badge-sea'>SFU</span><span class='bvs-badge bvs-badge-sea'>High Tech</span><span class='bvs-badge bvs-badge-sea'>Metrotown</span></div>
+  <div style='display:flex;flex-wrap:wrap;align-items:center;gap:6px'>
+    <span class='improve-label'>Improvement Areas:</span>
+    <span class='improve-pill p-med'>Data Pending</span>
+  </div>
+</section>
+
+
+    <section class='container' style='padding:0 24px 32px'>
+      <div class='bvs-card'>
+        <div class='bvs-card-header'>Sports Profile</div>
+        <div style='font-size:13px;color:var(--fg2);line-height:1.7'>Simon Fraser University athletics, Burnaby Lake Sports Complex, Central Park sports fields</div>
+      </div>
+    </section>
+
+
+<section class='container' style='padding:0 24px 32px'>
+  <div class='ai-insight'>
+    <h4>AI-Generated City Analysis</h4>
+    <p>Burnaby, BC is part of the Cascadia Innovation Corridor connecting Vancouver, Seattle, and Portland. This AI-generated city profile aggregates data from municipal filings, regional economic reports, franchise financial disclosures, and government investment records. Data is updated quarterly. For full corridor analysis, <a href='dashboard.html' style='color:var(--primary)'>return to the Intelligence Dashboard</a>.</p>
+  </div>
+</section></main>
+<footer class="bvs-site-footer"><div class="footer-ribbon"></div><div class="container" style="padding-top:48px;">
+  <div class="footer-grid">
+    <!-- About -->
+    <div class="footer-col">
+      <div class="footer-logo">AI<span>BizVan360</span></div>
+      <p class="footer-about">AI-powered 360-degree regional intelligence platform for the Vancouver-Seattle Cascadia Innovation Corridor. Providing real-time economic, policy, and business intelligence.</p>
+      <div class="footer-social"><a href="#" title="LinkedIn">in</a><a href="#" title="X/Twitter">X</a><a href="#" title="GitHub">GH</a></div>
+    </div>
+    <!-- Navigate -->
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="index.html">Overview</a>
+      <a href="government.html">Government &amp; Policy</a>
+      <a href="dashboard.html">Intelligence Dashboard</a>
+      <a href="economics.html">Economics</a>
+      <a href="leisure.html">Leisure &amp; Attractions</a>
+      <a href="travel.html">Travel &amp; Hotels</a>
+      <a href="technology.html">Technology</a>
+      <a href="transportation.html">Transportation</a>
+      <a href="demographics.html">Demographics</a>
+      <a href="resources.html">Resources</a>
+      <a href="environment.html">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+      <a href="sports.html">Sports Business</a>
+      <a href="login.html" style="color:var(--primary);font-weight:600">Login / Sign Up</a>
+    </div>
+    <!-- Data Sources -->
+    <div class="footer-col">
+      <h4>Data Sources</h4>
+      <a href="https://www.statcan.gc.ca" target="_blank" rel="noopener">Statistics Canada</a>
+      <a href="https://www.bls.gov" target="_blank" rel="noopener">US Bureau of Labor Statistics</a>
+      <a href="https://www2.gov.bc.ca/gov/data" target="_blank" rel="noopener">BC Open Data</a>
+      <a href="https://data.wa.gov" target="_blank" rel="noopener">Washington Open Data</a>
+      <a href="https://www.bced.gov.bc.ca/doing/gazette.htm" target="_blank" rel="noopener">BC Gazette</a>
+      <a href="https://www.sr.wa.gov/register" target="_blank" rel="noopener">WA State Register</a>
+      <a href="https://secure.sos.state.or.us/oard/displayRules.action" target="_blank" rel="noopener">Oregon Bulletin</a>
+      <a href="https://www.bea.gov" target="_blank" rel="noopener">US Bureau of Econ Analysis</a>
+    </div>
+    <!-- Legal & More -->
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">GDPR Compliance</a>
+      <a href="#">Cookie Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Data Processing Agreement</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Disclaimer</a>
+    </div>
+    <!-- About & Contact -->
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#">About AIBizVan360</a>
+      <a href="#">Cascadia Innovation Corridor</a>
+      <a href="#">Methodology</a>
+      <a href="#">AI Models Used</a>
+      <a href="#">Contact Us</a>
+      <a href="#">API Documentation</a>
+      <a href="#">Status Page</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      <span>&copy; 2025 AIBizVan360. All rights reserved.</span>
+      <span class="footer-sep">|</span>
+      <a href="#">Privacy</a>
+      <span class="footer-sep">|</span>
+      <a href="#">Terms</a>
+      <span class="footer-sep">|</span>
+      <a href="#">Cookies</a>
+      <span class="footer-sep">|</span>
+      <a href="#">GDPR</a>
+    </div>
+    <div class="footer-bottom-right">
+      <span>Vancouver, BC &amp; Seattle, WA &mdash; The Cascadia Corridor</span>
+      <span class="footer-sep">|</span>
+      <span>Client Preview &mdash; No NDA Required</span>
+    </div>
+  </div>
+</div></footer>
+<script>(function(){
+  /* THEME TOGGLE */
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(){
+    var b = document.getElementById('ai-theme-btn');
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon();
+  }
+  var tb = document.getElementById('ai-theme-btn');
+  if (tb) tb.addEventListener('click', toggleTheme);
+  setIcon();
+
+  /* MOBILE MENU */
+  var mb = document.getElementById('ai-mobile-btn');
+  var mm = document.getElementById('ai-mobile-menu');
+  if (mb && mm) mb.addEventListener('click', function(){ mm.classList.toggle('open'); });
+
+  /* AI CHAT */
+  var cBtn=document.getElementById('ai-chat-btn'),cPan=document.getElementById('ai-chat-panel'),
+      cOvr=document.getElementById('ai-chat-overlay'),cCls=document.getElementById('ai-chat-close'),
+      cIn=document.getElementById('ai-chat-input'),cSnd=document.getElementById('ai-chat-send'),
+      cMsg=document.getElementById('ai-chat-messages'),mCards=document.querySelectorAll('.ai-model-card'),
+      aModel='gemini';
+  var MODELS=[{"id": "gemini", "name": "Gemini", "by": "Google"}, {"id": "gpt", "name": "ChatGPT", "by": "OpenAI"}, {"id": "grok", "name": "Grok", "by": "xAI"}, {"id": "claude", "name": "Claude", "by": "Anthropic"}, {"id": "qwen", "name": "Qwen", "by": "Alibaba"}, {"id": "minimax", "name": "MiniMax", "by": "MiniMax"}, {"id": "deepseek", "name": "DeepSeek", "by": "DeepSeek"}, {"id": "llama", "name": "Llama", "by": "Meta"}];
+  var RESPONSES={"trade": ["Cross-border trade between Vancouver and Seattle reached $38.2B this year, up 12.4% YoY. Key drivers: USMCA 2.0 reducing tariff friction on tech components and a 23% surge in clean energy equipment exports from BC to Washington.", "Port of Vancouver TEU throughput hit 4.2M containers. Asia-Pacific trade lane grew 18.3%. Seattle's Port of Tacoma saw 9% increase in cross-border rail freight.", "USMCA digital trade chapter in final negotiation could eliminate data localization barriers, benefiting 1,200+ cross-border tech companies in the corridor."], "tech": ["The Vancouver-Seattle corridor hosts 525K+ tech jobs across 15K startups. AI/ML companies represent 28.4% annual growth. Major clusters: Cloud (Amazon, Microsoft), AI research (UW, UBC), quantum computing.", "VC investment in the Cascadia corridor reached $8.7B in 12 months. AI startups attracted 42%. Notable: $340M for a Seattle AI chip startup, $280M for a Vancouver gen-AI company.", "AI job postings grew 34% YoY. Average AI engineer salary: Seattle $198K, Vancouver $172K CAD. Talent gap: ~12,000 workers."], "government": ["BC's $4.8B Green Energy Corridor Plan is in Phase 2 with $1.2B for cross-border transmission connecting BC hydro to Washington's grid via the Joint Clean Grid Initiative.", "WA State 2025 transportation budget: $892M for I-5 corridor, $156M for Cascadia high-speed rail planning. Federal government awarded $50M for Vancouver-Seattle-Portland rail study.", "The Cascadia GovTech Hub launched 6 AI demonstration projects across WA, BC, and Oregon, applying AI to healthcare, transportation, environmental monitoring, and citizen services."], "housing": ["Metro Vancouver median: $785K (+4.1%). Seattle metro: $725K (+3.8%). Cascadia Innovation Corridor estimates 1M unit shortage across WA, OR, BC over two decades.", "Rent growth averaged 5.2% YoY. BC's speculation tax reduced foreign purchases by 18%. Washington's missing-middle legislation expected to add 45,000 units in King County.", "Cross-border housing strategy: Portland, Seattle, Vancouver leaders signed MOUs to accelerate housing through shared policy frameworks and modular construction partnerships."], "energy": ["Corridor clean energy capacity: 12.8 GW (78.5% clean mix). Hydro dominates at 7.2 GW (BC Hydro + BPA). Wind at 2.4 GW growing 18.7% YoY. Solar at 1.8 GW growing 34.2% YoY. Nuclear (Columbia Station) provides 1.2 GW baseload. WA targets 95% clean electricity by 2030; BC targets net-zero by 2050 under CleanBC.", "The Joint Clean Grid Initiative is a proposed 3.2 GW HVDC cross-border transmission line connecting BC Hydro to Washington's grid (280 miles, $4.8B). Currently in FERC/CER environmental review (64% probability of completion by 2029). Would enable transnational grid balancing, pairing BC's dispatchable hydro with WA/OR's variable wind and solar.", "Green investment flows total $14.8B annually across the corridor (+34% YoY). Solar leads at $4.2B, followed by onshore wind ($3.4B) and offshore wind ($2.6B). The DOE awarded $1.2B for the Pacific NW Green Hydrogen Hub. Emerging sectors: enhanced geothermal at Newberry Caldera (OR) and Mt. Meager (BC), tidal energy at Admiralty Inlet (WA), and solid-state battery grid storage in Washougal, WA.", "Monte Carlo carbon modeling projects corridor CO2e declining from 42.2 Mt (2025) to 30.2 Mt (2030) under current policy. Transportation is the largest emissions sector at 26.1 Mt (62%). WA Cap-and-Invest and Canada's carbon pricing ($170/tonne by 2030) are primary price signals. AI ensemble models provide 7-year energy forecasts with quarterly retraining."], "climate": ["Cascadia 2050 Vision: regional leaders committed to cross-border climate resilience after 2021 heat dome and floods. Wildfire smoke affected the entire corridor.", "Climate adaptation spending: $2.1B. Projects: Seattle seawall $420M, Vancouver flood barriers $380M, Oregon wildfire network $95M.", "Bill Gates endorsed the mega-region approach at the 2022 Cascadia Vision 2050 conference, citing the corridor's unique position for carbon reduction innovation."], "transportation": ["High-speed rail: $50M federal funding. 250mph line would connect Vancouver-Seattle in under 1 hour, Portland in 2.5 hours. Business case study due Q3 2025.", "Seattle drivers lost 138 hours to congestion in 2024. Cross-border seaplane service: 3 daily flights, 55 min travel. Amtrak Cascades ridership +22%.", "Port of Vancouver: 4.2M TEU (+18.3%). Port of Seattle: 3.1M TEU (+8.7%). Combined: North America's 3rd-largest Pacific gateway at 7.3M TEU."], "ai": ["Cascadia GovTech Hub launched Responsible AI Principles for cross-border public sector use. North America's first bilateral AI governance framework.", "AI research spending exceeds $2.9B annually across the corridor. Allen Institute for AI (Seattle), UBC's AI lab (Vancouver), Microsoft Research, Amazon AGI lab.", "The corridor's unique position: cross-border data flows, shared AI research between UW and UBC, and 12 collaborative programs in AI/data science."], "demographics": ["Combined population: 6.87M. Vancouver metro 2.8M, Seattle metro 4.07M. Growth: 1.8% annually. International immigration drives 62% of Vancouver growth, 38% of Seattle.", "58% of adults hold a bachelor's degree or higher. Cross-border credential recognition under USMCA will further integrate the talent pool.", "Workforce: Tech 28%, Healthcare 16%, Professional Services 14%, Trade/Logistics 12%, Government 10%, Other 20%. STEM enrollment +15%."], "sports": ["The Cascadia sports economy is valued at $18.4B annually across 15+ major franchises and 200+ sports tech companies. Key business developments: Seattle Kraken valuation surged to $1.15B (+32% since 2021 expansion), the Seattle Mariners signed a $2.8B regional sports network deal, and Vancouver Whitecaps FC secured a $120M jersey sponsorship with Canon - the largest in MLS history. Sports betting, legalized in WA in 2021, generated $1.2B in handle in 2024, with DraftKings and FanDuel operating data analytics centers in Seattle.", "Stadium development pipeline totals $4.8B: Climate Pledge Arena renovation ($1.2B completed), Lumen Field $800M tech upgrade (in progress), BC Place $600M modernization (approved 2025), and the proposed Portland MLS expansion stadium ($650M). These projects drive 42,000 construction jobs and $2.1B in annual economic impact. The Seahawks new $400M practice facility in Renton features AI-integrated injury prevention systems from Kitman Labs.", "Esports is the fastest-growing sports business segment in the corridor: $680M annual revenue across 85+ organizations. Seattle Cloud9 (valuation $380M) and Vancouver Evil Geniuses ($210M) lead. The Pacific Northwest esports arena pipeline includes a $120M venue in Bellevue and a $80M training complex in Surrey, BC. AI-powered coaching platforms like Mobalytics (Seattle-based, $45M Series C) are transforming player development analytics.", "Sports tech startups in the corridor attracted $890M in VC funding in 2024, up 42% YoY. Key players: Stats Perform (Chicago/Seattle, $2.4B valuation) for AI-powered sports analytics, Zebra Technologies player tracking (used by NFL), and KenPom analytics (acquired by ESPN for $48M, founded in WA). The UW Sports Analytics Lab and UBC Sports Data Science program supply 200+ graduates annually. Major innovation: real-time biometric monitoring patches (WHOOP partnership with Seahawks) and computer vision referee assistance systems being tested in MLS."],
+"default": ["The Vancouver-Seattle Cascadia corridor: $890B combined GDP, one of North America's top economic zones. AIBizVan360 provides AI-powered intelligence tailored to your interests in this corridor.", "The Cascadia Innovation Corridor (est. 2015) has driven 10 years of cross-border collaboration in technology, clean energy, housing, and transportation.", "Key metrics: GDP $890B (+3.8%), Trade $38.2B (+12.4%), Tech jobs 525K (+15.2%), Port 4.2M TEU (+18.3%), Clean energy 12.8 GW (+8.7%). Ask about any sector for deeper analysis."]};
+
+  function openC(){if(cPan)cPan.classList.add('open');if(cOvr)cOvr.classList.add('open')}
+  function closeC(){if(cPan)cPan.classList.remove('open');if(cOvr)cOvr.classList.remove('open')}
+  if(cBtn)cBtn.addEventListener('click',openC);
+  if(cCls)cCls.addEventListener('click',closeC);
+  if(cOvr)cOvr.addEventListener('click',closeC);
+  mCards.forEach(function(c){c.addEventListener('click',function(){
+    mCards.forEach(function(x){x.classList.remove('active')});
+    c.classList.add('active'); aModel=c.getAttribute('data-model');
+  })});
+
+  function mi(id){return MODELS.find(function(m){return m.id===id})||MODELS[0]}
+  function classify(q){
+    var l=q.toLowerCase();
+    if(/trade|export|import|port|ship|container|tariff|usmca|customs/.test(l))return'trade';
+    if(/tech|startup|ai |artificial|machine learning|software|cloud|quantum|chip|semiconductor/.test(l))return'tech';
+    if(/gov|policy|legislation|bill|senate|parliament|minister|regulation|gazette/.test(l))return'government';
+    if(/hous|rent|real estate|property|afford|apartment|condo|homeless/.test(l))return'housing';
+    if(/energy|solar|wind|hydro|power|grid|renewable|carbon|emission|geothermal|environment|climate|ev |electric vehicle|battery|hydrogen|tidal|biomass|nuclear/.test(l))return'energy';
+    if(/climate|wildfire|flood|heat|environment|green|sustainab/.test(l))return'climate';
+    if(/transport|rail|train|highway|road|flight|airport|ferry|seaplane|traffic/.test(l))return'transportation';
+    if(/demograph|popul|workforce|immigra|talent|education|universit|student/.test(l))return'demographics';
+    if(/sport|stadium|arena|franchise|nba|nfl|mlb|nhl|mls|esport|broadcast right|sponsorship|sports betting|analytics.*sport|ticket revenue|jersey|merchandis/.test(l))return'sports';
+        if(/leisure|park|beach|garden|hiking|trail|venue|attraction|museum|gallery|nightlife|restaurant|brewery|winery|food cart|nightlife|festival|event|concert|theater|nightlife|night club|cocktail|bar|dining|cafe|coffee|tourist|tourism|sightsee/.test(l))return'leisure';
+    if(/travel|hotel|motel|resort|flight|airport|ferry|border crossing|passport|visa|itinerary|booking|check.in|luggage|rental car|train|amtrak|cascades rail|currency exchange|travel insurance/.test(l))return'travel';
+    return'default';
+  }
+  function resp(q){var p=RESPONSES[classify(q)]||RESPONSES['default'];return p[Math.floor(Math.random()*p.length)]}
+
+  function addMsg(t,w,mid){
+    if(!cMsg)return;var d=document.createElement('div');d.className='ai-chat-msg '+w;
+    if(w==='bot'&&mid){var tg=document.createElement('div');tg.className='model-tag';
+      var m=mi(mid);tg.textContent=m.name+' by '+m.by;d.appendChild(tg);}
+    var tx=document.createElement('div');tx.textContent=t;d.appendChild(tx);
+    cMsg.appendChild(d);cMsg.scrollTop=cMsg.scrollHeight;
+  }
+  function showTyp(){if(!cMsg)return;var d=document.createElement('div');d.className='ai-typing';d.id='ai-typ';
+    d.innerHTML='Analyzing corridor data <span>.</span><span>.</span><span>.</span>';cMsg.appendChild(d);cMsg.scrollTop=cMsg.scrollHeight;}
+  function hideTyp(){var e=document.getElementById('ai-typ');if(e)e.remove();}
+
+  function send(){
+    if(!cIn)return;var q=cIn.value.trim();if(!q)return;
+    addMsg(q,'user');cIn.value='';showTyp();
+    setTimeout(function(){hideTyp();addMsg(resp(q),'bot',aModel);},600+Math.random()*800);
+  }
+  if(cSnd)cSnd.addEventListener('click',send);
+  if(cIn)cIn.addEventListener('keydown',function(e){if(e.key==='Enter')send();});
+  if(cMsg)setTimeout(function(){addMsg('Welcome to AIBizVan360. Select an AI model above and ask about trade, policy, demographics, technology, or any aspect of the Vancouver-Seattle Cascadia corridor.','bot','gemini');},300);
+
+  /* LIVE NEWS TIMESTAMPS */
+  function tick(){var ts=document.querySelectorAll('.nw-auto');var o=[1,3,5,8,12,18,25,35,48,60,90,120];
+    ts.forEach(function(e,i){var m=o[i%o.length];e.textContent=m===1?'Just now':m+'m ago';});}
+  setInterval(tick,60000);tick();
+
+  /* LOGIN/SIGNUP TABS */
+  var tabs=document.querySelectorAll('.auth-tab');
+  var loginForm=document.getElementById('form-login');
+  var signupForm=document.getElementById('form-signup');
+  var authTitle=document.getElementById('auth-title');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('active')});
+    t.classList.add('active');
+    var tab=t.getAttribute('data-tab');
+    if(loginForm)loginForm.classList.toggle('active',tab==='login');
+    if(signupForm)signupForm.classList.toggle('active',tab==='signup');
+    if(authTitle)authTitle.textContent=tab==='login'?'Welcome to AIBizVan360':'Create Your Account';
+  });});
+
+  /* PASSWORD STRENGTH */
+  window.checkPw=function(pw){
+    var b1=document.getElementById('pw-b1'),b2=document.getElementById('pw-b2'),
+        b3=document.getElementById('pw-b3'),b4=document.getElementById('pw-b4'),
+        txt=document.getElementById('pw-text');
+    if(!b1)return;
+    var s=0;
+    if(pw.length>=8)s++;if(/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;
+    var bars=[b1,b2,b3,b4],labels=['','Weak','Fair','Good','Strong'],cls=['','weak','warn','filled','filled'];
+    for(var i=0;i<4;i++){bars[i].className='auth-strength-bar'+(i<s?' '+cls[s]:'');}
+    if(txt)txt.textContent=pw.length>0?labels[s]+' password':'';
+  };
+\n  /* DETAIL PANEL */
+  var dpO=document.getElementById('dp-overlay'),dpP=document.getElementById('dp-panel'),dpT=document.getElementById('dp-title'),dpB=document.getElementById('dp-body'),dpC=document.getElementById('dp-close');
+  function openDP(t,s,b){if(!dpP)return;dpT.textContent=t;dpB.innerHTML=b;dpP.classList.add('open');if(dpO)dpO.classList.add('open');document.body.style.overflow='hidden';}
+  function closeDP(){if(dpP)dpP.classList.remove('open');if(dpO)dpO.classList.remove('open');document.body.style.overflow='';}
+  if(dpC)dpC.addEventListener('click',closeDP);if(dpO)dpO.addEventListener('click',closeDP);document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDP();});
+  var DP_DATA={"seahawks":{s:"live",t:"Seattle Seahawks — AI Deep Dive",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 94%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$5.12B</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$624M</div><div class='lbl'>Annual Revenue</div></div><div class='dp-metric-item'><div class='val'>$128M</div><div class='lbl'>Operating Income</div></div><div class='dp-metric-item'><div class='val'>+18.4%</div><div class='lbl'>Value Growth YoY</div></div></div><div class='dp-section'><div class='dp-section-title'>Financial Analysis</div><div class='dp-text'>The Seahawks rank 6th among NFL franchises. Lumen Field (68,740 cap) sells out at 99.2% since 2019. The $800M tech modernization includes AI crowd analytics, 5G, and next-gen video boards increasing per-game revenue by 18%. Revenue: Broadcasting $340M (54.5%), Gate $148M (23.7%), Sponsorship $86M (13.8%), Merchandising $32M (5.1%). The Alaska Airlines $96M/5yr deal is the NFL\'s largest regional sponsorship.</div></div>"},"kraken":{s:"live",t:"Seattle Kraken — Expansion Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 91%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$1.15B</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$168M</div><div class='lbl'>Annual Revenue</div></div><div class='dp-metric-item'><div class='val'>+32%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>18,300</div><div class='lbl'>Avg Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>AI Analysis</div><div class='dp-text'>NHL\'s most valuable expansion franchise ever. Climate Pledge Arena\'s $1.2B renovation created the most tech-advanced arena in hockey. AI dynamic pricing increased per-game revenue 22%. Digital metrics lead NHL: 4.2M social followers, 380M content views in 2024. Cloud9 investment ($60M) creates unprecedented traditional-esports synergy, projected $24M annual cross-promotional revenue.</div></div>"},"canucks":{s:"live",t:"Vancouver Canucks — Cross-Border Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 89%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$1.18B</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$262M CAD</div><div class='lbl'>Annual Revenue</div></div><div class='dp-metric-item'><div class='val'>+22.6%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>18,900</div><div class='lbl'>Avg Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>Market Dynamics</div><div class='dp-text'>Only Canadian NHL team on the Pacific coast adjacent to the US market. Rogers Arena: highest average ticket price in Canada ($142 CAD). $68M/5yr Rogers sponsorship is NHL\'s largest. BC Place $600M modernization will boost game-day revenue 15% through improved transit and entertainment.</div></div>"},"trailblazers":{s:"live",t:"Portland Trail Blazers — Market Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 88%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$3.24B</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$304M</div><div class='lbl'>Annual Revenue</div></div><div class='dp-metric-item'><div class='val'>+15.8%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>19,441</div><div class='lbl'>Avg Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>Position Analysis</div><div class='dp-text'>Smallest NBA market with highest per-capita engagement. 44-year consecutive sellout streak (1977-2021) is longest in major NA sports. Nike $80M/4yr sponsorship reflects Portland as global sportswear HQ. Moda Center $120M renovation adds AR game viewing and AI concession recommendations.</div></div>"},"sounders":{s:"live",t:"Seattle Sounders FC — MLS Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 90%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$905M</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$98M</div><div class='lbl'>Revenue</div></div><div class='dp-metric-item'><div class='val'>+24.1%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>37,000+</div><div class='lbl'>Avg Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>Analysis</div><div class='dp-text'>MLS most valuable franchise. Lumen Field 37K+ capacity is largest in MLS. Concacaf Champions League 2022 victory expanded media value across Latin America. Amazon Prime deal includes 12 exclusive matches annually, boosting digital revenue significantly.</div></div>"},"mariners":{s:"live",t:"Seattle Mariners — MLB Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 86%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$2.28B</div><div class='lbl'>Franchise Value</div></div><div class='dp-metric-item'><div class='val'>$318M</div><div class='lbl'>Revenue</div></div><div class='dp-metric-item'><div class='val'>+12.2%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>29,000</div><div class='lbl'>Avg Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>Analysis</div><div class='dp-text'>T-Mobile Park waterfront location is one of MLB\'s most scenic. $2.8B RSN deal (Mariners Television Network, 2024) is largest in MLB history. T-Mobile $72M/3yr includes 5G stadium experience and AR fan engagement. Analytics department is one of MLB\'s most data-driven.</div></div>"},"whitecaps":{s:"live",t:"Vancouver Whitecaps — Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 88%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$485M</div><div class='lbl'>Value</div></div><div class='dp-metric-item'><div class='val'>$52M CAD</div><div class='lbl'>Revenue</div></div><div class='dp-metric-item'><div class='val'>+28.7%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>$120M</div><div class='lbl'>Canon Jersey Deal</div></div></div><div class='dp-section'><div class='dp-section-title'>Analysis</div><div class='dp-text'>$120M Canon jersey sponsorship is largest in MLS history, reflecting Vancouver as gateway to Asian markets. Partnership includes AI photography systems at BC Place. Academy produced 14 MLS first-round draft picks since 2019, generating $28M in transfer fees.</div></div>"},"timbers":{s:"live",t:"Portland Timbers — Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 85%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$685M</div><div class='lbl'>Value</div></div><div class='dp-metric-item'><div class='val'>$72M</div><div class='lbl'>Revenue</div></div><div class='dp-metric-item'><div class='val'>+19.3%</div><div class='lbl'>Growth YoY</div></div><div class='dp-metric-item'><div class='val'>20,400</div><div class='lbl'>Attendance</div></div></div><div class='dp-section'><div class='dp-section-title'>Analysis</div><div class='dp-text'>Providence Park sells out at 99.8% since 2018. Timber Army creates most intense atmosphere in NA soccer. Thorns (NWSL) add $85M, most valuable women\'s sports franchise globally. Providence Health $42M/4yr integrates health tech into fan experience.</div></div>"},"kitman":{s:"live",t:"Kitman Labs — Tech Deep Dive",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 96%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$85M</div><div class='lbl'>Series D</div></div><div class='dp-metric-item'><div class='val'>87%</div><div class='lbl'>Prediction Accuracy</div></div><div class='dp-metric-item'><div class='val'>2.4M</div><div class='lbl'>Daily Data Points</div></div><div class='dp-metric-item'><div class='val'>340</div><div class='lbl'>Employees</div></div></div><div class='dp-section'><div class='dp-section-title'>Technology Deep Dive</div><div class='dp-text'>Multi-modal transformer fusing wearable biometrics, injury history, and training load. Processes data from 22 NFL, 14 NHL, 8 MLB teams. Corridor Athlete Intelligence Network enables anonymized cross-team data sharing (Seahawks, Canucks, Trail Blazers). 72-hour forward injury prediction with attention mechanisms has reduced soft-tissue injuries 34%. Led by Tiger Global ($45M), Threshold Ventures ($25M), Vulcan Capital ($15M). Projects $120M ARR by 2027, IPO window 2028.</div></div>"},"cloud9":{s:"live",t:"Cloud9 — Esports Business Deep Dive",b:"<div class='dp-state dp-state-live'>✓ LIVE ANALYSIS</div><div class='dp-ai-badge'>AI Confidence: 87%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$380M</div><div class='lbl'>Valuation</div></div><div class='dp-metric-item'><div class='val'>$92M</div><div class='lbl'>Revenue</div></div><div class='dp-metric-item'><div class='val'>420+</div><div class='lbl'>Employees</div></div><div class='dp-metric-item'><div class='val'>+28%</div><div class='lbl'>Growth</div></div></div><div class='dp-section'><div class='dp-section-title'>Traditional Sports Crossover</div><div class='dp-text'>$60M strategic investment from Kraken ownership: first major traditional-esports investment. Shared 120K sq ft SoDo facility, cross-promotional inventory at Climate Pledge Arena ($8M/yr value), joint AI analytics ($12M R&D). Synergy model projects $24M annual cross-promotional revenue by 2027. Content division produces 2,400 hours monthly across 8 titles, 1.2B annual impressions.</div></div>"},"deal-merger":{s:"live",t:"Canopy + PNW Gaming Merger Analysis",b:"<div class='dp-state dp-state-live'>✓ LIVE</div><div class='dp-ai-badge'>AI Relevance: 94%</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$2.4B</div><div class='lbl'>Deal Value</div></div><div class='dp-metric-item'><div class='val'>Q4 2025</div><div class='lbl'>Expected Close</div></div><div class='dp-metric-item'><div class='val'>12M+</div><div class='lbl'>Combined Users</div></div><div class='dp-metric-item'><div class='val'>$180M</div><div class='lbl'>AI Synergies</div></div></div><div class='dp-section'><div class='dp-section-title'>AI Deal Analysis</div><div class='dp-text'>First major US-Canada sports betting consolidation. Canopy brings AI odds modeling (patent-pending neural network), PNW Gaming contributes 8M+ WA users. Cross-border data moat spans 3 jurisdictions. AI projects $180M annual savings. Regulatory: WA Gambling Commission (82% approval), BC Lottery (negotiation), Oregon (95% approval). Overall 64% probability of unconditional approval by Q4 2025.</div></div>"},"deal-amazon":{s:"beta",t:"Amazon Prime Streaming Deal",b:"<div class='dp-state dp-state-beta'>BETA — ANALYSIS IN PROGRESS</div><div class='dp-progress-bar'><div class='dp-progress-fill fill-beta'></div></div><div class='dp-text' style='color:var(--amber)'>AI is generating comprehensive deal analysis: financial modeling, AWS cost projections, competitive impact on RSNs, fan adoption forecasts.</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$4.8B</div><div class='lbl'>Total Deal</div></div><div class='dp-metric-item'><div class='val'>40</div><div class='lbl'>Exclusive Games/yr</div></div></div><div class='dp-text'>Covers Mariners, Sounders, Trail Blazers, Whitecaps. AI camera selection and 30-second highlight generation. Full analysis coming soon.</div><a href='login.html' class='dp-notify-btn'>Get Notified When Complete</a>"},"deal-statsperform":{s:"beta",t:"Stats Perform Vancouver Hub",b:"<div class='dp-state dp-state-beta'>BETA — DEEP DIVE IN PROGRESS</div><div class='dp-progress-bar'><div class='dp-progress-fill fill-beta'></div></div><div class='dp-text' style='color:var(--amber)'>AI compiling: computer vision refereeing tech, NLP commentary benchmarks, UBC/SFU talent pipeline, BC incentive impact, competitive landscape vs Sportradar and Second Spectrum.</div><div class='dp-metric-grid'><div class='dp-metric-item'><div class='val'>$2.4B</div><div class='lbl'>Parent Valuation</div></div><div class='dp-metric-item'><div class='val'>400</div><div class='lbl'>New Jobs</div></div></div><a href='login.html' class='dp-notify-btn'>Get Notified When Complete</a>"}};
+  function dpClick(id){var d=DP_DATA[id];if(!d){openDP('Analysis Coming Soon','planned','<div class=\"dp-state dp-state-planned\">PLANNED</div><div class=\"dp-progress-bar\"><div class=\"dp-progress-fill fill-planned\"></div></div><div class=\"dp-text\">This analysis is in our development pipeline. AI models are gathering data and generating intelligence. Subscribe to get notified.</div><a href=\"login.html\" class=\"dp-notify-btn\">Get Notified</a>');return;}openDP(d.t,d.s,d.b);}
+  document.addEventListener('click',function(e){var c=e.target.closest('[data-detail]');if(c)dpClick(c.getAttribute('data-detail'));});
+})();</script>
+</body>
+</html>

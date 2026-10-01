@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "signed_at": "2026-09-03T08:53:03.024276+00:00",
+  "algorithm_version": "CIRS v1.0.0",
+  "dataset_hash_sha256": "d4761be3e155ceeacc92963b697cdbd33e2c685342a70f9ea632cf4f0b30816b",
+  "city_hashes": [
+    {
+      "city_id": "seattle",
+      "city_name": "Seattle",
+      "city_record_hash": "1cd28f610e0d765e11ae035616ec0beada222ec34941a30bdedd17a6285bf2f4"
+    },
+    {
+      "city_id": "portland",
+      "city_name": "Portland",
+      "city_record_hash": "b2675da2d75e70c0f6accf5786f8f044ee4b413632e9f89a6233543ef6059ce8"
+    },
+    {
+      "city_id": "vancouver-bc",
+      "city_name": "Vancouver",
+      "city_record_hash": "d38e8c26eb2db286d53cc13dedc0cbca4ffd85909fab0bd83996d8c59ad58df7"
+    },
+    {
+      "city_id": "bellevue",
+      "city_name": "Bellevue",
+      "city_record_hash": "8d73f6d7d38edd8afab3a2071c977783bee0c17da4acab413a6e4d3af7cb0b3d"
+    },
+    {
+      "city_id": "tacoma",
+      "city_name": "Tacoma",
+      "city_record_hash": "944f7ea1db55742906c80689e1e083785c81a95c74a5c401e8afc1e9203bc0f1"
+    },
+    {
+      "city_id": "bellingham",
+      "city_name": "Bellingham",
+      "city_record_hash": "527db43bdd56eb540409f5fe669b8b7586e0be5bb7b1ad5c44c1f1c82fb3f9a6"
+    },
+    {
+      "city_id": "olympia",
+      "city_name": "Olympia",
+      "city_record_hash": "9b660b5b15778471e43afd7806a1ccbe3e723ed90242fe3fc6858ecc0e50d54b"
+    },
+    {
+      "city_id": "spokane",
+      "city_name": "Spokane",
+      "city_record_hash": "96c4add09aaa8963c9d76a5e94caa88cc024b1ede6dd02ce85016bc587d6afd8"
+    },
+    {
+      "city_id": "bend",
+      "city_name": "Bend",
+      "city_record_hash": "8ed31fc4701ec23130a19597d41a5a0ebbd3f6ab4854a2e074d89f3ea23e4d25"
+    },
+    {
+      "city_id": "victoria",
+      "city_name": "Victoria",
+      "city_record_hash": "8e73d31a128502a6a37f6bae5d9a0ae2544084ebf1a586995118afaa84ab47f7"
+    }
+  ]
+}

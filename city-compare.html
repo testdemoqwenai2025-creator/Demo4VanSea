@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>City-vs-City Intelligence Arena — AIBizVan360</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --radius: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.bvs-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,18,18,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(78,205,196,0.15);
+}
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a {
+  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s;
+}
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.bvs-live { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--primary-border); font-size: 10px; color: var(--primary); }
+.bvs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+/* Cards */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.bvs-card:hover { border-color: var(--primary-border); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-card-text { font-size: 13px; color: var(--fg2); line-height: 1.6; }
+.bvs-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+.bvs-badge-secondary { background: var(--bg4); color: var(--fg2); }
+
+/* Grid */
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* Page sections */
+.bvs-page-header { padding: 32px 0 24px; }
+.bvs-page-header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.bvs-page-header p { font-size: 14px; color: var(--fg2); max-width: 640px; }
+
+/* Progress bar */
+.bvs-bar { height: 6px; border-radius: 3px; background: var(--bg4); overflow: hidden; }
+.bvs-bar-fill { height: 100%; border-radius: 3px; }
+
+/* Section title */
+.bvs-section-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 24px; }
+
+/* Footer */
+.bvs-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 0; margin-top: 64px; text-align: center; }
+.bvs-footer p { font-size: 11px; color: var(--fg3); }
+
+/* Hero */
+.bvs-hero {
+  background: linear-gradient(135deg, #0d1f1f 0%, #142828 50%, #0f1a1a 100%);
+  padding: 64px 0; position: relative; overflow: hidden;
+}
+.bvs-hero::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(78,205,196,0.15) 0%, transparent 60%); }
+.bvs-hero::after { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 30%, rgba(108,155,255,0.08) 0%, transparent 50%); }
+.bvs-hero-content { position: relative; z-index: 1; }
+.bvs-hero h1 { font-size: 40px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+.bvs-hero h1 span { color: var(--primary); }
+.bvs-hero p { font-size: 16px; color: var(--fg2); max-width: 640px; margin-bottom: 24px; }
+
+/* ===== City Compare Specific ===== */
+.cc-selector { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 40px 0 24px; flex-wrap: wrap; }
+.cc-select-wrap { flex: 1; min-width: 220px; max-width: 400px; }
+.cc-select-wrap label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 8px; }
+.cc-select {
+  width: 100%; padding: 14px 16px; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.1); background: var(--bg2); color: var(--fg);
+  font-size: 15px; font-weight: 600; outline: none; font-family: inherit;
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  transition: border-color 0.15s;
+}
+.cc-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
+.cc-select option { background: var(--bg2); color: var(--fg); padding: 8px; }
+.cc-select optgroup { font-weight: 700; color: var(--primary); font-style: normal; }
+.cc-vs-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-dim), rgba(108,155,255,0.1));
+  border: 2px solid var(--primary-border);
+  font-size: 14px; font-weight: 800; color: var(--primary);
+  flex-shrink: 0; letter-spacing: 1px;
+}
+.cc-matchup-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+  border-radius: 999px; border: 1px solid var(--primary-border);
+  background: var(--primary-dim); font-size: 12px; font-weight: 600; color: var(--primary);
+  margin-bottom: 16px;
+}
+
+/* Chart */
+.cc-chart-section { display: flex; justify-content: center; padding: 24px 0 40px; }
+.cc-chart-wrap {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 24px; display: inline-block;
+}
+.cc-chart-legend { display: flex; justify-content: center; gap: 24px; margin-top: 16px; }
+.cc-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--fg2); }
+.cc-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Dimension cards */
+.cc-dim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cc-dim-card {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius); padding: 20px; transition: border-color 0.2s;
+}
+.cc-dim-card:hover { border-color: var(--primary-border); }
+.cc-dim-name { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.cc-dim-name .dim-index { font-size: 10px; color: var(--fg3); font-weight: 600; background: var(--bg4); padding: 2px 8px; border-radius: 4px; }
+.cc-dim-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.cc-bar-row { display: flex; align-items: center; gap: 10px; }
+.cc-bar-label { font-size: 11px; font-weight: 600; width: 40px; flex-shrink: 0; text-align: right; }
+.cc-bar-track { flex: 1; height: 8px; border-radius: 4px; background: var(--bg4); overflow: hidden; }
+.cc-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.cc-bar-val { font-size: 11px; font-weight: 700; width: 28px; flex-shrink: 0; }
+.cc-dim-narrative { font-size: 12px; color: var(--fg2); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 12px; }
+
+/* Verdict */
+.cc-verdict {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 32px; margin-top: 40px; position: relative; overflow: hidden;
+}
+.cc-verdict::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--blue));
+}
+.cc-verdict-winner {
+  text-align: center; margin-bottom: 28px;
+}
+.cc-verdict-winner h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.cc-verdict-winner p { font-size: 13px; color: var(--fg2); }
+.cc-verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+.cc-verdict-col h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.cc-verdict-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; }
+.cc-verdict-item .item-icon { font-size: 14px; flex-shrink: 0; width: 20px; text-align: center; }
+.cc-verdict-item .item-dim { flex: 1; }
+.cc-verdict-item .item-score { font-weight: 700; font-size: 12px; }
+.cc-verdict-summary {
+  font-size: 13px; color: var(--fg2); line-height: 1.8; padding: 20px;
+  background: var(--bg3); border-radius: var(--radius); border-left: 3px solid var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bvs-hero h1 { font-size: 28px; }
+  .bvs-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .bvs-nav { display: none; }
+  .cc-dim-grid { grid-template-columns: 1fr; }
+  .cc-verdict-grid { grid-template-columns: 1fr; }
+  .cc-selector { flex-direction: column; }
+  .cc-select-wrap { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .bvs-grid-2, .bvs-grid-3 { grid-template-columns: 1fr; }
+}
+
+/* === SHARED CSS (vban+footer+theme) === */
+
+/* === vban banners === */
+.vban-wrap { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; pointer-events: none; }
+.vban { pointer-events: auto; display: block; transition: opacity .2s; }
+.vban:hover { opacity: 0.85; }
+.vban-left { left: 0; }
+.vban-right { right: 0; }
+.vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
+.vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
+.vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
+.vban-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #4ecdc4; font-size: 9px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 600; letter-spacing: 0.03em; }
+[data-theme="light"] .vban-label { background: rgba(255,255,255,0.85); color: #0d1212; }
+[data-theme="light"] .vban-left { border-right-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .vban-right { border-left-color: rgba(0,0,0,0.06); }
+@media (max-width: 1400px) { .vban-wrap { display: none; } }
+
+/* === theme toggle === */
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2, #a0a0a0); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3, #1a2626); color: var(--fg, #e8e8e8); }
+[data-theme="light"] .ai-theme-toggle { border-color: rgba(0,0,0,0.1); color: #666; }
+[data-theme="light"] .ai-theme-toggle:hover { background: #f0f4f4; color: #333; }
+
+/* === footer === */
+.bvs-site-footer { background: var(--bg2, #111919); border-top: 1px solid rgba(78,205,196,0.15); margin-top: 48px; color: var(--fg2, #a0a0a0); }
+.footer-ribbon { height: 3px; background: linear-gradient(90deg, #4ecdc4, #6c9bff, #f0a500, #4ecdc4); background-size: 200% 100%; animation: footerGradient 8s linear infinite; }
+@keyframes footerGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 32px; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg, #e8e8e8); margin-bottom: 12px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3, #666); text-decoration: none; padding: 3px 0; transition: color .15s; }
+.footer-col a:hover { color: var(--primary, #4ecdc4); }
+.footer-logo { font-size: 18px; font-weight: 800; color: var(--fg, #e8e8e8); margin-bottom: 10px; }
+.footer-logo span { color: var(--primary, #4ecdc4); }
+.footer-about { font-size: 12px; color: var(--fg3, #666); line-height: 1.6; margin-bottom: 12px; }
+.footer-social { display: flex; gap: 8px; }
+.footer-social a { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--fg3, #666); text-decoration: none; transition: all .15s; }
+.footer-social a:hover { border-color: var(--primary, #4ecdc4); color: var(--primary, #4ecdc4); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: var(--fg3, #666); }
+.footer-bottom-left, .footer-bottom-right { display: flex; align-items: center; gap: 6px; }
+.footer-sep { color: var(--fg3, #444); }
+[data-theme="light"] .bvs-site-footer { background: #f0f4f4; border-top-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .footer-col a { color: #666; }
+[data-theme="light"] .footer-col a:hover { color: #0d9488; }
+[data-theme="light"] .footer-social a { border-color: rgba(0,0,0,0.1); color: #666; }
+[data-theme="light"] .footer-bottom { border-top-color: rgba(0,0,0,0.08); }
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* === END SHARED CSS === */
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head><body>
+<header class="bvs-header"><div class="bvs-header-inner">
+    <a href="index.html" class="bvs-logo">
+      <div class="bvs-logo-mark">AI</div>
+      <div class="bvs-logo-text">AI<span>BizVan360</span></div>
+    </a>
+    <nav class="bvs-nav"><a href="index.html" class="">Overview</a><a href="government.html" class="">Government</a><a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html">Dashboard 2</a><a href="economics.html" class="">Economics</a><a href="leisure.html" class="">Leisure</a><a href="travel.html" class="">Travel</a><a href="technology.html" class="">Technology</a><a href="transportation.html" class="">Transport</a><a href="demographics.html" class="">Demographics</a><a href="resources.html" class="">Resources</a><a href="environment.html" class="">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a><a href="sports.html" class="">Sports</a><a href="whatif-scenario.html" class="">What-If</a><a href="city-compare.html" class="active">City vs City</a></nav>
+      <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+  </div>
+</header>
+<main>
+<section class="bvs-hero">
+  <div class="container bvs-hero-content">
+    <div class="bvs-live"><span class="bvs-dot"></span> LIVE INTELLIGENCE</div>
+    <h1 style="margin-top:16px">City-vs-City <span>Intelligence Arena</span></h1>
+    <p>Head-to-head comparison of 30 corridor cities across 12 critical dimensions. Select any two cities to reveal strengths, weaknesses, and competitive positioning in the Cascadia Innovation Corridor.</p>
+    <div class="cc-matchup-badge">&#9878; 435 possible matchups</div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cc-selector">
+    <div class="cc-select-wrap">
+      <label>City A</label>
+      <select class="cc-select" id="cityA"></select>
+    </div>
+    <div class="cc-vs-badge">VS</div>
+    <div class="cc-select-wrap">
+      <label>City B</label>
+      <select class="cc-select" id="cityB"></select>
+    </div>
+  </div>
+
+  <div class="cc-chart-section">
+    <div class="cc-chart-wrap">
+      <canvas id="radarCanvas" width="500" height="500"></canvas>
+      <div class="cc-chart-legend">
+        <div class="cc-legend-item"><div class="cc-legend-dot" style="background:#4ecdc4"></div><span id="legendA">Vancouver</span></div>
+        <div class="cc-legend-item"><div class="cc-legend-dot" style="background:#6c9bff"></div><span id="legendB">Seattle</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:8px 0 24px">
+    <div class="bvs-section-title">Dimension Breakdown</div>
+    <div class="bvs-section-sub">AI-generated comparative analysis across all 12 intelligence dimensions</div>
+  </div>
+
+  <div class="cc-dim-grid" id="dimGrid"></div>
+
+  <div id="verdictSection"></div>
+</section>
+</main>
+
+<footer class="bvs-footer"><div class="container">
+  <p>&copy; 2025 AIBizVan360 &mdash; Cascadia Innovation Corridor Intelligence Platform &mdash; Vancouver, BC &amp; Seattle, WA</p>
+</div></footer>
+
+<script>
+(function(){
+
+var DIMS = ['GDP','Talent / Workforce','Cost of Living','Green Energy','Transit / Mobility','Housing Affordability','VC / Startup Access','Regulatory Ease','Cultural Capital','Education','Healthcare','Immigration Friendliness'];
+var DIM_SHORT = ['GDP','Talent','Cost of Living','Green Energy','Transit','Housing Afford.','VC/Startup','Regulatory Ease','Cultural Capital','Education','Healthcare','Immigration'];
+var INVERT = [false,false,true,false,false,true,false,false,false,false,false,false];
+
+var REGIONS = {
+  'BC Cities': [
+    {name:'Vancouver',s:[82,88,42,75,78,35,90,62,85,80,78,70]},
+    {name:'Victoria',s:[68,72,55,70,55,48,45,75,72,68,70,75]},
+    {name:'Surrey',s:[58,60,62,45,52,72,30,70,55,52,60,65]},
+    {name:'Burnaby',s:[62,65,58,65,68,65,35,68,50,60,62,60]},
+    {name:'Richmond',s:[60,58,60,55,62,70,28,72,65,58,58,68]},
+    {name:'New Westminster',s:[52,55,65,50,58,68,22,70,48,50,55,62]},
+    {name:'Coquitlam',s:[55,52,68,60,55,70,20,68,42,52,55,58]},
+    {name:'Nanaimo',s:[48,45,72,65,42,75,15,72,55,45,50,65]},
+    {name:'Abbotsford',s:[50,42,70,55,38,72,12,75,48,40,48,62]},
+    {name:'Langley',s:[48,40,68,50,35,72,10,72,42,38,45,58]}
+  ],
+  'WA Cities': [
+    {name:'Seattle',s:[92,90,38,70,82,30,95,55,88,85,78,65]},
+    {name:'Bellevue',s:[88,85,45,72,75,42,85,60,65,82,80,70]},
+    {name:'Tacoma',s:[55,58,60,45,50,65,25,68,58,55,55,60]},
+    {name:'Everett',s:[52,55,62,48,48,62,22,65,50,52,52,58]},
+    {name:'Olympia',s:[48,50,65,55,45,68,18,72,55,48,50,62]},
+    {name:'Spokane',s:[45,48,70,42,40,72,15,75,52,45,48,55]},
+    {name:'Kirkland',s:[72,70,50,65,65,55,60,62,55,68,65,65]},
+    {name:'Redmond',s:[75,72,48,68,62,52,65,58,48,70,68,62]},
+    {name:'Bellingham',s:[50,48,65,72,42,70,12,72,58,48,50,60]},
+    {name:'Vancouver WA',s:[48,45,62,48,45,68,15,70,50,45,48,58]}
+  ],
+  'OR Cities': [
+    {name:'Portland',s:[78,82,48,68,75,45,72,60,90,75,75,70]},
+    {name:'Eugene',s:[50,52,72,75,45,70,18,72,65,50,55,62]},
+    {name:'Salem',s:[42,45,72,55,40,72,12,75,50,42,48,55]},
+    {name:'Bend',s:[48,42,75,70,35,72,10,78,55,45,50,55]},
+    {name:'Beaverton',s:[55,55,58,62,58,65,22,68,50,52,55,60]}
+  ],
+  'Other': [
+    {name:'Snohomish',s:[45,48,65,55,38,70,12,70,48,45,48,55]},
+    {name:'Lake Oswego',s:[58,58,55,60,55,62,20,68,52,55,55,62]},
+    {name:'Oregon City',s:[42,45,68,58,40,70,10,72,50,42,48,55]},
+    {name:'Gresham',s:[40,42,70,52,38,72,10,72,45,40,45,52]},
+    {name:'Redmond OR',s:[42,40,72,60,35,72,8,72,48,38,45,50]}
+  ]
+};
+
+var allCities = [];
+for (var r in REGIONS) {
+  for (var i = 0; i < REGIONS[r].length; i++) {
+    allCities.push({name: REGIONS[r][i].name, region: r, s: REGIONS[r][i].s});
+  }
+}
+
+function getCity(name) {
+  for (var i = 0; i < allCities.length; i++) { if (allCities[i].name === name) return allCities[i]; }
+  return allCities[0];
+}
+
+function getDisplayScores(city) {
+  var d = [];
+  for (var i = 0; i < 12; i++) {
+    d.push(INVERT[i] ? (100 - city.s[i]) : city.s[i]);
+  }
+  return d;
+}
+
+function getAvgDisplay(city) {
+  var ds = getDisplayScores(city);
+  var sum = 0;
+  for (var i = 0; i < ds.length; i++) sum += ds[i];
+  return Math.round(sum / ds.length);
+}
+
+/* Populate dropdowns */
+function populateSelect(sel, defIdx) {
+  for (var r in REGIONS) {
+    var og = document.createElement('optgroup');
+    og.label = r;
+    for (var i = 0; i < REGIONS[r].length; i++) {
+      var opt = document.createElement('option');
+      opt.value = REGIONS[r][i].name;
+      opt.textContent = REGIONS[r][i].name;
+      og.appendChild(opt);
+    }
+    sel.appendChild(og);
+  }
+  sel.selectedIndex = defIdx;
+}
+
+var selA = document.getElementById('cityA');
+var selB = document.getElementById('cityB');
+populateSelect(selA, 0);
+populateSelect(selB, 10);
+
+/* Canvas radar chart */
+var canvas = document.getElementById('radarCanvas');
+var ctx = canvas.getContext('2d');
+var W = 500, H = 500, cx = W/2, cy = H/2, R = 200;
+var numAxes = 12;
+var angleStep = (2 * Math.PI) / numAxes;
+var startAngle = -Math.PI / 2;
+
+function drawRadar(cityA, cityB) {
+  ctx.clearRect(0, 0, W, H);
+
+  var dsA = getDisplayScores(cityA);
+  var dsB = getDisplayScores(cityB);
+
+  /* Grid circles */
+  for (var ring = 1; ring <= 5; ring++) {
+    var rr = (R / 5) * ring;
+    ctx.beginPath();
+    for (var i = 0; i <= numAxes; i++) {
+      var a = startAngle + angleStep * (i % numAxes);
+      var x = cx + rr * Math.cos(a);
+      var y = cy + rr * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  /* Axis lines */
+  for (var i = 0; i < numAxes; i++) {
+    var a = startAngle + angleStep * i;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  /* Axis labels */
+  ctx.font = '10px -apple-system, BlinkMacSystemFont, Segoe UI, Inter, Roboto, sans-serif';
+  ctx.fillStyle = '#a0a0a0';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (var i = 0; i < numAxes; i++) {
+    var a = startAngle + angleStep * i;
+    var lR = R + 28;
+    var lx = cx + lR * Math.cos(a);
+    var ly = cy + lR * Math.sin(a);
+    ctx.fillText(DIM_SHORT[i], lx, ly);
+  }
+
+  /* City B (blue, behind) */
+  ctx.beginPath();
+  for (var i = 0; i <= numAxes; i++) {
+    var idx = i % numAxes;
+    var a = startAngle + angleStep * idx;
+    var r = (dsB[idx] / 100) * R;
+    var x = cx + r * Math.cos(a);
+    var y = cy + r * Math.sin(a);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(108,155,255,0.15)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(108,155,255,0.8)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  /* City A (primary, front) */
+  ctx.beginPath();
+  for (var i = 0; i <= numAxes; i++) {
+    var idx = i % numAxes;
+    var a = startAngle + angleStep * idx;
+    var r = (dsA[idx] / 100) * R;
+    var x = cx + r * Math.cos(a);
+    var y = cy + r * Math.sin(a);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(78,205,196,0.15)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(78,205,196,0.8)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  /* Data points A */
+  for (var i = 0; i < numAxes; i++) {
+    var a = startAngle + angleStep * i;
+    var r = (dsA[i] / 100) * R;
+    ctx.beginPath();
+    ctx.arc(cx + r * Math.cos(a), cy + r * Math.sin(a), 3, 0, 2 * Math.PI);
+    ctx.fillStyle = '#4ecdc4';
+    ctx.fill();
+  }
+  /* Data points B */
+  for (var i = 0; i < numAxes; i++) {
+    var a = startAngle + angleStep * i;
+    var r = (dsB[i] / 100) * R;
+    ctx.beginPath();
+    ctx.arc(cx + r * Math.cos(a), cy + r * Math.sin(a), 3, 0, 2 * Math.PI);
+    ctx.fillStyle = '#6c9bff';
+    ctx.fill();
+  }
+}
+
+/* Narrative generator */
+function genNarrative(dimIdx, nameA, scoreA, nameB, scoreB) {
+  var dim = DIMS[dimIdx];
+  var diff = scoreA - scoreB;
+  var absD = Math.abs(diff);
+  var higher = diff > 0 ? nameA : nameB;
+  var lower = diff > 0 ? nameB : nameA;
+  var highS = Math.max(scoreA, scoreB);
+  var lowS = Math.min(scoreA, scoreB);
+
+  var templates = {
+    0: { /* GDP */
+      large: higher + " commands a significantly stronger economic base at " + highS + ", outpacing " + lower + " (" + lowS + ") by " + absD + " points. This reflects deeper industry concentration, larger enterprise presence, and greater aggregate output. For businesses seeking market scale, " + higher + " offers a more robust commercial ecosystem."
+    },
+    1: { /* Talent */
+      large: "With a talent score of " + highS + " vs. " + lower + "'s " + lowS + ", " + higher + " demonstrates a denser skilled workforce pipeline. The " + absD + "-point gap suggests stronger university-industry linkages and higher retention rates. Companies in talent-intensive sectors should factor this into location decisions."
+    },
+    2: { /* Cost of Living (inverted) */
+      large: "On cost of living (higher score = more affordable), " + higher + " scores " + highS + " against " + lower + "'s " + lowS + ", a " + absD + "-point advantage. This translates to meaningful savings on housing, goods, and services, making " + higher + " more attractive for cost-conscious operations and workforce retention."
+    },
+    3: { /* Green Energy */
+      large: higher + " leads in green energy adoption with a score of " + highS + " compared to " + lower + "'s " + lowS + ". The " + absD + "-point differential indicates stronger renewable infrastructure, cleaner grids, and more aggressive climate targets. Sustainability-focused enterprises will find " + higher + " more aligned with ESG objectives."
+    },
+    4: { /* Transit */
+      large: "Transit and mobility scores diverge notably: " + higher + " at " + highS + " versus " + lower + " at " + lowS + ". " + higher + " offers superior public transit coverage, active transportation infrastructure, and connectivity. This reduces logistics friction and improves workforce accessibility."
+    },
+    5: { /* Housing (inverted) */
+      large: "In housing affordability (higher = more affordable), " + higher + " (" + highS + ") significantly outperforms " + lower + " (" + lowS + "). The " + absD + "-point gap reflects more attainable home prices and rental markets, a critical factor for talent attraction and cost of operations."
+    },
+    6: { /* VC/Startup */
+      large: higher + "'s venture ecosystem scores " + highS + " against " + lower + "'s " + lowS + " — a " + absD + "-point advantage signaling deeper VC networks, more active deal flow, and stronger startup density. Entrepreneurs and investors will find " + higher + " a more fertile ground for capital formation."
+    },
+    7: { /* Regulatory */
+      large: "Regulatory ease favors " + higher + " (" + highS + ") over " + lower + " (" + lowS + "), with a " + absD + "-point spread. This suggests faster permitting, more business-friendly policy frameworks, and lower compliance friction. " + higher + " reduces the transaction cost of doing business."
+    },
+    8: { /* Cultural Capital */
+      large: "Cultural capital tilts toward " + higher + " at " + highS + " vs. " + lower + "'s " + lowS + ". The " + absD + "-point lead encompasses arts institutions, culinary scenes, diversity, and nightlife vibrancy. " + higher + " holds stronger appeal for creative-class talent."
+    },
+    9: { /* Education */
+      large: higher + " (" + highS + ") outpaces " + lower + " (" + lowS + ") by " + absD + " points in education. This reflects stronger K-12 systems, higher university rankings, and more robust research output. " + higher + "'s knowledge infrastructure provides a long-term competitive moat."
+    },
+    10: { /* Healthcare */
+      large: "Healthcare quality favors " + higher + " (" + highS + ") over " + lower + " (" + lowS + ") by " + absD + " points. Better hospital networks, specialist access, and public health outcomes make " + higher + " more resilient for workforce health management and corporate wellness programs."
+    },
+    11: { /* Immigration */
+      large: "On immigration friendliness, " + higher + " scores " + highS + " versus " + lower + "'s " + lowS + ", a " + absD + "-point advantage. This signals more welcoming policies, streamlined visa pathways, and stronger support infrastructure for international talent — critical in a globally competitive labor market."
+    }
+  };
+
+  var dimT = templates[dimIdx];
+  if (absD >= 15) {
+    return dimT.large;
+  } else if (absD >= 8) {
+    return higher + " holds a moderate edge in " + dim + " (" + highS + " vs " + lowS + "), a " + absD + "-point gap. While " + lower + " is competitive, " + higher + "'s advantage is meaningful for organizations prioritizing this dimension. The differential reflects structural factors in infrastructure, policy, or market maturity."
+  } else if (absD >= 3) {
+    return nameA + " and " + nameB + " are closely matched on " + dim + " (" + scoreA + " vs " + scoreB + "), with a narrow " + absD + "-point spread. Both cities offer comparable conditions in this area, and the choice between them on this dimension alone would be marginal. Context-specific factors may tip the balance."
+  } else {
+    return nameA + " (" + scoreA + ") and " + nameB + " (" + scoreB + ") are effectively tied on " + dim + ". With just " + absD + " points separating them, this dimension is a non-factor in differentiating the two cities. Organizations should weight other dimensions more heavily in their analysis."
+  }
+}
+
+/* Render dimension cards */
+function renderDims(cityA, cityB) {
+  var grid = document.getElementById('dimGrid');
+  var html = '';
+  var dsA = getDisplayScores(cityA);
+  var dsB = getDisplayScores(cityB);
+
+  for (var i = 0; i < 12; i++) {
+    var nar = genNarrative(i, cityA.name, dsA[i], cityB.name, dsB[i]);
+    html += '<div class="cc-dim-card">'
+      + '<div class="cc-dim-name"><span>' + DIMS[i] + '</span><span class="dim-index">D' + (i+1) + '</span></div>'
+      + '<div class="cc-dim-bars">'
+      + '<div class="cc-bar-row">'
+        + '<span class="cc-bar-label" style="color:#4ecdc4">' + cityA.name + '</span>'
+        + '<div class="cc-bar-track"><div class="cc-bar-fill" style="width:' + dsA[i] + '%;background:#4ecdc4"></div></div>'
+        + '<span class="cc-bar-val" style="color:#4ecdc4">' + dsA[i] + '</span>'
+      + '</div>'
+      + '<div class="cc-bar-row">'
+        + '<span class="cc-bar-label" style="color:#6c9bff">' + cityB.name + '</span>'
+        + '<div class="cc-bar-track"><div class="cc-bar-fill" style="width:' + dsB[i] + '%;background:#6c9bff"></div></div>'
+        + '<span class="cc-bar-val" style="color:#6c9bff">' + dsB[i] + '</span>'
+      + '</div>'
+      + '</div>'
+      + '<div class="cc-dim-narrative">' + nar + '</div>'
+      + '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+/* Render verdict */
+function renderVerdict(cityA, cityB) {
+  var dsA = getDisplayScores(cityA);
+  var dsB = getDisplayScores(cityB);
+  var avgA = getAvgDisplay(cityA);
+  var avgB = getAvgDisplay(cityB);
+
+  /* Top 3 strengths (highest dimensions) and weaknesses (lowest) */
+  var indexedA = [], indexedB = [];
+  for (var i = 0; i < 12; i++) {
+    indexedA.push({dim: DIMS[i], score: dsA[i], idx: i});
+    indexedB.push({dim: DIMS[i], score: dsB[i], idx: i});
+  }
+  indexedA.sort(function(a,b){return b.score - a.score;});
+  indexedB.sort(function(a,b){return b.score - a.score;});
+
+  var strengthsA = indexedA.slice(0,3);
+  var weaknessesA = indexedA.slice(-3).reverse();
+  var strengthsB = indexedB.slice(0,3);
+  var weaknessesB = indexedB.slice(-3).reverse();
+
+  /* Count dimension wins */
+  var winsA = 0, winsB = 0, ties = 0;
+  for (var i = 0; i < 12; i++) {
+    if (dsA[i] > dsB[i]) winsA++;
+    else if (dsB[i] > dsA[i]) winsB++;
+    else ties++;
+  }
+
+  var winner, winnerText, winColor;
+  if (avgA > avgB) {
+    winner = cityA.name;
+    winColor = '#4ecdc4';
+    winnerText = cityA.name + ' wins with an average score of ' + avgA + ' vs. ' + avgB;
+  } else if (avgB > avgA) {
+    winner = cityB.name;
+    winColor = '#6c9bff';
+    winnerText = cityB.name + ' wins with an average score of ' + avgB + ' vs. ' + avgA;
+  } else {
+    winner = 'Tie';
+    winColor = 'var(--amber)';
+    winnerText = 'Both cities are tied at an average score of ' + avgA;
+  }
+
+  function renderItem(item, color) {
+    return '<div class="cc-verdict-item">'
+      + '<span class="item-icon" style="color:' + color + '">' + (color === 'var(--green)' ? '\u25B2' : '\u25BC') + '</span>'
+      + '<span class="item-dim">' + item.dim + '</span>'
+      + '<span class="item-score" style="color:' + color + '">' + item.score + '</span>'
+      + '</div>';
+  }
+
+  var summary;
+  if (avgA > avgB) {
+    summary = cityA.name + " emerges as the stronger overall city, winning " + winsA + " of 12 dimensions with a composite score of " + avgA + ". Its top strengths include " + strengthsA[0].dim + " (" + strengthsA[0].score + "), " + strengthsA[1].dim + " (" + strengthsA[1].score + "), and " + strengthsA[2].dim + " (" + strengthsA[2].score + "). " + cityB.name + " counters with advantages in " + strengthsB[0].dim + " (" + strengthsB[0].score + ") and " + strengthsB[1].dim + " (" + strengthsB[1].score + "), but its weaknesses in " + weaknessesB[0].dim + " (" + weaknessesB[0].score + ") and " + weaknessesB[1].dim + " (" + weaknessesB[1].score + ") limit its overall competitiveness. For organizations evaluating corridor locations, " + cityA.name + " offers a more balanced profile across the 12 intelligence dimensions.";
+  } else if (avgB > avgA) {
+    summary = cityB.name + " takes the overall edge, winning " + winsB + " of 12 dimensions with a composite score of " + avgB + ". Key differentiators include " + strengthsB[0].dim + " (" + strengthsB[0].score + "), " + strengthsB[1].dim + " (" + strengthsB[1].score + "), and " + strengthsB[2].dim + " (" + strengthsB[2].score + "). While " + cityA.name + " shows strength in " + strengthsA[0].dim + " (" + strengthsA[0].score + "), gaps in " + weaknessesA[0].dim + " (" + weaknessesA[0].score + ") and " + weaknessesA[1].dim + " (" + weaknessesA[1].score + ") drag its composite down. Decision-makers should weigh " + cityB.name + "'s advantages against specific operational requirements.";
+  } else {
+    summary = cityA.name + " and " + cityB.name + " are remarkably well-matched, each winning " + winsA + " dimensions (with " + ties + " ties) for an identical composite score of " + avgA + ". " + cityA.name + " excels in " + strengthsA[0].dim + " and " + strengthsA[1].dim + ", while " + cityB.name + " leads in " + strengthsB[0].dim + " and " + strengthsB[1].dim + ". The choice between these two cities ultimately comes down to sector-specific priorities rather than overall superiority. Both represent strong options within the Cascadia Innovation Corridor.";
+  }
+
+  var html = '<div class="cc-verdict">'
+    + '<div class="cc-verdict-winner">'
+      + '<h2 style="color:' + winColor + '">' + (winner === 'Tie' ? '\u2261 It\'s a Tie' : '\u2605 ' + winner + ' Wins') + '</h2>'
+      + '<p>' + winnerText + ' &mdash; ' + winsA + '-' + winsB + (ties > 0 ? '-' + ties : '') + ' across 12 dimensions</p>'
+    + '</div>'
+    + '<div class="cc-verdict-grid">'
+      + '<div class="cc-verdict-col">'
+        + '<h3 style="color:#4ecdc4">\u25B2 ' + cityA.name + ' &mdash; Strengths & Weaknesses</h3>'
+        + '<div style="font-size:10px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Top 3 Strengths</div>'
+        + renderItem(strengthsA[0], 'var(--green)')
+        + renderItem(strengthsA[1], 'var(--green)')
+        + renderItem(strengthsA[2], 'var(--green)')
+        + '<div style="font-size:10px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:0.05em;margin:12px 0 6px">Top 3 Weaknesses</div>'
+        + renderItem(weaknessesA[0], 'var(--red)')
+        + renderItem(weaknessesA[1], 'var(--red)')
+        + renderItem(weaknessesA[2], 'var(--red)')
+      + '</div>'
+      + '<div class="cc-verdict-col">'
+        + '<h3 style="color:#6c9bff">\u25B2 ' + cityB.name + ' &mdash; Strengths & Weaknesses</h3>'
+        + '<div style="font-size:10px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Top 3 Strengths</div>'
+        + renderItem(strengthsB[0], 'var(--green)')
+        + renderItem(strengthsB[1], 'var(--green)')
+        + renderItem(strengthsB[2], 'var(--green)')
+        + '<div style="font-size:10px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:0.05em;margin:12px 0 6px">Top 3 Weaknesses</div>'
+        + renderItem(weaknessesB[0], 'var(--red)')
+        + renderItem(weaknessesB[1], 'var(--red)')
+        + renderItem(weaknessesB[2], 'var(--red)')
+      + '</div>'
+    + '</div>'
+    + '<div class="cc-verdict-summary">' + summary + '</div>'
+    + '</div>';
+
+  document.getElementById('verdictSection').innerHTML = html;
+}
+
+/* Update all */
+function update() {
+  var cA = getCity(selA.value);
+  var cB = getCity(selB.value);
+  document.getElementById('legendA').textContent = cA.name;
+  document.getElementById('legendB').textContent = cB.name;
+  drawRadar(cA, cB);
+  renderDims(cA, cB);
+  renderVerdict(cA, cB);
+}
+
+selA.addEventListener('change', update);
+selB.addEventListener('change', update);
+update();
+
+})();
+</script>
+<div class='vban-wrap' id='vban-wrap'>
+  <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision'>
+    <img src='images/banners/banner-left-cascadia-intelligence.png' alt='Cascadia Intelligence Vision' loading='lazy' />
+    <div class='vban-label'>Cascadia Intelligence</div>
+  </a>
+  <a class='vban vban-right' href='MARKET_ASSESSMENT.md' target='_blank' title='Cross-Border Economic Bridge'>
+    <img src='images/banners/banner-right-cross-border-intel.png' alt='Cross-Border Economic Bridge' loading='lazy' />
+    <div class='vban-label'>Cross-Border Bridge</div>
+  </a>
+</div>
+
+<script>
+(function(){
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(b){
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon(document.getElementById('ai-theme-btn'));
+  }
+  var btn = document.getElementById('ai-theme-btn');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  setIcon(btn);
+})();
+</script>
+
+</body></html>

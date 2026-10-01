@@ -1,0 +1,2203 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-09-03T08:47:55.689085Z",
+    "synthetic": true,
+    "disclaimer": "SYNTHETIC DATA \u2014 for platform v0 testing only. Real founder data will replace this incrementally starting Q4 2026.",
+    "privacy": "When real founders enroll, individual records will be visible only to the founder themselves. Aggregate stats will be public. No PII will be shared without explicit opt-in."
+  },
+  "stats": {
+    "total_founders": 50,
+    "by_status": {
+      "acquired": 9,
+      "operating": 26,
+      "shutdown": 11,
+      "pivoted": 4
+    },
+    "by_city": {
+      "portland": 6,
+      "spokane": 3,
+      "seattle": 18,
+      "bellevue": 10,
+      "vancouver-bc": 7,
+      "tacoma": 3,
+      "victoria": 1,
+      "bend": 1,
+      "bellingham": 1
+    },
+    "by_sector": {
+      "Sportswear": 2,
+      "Healthcare": 2,
+      "Technology": 6,
+      "Cloud Infrastructure": 8,
+      "Enterprise SaaS": 3,
+      "AI/ML": 6,
+      "SaaS": 5,
+      "Gaming": 3,
+      "Advanced Manufacturing": 2,
+      "CleanTech": 2,
+      "Manufacturing": 2,
+      "Marine Sciences": 1,
+      "Biotech": 4,
+      "Ag-Tech": 1,
+      "Outdoor Industry": 2,
+      "Logistics": 1
+    },
+    "median_total_raised_usd": 417671,
+    "median_satisfaction": 5,
+    "median_years_operating": 4,
+    "would_choose_same_city_pct": 48.0,
+    "_synthetic": true,
+    "_disclaimer": "All data in this file is SYNTHETIC for v0 platform testing. Real founder recruitment begins Q4 2026. Synthetic data will be incrementally replaced as real founders enroll."
+  },
+  "founders": [
+    {
+      "id": "f-001",
+      "founder_name": "Sofia Bauer",
+      "company_name": "LumenVentures",
+      "city_id": "portland",
+      "sector": "Sportswear",
+      "founding_date": "2019-03-24",
+      "status": "acquired",
+      "headcount": {
+        "founding": 1,
+        "year_1": 7,
+        "year_3": 16,
+        "final": 21,
+        "acquisition_year": 2021
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 171981,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 171981,
+            "date": "2021-10-01",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 8,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 6,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-002",
+      "founder_name": "Kofi Reyes",
+      "company_name": "SalishBio",
+      "city_id": "spokane",
+      "sector": "Healthcare",
+      "founding_date": "2020-03-07",
+      "status": "acquired",
+      "headcount": {
+        "founding": 4,
+        "year_1": 6,
+        "year_3": 14,
+        "final": 38,
+        "acquisition_year": 2024
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 72780,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 72780,
+            "date": "2022-08-18",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 10,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 5,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-003",
+      "founder_name": "Lucas Schmidt",
+      "company_name": "MistNetworks",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2019-05-03",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 11,
+        "year_3": 19,
+        "final": 24
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 959325,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 159842,
+            "date": "2021-05-23",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 799483,
+            "date": "2023-11-06",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 6,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-004",
+      "founder_name": "Chloe Garcia",
+      "company_name": "CascadeSoftware",
+      "city_id": "bellevue",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2015-06-13",
+      "status": "operating",
+      "headcount": {
+        "founding": 3,
+        "year_1": 6,
+        "year_3": 19,
+        "final": 34
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 1921469,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 387039,
+            "date": "2016-03-09",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 1534430,
+            "date": "2018-09-18",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 8,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 10,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-005",
+      "founder_name": "Elena Romero",
+      "company_name": "PixelBio",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2018-03-26",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 4,
+        "year_1": 9,
+        "year_3": 21,
+        "final": 3,
+        "shutdown_year": 2022
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 340049,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 340049,
+            "date": "2018-11-24",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 3,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": true
+      },
+      "years_operating": 7,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-006",
+      "founder_name": "Sofia Owusu",
+      "company_name": "NorthwestCapital",
+      "city_id": "bellevue",
+      "sector": "Enterprise SaaS",
+      "founding_date": "2022-03-17",
+      "status": "operating",
+      "headcount": {
+        "founding": 5,
+        "year_1": 8,
+        "year_3": 13,
+        "final": 24
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 9899492,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 332789,
+            "date": "2024-01-20",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2549360,
+            "date": "2024-02-12",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 7017343,
+            "date": "2024-04-19",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 3,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-007",
+      "founder_name": "Mei Pereira",
+      "company_name": "VertexStudio",
+      "city_id": "bellevue",
+      "sector": "Enterprise SaaS",
+      "founding_date": "2022-10-14",
+      "status": "operating",
+      "headcount": {
+        "founding": 3,
+        "year_1": 8,
+        "year_3": 21,
+        "final": 41
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 1089902,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 321358,
+            "date": "2023-02-08",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 768544,
+            "date": "2024-01-19",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": true
+      },
+      "years_operating": 3,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-008",
+      "founder_name": "Mei Pereira",
+      "company_name": "CedarSoftware",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2019-11-16",
+      "status": "operating",
+      "headcount": {
+        "founding": 5,
+        "year_1": 10,
+        "year_3": 16,
+        "final": 41
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 2571375,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 263416,
+            "date": "2019-02-04",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2307959,
+            "date": "2020-07-14",
+            "lead_investor_type": "Strategic"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 6,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-009",
+      "founder_name": "Zara Martinez",
+      "company_name": "SoundSystems",
+      "city_id": "spokane",
+      "sector": "Healthcare",
+      "founding_date": "2022-03-14",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 6,
+        "year_3": 21,
+        "final": 38
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 391911,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 391911,
+            "date": "2024-01-03",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 3,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-010",
+      "founder_name": "Lily Kobayashi",
+      "company_name": "LumenVentures",
+      "city_id": "seattle",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2024-08-10",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 7,
+        "year_3": null,
+        "final": 11
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 1,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-011",
+      "founder_name": "Ava Nguyen",
+      "company_name": "SalishSoftware",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2016-02-22",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 2,
+        "year_1": 8,
+        "year_3": 20,
+        "final": 2,
+        "shutdown_year": 2017
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 394652,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 394652,
+            "date": "2018-10-17",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 3,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 9,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-012",
+      "founder_name": "Yara Akhtar",
+      "company_name": "SalishBio",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2025-01-15",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 5,
+        "year_1": 8,
+        "year_3": null,
+        "final": 5,
+        "shutdown_year": 2026
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 86066,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 86066,
+            "date": "2025-06-10",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 3,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-013",
+      "founder_name": "Ingrid Nilsson",
+      "company_name": "CedarNetworks",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2017-02-04",
+      "status": "pivoted",
+      "headcount": {
+        "founding": 3,
+        "year_1": 9,
+        "year_3": 15,
+        "final": 20,
+        "pivot_year": 2020
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 382523,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 382523,
+            "date": "2018-09-16",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 8,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-014",
+      "founder_name": "Aroha Chen",
+      "company_name": "SalishBio",
+      "city_id": "portland",
+      "sector": "SaaS",
+      "founding_date": "2021-12-14",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 8,
+        "year_3": 11,
+        "final": 22
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 2157102,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 127643,
+            "date": "2022-03-02",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2029459,
+            "date": "2022-06-07",
+            "lead_investor_type": "Government Grant"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-015",
+      "founder_name": "Jordan Murphy",
+      "company_name": "LumenRobotics",
+      "city_id": "bellevue",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2025-03-14",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 4,
+        "year_1": 12,
+        "year_3": null,
+        "final": 8,
+        "shutdown_year": 2026
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 417671,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 417671,
+            "date": "2025-07-28",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-016",
+      "founder_name": "Aisha Costa",
+      "company_name": "CoastMaterials",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2021-05-28",
+      "status": "acquired",
+      "headcount": {
+        "founding": 5,
+        "year_1": 10,
+        "year_3": 23,
+        "final": 38,
+        "acquisition_year": 2025
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 49883593,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 110472,
+            "date": "2022-03-19",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 660462,
+            "date": "2022-10-14",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 8262632,
+            "date": "2023-10-17",
+            "lead_investor_type": "PNW VC"
+          },
+          {
+            "stage": "series-b",
+            "amount_usd": 40850027,
+            "date": "2025-04-09",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 10,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-017",
+      "founder_name": "Kenji Ferreira",
+      "company_name": "SalishAnalytics",
+      "city_id": "bellevue",
+      "sector": "Gaming",
+      "founding_date": "2025-06-20",
+      "status": "operating",
+      "headcount": {
+        "founding": 5,
+        "year_1": 9,
+        "year_3": null,
+        "final": 15
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-018",
+      "founder_name": "Lily Sullivan",
+      "company_name": "PixelRobotics",
+      "city_id": "portland",
+      "sector": "Advanced Manufacturing",
+      "founding_date": "2015-05-07",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 9,
+        "year_3": 19,
+        "final": 40
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 298085,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 298085,
+            "date": "2017-03-22",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 10,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-019",
+      "founder_name": "Jonas Larsen",
+      "company_name": "VertexBio",
+      "city_id": "bellevue",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2017-01-08",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 4,
+        "year_1": 9,
+        "year_3": 22,
+        "final": 6,
+        "shutdown_year": 2022
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 15450033,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 251315,
+            "date": "2018-07-08",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 523256,
+            "date": "2018-07-08",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 14675462,
+            "date": "2020-08-02",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 2,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 8,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-020",
+      "founder_name": "Mateo Bekele",
+      "company_name": "FjordVentures",
+      "city_id": "portland",
+      "sector": "SaaS",
+      "founding_date": "2024-10-27",
+      "status": "pivoted",
+      "headcount": {
+        "founding": 4,
+        "year_1": 7,
+        "year_3": null,
+        "final": 10,
+        "pivot_year": 2025
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": true
+      },
+      "years_operating": 1,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-021",
+      "founder_name": "Olivia Petrov",
+      "company_name": "MistTech",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2024-02-05",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 4,
+        "year_3": null,
+        "final": 10
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 294278,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 294278,
+            "date": "2025-01-07",
+            "lead_investor_type": "Strategic"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 1,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-022",
+      "founder_name": "Omar Pereira",
+      "company_name": "LumenVentures",
+      "city_id": "vancouver-bc",
+      "sector": "CleanTech",
+      "founding_date": "2019-07-28",
+      "status": "pivoted",
+      "headcount": {
+        "founding": 5,
+        "year_1": 8,
+        "year_3": 18,
+        "final": 22,
+        "pivot_year": 2020
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 2261044,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 65217,
+            "date": "2020-06-22",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2195827,
+            "date": "2022-03-27",
+            "lead_investor_type": "Strategic"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "non-binary",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 6,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-023",
+      "founder_name": "Tom\u00e1s Lindgren",
+      "company_name": "CascadeCollective",
+      "city_id": "seattle",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2021-01-09",
+      "status": "operating",
+      "headcount": {
+        "founding": 3,
+        "year_1": 7,
+        "year_3": 22,
+        "final": 34
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 486167,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 486167,
+            "date": "2022-05-27",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-024",
+      "founder_name": "Jordan Larsen",
+      "company_name": "CedarSystems",
+      "city_id": "tacoma",
+      "sector": "Manufacturing",
+      "founding_date": "2015-04-07",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 7,
+        "year_3": 20,
+        "final": 23
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 1368034,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 164276,
+            "date": "2016-12-09",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 1203758,
+            "date": "2018-10-24",
+            "lead_investor_type": "Government Grant"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 10,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-025",
+      "founder_name": "Bilal Owusu",
+      "company_name": "OlympicHealth",
+      "city_id": "portland",
+      "sector": "Advanced Manufacturing",
+      "founding_date": "2023-02-19",
+      "status": "operating",
+      "headcount": {
+        "founding": 3,
+        "year_1": 11,
+        "year_3": null,
+        "final": 12
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 5613264,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 346711,
+            "date": "2023-06-18",
+            "lead_investor_type": "Strategic"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2054286,
+            "date": "2023-09-21",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 3212267,
+            "date": "2024-08-04",
+            "lead_investor_type": "Strategic"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 2,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-026",
+      "founder_name": "Lily Mensah",
+      "company_name": "SkyNetworks",
+      "city_id": "victoria",
+      "sector": "Marine Sciences",
+      "founding_date": "2025-08-15",
+      "status": "acquired",
+      "headcount": {
+        "founding": 3,
+        "year_1": 11,
+        "year_3": null,
+        "final": 18,
+        "acquisition_year": 2027
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 10,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-027",
+      "founder_name": "Maya Schwartz",
+      "company_name": "CascadeBio",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2023-05-18",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 2,
+        "year_1": 9,
+        "year_3": null,
+        "final": 3,
+        "shutdown_year": 2025
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 2791858,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 412078,
+            "date": "2024-11-23",
+            "lead_investor_type": "Strategic"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2379780,
+            "date": "2024-02-10",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 2,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 2,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-028",
+      "founder_name": "Lucas Okafor",
+      "company_name": "LumenStudio",
+      "city_id": "bellevue",
+      "sector": "Gaming",
+      "founding_date": "2021-05-09",
+      "status": "operating",
+      "headcount": {
+        "founding": 3,
+        "year_1": 5,
+        "year_3": 19,
+        "final": 36
+      },
+      "funding": {
+        "stage_reached": "series-c+",
+        "total_raised_usd": 104633892,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 411844,
+            "date": "2021-04-07",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2530876,
+            "date": "2022-12-19",
+            "lead_investor_type": "Angel"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 13012487,
+            "date": "2023-02-27",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "series-b",
+            "amount_usd": 34880763,
+            "date": "2023-06-06",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-c+",
+            "amount_usd": 53797922,
+            "date": "2025-09-05",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "non-binary",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-029",
+      "founder_name": "Zara Singh",
+      "company_name": "CoastIndustries",
+      "city_id": "vancouver-bc",
+      "sector": "CleanTech",
+      "founding_date": "2021-08-11",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 9,
+        "year_3": 13,
+        "final": 25
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 1478305,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 352525,
+            "date": "2023-11-02",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 1125780,
+            "date": "2025-05-03",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-030",
+      "founder_name": "Theo Larsen",
+      "company_name": "PacificSciences",
+      "city_id": "vancouver-bc",
+      "sector": "Biotech",
+      "founding_date": "2022-07-10",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 9,
+        "year_3": 15,
+        "final": 35
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 396254,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 396254,
+            "date": "2022-03-08",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": true
+      },
+      "years_operating": 3,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-031",
+      "founder_name": "Arjun Owusu",
+      "company_name": "SkyStudio",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2021-11-08",
+      "status": "acquired",
+      "headcount": {
+        "founding": 4,
+        "year_1": 6,
+        "year_3": 17,
+        "final": 42,
+        "acquisition_year": 2023
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 189267,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 189267,
+            "date": "2021-02-02",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 9,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-032",
+      "founder_name": "Marcus Tran",
+      "company_name": "PacificFoundry",
+      "city_id": "vancouver-bc",
+      "sector": "Biotech",
+      "founding_date": "2022-08-15",
+      "status": "pivoted",
+      "headcount": {
+        "founding": 3,
+        "year_1": 9,
+        "year_3": 16,
+        "final": 17,
+        "pivot_year": 2023
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 403526,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 403526,
+            "date": "2024-10-01",
+            "lead_investor_type": "Government Grant"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 3,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-033",
+      "founder_name": "Ravi Davies",
+      "company_name": "StraitRobotics",
+      "city_id": "seattle",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2021-02-16",
+      "status": "acquired",
+      "headcount": {
+        "founding": 1,
+        "year_1": 9,
+        "year_3": 14,
+        "final": 32,
+        "acquisition_year": 2024
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 9278661,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 201109,
+            "date": "2023-07-27",
+            "lead_investor_type": "Angel"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 653918,
+            "date": "2024-02-11",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 8423634,
+            "date": "2024-07-28",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-034",
+      "founder_name": "Yuki Walsh",
+      "company_name": "SoundIndustries",
+      "city_id": "tacoma",
+      "sector": "Manufacturing",
+      "founding_date": "2016-05-18",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 3,
+        "year_3": 16,
+        "final": 35
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 13980250,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 422130,
+            "date": "2016-05-18",
+            "lead_investor_type": "PNW VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2816310,
+            "date": "2017-02-08",
+            "lead_investor_type": "PNW VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 10741810,
+            "date": "2017-11-27",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 9,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 9,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-035",
+      "founder_name": "Ingrid Rossi",
+      "company_name": "RainierNetworks",
+      "city_id": "vancouver-bc",
+      "sector": "Biotech",
+      "founding_date": "2020-10-17",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 8,
+        "year_3": 23,
+        "final": 39
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 51344,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 51344,
+            "date": "2021-12-10",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 5,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-036",
+      "founder_name": "Tom\u00e1s Petrov",
+      "company_name": "VertexFoundry",
+      "city_id": "vancouver-bc",
+      "sector": "SaaS",
+      "founding_date": "2025-04-19",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 1,
+        "year_1": 5,
+        "year_3": null,
+        "final": 0,
+        "shutdown_year": 2026
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 2,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-037",
+      "founder_name": "Olivia Davies",
+      "company_name": "QuantumTech",
+      "city_id": "spokane",
+      "sector": "Ag-Tech",
+      "founding_date": "2025-01-24",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 6,
+        "year_3": null,
+        "final": 10
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 0,
+        "rounds": []
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-038",
+      "founder_name": "Pascal Bauer",
+      "company_name": "NorthwestSystems",
+      "city_id": "bellevue",
+      "sector": "Gaming",
+      "founding_date": "2015-02-08",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 1,
+        "year_1": 6,
+        "year_3": 10,
+        "final": 1,
+        "shutdown_year": 2016
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 207006,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 207006,
+            "date": "2015-01-11",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 3,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 10,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-039",
+      "founder_name": "Ava Yamamoto",
+      "company_name": "SkyTech",
+      "city_id": "seattle",
+      "sector": "SaaS",
+      "founding_date": "2024-10-22",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 7,
+        "year_3": null,
+        "final": 11
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 3192214,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 399616,
+            "date": "2024-08-10",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2792598,
+            "date": "2024-02-15",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 1,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-040",
+      "founder_name": "Diego Kobayashi",
+      "company_name": "NorthwestLabs",
+      "city_id": "vancouver-bc",
+      "sector": "Biotech",
+      "founding_date": "2020-06-19",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 8,
+        "year_3": 11,
+        "final": 29
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 9715770,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 458059,
+            "date": "2022-01-20",
+            "lead_investor_type": "Government Grant"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2583425,
+            "date": "2023-04-20",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 6674286,
+            "date": "2025-04-20",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 5,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-041",
+      "founder_name": "Noah Rossi",
+      "company_name": "StoneMaterials",
+      "city_id": "bellevue",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2020-07-06",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 5,
+        "year_1": 11,
+        "year_3": 18,
+        "final": 7,
+        "shutdown_year": 2022
+      },
+      "funding": {
+        "stage_reached": "series-b",
+        "total_raised_usd": 55179260,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 302627,
+            "date": "2021-12-28",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 983056,
+            "date": "2022-02-05",
+            "lead_investor_type": "Bay Area VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 14346829,
+            "date": "2024-11-13",
+            "lead_investor_type": "Angel"
+          },
+          {
+            "stage": "series-b",
+            "amount_usd": 39546748,
+            "date": "2024-07-01",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 1,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 5,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-042",
+      "founder_name": "Kenji Larsen",
+      "company_name": "OlympicBio",
+      "city_id": "bend",
+      "sector": "Outdoor Industry",
+      "founding_date": "2021-10-18",
+      "status": "acquired",
+      "headcount": {
+        "founding": 4,
+        "year_1": 11,
+        "year_3": 18,
+        "final": 36,
+        "acquisition_year": 2025
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 73774,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 73774,
+            "date": "2021-05-16",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 7,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 4,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-043",
+      "founder_name": "Riya Schmidt",
+      "company_name": "RiverSciences",
+      "city_id": "bellevue",
+      "sector": "Enterprise SaaS",
+      "founding_date": "2023-03-14",
+      "status": "operating",
+      "headcount": {
+        "founding": 4,
+        "year_1": 8,
+        "year_3": null,
+        "final": 13
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 283148,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 283148,
+            "date": "2023-06-04",
+            "lead_investor_type": "Government Grant"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 2,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-044",
+      "founder_name": "Jordan Singh",
+      "company_name": "StraitSystems",
+      "city_id": "seattle",
+      "sector": "Cloud Infrastructure",
+      "founding_date": "2018-11-20",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 10,
+        "year_3": 22,
+        "final": 28
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 451162,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 451162,
+            "date": "2020-04-19",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 5,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 7,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-045",
+      "founder_name": "Jordan Rossi",
+      "company_name": "CascadiaMaterials",
+      "city_id": "seattle",
+      "sector": "SaaS",
+      "founding_date": "2024-02-22",
+      "status": "operating",
+      "headcount": {
+        "founding": 2,
+        "year_1": 8,
+        "year_3": null,
+        "final": 8
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 77472,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 77472,
+            "date": "2024-12-14",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 4,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": true
+      },
+      "years_operating": 1,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-046",
+      "founder_name": "Hannah Eriksson",
+      "company_name": "QuantumLabs",
+      "city_id": "portland",
+      "sector": "Sportswear",
+      "founding_date": "2025-11-17",
+      "status": "acquired",
+      "headcount": {
+        "founding": 1,
+        "year_1": 6,
+        "year_3": null,
+        "final": 10,
+        "acquisition_year": 2027
+      },
+      "funding": {
+        "stage_reached": "seed",
+        "total_raised_usd": 1404711,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 282554,
+            "date": "2025-02-11",
+            "lead_investor_type": "Angel"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 1122157,
+            "date": "2025-03-09",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 9,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-047",
+      "founder_name": "Mei Romero",
+      "company_name": "SoundSystems",
+      "city_id": "bellingham",
+      "sector": "Outdoor Industry",
+      "founding_date": "2023-09-24",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 4,
+        "year_1": 8,
+        "year_3": null,
+        "final": 3,
+        "shutdown_year": 2025
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 6814294,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 213865,
+            "date": "2024-06-22",
+            "lead_investor_type": "Canadian VC"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2069932,
+            "date": "2024-11-16",
+            "lead_investor_type": "PNW VC"
+          },
+          {
+            "stage": "series-a",
+            "amount_usd": 4530497,
+            "date": "2024-02-14",
+            "lead_investor_type": "PNW VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 3,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": false
+      },
+      "years_operating": 2,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-048",
+      "founder_name": "Mateo Singh",
+      "company_name": "NorthwestSciences",
+      "city_id": "seattle",
+      "sector": "AI/ML",
+      "founding_date": "2025-07-28",
+      "status": "shutdown",
+      "headcount": {
+        "founding": 3,
+        "year_1": 7,
+        "year_3": null,
+        "final": 4,
+        "shutdown_year": 2026
+      },
+      "funding": {
+        "stage_reached": "series-a",
+        "total_raised_usd": 2209230,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 167568,
+            "date": "2025-06-28",
+            "lead_investor_type": "Angel"
+          },
+          {
+            "stage": "seed",
+            "amount_usd": 2041662,
+            "date": "2025-05-19",
+            "lead_investor_type": "Bay Area VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 1,
+      "would_choose_same_city_again": false,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": false
+      },
+      "years_operating": 0,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-049",
+      "founder_name": "Cyrus Nguyen",
+      "company_name": "RainierTech",
+      "city_id": "tacoma",
+      "sector": "Logistics",
+      "founding_date": "2018-03-19",
+      "status": "operating",
+      "headcount": {
+        "founding": 1,
+        "year_1": 3,
+        "year_3": 17,
+        "final": 33
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 270113,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 270113,
+            "date": "2019-06-06",
+            "lead_investor_type": "Canadian VC"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 6,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "female",
+        "racial_minority": false,
+        "indigenous": false,
+        "immigrant": true,
+        "lgbtq": true
+      },
+      "years_operating": 7,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    },
+    {
+      "id": "f-050",
+      "founder_name": "Anika Tran",
+      "company_name": "SoundFoundry",
+      "city_id": "seattle",
+      "sector": "Technology",
+      "founding_date": "2019-11-14",
+      "status": "acquired",
+      "headcount": {
+        "founding": 3,
+        "year_1": 6,
+        "year_3": 21,
+        "final": 29,
+        "acquisition_year": 2025
+      },
+      "funding": {
+        "stage_reached": "pre-seed",
+        "total_raised_usd": 108138,
+        "rounds": [
+          {
+            "stage": "pre-seed",
+            "amount_usd": 108138,
+            "date": "2020-11-22",
+            "lead_investor_type": "Angel"
+          }
+        ]
+      },
+      "founder_satisfaction_1_10": 10,
+      "would_choose_same_city_again": true,
+      "demographics": {
+        "gender": "male",
+        "racial_minority": true,
+        "indigenous": false,
+        "immigrant": false,
+        "lgbtq": true
+      },
+      "years_operating": 6,
+      "last_survey_date": "2025-09-01",
+      "_synthetic": true
+    }
+  ]
+}

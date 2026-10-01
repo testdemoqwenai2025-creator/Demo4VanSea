@@ -1,0 +1,583 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "last_updated": "2026-09-03",
+    "region": "Cascadia Bioregion (US/CA Pacific Northwest)",
+    "notes": "Figures are baseline estimates compiled from US Census ACS, BEA GDP-by-metro, Statistics Canada, Bureau of Labor Statistics QCEW, and university IPEDS/Statistics Canada data. Annual verification recommended — see sources field per city. All currency in USD; CAD figures converted at 1 USD = 1.36 CAD.",
+    "sources_global": [
+      "BEA GDP by Metropolitan Area (2023 release)",
+      "US Census ACS 5-year estimates",
+      "Statistics Canada Census 2021 + updates",
+      "BLS Quarterly Census of Employment & Wages",
+      "Colliers North America Office Market Report Q4",
+      "IPEDS Completions Survey (CS degree data)",
+      "USGS National Seismic Hazard Maps",
+      "EPA Air Quality System"
+    ]
+  },
+
+  "cities": [
+    {
+      "id": "seattle",
+      "name": "Seattle",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6062,
+      "lng": -122.3321,
+      "population_metro": 4019000,
+      "gdp_metro_usd_billions": 471.2,
+      "gdp_growth_5yr_pct": 3.4,
+      "business_formations_per_1k": 14.2,
+      "median_household_income_usd": 110500,
+      "cost_of_living_index": 172.3,
+      "office_rent_psf_annual_usd": 54.0,
+      "top_sectors": [
+        {"sector": "Technology", "employment_share_pct": 18.6, "location_quotient": 2.71},
+        {"sector": "Aerospace", "employment_share_pct": 4.1, "location_quotient": 3.95},
+        {"sector": "Retail/E-commerce HQ", "employment_share_pct": 5.8, "location_quotient": 4.12},
+        {"sector": "Life Sciences", "employment_share_pct": 2.9, "location_quotient": 1.84},
+        {"sector": "Maritime/Logistics", "employment_share_pct": 3.4, "location_quotient": 2.20}
+      ],
+      "universities": [
+        {"name": "University of Washington", "enrollment": 60900, "cs_grads_annual": 920, "research_dollars_musd": 1620},
+        {"name": "Seattle University", "enrollment": 7100, "cs_grads_annual": 140, "research_dollars_musd": 12}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 7
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 230
+      },
+      "quality": {
+        "transit_score_1_100": 70,
+        "bike_score_1_100": 67,
+        "aqi_avg": 42,
+        "hospital_beds_per_1k": 3.2
+      },
+      "vc_presence_score_1_10": 9,
+      "notable_companies": ["Amazon", "Microsoft (Redmond)", "Starbucks", "Expedia", "Zillow"],
+      "ai_banner": {
+        "palette_primary": "#2E4756",
+        "palette_secondary": "#6B8E9B",
+        "palette_accent": "#D4A574",
+        "signature_elements": ["Space Needle silhouette", "Rainier Tower 'wrench' profile", "Smith Tower pyramid", "Port cranes at Harbor Island", "ferry wake in Elliott Bay"],
+        "fog_haze_level": "heavy",
+        "time_of_day": "pre-dawn blue hour"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "portland",
+      "name": "Portland",
+      "state": "OR",
+      "country": "US",
+      "lat": 45.5152,
+      "lng": -122.6784,
+      "population_metro": 2510000,
+      "gdp_metro_usd_billions": 178.6,
+      "gdp_growth_5yr_pct": 2.6,
+      "business_formations_per_1k": 13.8,
+      "median_household_income_usd": 87300,
+      "cost_of_living_index": 148.7,
+      "office_rent_psf_annual_usd": 32.5,
+      "top_sectors": [
+        {"sector": "Technology", "employment_share_pct": 11.2, "location_quotient": 1.63},
+        {"sector": "Sportswear/Outdoor", "employment_share_pct": 4.4, "location_quotient": 5.81},
+        {"sector": "Athletic & Footwear HQ", "employment_share_pct": 3.1, "location_quotient": 6.20},
+        {"sector": "Advanced Manufacturing", "employment_share_pct": 7.8, "location_quotient": 1.45},
+        {"sector": "Food & Beverage", "employment_share_pct": 3.6, "location_quotient": 2.10}
+      ],
+      "universities": [
+        {"name": "Oregon Health & Science University", "enrollment": 2900, "cs_grads_annual": 0, "research_dollars_musd": 580},
+        {"name": "Portland State University", "enrollment": 22600, "cs_grads_annual": 280, "research_dollars_musd": 65},
+        {"name": "University of Portland", "enrollment": 4100, "cs_grads_annual": 60, "research_dollars_musd": 8}
+      ],
+      "climate": {
+        "quake_risk_level": "moderate",
+        "wildfire_risk_level": "moderate",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 12
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 410
+      },
+      "quality": {
+        "transit_score_1_100": 65,
+        "bike_score_1_100": 87,
+        "aqi_avg": 48,
+        "hospital_beds_per_1k": 2.6
+      },
+      "vc_presence_score_1_10": 6,
+      "notable_companies": ["Nike (Beaverton)", "Columbia Sportswear", "Adidas NA", "Intel (Hillsboro)", "Puppet"],
+      "ai_banner": {
+        "palette_primary": "#3D5A4A",
+        "palette_secondary": "#8B7355",
+        "palette_accent": "#C8651E",
+        "signature_elements": ["Big Pink (Wells Fargo Center)", "St Johns Bridge cables", "Mount Hood behind industrial sheds", "Willamette River barge", "Powell's Books awning suggestion"],
+        "fog_haze_level": "moderate",
+        "time_of_day": "early morning overcast"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "vancouver-bc",
+      "name": "Vancouver",
+      "state": "BC",
+      "country": "CA",
+      "lat": 49.2827,
+      "lng": -123.1207,
+      "population_metro": 2632000,
+      "gdp_metro_usd_billions": 152.8,
+      "gdp_growth_5yr_pct": 3.1,
+      "business_formations_per_1k": 11.6,
+      "median_household_income_usd": 75400,
+      "cost_of_living_index": 168.4,
+      "office_rent_psf_annual_usd": 41.0,
+      "top_sectors": [
+        {"sector": "Technology", "employment_share_pct": 9.8, "location_quotient": 1.43},
+        {"sector": "Film & Television", "employment_share_pct": 3.4, "location_quotient": 4.27},
+        {"sector": "Natural Resources HQ", "employment_share_pct": 4.1, "location_quotient": 3.65},
+        {"sector": "Port/Logistics", "employment_share_pct": 5.2, "location_quotient": 2.95},
+        {"sector": "Tourism", "employment_share_pct": 9.1, "location_quotient": 2.18}
+      ],
+      "universities": [
+        {"name": "University of British Columbia", "enrollment": 66500, "cs_grads_annual": 720, "research_dollars_musd": 615},
+        {"name": "Simon Fraser University", "enrollment": 30100, "cs_grads_annual": 410, "research_dollars_musd": 145},
+        {"name": "BCIT", "enrollment": 49000, "cs_grads_annual": 380, "research_dollars_musd": 12}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 9
+      },
+      "cross_border": {
+        "currency": "CAD",
+        "corp_tax_rate_pct": 27.0,
+        "immigration_difficulty_1_10": 4,
+        "distance_to_canada_km": 0
+      },
+      "quality": {
+        "transit_score_1_100": 78,
+        "bike_score_1_100": 79,
+        "aqi_avg": 38,
+        "hospital_beds_per_1k": 2.9
+      },
+      "vc_presence_score_1_10": 7,
+      "notable_companies": ["Hootsuite", "Slack (origin)", "Clio", "Electronic Arts Vancouver", "Lululemon"],
+      "ai_banner": {
+        "palette_primary": "#1E4D5C",
+        "palette_secondary": "#5D7B6E",
+        "palette_accent": "#D4A882",
+        "signature_elements": ["Marine Building art deco crown", "Lions Gate Bridge towers", "Harbour Centre viewing deck", "North Shore mountains (Cypress/Howe)", "False Creek seawall curve"],
+        "fog_haze_level": "moderate",
+        "time_of_day": "blue hour"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "bellevue",
+      "name": "Bellevue",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6101,
+      "lng": -122.2014,
+      "population_metro": 4019000,
+      "gdp_metro_usd_billions": 471.2,
+      "gdp_growth_5yr_pct": 3.4,
+      "business_formations_per_1k": 16.1,
+      "median_household_income_usd": 148600,
+      "cost_of_living_index": 178.9,
+      "office_rent_psf_annual_usd": 49.5,
+      "top_sectors": [
+        {"sector": "Technology", "employment_share_pct": 22.4, "location_quotient": 3.26},
+        {"sector": "Gaming", "employment_share_pct": 3.8, "location_quotient": 5.94},
+        {"sector": "Cloud Infrastructure", "employment_share_pct": 6.2, "location_quotient": 6.81},
+        {"sector": "Real Estate/Dev", "employment_share_pct": 4.1, "location_quotient": 2.05}
+      ],
+      "universities": [
+        {"name": "Bellevue College", "enrollment": 14300, "cs_grads_annual": 180, "research_dollars_musd": 3}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 6
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 240
+      },
+      "quality": {
+        "transit_score_1_100": 52,
+        "bike_score_1_100": 61,
+        "aqi_avg": 39,
+        "hospital_beds_per_1k": 2.8
+      },
+      "vc_presence_score_1_10": 8,
+      "notable_companies": ["Microsoft", "Smartsheet", "Expedia Group", " valve (HQ Bellevue/Redmond)", "Symetra"],
+      "ai_banner": {
+        "palette_primary": "#34495E",
+        "palette_secondary": "#7D8C9A",
+        "palette_accent": "#B58860",
+        "signature_elements": ["Bellevue skyline glass towers", "Lake Washington reflective surface", "SR-520 floating bridge", "Evergreen tree line foreground", "Mount Rainier distant anchor"],
+        "fog_haze_level": "light",
+        "time_of_day": "late afternoon golden"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "tacoma",
+      "name": "Tacoma",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.2529,
+      "lng": -122.4443,
+      "population_metro": 940000,
+      "gdp_metro_usd_billions": 38.4,
+      "gdp_growth_5yr_pct": 2.9,
+      "business_formations_per_1k": 9.7,
+      "median_household_income_usd": 76900,
+      "cost_of_living_index": 124.6,
+      "office_rent_psf_annual_usd": 26.0,
+      "top_sectors": [
+        {"sector": "Port/Logistics", "employment_share_pct": 8.4, "location_quotient": 4.78},
+        {"sector": "Healthcare", "employment_share_pct": 11.2, "location_quotient": 1.42},
+        {"sector": "Military/Defense", "employment_share_pct": 6.7, "location_quotient": 3.12},
+        {"sector": "Manufacturing", "employment_share_pct": 7.9, "location_quotient": 1.65},
+        {"sector": "Education", "employment_share_pct": 9.1, "location_quotient": 1.48}
+      ],
+      "universities": [
+        {"name": "University of Puget Sound", "enrollment": 2400, "cs_grads_annual": 35, "research_dollars_musd": 4},
+        {"name": "University of Washington Tacoma", "enrollment": 5200, "cs_grads_annual": 110, "research_dollars_musd": 18},
+        {"name": "Pacific Lutheran University", "enrollment": 3100, "cs_grads_annual": 45, "research_dollars_musd": 5}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 8
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 240
+      },
+      "quality": {
+        "transit_score_1_100": 48,
+        "bike_score_1_100": 52,
+        "aqi_avg": 45,
+        "hospital_beds_per_1k": 2.7
+      },
+      "vc_presence_score_1_10": 3,
+      "notable_companies": ["MultiCare Health", "State Farm regional HQ", "Boeing (partial)", "Emerald Queen Casino", "Port of Tacoma"],
+      "ai_banner": {
+        "palette_primary": "#3F4A4F",
+        "palette_secondary": "#8B5A3C",
+        "palette_accent": "#D4A574",
+        "signature_elements": ["Museum of Glass cone", "Tacoma Narrows Bridge suspension cables", "Port of Tacoma container cranes", "Point Defiance fog line", "Brown & Haley smokestack (ALMOND ROCA)"],
+        "fog_haze_level": "heavy",
+        "time_of_day": "early morning fog"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "bellingham",
+      "name": "Bellingham",
+      "state": "WA",
+      "country": "US",
+      "lat": 48.7491,
+      "lng": -122.4781,
+      "population_metro": 234000,
+      "gdp_metro_usd_billions": 6.8,
+      "gdp_growth_5yr_pct": 2.4,
+      "business_formations_per_1k": 12.3,
+      "median_household_income_usd": 65800,
+      "cost_of_living_index": 119.2,
+      "office_rent_psf_annual_usd": 21.0,
+      "top_sectors": [
+        {"sector": "Education", "employment_share_pct": 12.4, "location_quotient": 2.01},
+        {"sector": "Tourism/Outdoor", "employment_share_pct": 9.7, "location_quotient": 2.32},
+        {"sector": "Healthcare", "employment_share_pct": 10.1, "location_quotient": 1.28},
+        {"sector": "Maritime/Fishing", "employment_share_pct": 3.2, "location_quotient": 3.85},
+        {"sector": "Craft Beverage", "employment_share_pct": 1.8, "location_quotient": 4.21}
+      ],
+      "universities": [
+        {"name": "Western Washington University", "enrollment": 16100, "cs_grads_annual": 180, "research_dollars_musd": 22},
+        {"name": "Bellingham Technical College", "enrollment": 2900, "cs_grads_annual": 25, "research_dollars_musd": 0}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 5
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 23
+      },
+      "quality": {
+        "transit_score_1_100": 41,
+        "bike_score_1_100": 68,
+        "aqi_avg": 35,
+        "hospital_beds_per_1k": 2.4
+      },
+      "vc_presence_score_1_10": 2,
+      "notable_companies": ["Alpha Technologies", "Wood Stone (home of Cascadia)", "Boundary Bay Brewery", "Bellingham Cold Storage"],
+      "ai_banner": {
+        "palette_primary": "#2C4A5E",
+        "palette_secondary": "#7A8B6E",
+        "palette_accent": "#D9A55C",
+        "signature_elements": ["Bellingham Bay log booms", "Mount Baker (Kulshan) glacial peak", "Fairhaven historic brick storefronts", "I-5 border crossing signage absence", "Whatcom Creek salmon fence"],
+        "fog_haze_level": "moderate",
+        "time_of_day": "morning mist"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "olympia",
+      "name": "Olympia",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.0379,
+      "lng": -122.9007,
+      "population_metro": 305000,
+      "gdp_metro_usd_billions": 9.6,
+      "gdp_growth_5yr_pct": 2.1,
+      "business_formations_per_1k": 8.9,
+      "median_household_income_usd": 72800,
+      "cost_of_living_index": 117.8,
+      "office_rent_psf_annual_usd": 22.5,
+      "top_sectors": [
+        {"sector": "Government", "employment_share_pct": 24.3, "location_quotient": 5.62},
+        {"sector": "Healthcare", "employment_share_pct": 11.8, "location_quotient": 1.49},
+        {"sector": "Education", "employment_share_pct": 8.6, "location_quotient": 1.39},
+        {"sector": "Brewing/Distilling", "employment_share_pct": 1.2, "location_quotient": 4.92},
+        {"sector": "Forestry/Natural Resources", "employment_share_pct": 2.7, "location_quotient": 2.18}
+      ],
+      "universities": [
+        {"name": "Evergreen State College", "enrollment": 3800, "cs_grads_annual": 0, "research_dollars_musd": 4},
+        {"name": "South Puget Sound CC", "enrollment": 6100, "cs_grads_annual": 60, "research_dollars_musd": 0}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 6
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 280
+      },
+      "quality": {
+        "transit_score_1_100": 44,
+        "bike_score_1_100": 58,
+        "aqi_avg": 36,
+        "hospital_beds_per_1k": 2.5
+      },
+      "vc_presence_score_1_10": 2,
+      "notable_companies": ["State of Washington", "WSECU", "Heritage Bank", "Olympic Health Alliance", "Port of Olympia"],
+      "ai_banner": {
+        "palette_primary": "#3D5C5C",
+        "palette_secondary": "#8B7D6B",
+        "palette_accent": "#C18452",
+        "signature_elements": ["State Capitol dome and reflecting pool", "Budd Bay inlet at low tide", "Capitol Forest treeline", "Fourth Avenue Bridge", "Deschutes River estuary mudflats"],
+        "fog_haze_level": "heavy",
+        "time_of_day": "winter solstice afternoon"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "spokane",
+      "name": "Spokane",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6588,
+      "lng": -117.4260,
+      "population_metro": 588000,
+      "gdp_metro_usd_billions": 24.7,
+      "gdp_growth_5yr_pct": 2.8,
+      "business_formations_per_1k": 10.2,
+      "median_household_income_usd": 64900,
+      "cost_of_living_index": 102.4,
+      "office_rent_psf_annual_usd": 19.0,
+      "top_sectors": [
+        {"sector": "Healthcare", "employment_share_pct": 13.8, "location_quotient": 1.74},
+        {"sector": "Education", "employment_share_pct": 9.4, "location_quotient": 1.52},
+        {"sector": "Aerospace Manufacturing", "employment_share_pct": 3.2, "location_quotient": 3.08},
+        {"sector": "Logistics/Warehousing", "employment_share_pct": 7.1, "location_quotient": 1.88},
+        {"sector": "Ag-Tech", "employment_share_pct": 1.9, "location_quotient": 2.45}
+      ],
+      "universities": [
+        {"name": "Gonzaga University", "enrollment": 7800, "cs_grads_annual": 110, "research_dollars_musd": 18},
+        {"name": "Eastern Washington University", "enrollment": 11400, "cs_grads_annual": 140, "research_dollars_musd": 12},
+        {"name": "Washington State Spokane (Health Sci)", "enrollment": 1600, "cs_grads_annual": 0, "research_dollars_musd": 48}
+      ],
+      "climate": {
+        "quake_risk_level": "low",
+        "wildfire_risk_level": "high",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 22
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 180
+      },
+      "quality": {
+        "transit_score_1_100": 38,
+        "bike_score_1_100": 49,
+        "aqi_avg": 62,
+        "hospital_beds_per_1k": 3.0
+      },
+      "vc_presence_score_1_10": 3,
+      "notable_companies": ["Itron", "Goodwill Industries NW", "Avista", "Multiplying Good", "Spokane Tribal Casino"],
+      "ai_banner": {
+        "palette_primary": "#5C5A3E",
+        "palette_secondary": "#9B7B4A",
+        "palette_accent": "#B58860",
+        "signature_elements": ["Spokane Falls upper/lower falls", "Riverfront Park clock tower", "Monroe Street Bridge arches", "Bing Crosby Theater marquee", "Lilac bushes in foreground"],
+        "fog_haze_level": "light",
+        "time_of_day": "summer wildfire-smoke afternoon"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "bend",
+      "name": "Bend",
+      "state": "OR",
+      "country": "US",
+      "lat": 44.0582,
+      "lng": -121.3153,
+      "population_metro": 198000,
+      "gdp_metro_usd_billions": 7.9,
+      "gdp_growth_5yr_pct": 4.2,
+      "business_formations_per_1k": 18.6,
+      "median_household_income_usd": 82100,
+      "cost_of_living_index": 138.6,
+      "office_rent_psf_annual_usd": 28.0,
+      "top_sectors": [
+        {"sector": "Outdoor Industry", "employment_share_pct": 6.4, "location_quotient": 8.43},
+        {"sector": "Craft Beverage", "employment_share_pct": 2.1, "location_quotient": 6.12},
+        {"sector": "Remote Work Tech", "employment_share_pct": 8.2, "location_quotient": 1.95},
+        {"sector": "Healthcare", "employment_share_pct": 9.7, "location_quotient": 1.23},
+        {"sector": "Aerospace Components", "employment_share_pct": 1.6, "location_quotient": 2.84}
+      ],
+      "universities": [
+        {"name": "Oregon State Cascades", "enrollment": 1900, "cs_grads_annual": 30, "research_dollars_musd": 4},
+        {"name": "Central Oregon CC", "enrollment": 7400, "cs_grads_annual": 80, "research_dollars_musd": 1}
+      ],
+      "climate": {
+        "quake_risk_level": "low",
+        "wildfire_risk_level": "high",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 18
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 580
+      },
+      "quality": {
+        "transit_score_1_100": 32,
+        "bike_score_1_100": 64,
+        "aqi_avg": 55,
+        "hospital_beds_per_1k": 2.0
+      },
+      "vc_presence_score_1_10": 4,
+      "notable_companies": ["Les Schwab HQ", "Mt Bachelor", "PDT (Phocus)", "Hydro Flask", "Bend Research (Lonza)"],
+      "ai_banner": {
+        "palette_primary": "#6B5D3F",
+        "palette_secondary": "#A89058",
+        "palette_accent": "#7A4A2E",
+        "signature_elements": ["Pilot Butte cinder cone", "Deschutes River Mirror Pond", "Three Sisters peaks on horizon", "Old Mill District smokestacks", "Ponderosa pine trunks in foreground"],
+        "fog_haze_level": "light smoke",
+        "time_of_day": "high desert golden hour"
+      },
+      "last_updated": "2026-09-03"
+    },
+
+    {
+      "id": "victoria",
+      "name": "Victoria",
+      "state": "BC",
+      "country": "CA",
+      "lat": 48.4284,
+      "lng": -123.3656,
+      "population_metro": 397000,
+      "gdp_metro_usd_billions": 18.4,
+      "gdp_growth_5yr_pct": 2.7,
+      "business_formations_per_1k": 10.4,
+      "median_household_income_usd": 71200,
+      "cost_of_living_index": 152.8,
+      "office_rent_psf_annual_usd": 27.5,
+      "top_sectors": [
+        {"sector": "Technology", "employment_share_pct": 8.6, "location_quotient": 1.25},
+        {"sector": "Tourism", "employment_share_pct": 12.4, "location_quotient": 2.97},
+        {"sector": "Government (Provincial)", "employment_share_pct": 14.1, "location_quotient": 3.26},
+        {"sector": "Marine/Ocean Sciences", "employment_share_pct": 1.8, "location_quotient": 4.18},
+        {"sector": "Retiree Services", "employment_share_pct": 6.7, "location_quotient": 2.04}
+      ],
+      "universities": [
+        {"name": "University of Victoria", "enrollment": 22100, "cs_grads_annual": 280, "research_dollars_musd": 145},
+        {"name": "Royal Roads University", "enrollment": 3400, "cs_grads_annual": 45, "research_dollars_musd": 8},
+        {"name": "Camosun College", "enrollment": 18500, "cs_grads_annual": 180, "research_dollars_musd": 2}
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 4
+      },
+      "cross_border": {
+        "currency": "CAD",
+        "corp_tax_rate_pct": 27.0,
+        "immigration_difficulty_1_10": 4,
+        "distance_to_canada_km": 0
+      },
+      "quality": {
+        "transit_score_1_100": 55,
+        "bike_score_1_100": 73,
+        "aqi_avg": 31,
+        "hospital_beds_per_1k": 2.6
+      },
+      "vc_presence_score_1_10": 4,
+      "notable_companies": ["Bench Accounting (origin)", "Kano Insights", "Carmanah Tech", "BC Ferries HQ", "DND Pacific"],
+      "ai_banner": {
+        "palette_primary": "#2E4A3F",
+        "palette_secondary": "#8B9D7E",
+        "palette_accent": "#D4B07A",
+        "signature_elements": ["BC Parliament Buildings lit at dusk", "Empress Hotel ivy facade", "Inner Harbour causeway", "Olympic Mountains across Strait of Juan de Fuca", "Butchart Gardens rose arbor suggestion"],
+        "fog_haze_level": "light",
+        "time_of_day": "twilight with twinkle lights"
+      },
+      "last_updated": "2026-09-03"
+    }
+  ]
+}

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIBizVan360 — Biodiversity of Cascadia</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --bio-green: #27ae60; --bio-blue: #2980b9; --bio-amber: #d4a017; --bio-purple: #8e44ad;
+  --radius: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.bvs-header { position: sticky; top: 0; z-index: 100; background: rgba(13,18,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(78,205,196,0.15); }
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s; }
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.ai-actions { display: flex; align-items: center; gap: 6px; }
+.ai-home-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--primary); background: var(--primary-dim); border: 1px solid var(--primary-border); transition: all .15s; text-decoration: none; }
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3); color: var(--fg); }
+[data-theme="light"] { background: #f5f7f7; color: #1a2626; }
+[data-theme="light"] .bvs-header { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .bvs-logo-text { color: #1a2626; }
+[data-theme="light"] .bvs-nav a { color: #666; }
+[data-theme="light"] .ai-theme-toggle { color: #666; border-color: rgba(0,0,0,0.1); }
+
+/* Cards */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; }
+[data-theme="light"] .bvs-card { background: #fff; border-color: rgba(0,0,0,0.06); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.bvs-grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .bvs-grid-2, .bvs-grid-3, .bvs-grid-4 { grid-template-columns: 1fr; } }
+.bvs-section-title { font-size: 20px; font-weight: 800; margin: 32px 0 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 16px; }
+
+/* Hero */
+.bio-hero {
+  background: radial-gradient(ellipse at 30% 50%, rgba(39,174,96,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(46,204,113,0.12) 0%, transparent 50%),
+              linear-gradient(180deg, #0a1f1a 0%, #0d1212 100%);
+  border-radius: 12px;
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.bio-hero h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #4ecdc4, #27ae60, #2ecc71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.bio-hero p { font-size: 14px; color: var(--fg2); max-width: 700px; margin: 0 auto 24px; line-height: 1.7; }
+.bio-hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.bio-hero-stat { text-align: center; }
+.bio-hero-stat .num { font-size: 28px; font-weight: 800; color: var(--bio-green); }
+.bio-hero-stat .lbl { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Species category cards */
+.species-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.species-cat {
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border-top: 3px solid var(--bio-green);
+}
+.species-cat:hover { border-color: var(--primary-border); transform: translateY(-2px); }
+.species-cat.active { border-color: var(--primary); background: var(--primary-dim); }
+.species-cat .emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+.species-cat .name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.species-cat .count { font-size: 10px; color: var(--fg3); margin-top: 2px; }
+
+/* Load gallery button */
+.load-gallery-section {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--bg2);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px dashed rgba(78,205,196,0.2);
+}
+.load-gallery-btn {
+  background: linear-gradient(135deg, var(--bio-green), var(--primary));
+  color: white;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(39,174,96,0.3);
+}
+.load-gallery-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(39,174,96,0.4); }
+.load-gallery-btn:disabled { opacity: 0.6; cursor: wait; }
+.load-gallery-note { font-size: 11px; color: var(--fg3); margin-top: 12px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+/* Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.gallery-item {
+  background: var(--bg2);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.gallery-item:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-color: var(--primary-border); }
+.gallery-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg3); }
+.gallery-item-info { padding: 10px 12px; }
+.gallery-item-species { font-size: 12px; font-weight: 700; color: var(--fg); line-height: 1.3; }
+.gallery-item-meta { font-size: 10px; color: var(--fg3); margin-top: 4px; line-height: 1.4; }
+.gallery-item-credit { font-size: 9px; color: var(--fg3); margin-top: 2px; font-style: italic; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal-content {
+  background: var(--bg2);
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--primary-border);
+}
+.modal-img { width: 100%; max-height: 500px; object-fit: contain; background: var(--bg); }
+.modal-body { padding: 20px 24px; }
+.modal-species { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 4px; }
+.modal-taxon { font-size: 12px; color: var(--fg3); font-style: italic; margin-bottom: 12px; }
+.modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--fg2); }
+.modal-meta strong { color: var(--fg); }
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(0,0,0,0.7); color: white;
+  border: none; width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer;
+  font-size: 20px; line-height: 1;
+}
+
+/* Density map */
+.density-map {
+  background: var(--bg2);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.density-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  margin-top: 12px;
+  aspect-ratio: 8/5;
+}
+.density-cell {
+  background: var(--bg3);
+  border-radius: 3px;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 700;
+  min-height: 40px;
+}
+.density-cell:hover { transform: scale(1.1); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+
+/* Stats bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg2);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  border-top: 3px solid var(--bio-green);
+}
+.stat-num { font-size: 24px; font-weight: 800; color: var(--bio-green); }
+.stat-lbl { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+/* Source tag */
+.source-tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 600; margin-left: 4px; }
+.src-public { background: rgba(46,204,113,0.12); color: var(--bio-green); }
+
+/* Footer */
+.bvs-site-footer { background: var(--bg2); border-top: 1px solid rgba(78,205,196,0.15); margin-top: 48px; color: var(--fg2); padding-bottom: 32px; }
+.footer-ribbon { height: 3px; background: linear-gradient(90deg, #27ae60, #4ecdc4, #2ecc71, #27ae60); background-size: 200% 100%; animation: footerGradient 8s linear infinite; }
+@keyframes footerGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; padding: 32px 0; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); margin-bottom: 12px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3); text-decoration: none; padding: 3px 0; }
+.footer-col a:hover { color: var(--primary); }
+.footer-logo { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 10px; }
+.footer-logo span { color: var(--primary); }
+.footer-about { font-size: 12px; color: var(--fg3); line-height: 1.6; margin-bottom: 12px; }
+.footer-bottom { display: flex; justify-content: space-between; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: var(--fg3); }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-bottom { flex-direction: column; gap: 8px; } }
+
+/* vban */
+.vban-wrap { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; pointer-events: none; }
+.vban { pointer-events: auto; display: block; transition: opacity .2s; }
+.vban:hover { opacity: 0.85; }
+.vban-left { left: 0; } .vban-right { right: 0; }
+.vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
+.vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
+.vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
+.vban-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: var(--primary); font-size: 9px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 600; }
+@media (max-width: 1400px) { .vban-wrap { display: none; } }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<header class="bvs-header"><div class="container bvs-header-inner">
+  <a href="index.html" class="bvs-logo">
+    <div class="bvs-logo-mark">AI</div>
+    <div class="bvs-logo-text">AI<span>BizVan360</span></div>
+  </a>
+  <nav class="bvs-nav">
+    <a href="index.html">Overview</a>
+    <a href="government.html">Government</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard-2.html">Dashboard 2</a>
+    <a href="economics.html">Economics</a>
+    <a href="leisure.html">Leisure</a>
+    <a href="travel.html">Travel</a>
+    <a href="technology.html">Technology</a>
+    <a href="transportation.html">Transport</a>
+    <a href="demographics.html">Demographics</a>
+    <a href="resources.html">Resources</a>
+    <a href="environment.html">Environment</a>
+    <a href="environment-agency.html">Env Agency</a>
+    <a href="biodiversity.html" class="active">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class=" active">Research Hub</a>
+    <a href="sports.html">Sports</a>
+    <a href="whatif-scenario.html">What-If</a>
+    <a href="city-compare.html">City vs City</a>
+  </nav>
+  <div class="ai-actions">
+    <a href="index.html" class="ai-home-btn" title="Home">Home</a>
+    <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<main style="padding: 24px 0;">
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="bio-hero">
+    <h1>Biodiversity of Cascadia</h1>
+    <p>
+      The Cascadia bioregion is one of the most ecologically diverse temperate regions on Earth — temperate rainforests, alpine meadows, marine estuaries, and sagebrush steppes within a day's drive. This page aggregates citizen-science observations from iNaturalist (CC-BY licensed) to visualize what's living here, where, and when.
+    </p>
+    <div class="bio-hero-stats">
+      <div class="bio-hero-stat"><div class="num" id="hero-species">—</div><div class="lbl">Species Observed</div></div>
+      <div class="bio-hero-stat"><div class="num" id="hero-obs">—</div><div class="lbl">Total Observations</div></div>
+      <div class="bio-hero-stat"><div class="num" id="hero-observers">—</div><div class="lbl">Citizen Scientists</div></div>
+      <div class="bio-hero-stat"><div class="num">5</div><div class="lbl">Ecoregions</div></div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num" id="stat-marine">—</div><div class="stat-lbl">Marine Species</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-terrestrial">—</div><div class="stat-lbl">Terrestrial</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-plant">—</div><div class="stat-lbl">Plant Species</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-bird">—</div><div class="stat-lbl">Bird Species</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-mammal">—</div><div class="stat-lbl">Mammal Species</div></div>
+  </div>
+
+  <!-- Species category picker -->
+  <div class="bvs-section-title">Browse by Category</div>
+  <div class="bvs-section-sub">
+    Click a category to load real citizen-science observations from iNaturalist. Images load only on demand — no bandwidth wasted until you're ready to browse.
+    <span class="source-tag src-public">iNaturalist (CC-BY)</span>
+  </div>
+  <div class="species-cats" id="species-cats">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- Load gallery section (hidden once loaded) -->
+  <div class="load-gallery-section" id="load-section">
+    <p style="font-size: 14px; color: var(--fg2); margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto;">
+      🌿 The image gallery below is <strong>lazy-loaded</strong> — no images are fetched until you click the button. This saves bandwidth and respects your browser's resources. Once loaded, you'll see real citizen-science photos from iNaturalist for the selected category.
+    </p>
+    <button class="load-gallery-btn" id="load-gallery-btn">🌿 Load Gallery</button>
+    <p class="load-gallery-note">
+      Source: iNaturalist API (inaturalist.org) — citizen-science observations licensed under Creative Commons BY, BY-NC, or BY-SA. All photographer credits are shown with each image. No API key required; data is freely accessible.
+    </p>
+  </div>
+
+  <!-- Gallery (hidden until loaded) -->
+  <div id="gallery-section" style="display: none;">
+    <div class="bvs-section-title" id="gallery-title">Observations</div>
+    <div class="bvs-section-sub" id="gallery-sub">Loading…</div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+    <div style="text-align: center; padding: 16px;">
+      <button id="load-more-btn" style="background: var(--primary); color: var(--bg); border: none; padding: 10px 24px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">Load More</button>
+    </div>
+  </div>
+
+  <!-- Density map -->
+  <div class="density-map">
+    <div class="bvs-card-header">Observation Density — Cascadia Region</div>
+    <div class="bvs-card-title">Where are observations concentrated?</div>
+    <p style="font-size: 11px; color: var(--fg3); margin-bottom: 12px;">
+      Grid cells represent the Cascadia bioregion (lat 42°N to 52°N, lng -125°W to -117°W). Brighter cells = more observations. Hover for details.
+    </p>
+    <div class="density-grid" id="density-grid"></div>
+    <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 10px; color: var(--fg3);">
+      <span>Low</span>
+      <div style="flex: 1; height: 8px; background: linear-gradient(90deg, #162020, #27ae60, #2ecc71, #f1c40f);"></div>
+      <span>High</span>
+    </div>
+  </div>
+
+  <!-- TRAVEL GUIDE FOR RESEARCHERS -->
+  <div class="bvs-section-title">Field Research Travel Guide</div>
+  <div class="bvs-section-sub">
+    When to go, where to look, and what to bring for wildlife researchers, photographers, and naturalists visiting Cascadia.
+    <span class="source-tag src-public">iNaturalist + USFWS + Parks Canada</span>
+  </div>
+  <div class="bvs-grid bvs-grid-2" style="margin-bottom: 24px;">
+
+    <div class="bvs-card" style="border-top: 3px solid var(--bio-green);">
+      <div class="bvs-card-header">🌿 Spring (March — May)</div>
+      <div class="bvs-card-title">Wildflower Blooms & Bird Migration</div>
+      <p style="font-size: 12px; color: var(--fg2); line-height: 1.7;">
+        <strong>What to see:</strong> Pacific rhododendron blooms (April-May, Olympic NP), camas lily meadows (May, Willamette Valley), rufous hummingbird arrival (March), gray whale northbound migration (March-May, Depoe Bay OR).
+      </p>
+      <p style="font-size: 11px; color: var(--fg3); margin-top: 8px;">
+        <strong>Best locations:</strong> Olympic National Park (wildflowers), Ridgefield NWR (waterfowl), Camassia Natural Area (OR), Depoe Bay (whales).<br>
+        <strong>Weather:</strong> Cool & wet. Bring rain gear, waterproof boots. Trails muddy.<br>
+        <strong>Permits:</strong> Northwest Forest Pass for trailheads; WA Discover Pass for state parks.
+      </p>
+    </div>
+
+    <div class="bvs-card" style="border-top: 3px solid var(--env-amber);">
+      <div class="bvs-card-header">☀️ Summer (June — August)</div>
+      <div class="bvs-card-title">Alpine Wildlife & Marine Life</div>
+      <p style="font-size: 12px; color: var(--fg2); line-height: 1.7;">
+        <strong>What to see:</strong> Mountain goats (Mt Rainier, Cascade crest), marmots (subalpine meadows July-Aug), sea otters (Vancouver Island, Olympic Coast), tufted puffins (Tatoosh Island, Haystack Rock), orcas (San Juan Islands July-Aug).
+      </p>
+      <p style="font-size: 11px; color: var(--fg3); margin-top: 8px;">
+        <strong>Best locations:</strong> Hurricane Ridge (marmots), San Juan Islands (orcas), Pacific Rim NP (sea otters), Mt Hood (alpine wildflowers).<br>
+        <strong>Weather:</strong> Best weather but crowded. Book campsites 6+ months ahead. Wildfire smoke possible Aug-Sept.<br>
+        <strong>Permits:</strong> Wilderness permits for overnight backcountry; ferry reservations for San Juans.
+      </p>
+    </div>
+
+    <div class="bvs-card" style="border-top: 3px solid var(--env-red);">
+      <div class="bvs-card-header">🍂 Fall (September — November)</div>
+      <div class="bvs-card-title">Salmon Runs & Elk Rut</div>
+      <p style="font-size: 12px; color: var(--fg2); line-height: 1.7;">
+        <strong>What to see:</strong> Salmon spawning runs (Sept-Nov, peak Oct), elk rut bugling (Sept-Oct, Olympic NP), raptor migration (Sep-Oct, Bonney Butte OR), snow geese arrival (Nov, Skagit Valley).
+      </p>
+      <p style="font-size: 11px; color: var(--fg3); margin-top: 8px;">
+        <strong>Best locations:</strong> Cedar River (Sept salmon), Issaquah Salmon Hatchery (Oct), Adams River BC (sockeye run, next peak 2026), Hoh Rainforest (elk rut), Fir Island (snow geese).<br>
+        <strong>Weather:</strong> Increasingly wet. Wildfire smoke possible early Sept. Trail closures during heavy rain.<br>
+        <strong>Highlight:</strong> Adams River Sockeye Run (every 4 years, next big run 2026) — 4+ million salmon.
+      </p>
+    </div>
+
+    <div class="bvs-card" style="border-top: 3px solid var(--env-blue);">
+      <div class="bvs-card-header">❄️ Winter (December — February)</div>
+      <div class="bvs-card-title">Eagle Congregations & Wintering Birds</div>
+      <p style="font-size: 12px; color: var(--fg2); line-height: 1.7;">
+        <strong>What to see:</strong> Bald eagle congregations (Nov-Feb, Skagit River — 500+ birds), trumpeter swans (Padilla Bay), snow geese (Skagit Valley, 50,000+), gray whale southbound (Dec-Feb), owls (barred, great horned).
+      </p>
+      <p style="font-size: 11px; color: var(--fg3); margin-top: 8px;">
+        <strong>Best locations:</strong> Skagit River (eagle floats), Fir Island (snow geese), Ridgefield NWR (waterfowl), Reifel Migratory Bird Sanctuary BC.<br>
+        <strong>Weather:</strong> Cold, wet, short days. Bring layers, waterproof gear. Some high-elevation trails closed due to snow.<br>
+        <strong>Tip:</strong> Eagle watching best 8-10am on cold clear mornings after salmon carcasses wash downstream.
+      </p>
+    </div>
+  </div>
+
+  <!-- SEASONAL WILDLIFE CALENDAR -->
+  <div class="bvs-section-title">Seasonal Wildlife Calendar</div>
+  <div class="bvs-section-sub">
+    Month-by-month guide to iconic Cascadia species activity. Data from iNaturalist seasonal observations + USFWS migration reports.
+  </div>
+  <div class="bvs-card" style="margin-bottom: 24px; overflow-x: auto;">
+    <table class="bvs-table" style="width: 100%; font-size: 11px; min-width: 700px;">
+      <tr style="background: var(--bg3);">
+        <th style="padding: 8px; text-align: left; color: var(--fg);">Species</th>
+        <th style="padding: 8px;">Jan</th><th style="padding: 8px;">Feb</th><th style="padding: 8px;">Mar</th>
+        <th style="padding: 8px;">Apr</th><th style="padding: 8px;">May</th><th style="padding: 8px;">Jun</th>
+        <th style="padding: 8px;">Jul</th><th style="padding: 8px;">Aug</th><th style="padding: 8px;">Sep</th>
+        <th style="padding: 8px;">Oct</th><th style="padding: 8px;">Nov</th><th style="padding: 8px;">Dec</th>
+      </tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🐋 Orcas (Southern Resident)</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.2);">●</td><td style="text-align:center;background:rgba(78,205,196,0.3);">●</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.5);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td><td style="text-align:center;background:rgba(78,205,196,0.3);">●</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🐟 Chinook Salmon Run</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.3);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.8);">●</td><td style="text-align:center;background:rgba(78,205,196,0.4);">●</td><td style="text-align:center;">·</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🦅 Bald Eagles (Skagit)</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.8);">●</td><td style="text-align:center;background:rgba(78,205,196,0.5);">●</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.3);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td><td style="text-align:center;background:rgba(78,205,196,0.9);">●</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🦢 Snow Geese (Skagit)</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.8);">●</td><td style="text-align:center;background:rgba(78,205,196,0.5);">●</td><td style="text-align:center;background:rgba(78,205,196,0.3);">●</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.4);">●</td><td style="text-align:center;background:rgba(78,205,196,0.7);">●</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🐻 Black Bears (Berry season)</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.2);">●</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.5);">●</td><td style="text-align:center;background:rgba(78,205,196,0.7);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🦈 Gray Whales</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.5);">●</td><td style="text-align:center;background:rgba(78,205,196,0.7);">●</td><td style="text-align:center;background:rgba(78,205,196,0.9);">●</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.8);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.3);">●</td></tr>
+      <tr><td style="padding: 8px; color: var(--fg);">🌸 Wildflowers (Subalpine)</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;background:rgba(78,205,196,0.2);">●</td><td style="text-align:center;background:rgba(78,205,196,0.5);">●</td>
+        <td style="text-align:center;background:rgba(78,205,196,0.8);">●</td><td style="text-align:center;background:rgba(78,205,196,0.6);">●</td><td style="text-align:center;">·</td>
+        <td style="text-align:center;">·</td><td style="text-align:center;">·</td><td style="text-align:center;">·</td></tr>
+    </table>
+    <div style="margin-top: 10px; font-size: 10px; color: var(--fg3);">
+      ● = peak activity · ● = present · · = absent/minimal. Data: iNaturalist seasonal observations + USFWS.
+    </div>
+  </div>
+
+  <!-- RESEARCH RESOURCES -->
+  <div class="bvs-section-title">Research Resources & Citizen Science</div>
+  <div class="bvs-section-sub">
+    Tools and platforms for researchers, students, and amateur naturalists studying Cascadia biodiversity.
+  </div>
+  <div class="bvs-grid bvs-grid-3" style="margin-bottom: 24px;">
+    <div class="bvs-card" style="border-left: 3px solid var(--bio-green);">
+      <div class="bvs-card-header">Observation Platforms</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.8;">
+        <strong style="color:var(--bio-green);">iNaturalist</strong> — 313k+ Cascadia observations. Free app, AI species ID, research-grade data flows to GBIF.<br>
+        <strong style="color:var(--bio-green);">eBird</strong> — Cornell Lab. Bird checklists, real-time sightings. Free, requires account.<br>
+        <strong style="color:var(--bio-green);">e-Butterfly</strong> — Butterfly tracking, similar to eBird.<br>
+        <strong style="color:var(--bio-green);">HerpMapper</strong> — Amphibian & reptile records.<br>
+        <strong style="color:var(--bio-green);">Bumble Bee Atlas</strong> — Xerces Society, PNW surveys.
+      </p>
+    </div>
+    <div class="bvs-card" style="border-left: 3px solid var(--bio-blue);">
+      <div class="bvs-card-header">Museum Collections</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.8;">
+        <strong style="color:var(--bio-blue);">Burke Museum</strong> (UW Seattle) — 16M specimens, ornithology + mammalogy + herbarium.<br>
+        <strong style="color:var(--bio-blue);">UBC Beaty Biodiversity Museum</strong> — 2M+ specimens, Vancouver BC.<br>
+        <strong style="color:var(--bio-blue);">OSU Herbarium</strong> — 500k plant specimens, Corvallis OR.<br>
+        <strong style="color:var(--bio-blue);">Royal BC Museum</strong> — Victoria, natural history collections.<br>
+        <strong style="color:var(--bio-blue);">Smithsonian NMNH</strong> — National collections, online portal.
+      </p>
+    </div>
+    <div class="bvs-card" style="border-left: 3px solid var(--bio-amber);">
+      <div class="bvs-card-header">Field Research Permits</div>
+      <p style="font-size: 11px; color: var(--fg2); line-height: 1.8;">
+        <strong style="color:var(--bio-amber);">National Parks</strong> — Research Permit Application System (irma.nps.gov). Free; 6-8 week review.<br>
+        <strong style="color:var(--bio-amber);">USFWS Refuges</strong> — Special Use Permits via local refuge office.<br>
+        <strong style="color:var(--bio-amber);">WA DNR</strong> — Research Permit for state trust lands.<br>
+        <strong style="color:var(--bio-amber);">BC Parks</strong> — Research Permit via BC Parks (env.gov.bc.ca).<br>
+        <strong style="color:var(--bio-amber);">Parks Canada</strong> — Research & Collection Permit (pc.gc.ca).
+      </p>
+    </div>
+  </div>
+
+  <!-- CONSERVATION PROJECTS DECADE -->
+  <div class="bvs-section-title">Conservation Projects — Next Decade (2025-2035)</div>
+  <div class="bvs-section-sub">
+    Major biodiversity, salmon restoration, and Indigenous-led conservation projects across Cascadia. All budgets from public sources. Includes government + Indigenous-led initiatives.
+    <span class="source-tag src-gov">PUBLIC + INDIGENOUS-LED</span>
+  </div>
+
+  <!-- Budget summation -->
+  <div id="bio-budget-dashboard" class="bvs-grid bvs-grid-3" style="margin-bottom: 20px;">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- Project cards -->
+  <div id="bio-projects-grid" class="bvs-grid bvs-grid-2" style="margin-bottom: 24px;">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--bio-green);">
+    <div style="font-size: 13px; font-weight: 700; color: var(--bio-green); margin-bottom: 8px;">🦅 Conservation Decade Outlook</div>
+    <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+      Cascadia's biodiversity faces simultaneous <strong>climate stress</strong> and <strong>restoration opportunity</strong> over the next decade. Key trends:
+    </p>
+    <ul style="font-size: 11px; color: var(--fg2); line-height: 1.8; margin-left: 20px; margin-top: 8px;">
+      <li><strong>Salmon recovery at a crossroads:</strong> $127M+ annual investment across Columbia River + Puget Sound, but 2025-26 Snake River dam decision could unlock $1.5B+ additional restoration. Tribal treaty rights litigation accelerating the timeline.</li>
+      <li><strong>Indigenous-led conservation scaling:</strong> Canada's $340M CAD + $173M Guardians = largest Indigenous conservation investment in Canadian history. WA/OR tribal programs expanding but underfunded relative to need.</li>
+      <li><strong>Wildfire resilience meets biodiversity:</strong> $700M+ dedicated to wildfire resilience, but forest treatments must balance fire risk reduction with habitat protection. Indigenous forestry knowledge critical.</li>
+      <li><strong>Cross-border species recovery:</strong> Southern Resident orcas (73 individuals), Columbia salmon, marbled murrelet all require coordinated US-CA action. No formal bioregional conservation treaty exists.</li>
+      <li><strong>Climate-driven range shifts:</strong> Subalpine species losing habitat; sagebrush species expanding northward; marine species shifting northward ~30km/decade. Conservation planning must account for dynamic ranges.</li>
+    </ul>
+    <p style="font-size: 10px; color: var(--fg3); margin-top: 12px;">All budgets from public sources: USFWS, WA RCO, WA Legislature, BC Budget 2026, Environment Canada, Indigenous Guardians Program.</p>
+  </div>
+
+  <!-- About section -->
+  <div class="bvs-card" style="margin-bottom: 24px;">
+    <div class="bvs-card-header">About the Data</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; font-size: 12px; color: var(--fg2); line-height: 1.7;">
+      <div>
+        <strong style="color: var(--bio-green);">iNaturalist</strong> is a citizen-science platform where naturalists upload photos of organisms they observe. Observations are licensed by their photographers under Creative Commons (mostly CC-BY, CC-BY-NC, or CC-BY-SA). The iNaturalist API is free, requires no API key, and returns JSON.
+      </div>
+      <div>
+        <strong style="color: var(--bio-green);">Quality grade</strong> filters observations to "research" grade — meaning the community has agreed on the identification. This ensures the species labels are reliable. Casual observations are excluded from this gallery.
+      </div>
+      <div>
+        <strong style="color: var(--bio-green);">Taxonomic scope</strong> covers all life — plants, animals, fungi, protists, bacteria. The Cascadia bioregion has approximately 50,000+ cataloged species across its 5 ecoregions (Marine West Coast Forest, Marine West Coast Alpine, Cascadia Mixed Forest, Eastern Cascadia Slopes, Columbia Plateau).
+      </div>
+    </div>
+    <div style="margin-top: 16px; padding: 12px; background: var(--bg3); border-radius: 6px; font-size: 11px; color: var(--fg2); line-height: 1.6;">
+      <strong style="color: var(--primary);">Lazy loading:</strong> No images are fetched when this page loads. The gallery only fetches data when you click "Load Gallery" — and even then, only the first 24 images for the selected category. "Load More" fetches the next batch. This respects your bandwidth and iNaturalist's servers. Each image links back to the original observation on inaturalist.org for full context.
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-content" id="modal-content">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <img class="modal-img" id="modal-img" src="" alt="">
+    <div class="modal-body">
+      <div class="modal-species" id="modal-species"></div>
+      <div class="modal-taxon" id="modal-taxon"></div>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div style="margin-top: 12px;">
+        <a href="#" id="modal-link" target="_blank" style="color: var(--primary); font-size: 12px;">View on iNaturalist →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='vban-wrap' id='vban-wrap'>
+  <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision'>
+    <img src='images/banners/banner-left-cascadia-intelligence.png' alt='Cascadia Intelligence Vision' loading='lazy' />
+    <div class='vban-label'>Cascadia Intelligence</div>
+  </a>
+  <a class='vban vban-right' href='MARKET_ASSESSMENT.md' target='_blank' title='Cross-Border Economic Bridge'>
+    <img src='images/banners/banner-right-cross-border-intel.png' alt='Cross-Border Economic Bridge' loading='lazy' />
+    <div class='vban-label'>Cross-Border Bridge</div>
+  </a>
+</div>
+
+<footer class="bvs-site-footer"><div class="footer-ribbon"></div><div class="container" style="padding-top:48px;">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">AI<span>BizVan360</span></div>
+      <p class="footer-about">AI-powered 360-degree regional intelligence platform for the Vancouver-Seattle Cascadia Innovation Corridor.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="index.html">Overview</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="economics.html">Economics</a>
+      <a href="environment.html">Environment</a>
+      <a href="environment-agency.html">Env Agency</a>
+      <a href="biodiversity.html">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a>
+    </div>
+    <div class="footer-col">
+      <h4>Data Sources</h4>
+      <a href="https://www.inaturalist.org" target="_blank">iNaturalist</a>
+      <a href="https://commons.wikimedia.org" target="_blank">Wikimedia Commons</a>
+      <a href="https://www.gbif.org" target="_blank">GBIF</a>
+      <a href="https://natureserve.org" target="_blank">NatureServe</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#">About AIBizVan360</a>
+      <a href="#">Methodology</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>&copy; 2026 AIBizVan360 | Vancouver, BC &amp; Seattle, WA</div>
+    <div>Citizen-science data · CC-BY licensed · Free and open</div>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  /* THEME TOGGLE */
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(b){
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon(document.getElementById('ai-theme-btn'));
+  }
+  var btn = document.getElementById('ai-theme-btn');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  setIcon(btn);
+
+  /* SPECIES CATEGORIES */
+  var CATEGORIES = [
+    {id:'orca', name:'Orcas & Whales', query:'orca OR killer whale OR humpback whale', emoji:'🐋', icon:'orca'},
+    {id:'salmon', name:'Salmon & Fish', query:'salmon OR trout OR steelhead', emoji:'🐟', icon:'fish'},
+    {id:'eagle', name:'Eagles & Raptors', query:'bald eagle OR hawk OR falcon OR osprey', emoji:'🦅', icon:'eagle'},
+    {id:'bear', name:'Bears & Mammals', query:'black bear OR grizzly OR cougar OR wolf', emoji:'🐻', icon:'bear'},
+    {id:'cedar', name:'Cedars & Conifers', query:'western red cedar OR Douglas fir OR hemlock', emoji:'🌲', icon:'tree'},
+    {id:'fungi', name:'Mushrooms & Fungi', query:'mushroom OR fungi OR lichen', emoji:'🍄', icon:'fungi'},
+    {id:'orchid', name:'Wildflowers', query:'orchid OR lupine OR paintbrush OR lily', emoji:'🌸', icon:'flower'},
+    {id:'amphibian', name:'Amphibians', query:'frog OR salamander OR newt', emoji:'🐸', icon:'amphibian'},
+    {id:'intertidal', name:'Intertidal Life', query:'sea star OR anemone OR urchin OR crab', emoji:'⭐', icon:'starfish'},
+    {id:'owl', name:'Owls', query:'owl OR barred owl OR great horned owl', emoji:'🦉', icon:'owl'}
+  ];
+
+  var currentCategory = CATEGORIES[0];
+  var currentPage = 1;
+  var loadedObservations = [];
+
+  function renderCategories(){
+    var html = '';
+    CATEGORIES.forEach(function(cat, i){
+      html += '<div class="species-cat' + (i === 0 ? ' active' : '') + '" data-cat="' + cat.id + '">' +
+        '<span class="emoji">' + cat.emoji + '</span>' +
+        '<div class="name">' + cat.name + '</div>' +
+        '<div class="count" data-count="' + cat.id + '">—</div>' +
+      '</div>';
+    });
+    document.getElementById('species-cats').innerHTML = html;
+    document.querySelectorAll('.species-cat').forEach(function(el){
+      el.addEventListener('click', function(){
+        document.querySelectorAll('.species-cat').forEach(function(c){ c.classList.remove('active'); });
+        el.classList.add('active');
+        var catId = el.getAttribute('data-cat');
+        currentCategory = CATEGORIES.find(function(c){ return c.id === catId; });
+        currentPage = 1;
+        loadedObservations = [];
+        // If gallery is already visible, reload with new category
+        if (document.getElementById('gallery-section').style.display !== 'none'){
+          loadGallery();
+        }
+      });
+    });
+  }
+
+  function loadCategoryCounts(){
+    CATEGORIES.forEach(function(cat){
+      var url = 'https://api.inaturalist.org/v1/observations?q=' + encodeURIComponent(cat.query) +
+        '&nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1&photos=true&quality_grade=research';
+      fetch(url)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var el = document.querySelector('[data-count="' + cat.id + '"]');
+          if (el){
+            var total = d.total_results || 0;
+            el.textContent = total.toLocaleString() + ' obs';
+          }
+        })
+        .catch(function(){});
+    });
+  }
+
+  function loadHeroStats(){
+    // Total species and observations in Cascadia
+    var url = 'https://api.inaturalist.org/v1/observations?nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1&quality_grade=research';
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        document.getElementById('hero-obs').textContent = (d.total_results || 0).toLocaleString();
+      })
+      .catch(function(){});
+
+    // Species count
+    var speciesUrl = 'https://api.inaturalist.org/v1/observations/species_counts?nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1&quality_grade=research';
+    fetch(speciesUrl)
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        document.getElementById('hero-species').textContent = (d.total_results || 0).toLocaleString();
+      })
+      .catch(function(){});
+
+    // Observers
+    var observersUrl = 'https://api.inaturalist.org/v1/observers?nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1';
+    fetch(observersUrl)
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        document.getElementById('hero-observers').textContent = (d.total_results || 0).toLocaleString();
+      })
+      .catch(function(){});
+
+    // Stats bar — by taxon
+    var taxonQueries = {
+      'stat-marine': 'Actinopterygii OR Cnidaria OR Mammalia',
+      'stat-terrestrial': 'Mammalia OR Reptilia',
+      'stat-plant': 'Plantae',
+      'stat-bird': 'Aves',
+      'stat-mammal': 'Mammalia'
+    };
+    Object.keys(taxonQueries).forEach(function(elId){
+      var u = 'https://api.inaturalist.org/v1/observations/species_counts?nelat=52&nelng=-117&swlat=42&swlng=-125&per_page=1&quality_grade=research&q=' + encodeURIComponent(taxonQueries[elId]);
+      fetch(u)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          document.getElementById(elId).textContent = (d.total_results || 0).toLocaleString();
+        })
+        .catch(function(){});
+    });
+  }
+
+  function loadGallery(){
+    var btn = document.getElementById('load-gallery-btn');
+    if (btn){ btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Loading…'; }
+
+    var perPage = 24;
+    var url = 'https://api.inaturalist.org/v1/observations?q=' + encodeURIComponent(currentCategory.query) +
+      '&nelat=52&nelng=-117&swlat=42&swlng=-125' +
+      '&per_page=' + perPage + '&page=' + currentPage +
+      '&photos=true&quality_grade=research&order=desc&order_by=votes';
+
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        document.getElementById('load-section').style.display = 'none';
+        document.getElementById('gallery-section').style.display = 'block';
+        document.getElementById('gallery-title').textContent = currentCategory.name + ' — Observations';
+        document.getElementById('gallery-sub').textContent = (d.total_results || 0).toLocaleString() + ' research-grade observations in Cascadia · Showing page ' + currentPage;
+
+        var newObs = d.results || [];
+        loadedObservations = loadedObservations.concat(newObs);
+        renderGallery();
+
+        if (btn){ btn.disabled = false; btn.innerHTML = '🌿 Load Gallery'; }
+      })
+      .catch(function(e){
+        if (btn){ btn.disabled = false; btn.innerHTML = '🌿 Load Gallery'; }
+        document.getElementById('gallery-section').style.display = 'block';
+        document.getElementById('gallery-grid').innerHTML = '<div style="grid-column:1/-1;padding:24px;color:var(--red);text-align:center;">Failed to load: ' + e.message + '</div>';
+      });
+  }
+
+  function renderGallery(){
+    var html = '';
+    loadedObservations.forEach(function(obs, i){
+      var photo = obs.photos && obs.photos[0];
+      if (!photo) return;
+      var imgUrl = photo.url.replace('square', 'medium');
+      var species = obs.species_guess || obs.taxon && obs.taxon.name || 'Unknown';
+      var commonName = obs.taxon && obs.taxon.preferred_common_name || '';
+      var location = obs.place_guess || 'Unknown location';
+      var date = obs.observed_on ? new Date(obs.observed_on).toLocaleDateString() : 'Unknown date';
+      var user = obs.user && obs.user.login || 'Anonymous';
+      var license = photo.license_code || 'CC-BY';
+
+      html += '<div class="gallery-item" data-idx="' + i + '">' +
+        '<img src="' + imgUrl + '" alt="' + species + '" loading="lazy" onerror="this.style.background=\'var(--bg3)\';this.style.opacity=\'0.3\'">' +
+        '<div class="gallery-item-info">' +
+          '<div class="gallery-item-species">' + (commonName || species) + '</div>' +
+          '<div class="gallery-item-meta">' + location.substring(0, 50) + ' · ' + date + '</div>' +
+          '<div class="gallery-item-credit">© ' + user + ' (' + license + ')</div>' +
+        '</div>' +
+      '</div>';
+    });
+    document.getElementById('gallery-grid').innerHTML = html;
+
+    document.querySelectorAll('.gallery-item').forEach(function(el){
+      el.addEventListener('click', function(){
+        var idx = parseInt(el.getAttribute('data-idx'), 10);
+        openModal(loadedObservations[idx]);
+      });
+    });
+  }
+
+  function openModal(obs){
+    var photo = obs.photos && obs.photos[0];
+    if (!photo) return;
+    var imgUrl = photo.url.replace('square', 'large');
+    document.getElementById('modal-img').src = imgUrl;
+    document.getElementById('modal-species').textContent = obs.taxon && obs.taxon.preferred_common_name || obs.species_guess || 'Unknown';
+    document.getElementById('modal-taxon').textContent = obs.taxon && obs.taxon.name ? obs.taxon.name : '';
+    var meta = '<div><strong>Location:</strong> ' + (obs.place_guess || 'Unknown') + '</div>' +
+      '<div><strong>Observed:</strong> ' + (obs.observed_on ? new Date(obs.observed_on).toLocaleDateString() : 'Unknown') + '</div>' +
+      '<div><strong>Photographer:</strong> ' + (obs.user && obs.user.login || 'Anonymous') + '</div>' +
+      '<div><strong>License:</strong> ' + (photo.license_code || 'CC-BY') + '</div>' +
+      '<div><strong>Quality grade:</strong> ' + (obs.quality_grade || 'unknown') + '</div>' +
+      '<div><strong>Observation ID:</strong> ' + obs.id + '</div>';
+    document.getElementById('modal-meta').innerHTML = meta;
+    document.getElementById('modal-link').href = 'https://www.inaturalist.org/observations/' + obs.id;
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  document.getElementById('modal-close').addEventListener('click', function(){
+    document.getElementById('modal-overlay').classList.remove('open');
+  });
+  document.getElementById('modal-overlay').addEventListener('click', function(e){
+    if (e.target === this) this.classList.remove('open');
+  });
+
+  function loadDensityGrid(){
+    // 8x5 grid representing Cascadia (lat 42-52, lng -125 to -117)
+    // 8 columns × 5 rows = 40 cells (matches CSS grid-template-columns: repeat(8, 1fr))
+    var grid = document.getElementById('density-grid');
+    var cells = [];
+    // 5 rows: lat from 50.5 down to 43.5 by 1.75 (covers 42-52)
+    // 8 cols: lng from -124.5 up to -117.5 by 1.0 (covers -125 to -117)
+    for (var row = 0; row < 5; row++){
+      var lat = 50.5 - row * 1.75;
+      for (var col = 0; col < 8; col++){
+        var lng = -124.5 + col * 1.0;
+        cells.push({lat: lat, lng: lng, row: row, col: col, label: lat.toFixed(1) + '°N, ' + Math.abs(lng).toFixed(1) + '°W'});
+      }
+    }
+    var html = '';
+    cells.forEach(function(c){
+      html += '<div class="density-cell" data-lat="' + c.lat + '" data-lng="' + c.lng + '" data-row="' + c.row + '" data-col="' + c.col + '" title="' + c.label + '">·</div>';
+    });
+    grid.innerHTML = html;
+
+    // Load density data — batch fetch to avoid rate limiting
+    // Use Promise.all with small batches of 8 (one row at a time)
+    var cellEls = document.querySelectorAll('.density-cell');
+
+    function fetchCell(el){
+      var lat = parseFloat(el.getAttribute('data-lat'));
+      var lng = parseFloat(el.getAttribute('data-lng'));
+      // Each cell covers 1.75° lat × 1.0° lng
+      var url = 'https://api.inaturalist.org/v1/observations?nelat=' + (lat + 0.875) + '&nelng=' + (lng + 0.5) + '&swlat=' + (lat - 0.875) + '&swlng=' + (lng - 0.5) + '&per_page=1&quality_grade=research';
+      return fetch(url)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var count = d.total_results || 0;
+          return {el: el, count: count};
+        })
+        .catch(function(){ return {el: el, count: 0}; });
+    }
+
+    function colorForCount(count){
+      if (count === 0) return {bg: '#162020', text: ''};
+      // Log scale: 1 → 0.0, 100 → 0.33, 1000 → 0.67, 10000 → 1.0
+      var intensity = Math.min(1, Math.log10(count + 1) / 4);
+      // Color gradient: dark → green → bright green → yellow
+      var r, g, b;
+      if (intensity < 0.5){
+        // dark → green
+        var t = intensity * 2;
+        r = Math.round(22 + (39 - 22) * t);
+        g = Math.round(32 + (174 - 32) * t);
+        b = Math.round(32 + (96 - 32) * t);
+      } else {
+        // green → yellow-green
+        var t = (intensity - 0.5) * 2;
+        r = Math.round(39 + (241 - 39) * t);
+        g = Math.round(174 + (196 - 174) * t);
+        b = Math.round(96 + (15 - 96) * t);
+      }
+      return {bg: 'rgb(' + r + ',' + g + ',' + b + ')', text: count > 999 ? (count/1000).toFixed(1) + 'k' : count.toString()};
+    }
+
+    // Fetch in batches of 8 (one row at a time) to avoid rate limiting
+    var batchSize = 8;
+    var batches = [];
+    for (var i = 0; i < cellEls.length; i += batchSize){
+      batches.push(Array.from(cellEls).slice(i, i + batchSize));
+    }
+
+    function processBatch(batchIdx){
+      if (batchIdx >= batches.length) return;
+      var batch = batches[batchIdx];
+      Promise.all(batch.map(fetchCell)).then(function(results){
+        results.forEach(function(r){
+          var colors = colorForCount(r.count);
+          r.el.style.background = colors.bg;
+          r.el.textContent = colors.text;
+          r.el.style.color = r.count > 500 ? '#fff' : 'rgba(255,255,255,0.7)';
+        });
+        // Process next batch after 300ms delay
+        setTimeout(function(){ processBatch(batchIdx + 1); }, 300);
+      });
+    }
+    processBatch(0);
+  }
+
+
+  function loadBioProjects(){
+    return fetch('project-registry.json').then(function(r){ return r.json(); }).then(function(data){
+      var projects = data.projects.filter(function(p){ return p.page === 'both' || p.category === 'Environmental Restoration' || p.category === 'Indigenous Conservation' || p.category === 'Climate Resilience'; });
+
+      var totalBudget = projects.reduce(function(sum, p){ return sum + p.budget_usd; }, 0);
+      var categories = {};
+      projects.forEach(function(p){
+        categories[p.category] = (categories[p.category] || 0) + p.budget_usd;
+      });
+
+      // Budget dashboard
+      var dashHtml = '<div class="bvs-card metric-tile" style="border-top:3px solid var(--bio-green);">' +
+        '<div class="metric-value" style="color: var(--bio-green);">$' + (totalBudget/1e6).toFixed(0) + 'M+</div>' +
+        '<div class="metric-label">Conservation Investment</div>' +
+        '<div class="metric-unit">' + projects.length + ' major projects</div>' +
+      '</div>';
+      Object.keys(categories).slice(0,2).forEach(function(cat){
+        var pct = (categories[cat] / totalBudget * 100).toFixed(0);
+        dashHtml += '<div class="bvs-card metric-tile" style="border-top:3px solid var(--bio-green);">' +
+          '<div class="metric-value" style="color: var(--bio-green);">$' + (categories[cat]/1e6).toFixed(0) + 'M+</div>' +
+          '<div class="metric-label">' + cat + '</div>' +
+          '<div class="metric-unit">' + pct + '% of total</div>' +
+        '</div>';
+      });
+      document.getElementById('bio-budget-dashboard').innerHTML = dashHtml;
+
+      // Project cards
+      var cardsHtml = '';
+      projects.forEach(function(p){
+        var statusColor = p.budget_status === 'funded' ? 'var(--bio-green)' :
+                          p.budget_status === 'partially funded' ? 'var(--env-amber)' : 'var(--env-red)';
+        cardsHtml += '<div class="bvs-card" style="border-left: 3px solid ' + statusColor + ';">' +
+          '<div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:8px;">' +
+            '<div><div style="font-size:14px;font-weight:700;color:var(--fg);">' + p.name + '</div>' +
+            '<div style="font-size:10px;color:var(--fg3);margin-top:2px;">' + p.region + ' · ' + p.country + '</div></div>' +
+            '<span style="font-size:9px;padding:2px 8px;border-radius:3px;background:' + statusColor + ';color:#fff;font-weight:600;text-transform:uppercase;">' + p.budget_status + '</span>' +
+          '</div>' +
+          '<div style="font-size:18px;font-weight:800;color:var(--bio-green);margin:8px 0;">' + p.budget_display + '</div>' +
+          '<div style="font-size:10px;color:var(--fg3);margin-bottom:8px;"><strong>Timeline:</strong> ' + p.timeline + '</div>' +
+          '<div style="font-size:11px;color:var(--fg2);line-height:1.6;margin-bottom:8px;">' + p.description + '</div>' +
+          '<div style="font-size:10px;color:var(--fg3);margin-bottom:6px;"><strong>Status:</strong> ' + p.status + '</div>' +
+          '<div style="font-size:10px;color:var(--env-amber);margin-bottom:8px;"><strong>⚠ Uncertainties:</strong> ' + p.uncertainties + '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<a href="' + p.source_url + '" target="_blank" style="font-size:10px;color:var(--bio-green);padding:3px 8px;border:1px solid rgba(39,174,96,0.3);border-radius:4px;text-decoration:none;">Source →</a>' +
+            (p.pdf_url ? '<a href="' + p.pdf_url + '" target="_blank" style="font-size:10px;color:var(--fg2);padding:3px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;">📄 PDF</a>' : '') +
+          '</div>' +
+        '</div>';
+      });
+      document.getElementById('bio-projects-grid').innerHTML = cardsHtml;
+    });
+  }
+
+  // Init
+  renderCategories();
+  loadBioProjects();
+  loadCategoryCounts();
+  loadHeroStats();
+  loadDensityGrid();
+
+  document.getElementById('load-gallery-btn').addEventListener('click', loadGallery);
+  document.getElementById('load-more-btn').addEventListener('click', function(){
+    currentPage++;
+    loadGallery();
+  });
+})();
+</script>
+</body>
+</html>

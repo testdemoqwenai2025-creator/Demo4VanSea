@@ -1,0 +1,855 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-09-03T08:51:59.680045+00:00",
+    "engine_version": "1.0",
+    "lookback_days": 30,
+    "data_sources": [
+      {
+        "name": "US Federal Register API",
+        "url": "https://www.federalregister.gov/api/v1",
+        "type": "federal",
+        "update_frequency": "daily",
+        "taxpayer_funded": true,
+        "license": "Public domain (US government work)",
+        "notes": "All US federal rules, proposed rules, notices, and presidential documents."
+      }
+    ],
+    "classification_method": "keyword_v1",
+    "v2_roadmap": [
+      "WA State Register (fortress.wa.gov)",
+      "Oregon Bulletin (olis.oregonlegislature.gov)",
+      "BC Gazette (gazette.gc.ca for federal; provincial via bclaws.ca)",
+      "Canada Gazette (gazette.gc.ca)",
+      "NLP-based entity extraction",
+      "Historical baseline diffing (show what changed vs prior quarter)"
+    ],
+    "disclaimer": "Public data from taxpayer-funded regulatory APIs. Classification is automated; final interpretation requires human review."
+  },
+  "stats": {
+    "total_publications_processed": 109,
+    "shown_in_top_30": 30,
+    "by_topic": {
+      "cross_border_trade": 27,
+      "immigration": 7,
+      "clean_energy": 22,
+      "ai_regulation": 22,
+      "tribal_indigenous": 39
+    },
+    "by_dimension_affected": {
+      "market_momentum": 5,
+      "talent_pipeline": 10
+    }
+  },
+  "publications": [
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18096/chlorinated-isocyanurates-from-spain-preliminary-results-rescission-in-part-of-antidumping-duty",
+      "title": "Chlorinated Isocyanurates From Spain: Preliminary Results Rescission, in Part of Antidumping Duty Administrative Review; 2024-2025",
+      "abstract": "The U.S. Department of Commerce (Commerce) preliminarily determines that Electroqu[iacute]mica de Hernani, S.A. (Hernani) and Ercros, S.A. (Ercros) did not make sales of subject merchandise at less than normal value (NV) during the period of review (POR), June 1, 2024, through May 31, 2025. In addition, we are rescinding the review with respect to Industrias Qu[iacute]micas Tamar, S.L. (Industrias",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Commerce Department",
+        "International Trade Administration"
+      ],
+      "citation": "91 FR 56623",
+      "classification": {
+        "matched_keywords": [
+          "duty",
+          "AI"
+        ],
+        "affected_dimensions": [
+          "market_momentum",
+          "talent_pipeline"
+        ],
+        "relevance_score": 2,
+        "is_cascadia_relevant": true
+      },
+      "topic": "geographic",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.675476+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "api_documentation": "https://www.federalregister.gov/developers/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18029/fisheries-off-west-coast-states-west-coast-salmon-fisheries-2026-specifications-and-management",
+      "title": "Fisheries Off West Coast States; West Coast Salmon Fisheries; 2026 Specifications and Management Measures; Correction",
+      "abstract": "NMFS established fishery management measures for the ocean salmon fisheries off Washington, Oregon, and California for the season beginning May 16, 2026, until the effective date of the 2027 management measures, which we expect to be May 16, 2027 (the 2026 ocean salmon fishing season), under the authority of the Magnuson-Stevens Fishery Conservation and Management Act (MSA). The final rule, publis",
+      "type": "Rule",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Commerce Department",
+        "National Oceanic and Atmospheric Administration"
+      ],
+      "citation": "91 FR 56599",
+      "classification": {
+        "matched_keywords": [
+          "Washington",
+          "Oregon",
+          "salmon"
+        ],
+        "affected_dimensions": [],
+        "relevance_score": 3,
+        "is_cascadia_relevant": true
+      },
+      "topic": "geographic",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.675979+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "api_documentation": "https://www.federalregister.gov/developers/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18024/takes-of-marine-mammals-incidental-to-specified-activities-taking-marine-mammals-incidental-to-the",
+      "title": "Takes of Marine Mammals Incidental to Specified Activities; Taking Marine Mammals Incidental to the Oregon Department of Transportation's Yaquina Bay Dolphin Replacement Project in Newport, Oregon",
+      "abstract": "NMFS received a request from the Oregon Department of Transportation (ODOT) for the renewal of their currently active incidental harassment authorization (IHA) to take marine mammals incidental to construction activities for the Yaquina Bay Dolphin Replacement Project in Newport, Oregon. ODOT's activities will not be completed prior to the IHA's expiration. Pursuant to the Marine Mammal Protection",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Commerce Department",
+        "National Oceanic and Atmospheric Administration"
+      ],
+      "citation": "91 FR 56636",
+      "classification": {
+        "matched_keywords": [
+          "Oregon",
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 2,
+        "is_cascadia_relevant": true
+      },
+      "topic": "geographic",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.676188+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "api_documentation": "https://www.federalregister.gov/developers/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18038/village-of-saranac-lake-notice-of-reasonable-period-of-time-for-water-quality-certification",
+      "title": "Village of Saranac Lake; Notice of Reasonable Period of Time for Water Quality Certification Application",
+      "abstract": "",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Energy Department",
+        "Federal Energy Regulatory Commission"
+      ],
+      "citation": "91 FR 56651",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.677948+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18036/combined-notice-of-filings",
+      "title": "Combined Notice of Filings",
+      "abstract": "",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Energy Department",
+        "Federal Energy Regulatory Commission"
+      ],
+      "citation": "91 FR 56648",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.677959+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18035/combined-notice-of-filings-1",
+      "title": "Combined Notice of Filings #1",
+      "abstract": "",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Energy Department",
+        "Federal Energy Regulatory Commission"
+      ],
+      "citation": "91 FR 56647",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678008+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18034/privacy-act-of-1974-matching-program",
+      "title": "Privacy Act of 1974; Matching Program",
+      "abstract": "USDA provides notice of a consolidated Department-wide matching program involving five USDA systems of records and the Department of the Treasury Do Not Pay (DNP) Working System. The program supports identifying, preventing, and recouping improper payments through pre-payment and pre-award eligibility verification. Treasury, in consultation with OMB, has issued a waiver of the matching agreement r",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Agriculture Department"
+      ],
+      "citation": "91 FR 56613",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678038+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-18061/determining-the-appropriate-penalty-for-federal-employees-charged-with-misconduct",
+      "title": "Determining the Appropriate Penalty for Federal Employees Charged With Misconduct",
+      "abstract": "The Merit Systems Protection Board (MSPB or Board) is issuing a final rule amending its regulations governing the Board's review of the reasonableness of an agency's chosen penalty in misconduct-based adverse actions appealed to the Board. Under the final rule, the Board will no longer require consideration of the 12 factors set forth in Douglas v. Veterans Administration, 5 M.S.P.R. 280 (1981), i",
+      "type": "Rule",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "Merit Systems Protection Board"
+      ],
+      "citation": "91 FR 56549",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "ai_regulation",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678654+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/03/2026-17994/rules-of-practice-and-procedure",
+      "title": "Rules of Practice and Procedure",
+      "abstract": "The United States Sentencing Commission is considering promulgating amendments to its Rules of Practice and Procedure. This notice sets forth the proposed amendment to the Commission's Rules and synopsis of the issues addressed by the proposed amendment. This notice also sets forth several issues for comment together with the proposed amendment.",
+      "type": "Notice",
+      "publication_date": "2026-09-03",
+      "agencies": [
+        "United States Sentencing Commission"
+      ],
+      "citation": "91 FR 56724",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679229+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17981/polyethylene-terephthalate-resin-from-the-sultanate-of-oman-amended-final-results-of-antidumping",
+      "title": "Polyethylene Terephthalate Resin From the Sultanate of Oman: Amended Final Results of Antidumping Duty Administrative Review; 2023-2024",
+      "abstract": "The U.S. Department of Commerce (Commerce) is amending the final results of the administrative review of the antidumping duty (AD) order on polyethylene terephthalate resin (PET resin) from the Sultanate of Oman (Oman) to correct a ministerial error. The period of review (POR) is May 1, 2023, through April 30, 2024. The review covers one producer and exporter of subject merchandise, OCTAL SAOC FZC",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Commerce Department",
+        "International Trade Administration"
+      ],
+      "citation": "91 FR 56426",
+      "classification": {
+        "matched_keywords": [
+          "duty"
+        ],
+        "affected_dimensions": [
+          "market_momentum"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "cross_border_trade",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.677188+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17952/adjustment-of-appendices-under-the-dairy-tariff-rate-quota-import-licensing-regulation",
+      "title": "Adjustment of Appendices Under the Dairy Tariff-Rate Quota Import Licensing Regulation",
+      "abstract": "This notice announces the transfer of amounts for certain dairy articles from the historical license category (Appendix 1) to the lottery (nonhistorical) license category (Appendix 2) pursuant to the Dairy Tariff-Rate Quota Import Licensing regulations for the 2027 quota year.",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Agriculture Department",
+        "Foreign Agricultural Service"
+      ],
+      "citation": "91 FR 56421",
+      "classification": {
+        "matched_keywords": [
+          "tariff",
+          "AI"
+        ],
+        "affected_dimensions": [
+          "market_momentum",
+          "talent_pipeline"
+        ],
+        "relevance_score": 2,
+        "is_cascadia_relevant": true
+      },
+      "topic": "cross_border_trade",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.677209+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17926/heightened-import-disclosures-for-supply-chain-visibility",
+      "title": "Heightened Import Disclosures for Supply Chain Visibility",
+      "abstract": "U.S. Customs and Border Protection (CBP) is considering amending its regulations to give CBP greater visibility into the supply chains of goods imported into the United States. CBP is seeking comments on new requirements enhancing visibility into the parties involved in the importation of goods; integrating innovative technical solutions for the tracing of supply chains of those goods; and collect",
+      "type": "Proposed Rule",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Homeland Security Department",
+        "U.S. Customs and Border Protection"
+      ],
+      "citation": "91 FR 56408",
+      "classification": {
+        "matched_keywords": [
+          "customs",
+          "CBP",
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 3,
+        "is_cascadia_relevant": true
+      },
+      "topic": "cross_border_trade",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.677240+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17985/notice-of-august-31-2026-decisions-on-petitions-for-small-refinery-exemptions-under-the-renewable",
+      "title": "Notice of August 31, 2026 Decisions on Petitions for Small Refinery Exemptions Under the Renewable Fuel Standard Program",
+      "abstract": "The Environmental Protection Agency (EPA) is providing notification of its final action entitled August 31, 2026 Decision on Petitions for RFS Small Refinery Exemptions (\"August 31, 2026 SRE Decisions Action\") in which EPA issued decisions on 34 small refinery exemption (SRE) petitions under the Renewable Fuel Standard (RFS) program for the 2025 compliance year. EPA is also reissuing a decision fo",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Environmental Protection Agency"
+      ],
+      "citation": "91 FR 56444",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678075+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17979/repeal-of-fossil-fuel-restrictions-for-new-federal-buildings-and-major-renovations-of-federal",
+      "title": "Repeal of Fossil Fuel Restrictions for New Federal Buildings and Major Renovations of Federal Buildings",
+      "abstract": "The Department of Energy (DOE) is reviewing its recent guidance related to the implementation of newly adopted provisions regarding Clean Energy for New Federal Buildings and Major Renovations of Federal Buildings (CER). While DOE reviews the CER implementation guidance, DOE is staying the compliance date for the newly adopted provisions in the Code of Federal Regulations (CFR).",
+      "type": "Rule",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Energy Department"
+      ],
+      "citation": "91 FR 56371",
+      "classification": {
+        "matched_keywords": [
+          "clean energy"
+        ],
+        "affected_dimensions": [
+          "market_momentum"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678102+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17930/notice-of-request-to-renew-an-approved-information-collection-generic-clearance-for-the-collection",
+      "title": "Notice of Request To Renew an Approved Information Collection: Generic Clearance for the Collection of Qualitative Feedback on Agency Service Delivery",
+      "abstract": "In accordance with the Paperwork Reduction Act of 1995 and Office of Management and Budget (OMB) regulations, FSIS is announcing its intention to request renewal of the approved information collection regarding qualitative customer and stakeholder feedback on service delivery by FSIS. There are no changes to the information collection. The current approval will expire on May 31, 2027.",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Agriculture Department",
+        "Food Safety and Inspection Service"
+      ],
+      "citation": "91 FR 56417",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679255+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17923/notice-of-submission-of-charter-for-the-reestablishment-of-the-global-justice-information-sharing",
+      "title": "Notice of Submission of Charter for the Reestablishment of the Global Justice Information Sharing Initiative Advisory Committee",
+      "abstract": "The Department of Justice hereby gives notice of planned filing of the charter for the reestablishment of the Global Justice Information Sharing Initiative Advisory Committee (GAC) as a federal advisory committee pursuant to the Federal Advisory Committee Act, as amended. The GAC will provide recommendations to the Attorney General, Assistant Attorney General for the Office of Justice Programs, an",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Justice Department",
+        "Justice Programs Office"
+      ],
+      "citation": "91 FR 56482",
+      "classification": {
+        "matched_keywords": [
+          "tribal"
+        ],
+        "affected_dimensions": [
+          "market_momentum"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679289+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-18020/honoring-the-american-history-of-the-great-lakes-and-renaming-lake-ontario-as-lake-america",
+      "title": "Honoring the American History of the Great Lakes and Renaming Lake Ontario as Lake America",
+      "abstract": "",
+      "type": "Presidential Document",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Executive Office of the President"
+      ],
+      "citation": "91 FR 56543",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679584+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17939/exemption-of-debt-obligations-issued-by-the-european-union-under-the-securities-exchange-act-of-1934",
+      "title": "Exemption of Debt Obligations Issued by the European Union Under the Securities Exchange Act of 1934 for Purposes of Trading Futures Contracts on Those Securities",
+      "abstract": "The Securities and Exchange Commission (the \"Commission\" or the \"SEC\") is proposing an amendment to designate debt obligations issued by the European Union as \"exempted securities\" for the purposes of marketing and trading futures contracts on those securities in the United States or to U.S. persons. The amendment is designed to permit futures trading on debt obligations issued by the European Uni",
+      "type": "Proposed Rule",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Securities and Exchange Commission"
+      ],
+      "citation": "91 FR 56387",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679629+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/02/2026-17934/interagency-marine-debris-coordinating-committee-meeting",
+      "title": "Interagency Marine Debris Coordinating Committee Meeting",
+      "abstract": "Notice is hereby given of a virtual public meeting of the Interagency Marine Debris Coordinating Committee (IMDCC). IMDCC members will discuss Federal marine debris activities, with a particular emphasis on the topics identified in the SUPPLEMENTARY INFORMATION section under Matters to be considered.",
+      "type": "Notice",
+      "publication_date": "2026-09-02",
+      "agencies": [
+        "Commerce Department",
+        "National Oceanic and Atmospheric Administration"
+      ],
+      "citation": "91 FR 56427",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679649+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17904/national-environmental-policy-act-regulations",
+      "title": "National Environmental Policy Act Regulations",
+      "abstract": "FHWA, FRA, and FTA (collectively referred to as the \"Agencies\") are finalizing the interim final rule (IFR) published on July 3, 2025, which revised the Agencies' National Environmental Policy Act (NEPA) of 1969 implementing regulations in light of the removal of the Council on Environmental Quality (CEQ) regulations, the amendments to NEPA included in the section of the Fiscal Responsibility Act ",
+      "type": "Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Transportation Department",
+        "Federal Highway Administration",
+        "Federal Railroad Administration"
+      ],
+      "citation": "91 FR 56029",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678151+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17895/national-wildlife-refuge-system-2026-2027-station-specific-hunting-and-sport-fishing-regulations",
+      "title": "National Wildlife Refuge System; 2026-2027 Station-Specific Hunting and Sport Fishing Regulations",
+      "abstract": "We, the U.S. Fish and Wildlife Service (FWS or Service), open or expand hunting opportunities on 111 field stations, including 107 units of the National Wildlife Refuges System (Refuge System or NWRS) and 4 units of the National Fish Hatchery System (Hatchery System or NFHS). This includes opening hunting or sport fishing opportunities for the first time on 14 National Wildlife Refuges (NWR) and 3",
+      "type": "Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Interior Department",
+        "Fish and Wildlife Service"
+      ],
+      "citation": "91 FR 56290",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678202+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17863/proposed-revisions-to-the-national-handbook-of-conservation-practices",
+      "title": "Proposed Revisions to the National Handbook of Conservation Practices",
+      "abstract": "The Natural Resources Conservation Service (NRCS) is revising specific conservation practice standard (CPS) in the National Handbook of Conservation Practices (NHCP). NRCS is also giving the public an opportunity to provide comments on the proposed changes to the specific CPSs.",
+      "type": "Notice",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Agriculture Department",
+        "Natural Resources Conservation Service"
+      ],
+      "citation": "91 FR 56102",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678223+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17781/comment-request-multiple-internal-revenue-service-information-collection-requests",
+      "title": "Comment Request; Multiple Internal Revenue Service Information Collection Requests",
+      "abstract": "The Department of the Treasury will submit the following information collection requests to the Office of Management and Budget (OMB) for review and clearance in accordance with the Paperwork Reduction Act of 1995, on or after the date of publication of this notice. The public is invited to submit comments on these requests.",
+      "type": "Notice",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Treasury Department",
+        ""
+      ],
+      "citation": "91 FR 56286",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "clean_energy",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.678244+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17893/fees-for-the-unified-carrier-registration-plan-and-agreement",
+      "title": "Fees for the Unified Carrier Registration Plan and Agreement",
+      "abstract": "FMCSA amends the regulations governing the annual Unified Carrier Registration (UCR) Plan and Agreement registration fees that participating States collect from motor carriers, motor private carriers of property, brokers, freight forwarders, and leasing companies. On September 18, 2025, the UCR Board recommended a fee increase for the 2027 registration year and subsequent registration years. This ",
+      "type": "Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Transportation Department",
+        "Federal Motor Carrier Safety Administration"
+      ],
+      "citation": "91 FR 56063",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679323+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17872/rescission-of-production-incentives-for-cellulosic-biofuels",
+      "title": "Rescission of Production Incentives for Cellulosic Biofuels",
+      "abstract": "The Office of Critical Minerals and Energy Innovation (formerly Office of Energy Efficiency and Renewable Energy) of the Department of Energy (DOE) is publishing a final rule to rescind the regulatory framework for production incentives for cellulosic biofuels, eliminating an inactive regulatory framework.",
+      "type": "Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Energy Department"
+      ],
+      "citation": "91 FR 56001",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679358+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17823/unsafe-or-unsound-practices-matters-requiring-attention",
+      "title": "Unsafe or Unsound Practices, Matters Requiring Attention",
+      "abstract": "The Office of the Comptroller of the Currency (OCC) and the Federal Deposit Insurance Corporation (FDIC) are adopting a final rule to define the term \"unsafe or unsound practice\" for purposes of section 8 of the Federal Deposit Insurance Act and to revise the supervisory framework for the issuance of matters requiring attention and other supervisory communications.",
+      "type": "Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Treasury Department",
+        "Comptroller of the Currency",
+        "Federal Deposit Insurance Corporation"
+      ],
+      "citation": "91 FR 56004",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679393+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17822/violations-of-laws-or-regulations",
+      "title": "Violations of Laws or Regulations",
+      "abstract": "The Office of the Comptroller of the Currency (OCC) proposes to revise the supervisory framework for the issuance of matters requiring attention (MRAs) in response to violations of laws or regulations and for addressing violations for which the OCC does not take an enforcement action or issue an MRA.",
+      "type": "Proposed Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Treasury Department",
+        "Comptroller of the Currency"
+      ],
+      "citation": "91 FR 56074",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679420+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17785/notice-of-availability-of-the-final-environmental-impact-statement-and-record-of-decision-for-navajo",
+      "title": "Notice of Availability of the Final Environmental Impact Statement and Record of Decision for Navajo Transitional Energy Company's Navajo Mine No Name SMCRA Permit",
+      "abstract": "The Office of Surface Mining Reclamation and Enforcement (OSM) is publishing this notice to announce that it has prepared a Final Environmental Impact Statement (FEIS) and Record of Decision (ROD) for Navajo Transitional Energy Company's (NTEC) proposed Surface Mining Control and Reclamation Act of 1977 (SMCRA) permit for the No Name Permit area within NTEC's existing Navajo Mine Lease 14-20-603-2",
+      "type": "Notice",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Interior Department",
+        "Surface Mining Reclamation and Enforcement Office"
+      ],
+      "citation": "91 FR 56204",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679449+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17871/proposal-of-special-measure-regarding-banque-misr-uae-as-a-financial-institution-operating-outside",
+      "title": "Proposal of Special Measure Regarding Banque Misr UAE as a Financial Institution Operating Outside of the United States of Primary Money Laundering Concern",
+      "abstract": "FinCEN is issuing a notice of proposed rulemaking, pursuant to section 311 of the USA PATRIOT Act, that finds the five United Arab Emirates-based branches of Banque Misr (collectively, Banque Misr UAE) to be of primary money laundering concern and proposes imposing a special measure to: prohibit U.S. financial institutions from opening or maintaining a correspondent account for, or on behalf of, B",
+      "type": "Proposed Rule",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Treasury Department",
+        "Financial Crimes Enforcement Network"
+      ],
+      "citation": "91 FR 56085",
+      "classification": {
+        "matched_keywords": [
+          "AI"
+        ],
+        "affected_dimensions": [
+          "talent_pipeline"
+        ],
+        "relevance_score": 1,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679686+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    },
+    {
+      "source": "US Federal Register",
+      "source_url": "https://www.federalregister.gov/documents/2026/09/01/2026-17820/request-for-comments-and-notice-of-public-hearing-concerning-russias-implementation-of-its-wto",
+      "title": "Request for Comments and Notice of Public Hearing Concerning Russia's Implementation of Its WTO Commitments",
+      "abstract": "The Office of the United States Trade Representative (USTR) is seeking public comments to assist in the preparation of its annual report to Congress on Russia's implementation of its obligations as a Member of the World Trade Organization (WTO). This notice includes the schedule for the submission of comments for the Russia report and a public hearing.",
+      "type": "Notice",
+      "publication_date": "2026-09-01",
+      "agencies": [
+        "Trade Representative, Office of United States"
+      ],
+      "citation": "91 FR 56275",
+      "classification": {
+        "matched_keywords": [],
+        "affected_dimensions": [],
+        "relevance_score": 0,
+        "is_cascadia_relevant": false
+      },
+      "topic": "tribal_indigenous",
+      "provenance": {
+        "retrieved_at": "2026-09-03T08:51:59.679709+00:00",
+        "source_api": "https://www.federalregister.gov/api/v1",
+        "license": "Public domain (US government work)"
+      }
+    }
+  ]
+}

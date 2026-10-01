@@ -1,0 +1,409 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "calculator_version": "cross-border-friction-v1.0",
+    "generated_at": "2026-09-03T08:57:04.501288+00:00",
+    "data_sources": [
+      {
+        "name": "IRS corporate tax rates",
+        "url": "https://www.irs.gov/businesses/corporations",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "CRA corporate tax rates",
+        "url": "https://www.canada.ca/en/revenue-agency.html",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "USCIS immigration pathways",
+        "url": "https://www.uscis.gov/",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "IRCC immigration pathways",
+        "url": "https://www.canada.ca/en/immigration-refugees-citizenship.html",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "USMCA text",
+        "url": "https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "US HTSUS tariff schedule",
+        "url": "https://hts.usitc.gov/",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "CA Customs Tariff",
+        "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2025/menu-2025-eng.html",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "Bank of Canada exchange rates",
+        "url": "https://www.bankofcanada.ca/rates/exchange/",
+        "taxpayer_funded": true
+      },
+      {
+        "name": "KFF Employer Health Benefits Survey",
+        "url": "https://www.kff.org/health-costs/report/2025-employer-health-benefits-survey/",
+        "taxpayer_funded": false
+      },
+      {
+        "name": "BC Employer Health Tax",
+        "url": "https://www2.gov.bc.ca/gov/content/taxes/employment-taxes/health",
+        "taxpayer_funded": true
+      }
+    ],
+    "philosophy": "All tax/immigration/customs data is publicly available because it is funded by taxpayers. No government should restrict public access to public data. This calculator is built entirely from public sources to demonstrate that."
+  },
+  "scenarios": [
+    {
+      "scenario_name": "US SaaS startup, 8 US + 2 CA employees, $2M revenue, 80% US / 20% CA",
+      "result": {
+        "inputs_received": {
+          "hq_location": "US-WA",
+          "employee_distribution": {
+            "US": 8,
+            "CA": 2
+          },
+          "annual_revenue_usd": 2000000,
+          "revenue_split": {
+            "US_pct": 80,
+            "CA_pct": 20,
+            "other_pct": 0
+          },
+          "sector": "saas",
+          "physical_goods": false
+        },
+        "summary": {
+          "total_annual_friction_cost_usd": 88920,
+          "friction_as_pct_of_revenue": 4.45,
+          "friction_items_count": 6,
+          "taxpayer_funded_sources_count": 5
+        },
+        "recommended_structure": {
+          "structure": "US HQ with Canadian EOR (Employer of Record)",
+          "rationale": "Avoid CA entity formation; use EOR for 1-3 CA employees until growth justifies subsidiary."
+        },
+        "friction_breakdown": [
+          {
+            "category": "Currency Hedging",
+            "annual_cost_usd": 3000,
+            "description": "Estimated cost to hedge CAD/USD exposure on $600,000 of Canadian revenue and salaries",
+            "source": "Bank of Canada daily exchange rates + industry estimates",
+            "taxpayer_funded": true
+          },
+          {
+            "category": "Tax Nexus \u2014 Permanent Establishment",
+            "annual_cost_usd": 8000,
+            "description": "US entity with 2 Canadian employees creates Canadian Permanent Establishment. Must file T2 corporate tax return, pay BC corporate tax (27%) on Canadian-source income, register for GST/HST if >$30k CA revenue.",
+            "source": "CRA + IRS + Canada-US Tax Treaty",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Register CA business number with CRA",
+              "File T2 corporate tax return annually",
+              "Register for GST/HST if CA revenue > $30k",
+              "Transfer pricing documentation (OECD-compliant)",
+              "Form 5471 (US) if foreign subsidiary structure used"
+            ]
+          },
+          {
+            "category": "Immigration / Work Authorization",
+            "annual_cost_usd": 920,
+            "description": "Work authorization for cross-border employees (8 US + 2 CA)",
+            "source": "USCIS + IRCC public data",
+            "taxpayer_funded": true,
+            "recommended_pathways": [
+              {
+                "pathway": "TN visa",
+                "best_for": "Canadian citizens in TN-listed occupations (engineer, scientist, etc.)",
+                "processing_time_days": 30,
+                "validity_years": 3,
+                "caveat": "TD spouse visa does NOT allow work; consider L-1 or H-1B if spouse needs to work"
+              }
+            ]
+          },
+          {
+            "category": "Healthcare Cost Differential",
+            "annual_cost_usd": 68000,
+            "description": "US employer-sponsored health insurance (8 \u00d7 $8,500) + BC Employer Health Tax (1.95% on CA payroll above $500k)",
+            "source": "KFF + BC Ministry of Health",
+            "taxpayer_funded": true,
+            "us_breakdown": "$68,000 (US health premiums)",
+            "ca_breakdown": "$0 (BC Employer Health Tax)"
+          },
+          {
+            "category": "Data Residency / Privacy Compliance",
+            "annual_cost_usd": 3000,
+            "description": "PIPEDA (Canada) + state privacy law compliance. Cross-border data transfer requires appropriate safeguards; consent may be required for sensitive data.",
+            "source": "Office of the Privacy Commissioner of Canada + NCSL",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Privacy policy must disclose cross-border data transfers",
+              "PIPEDA consent for collection, use, disclosure of personal information",
+              "Data Processing Agreement (DPA) with any sub-processors",
+              "State privacy law compliance (CCPA/CPRA if CA customers; WPA if WA customers post-2024)"
+            ]
+          },
+          {
+            "category": "Dual-Country Payroll",
+            "annual_cost_usd": 6000,
+            "description": "Running payroll in both US and Canada requires either EOR (Employer of Record) service or dual entity structure. EOR cost ~$500-600/employee/month; entity setup $5-15k one-time.",
+            "source": "Industry estimates (Deel, Rippling, Velocity Global public pricing)",
+            "taxpayer_funded": false
+          }
+        ],
+        "provenance": {
+          "calculator_version": "cross-border-friction-v1.0",
+          "computed_at": "2026-09-03T08:57:04.501123+00:00",
+          "data_sources_summary": "All tax/immigration/customs data from public taxpayer-funded sources (IRS, CRA, USCIS, IRCC, USMCA, HTSUS, BC statutes). Healthcare data from KFF + BC Ministry of Health. Currency data from Bank of Canada.",
+          "v2_roadmap": [
+            "Interactive UI for founders to input their own parameters",
+            "Sector-specific multipliers (saas vs hardware vs retail)",
+            "Historical friction cost trends (2015-2025)",
+            "Real-time USD/CAD rate integration",
+            "Scenario modeling: 'What if we add 5 CA employees next year?'"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_name": "CA Cleantech startup, 10 CA + 3 US employees, $5M revenue, 70% CA / 30% US",
+      "result": {
+        "inputs_received": {
+          "hq_location": "CA-BC",
+          "employee_distribution": {
+            "CA": 10,
+            "US": 3
+          },
+          "annual_revenue_usd": 5000000,
+          "revenue_split": {
+            "CA_pct": 70,
+            "US_pct": 30,
+            "other_pct": 0
+          },
+          "sector": "hardware",
+          "physical_goods": true
+        },
+        "summary": {
+          "total_annual_friction_cost_usd": 130225,
+          "friction_as_pct_of_revenue": 2.6,
+          "friction_items_count": 7,
+          "taxpayer_funded_sources_count": 6
+        },
+        "recommended_structure": {
+          "structure": "US HQ with Canadian EOR (Employer of Record)",
+          "rationale": "Avoid CA entity formation; use EOR for 1-3 CA employees until growth justifies subsidiary."
+        },
+        "friction_breakdown": [
+          {
+            "category": "Currency Hedging",
+            "annual_cost_usd": 22500,
+            "description": "Estimated cost to hedge CAD/USD exposure on $4,500,000 of Canadian revenue and salaries",
+            "source": "Bank of Canada daily exchange rates + industry estimates",
+            "taxpayer_funded": true
+          },
+          {
+            "category": "Tax Nexus \u2014 Permanent Establishment",
+            "annual_cost_usd": 8000,
+            "description": "CA entity with 3 US employees creates US Permanent Establishment. Must file US Form 1120-F, pay US corporate tax (21%) on US-source income, register for state taxes (WA B&O or OR CAT).",
+            "source": "IRS + CRA + Canada-US Tax Treaty",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Obtain US EIN from IRS",
+              "File Form 1120-F annually (US corporate tax for foreign corps)",
+              "Register for WA B&O tax or OR Corporate Activity Tax",
+              "Form 5472 (US) for foreign-owned US disregarded entity",
+              "Transfer pricing documentation"
+            ]
+          },
+          {
+            "category": "Immigration / Work Authorization",
+            "annual_cost_usd": 5475,
+            "description": "Work authorization for cross-border employees (3 US + 10 CA)",
+            "source": "USCIS + IRCC public data",
+            "taxpayer_funded": true,
+            "recommended_pathways": [
+              {
+                "pathway": "L-1 visa (intra-company transferee)",
+                "best_for": "Canadian employees transferring to US office (1+ year tenure required)",
+                "processing_time_days": 60,
+                "validity_years": 5,
+                "caveat": "Premium processing available ($2500 extra) for 15-day adjudication"
+              }
+            ]
+          },
+          {
+            "category": "Healthcare Cost Differential",
+            "annual_cost_usd": 35250,
+            "description": "US employer-sponsored health insurance (3 \u00d7 $8,500) + BC Employer Health Tax (1.95% on CA payroll above $500k)",
+            "source": "KFF + BC Ministry of Health",
+            "taxpayer_funded": true,
+            "us_breakdown": "$25,500 (US health premiums)",
+            "ca_breakdown": "$9,750 (BC Employer Health Tax)"
+          },
+          {
+            "category": "Customs Duties (estimated)",
+            "annual_cost_usd": 50000,
+            "description": "Estimated customs duty on physical goods. Most USMCA-qualifying goods enter duty-free; this estimate assumes 2% non-qualifying or below-threshold complexity.",
+            "source": "USMCA + HTSUS + CA Customs Tariff",
+            "taxpayer_funded": true,
+            "de_minimis_note": "Shipments under CAD$150 (CA) or USD$800 (US) enter duty-free under Section 321"
+          },
+          {
+            "category": "Data Residency / Privacy Compliance",
+            "annual_cost_usd": 3000,
+            "description": "PIPEDA (Canada) + state privacy law compliance. Cross-border data transfer requires appropriate safeguards; consent may be required for sensitive data.",
+            "source": "Office of the Privacy Commissioner of Canada + NCSL",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Privacy policy must disclose cross-border data transfers",
+              "PIPEDA consent for collection, use, disclosure of personal information",
+              "Data Processing Agreement (DPA) with any sub-processors",
+              "State privacy law compliance (CCPA/CPRA if CA customers; WPA if WA customers post-2024)"
+            ]
+          },
+          {
+            "category": "Dual-Country Payroll",
+            "annual_cost_usd": 6000,
+            "description": "Running payroll in both US and Canada requires either EOR (Employer of Record) service or dual entity structure. EOR cost ~$500-600/employee/month; entity setup $5-15k one-time.",
+            "source": "Industry estimates (Deel, Rippling, Velocity Global public pricing)",
+            "taxpayer_funded": false
+          }
+        ],
+        "provenance": {
+          "calculator_version": "cross-border-friction-v1.0",
+          "computed_at": "2026-09-03T08:57:04.501193+00:00",
+          "data_sources_summary": "All tax/immigration/customs data from public taxpayer-funded sources (IRS, CRA, USCIS, IRCC, USMCA, HTSUS, BC statutes). Healthcare data from KFF + BC Ministry of Health. Currency data from Bank of Canada.",
+          "v2_roadmap": [
+            "Interactive UI for founders to input their own parameters",
+            "Sector-specific multipliers (saas vs hardware vs retail)",
+            "Historical friction cost trends (2015-2025)",
+            "Real-time USD/CAD rate integration",
+            "Scenario modeling: 'What if we add 5 CA employees next year?'"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_name": "US Hardware startup, 5 US + 1 CA, $1M revenue, 90% US / 10% CA, physical goods",
+      "result": {
+        "inputs_received": {
+          "hq_location": "US-OR",
+          "employee_distribution": {
+            "US": 5,
+            "CA": 1
+          },
+          "annual_revenue_usd": 1000000,
+          "revenue_split": {
+            "US_pct": 90,
+            "CA_pct": 10,
+            "other_pct": 0
+          },
+          "sector": "hardware",
+          "physical_goods": true
+        },
+        "summary": {
+          "total_annual_friction_cost_usd": 70960,
+          "friction_as_pct_of_revenue": 7.1,
+          "friction_items_count": 7,
+          "taxpayer_funded_sources_count": 6
+        },
+        "recommended_structure": {
+          "structure": "US HQ with Canadian EOR (Employer of Record)",
+          "rationale": "Avoid CA entity formation; use EOR for 1-3 CA employees until growth justifies subsidiary."
+        },
+        "friction_breakdown": [
+          {
+            "category": "Currency Hedging",
+            "annual_cost_usd": 1000,
+            "description": "Estimated cost to hedge CAD/USD exposure on $200,000 of Canadian revenue and salaries",
+            "source": "Bank of Canada daily exchange rates + industry estimates",
+            "taxpayer_funded": true
+          },
+          {
+            "category": "Tax Nexus \u2014 Permanent Establishment",
+            "annual_cost_usd": 8000,
+            "description": "US entity with 1 Canadian employees creates Canadian Permanent Establishment. Must file T2 corporate tax return, pay BC corporate tax (27%) on Canadian-source income, register for GST/HST if >$30k CA revenue.",
+            "source": "CRA + IRS + Canada-US Tax Treaty",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Register CA business number with CRA",
+              "File T2 corporate tax return annually",
+              "Register for GST/HST if CA revenue > $30k",
+              "Transfer pricing documentation (OECD-compliant)",
+              "Form 5471 (US) if foreign subsidiary structure used"
+            ]
+          },
+          {
+            "category": "Immigration / Work Authorization",
+            "annual_cost_usd": 460,
+            "description": "Work authorization for cross-border employees (5 US + 1 CA)",
+            "source": "USCIS + IRCC public data",
+            "taxpayer_funded": true,
+            "recommended_pathways": [
+              {
+                "pathway": "TN visa",
+                "best_for": "Canadian citizens in TN-listed occupations (engineer, scientist, etc.)",
+                "processing_time_days": 30,
+                "validity_years": 3,
+                "caveat": "TD spouse visa does NOT allow work; consider L-1 or H-1B if spouse needs to work"
+              }
+            ]
+          },
+          {
+            "category": "Healthcare Cost Differential",
+            "annual_cost_usd": 42500,
+            "description": "US employer-sponsored health insurance (5 \u00d7 $8,500) + BC Employer Health Tax (1.95% on CA payroll above $500k)",
+            "source": "KFF + BC Ministry of Health",
+            "taxpayer_funded": true,
+            "us_breakdown": "$42,500 (US health premiums)",
+            "ca_breakdown": "$0 (BC Employer Health Tax)"
+          },
+          {
+            "category": "Customs Duties (estimated)",
+            "annual_cost_usd": 10000,
+            "description": "Estimated customs duty on physical goods. Most USMCA-qualifying goods enter duty-free; this estimate assumes 2% non-qualifying or below-threshold complexity.",
+            "source": "USMCA + HTSUS + CA Customs Tariff",
+            "taxpayer_funded": true,
+            "de_minimis_note": "Shipments under CAD$150 (CA) or USD$800 (US) enter duty-free under Section 321"
+          },
+          {
+            "category": "Data Residency / Privacy Compliance",
+            "annual_cost_usd": 3000,
+            "description": "PIPEDA (Canada) + state privacy law compliance. Cross-border data transfer requires appropriate safeguards; consent may be required for sensitive data.",
+            "source": "Office of the Privacy Commissioner of Canada + NCSL",
+            "taxpayer_funded": true,
+            "requirements": [
+              "Privacy policy must disclose cross-border data transfers",
+              "PIPEDA consent for collection, use, disclosure of personal information",
+              "Data Processing Agreement (DPA) with any sub-processors",
+              "State privacy law compliance (CCPA/CPRA if CA customers; WPA if WA customers post-2024)"
+            ]
+          },
+          {
+            "category": "Dual-Country Payroll",
+            "annual_cost_usd": 6000,
+            "description": "Running payroll in both US and Canada requires either EOR (Employer of Record) service or dual entity structure. EOR cost ~$500-600/employee/month; entity setup $5-15k one-time.",
+            "source": "Industry estimates (Deel, Rippling, Velocity Global public pricing)",
+            "taxpayer_funded": false
+          }
+        ],
+        "provenance": {
+          "calculator_version": "cross-border-friction-v1.0",
+          "computed_at": "2026-09-03T08:57:04.501247+00:00",
+          "data_sources_summary": "All tax/immigration/customs data from public taxpayer-funded sources (IRS, CRA, USCIS, IRCC, USMCA, HTSUS, BC statutes). Healthcare data from KFF + BC Ministry of Health. Currency data from Bank of Canada.",
+          "v2_roadmap": [
+            "Interactive UI for founders to input their own parameters",
+            "Sector-specific multipliers (saas vs hardware vs retail)",
+            "Historical friction cost trends (2015-2025)",
+            "Real-time USD/CAD rate integration",
+            "Scenario modeling: 'What if we add 5 CA employees next year?'"
+          ]
+        }
+      }
+    }
+  ],
+  "calculator_function": "cross_border_friction(inputs) \u2014 see Python source for API"
+}

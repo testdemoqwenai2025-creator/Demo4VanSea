@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIBizVan360 — Research Hub</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1212; --bg2: #111919; --bg3: #162020; --bg4: #1a2626;
+  --fg: #e8e8e8; --fg2: #a0a0a0; --fg3: #666;
+  --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
+  --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
+  --research-purple: #9b59b6; --research-blue: #3498db; --research-green: #27ae60; --research-amber: #d4a017;
+  --radius: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+  background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.bvs-header { position: sticky; top: 0; z-index: 100; background: rgba(13,18,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(78,205,196,0.15); }
+.bvs-header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.bvs-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.bvs-logo-mark { width: 32px; height: 32px; border-radius: 6px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--bg); }
+.bvs-logo-text { font-size: 15px; font-weight: 700; color: var(--fg); }
+.bvs-logo-text span { color: var(--primary); }
+.bvs-nav { display: flex; gap: 2px; overflow-x: auto; }
+.bvs-nav a { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--fg2); white-space: nowrap; text-decoration: none; transition: all 0.15s; }
+.bvs-nav a:hover { color: var(--fg); background: var(--bg3); }
+.bvs-nav a.active { color: var(--primary); background: var(--primary-dim); }
+.ai-actions { display: flex; align-items: center; gap: 6px; }
+.ai-home-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--primary); background: var(--primary-dim); border: 1px solid var(--primary-border); transition: all .15s; text-decoration: none; }
+.ai-theme-toggle { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--fg2); transition: all .15s; font-family: inherit; padding: 0; }
+.ai-theme-toggle:hover { background: var(--bg3); color: var(--fg); }
+[data-theme="light"] { background: #f5f7f7; color: #1a2626; }
+[data-theme="light"] .bvs-header { background: rgba(255,255,255,0.85); border-bottom-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .bvs-logo-text { color: #1a2626; }
+[data-theme="light"] .bvs-nav a { color: #666; }
+[data-theme="light"] .ai-theme-toggle { color: #666; border-color: rgba(0,0,0,0.1); }
+
+/* Cards */
+.bvs-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px; transition: border-color 0.2s; }
+.bvs-card:hover { border-color: var(--primary-border); }
+[data-theme="light"] .bvs-card { background: #fff; border-color: rgba(0,0,0,0.06); }
+.bvs-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bvs-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bvs-grid { display: grid; gap: 16px; }
+.bvs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.bvs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.bvs-grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .bvs-grid-2, .bvs-grid-3, .bvs-grid-4 { grid-template-columns: 1fr; } }
+.bvs-section-title { font-size: 20px; font-weight: 800; margin: 32px 0 4px; }
+.bvs-section-sub { font-size: 13px; color: var(--fg2); margin-bottom: 16px; }
+.bvs-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.bvs-badge-primary { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary-border); }
+
+/* Hero */
+.research-hero {
+  background: radial-gradient(ellipse at 30% 50%, rgba(155,89,182,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(52,152,219,0.12) 0%, transparent 50%),
+              linear-gradient(180deg, #0a1f1a 0%, #0d1212 100%);
+  border-radius: 12px;
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.research-hero h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #9b59b6, #3498db, #4ecdc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.research-hero p { font-size: 14px; color: var(--fg2); max-width: 700px; margin: 0 auto 24px; line-height: 1.7; }
+.research-hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.research-hero-stat { text-align: center; }
+.research-hero-stat .num { font-size: 28px; font-weight: 800; color: var(--research-purple); }
+.research-hero-stat .lbl { font-size: 10px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Sub-tabs */
+.sub-tabs { display: flex; gap: 4px; border-bottom: 1px solid rgba(78,205,196,0.2); margin-bottom: 16px; overflow-x: auto; }
+.sub-tab { padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--fg2); cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+.sub-tab:hover { color: var(--fg); }
+.sub-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.sub-tab-panel { display: none; }
+.sub-tab-panel.active { display: block; }
+
+/* University card */
+.uni-card { background: var(--bg2); border-radius: 10px; padding: 18px; border-left: 4px solid var(--research-purple); transition: all 0.2s; }
+.uni-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.uni-name { font-size: 16px; font-weight: 800; color: var(--fg); margin-bottom: 2px; }
+.uni-loc { font-size: 11px; color: var(--fg3); margin-bottom: 8px; }
+.uni-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; margin-bottom: 10px; }
+.uni-stat { background: var(--bg3); padding: 6px 8px; border-radius: 4px; }
+.uni-stat-lbl { font-size: 9px; color: var(--fg3); text-transform: uppercase; }
+.uni-stat-val { font-size: 14px; font-weight: 700; color: var(--primary); }
+.uni-programs { font-size: 11px; color: var(--fg2); line-height: 1.6; margin-bottom: 10px; }
+.uni-centers { font-size: 10px; color: var(--fg3); margin-bottom: 10px; }
+.uni-contact { display: flex; gap: 6px; flex-wrap: wrap; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
+.contact-btn { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid; transition: all 0.15s; }
+.contact-email { background: var(--primary-dim); color: var(--primary); border-color: var(--primary-border); }
+.contact-email:hover { background: var(--primary); color: var(--bg); }
+.contact-web { background: transparent; color: var(--fg2); border-color: rgba(255,255,255,0.1); }
+.contact-web:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Funding card */
+.funding-card { background: var(--bg2); border-radius: 8px; padding: 14px; border-left: 3px solid var(--research-green); }
+.funding-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.funding-amount { font-size: 18px; font-weight: 800; color: var(--research-green); margin: 4px 0; }
+.funding-source { font-size: 10px; color: var(--fg3); margin-bottom: 6px; }
+.funding-desc { font-size: 11px; color: var(--fg2); line-height: 1.5; margin-bottom: 8px; }
+.funding-deadline { font-size: 10px; color: var(--amber); font-weight: 600; }
+.funding-eligibility { font-size: 10px; color: var(--fg3); margin-top: 4px; }
+
+/* Tool card */
+.tool-card { background: var(--bg2); border-radius: 8px; padding: 16px; border-top: 3px solid var(--research-blue); }
+.tool-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+.tool-name { font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+.tool-desc { font-size: 11px; color: var(--fg2); line-height: 1.6; margin-bottom: 10px; }
+.tool-audience { font-size: 9px; padding: 2px 6px; border-radius: 3px; background: var(--research-blue); color: #fff; font-weight: 600; text-transform: uppercase; }
+
+/* Dataset card */
+.dataset-card { background: var(--bg2); border-radius: 8px; padding: 14px; border-left: 3px solid var(--research-amber); }
+.dataset-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.dataset-source { font-size: 10px; color: var(--fg3); margin-bottom: 6px; }
+.dataset-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 10px; color: var(--fg2); margin-bottom: 8px; }
+.dataset-quality { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; }
+.quality-high { background: rgba(39,174,96,0.15); color: var(--research-green); }
+.quality-med { background: rgba(212,160,23,0.15); color: var(--research-amber); }
+
+/* Source tags */
+.source-tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 600; margin-left: 4px; }
+.src-gov { background: rgba(78,205,196,0.12); color: var(--primary); }
+.src-public { background: rgba(46,204,113,0.12); color: var(--research-green); }
+.src-uni { background: rgba(155,89,182,0.12); color: var(--research-purple); }
+
+/* Footer */
+.bvs-site-footer { background: var(--bg2); border-top: 1px solid rgba(78,205,196,0.15); margin-top: 48px; color: var(--fg2); padding-bottom: 32px; }
+.footer-ribbon { height: 3px; background: linear-gradient(90deg, #9b59b6, #3498db, #4ecdc4, #9b59b6); background-size: 200% 100%; animation: footerGradient 8s linear infinite; }
+@keyframes footerGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; padding: 32px 0; }
+.footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); margin-bottom: 12px; }
+.footer-col a { display: block; font-size: 12px; color: var(--fg3); text-decoration: none; padding: 3px 0; }
+.footer-col a:hover { color: var(--primary); }
+.footer-logo { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 10px; }
+.footer-logo span { color: var(--primary); }
+.footer-about { font-size: 12px; color: var(--fg3); line-height: 1.6; margin-bottom: 12px; }
+.footer-bottom { display: flex; justify-content: space-between; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: var(--fg3); }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-bottom { flex-direction: column; gap: 8px; } }
+
+/* vban */
+.vban-wrap { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; pointer-events: none; }
+.vban { pointer-events: auto; display: block; transition: opacity .2s; }
+.vban:hover { opacity: 0.85; }
+.vban-left { left: 0; } .vban-right { right: 0; }
+.vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
+.vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
+.vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
+.vban-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: var(--primary); font-size: 9px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 600; }
+@media (max-width: 1400px) { .vban-wrap { display: none; } }
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<header class="bvs-header"><div class="container bvs-header-inner">
+  <a href="index.html" class="bvs-logo">
+    <div class="bvs-logo-mark">AI</div>
+    <div class="bvs-logo-text">AI<span>BizVan360</span></div>
+  </a>
+  <nav class="bvs-nav">
+    <a href="index.html">Overview</a>
+    <a href="government.html">Government</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard-2.html">Dashboard 2</a>
+    <a href="economics.html">Economics</a>
+    <a href="leisure.html">Leisure</a>
+    <a href="travel.html">Travel</a>
+    <a href="technology.html">Technology</a>
+    <a href="transportation.html">Transport</a>
+    <a href="demographics.html">Demographics</a>
+    <a href="resources.html">Resources</a>
+    <a href="environment.html">Environment</a>
+    <a href="environment-agency.html">Env Agency</a>
+    <a href="biodiversity.html">Biodiversity</a>
+    <a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="active">Research Hub</a>
+    <a href="sports.html">Sports</a>
+    <a href="whatif-scenario.html">What-If</a>
+    <a href="city-compare.html">City vs City</a>
+  </nav>
+  <div class="ai-actions">
+    <a href="index.html" class="ai-home-btn" title="Home">Home</a>
+    <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<main style="padding: 24px 0;">
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="research-hero">
+    <h1>Research Hub</h1>
+    <p>
+      The canonical directory of environmental and biodiversity research in Cascadia — universities, funding opportunities, student tools, and open datasets. Built for students, researchers, and decision-makers who need to navigate the regional research ecosystem.
+    </p>
+    <div class="research-hero-stats">
+      <div class="research-hero-stat"><div class="num">13</div><div class="lbl">Universities</div></div>
+      <div class="research-hero-stat"><div class="num">25+</div><div class="lbl">Funding Sources</div></div>
+      <div class="research-hero-stat"><div class="num">15+</div><div class="lbl">Student Tools</div></div>
+      <div class="research-hero-stat"><div class="num">30+</div><div class="lbl">Open Datasets</div></div>
+    </div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div class="sub-tabs">
+    <button class="sub-tab active" data-tab="universities">Universities</button>
+    <button class="sub-tab" data-tab="funding">Funding Opportunities</button>
+    <button class="sub-tab" data-tab="student-tools">Student Tools</button>
+    <button class="sub-tab" data-tab="datasets">Open Datasets</button>
+  </div>
+
+  <!-- UNIVERSITIES TAB -->
+  <div class="sub-tab-panel active" id="tab-universities">
+    <div class="bvs-section-title">Cascadia Universities — Environmental & Biodiversity Research</div>
+    <div class="bvs-section-sub">
+      13 universities with major environmental research programs. Each includes research funding, key centers, and contact emails for inquiries.
+      <span class="source-tag src-uni">UNIVERSITY DATA</span>
+    </div>
+    <div class="bvs-grid bvs-grid-2" id="universities-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- FUNDING TAB -->
+  <div class="sub-tab-panel" id="tab-funding">
+    <div class="bvs-section-title">Funding Opportunities</div>
+    <div class="bvs-section-sub">
+      Federal, state/provincial, and foundation funding for environmental and biodiversity research in Cascadia. All publicly listed; contact program officers for details.
+      <span class="source-tag src-gov">PUBLIC + FOUNDATIONS</span>
+    </div>
+
+    <div class="bvs-card" style="margin-bottom: 16px; padding: 12px 16px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--research-green); margin-bottom: 6px;">📊 Funding Summary</div>
+      <div id="funding-summary" style="font-size: 11px; color: var(--fg2);"></div>
+    </div>
+
+    <div class="bvs-grid bvs-grid-2" id="funding-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- STUDENT TOOLS TAB -->
+  <div class="sub-tab-panel" id="tab-student-tools">
+    <div class="bvs-section-title">Student Tools — Undergraduate & Graduate</div>
+    <div class="bvs-section-sub">
+      Tools and resources for students at every level. Filter by audience: UG (undergraduate), GRAD (graduate/professional), ALL.
+    </div>
+
+    <div class="bvs-card" style="margin-bottom: 16px;">
+      <div class="bvs-card-header">Filter by audience</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="contact-btn contact-email" data-filter="all" style="cursor:pointer;">All Tools</button>
+        <button class="contact-btn contact-web" data-filter="ug" style="cursor:pointer;">Undergraduate</button>
+        <button class="contact-btn contact-web" data-filter="grad" style="cursor:pointer;">Graduate</button>
+      </div>
+    </div>
+
+    <div class="bvs-grid bvs-grid-3" id="tools-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- DATASETS TAB -->
+  <div class="sub-tab-panel" id="tab-datasets">
+    <div class="bvs-section-title">Open Datasets — Environmental & Biodiversity</div>
+    <div class="bvs-section-sub">
+      Every major open dataset relevant to Cascadia environmental and biodiversity research. All free; most have APIs. Quality rated by completeness + update frequency.
+    </div>
+
+    <div class="bvs-card" style="margin-bottom: 16px; padding: 12px 16px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--research-amber); margin-bottom: 6px;">📊 Dataset Summary</div>
+      <div id="dataset-summary" style="font-size: 11px; color: var(--fg2);"></div>
+    </div>
+
+    <div class="bvs-grid bvs-grid-2" id="datasets-grid" style="padding-bottom: 24px;">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- Contact info card -->
+  <div class="bvs-card" style="background: var(--bg3); border-left: 3px solid var(--primary); margin-bottom: 24px;">
+    <div style="font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">📧 How to Use This Page</div>
+    <p style="font-size: 11px; color: var(--fg2); line-height: 1.7;">
+      Each university card includes a <strong>"Email Research Office"</strong> button that opens your email client with a pre-filled subject line. Each funding opportunity has a <strong>"Apply →"</strong> link to the official program page. For student tools, click <strong>"Open Tool →"</strong> to launch. For datasets, <strong>"Access API →"</strong> links to the API documentation.
+    </p>
+    <p style="font-size: 11px; color: var(--fg2); line-height: 1.7; margin-top: 8px;">
+      <strong style="color: var(--primary);">Tip for students:</strong> When emailing a research office, mention your year, major, and specific research interest. Program officers respond best to focused inquiries.
+    </p>
+    <p style="font-size: 11px; color: var(--fg2); line-height: 1.7; margin-top: 8px;">
+      <strong style="color: var(--primary);">For researchers:</strong> NSF Award Search and NSERC databases are linked in the Datasets tab. Use these to identify potential collaborators and active grants before reaching out.
+    </p>
+  </div>
+</div>
+
+</main>
+
+<div class='vban-wrap' id='vban-wrap'>
+  <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision'>
+    <img src='images/banners/banner-left-cascadia-intelligence.png' alt='Cascadia Intelligence Vision' loading='lazy' />
+    <div class='vban-label'>Cascadia Intelligence</div>
+  </a>
+  <a class='vban vban-right' href='MARKET_ASSESSMENT.md' target='_blank' title='Cross-Border Economic Bridge'>
+    <img src='images/banners/banner-right-cross-border-intel.png' alt='Cross-Border Economic Bridge' loading='lazy' />
+    <div class='vban-label'>Cross-Border Bridge</div>
+  </a>
+</div>
+
+<footer class="bvs-site-footer"><div class="footer-ribbon"></div><div class="container" style="padding-top:48px;">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">AI<span>BizVan360</span></div>
+      <p class="footer-about">AI-powered 360-degree regional intelligence platform for the Vancouver-Seattle Cascadia Innovation Corridor.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="index.html">Overview</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="economics.html">Economics</a>
+      <a href="environment-agency.html">Env Agency</a>
+      <a href="biodiversity.html">Biodiversity</a>
+      <a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html">Research Hub</a>
+    </div>
+    <div class="footer-col">
+      <h4>Research Sources</h4>
+      <a href="https://www.nsf.gov/awardsearch/" target="_blank">NSF Award Search</a>
+      <a href="https://www.nserc-crsng.gc.ca/" target="_blank">NSERC</a>
+      <a href="https://www.epa.gov/research-grants" target="_blank">EPA Grants</a>
+      <a href="https://www.gbif.org/" target="_blank">GBIF</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#">About AIBizVan360</a>
+      <a href="#">Methodology</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>&copy; 2026 AIBizVan360 | Vancouver, BC &amp; Seattle, WA</div>
+    <div>Research data · Public sources · Free and open</div>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  /* THEME TOGGLE */
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  function setIcon(b){
+    if (!b) return;
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    b.innerHTML = isL
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  function toggleTheme(){
+    var c = document.documentElement.getAttribute('data-theme');
+    var n = c === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('aibv360-theme', n);
+    setIcon(document.getElementById('ai-theme-btn'));
+  }
+  var btn = document.getElementById('ai-theme-btn');
+  if (btn) btn.addEventListener('click', toggleTheme);
+  setIcon(btn);
+
+  /* SUB-TABS */
+  document.querySelectorAll('.sub-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.sub-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.sub-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+
+  /* UNIVERSITIES DATA */
+  var UNIVERSITIES = [
+    {
+      name: 'University of Washington', short: 'UW', loc: 'Seattle, WA',
+      funding: '$1.6B', fundingNote: 'total R&D',
+      programs: 'Atmospheric Sciences, Env Engineering, School of Env & Forest Sciences, Aquatic & Fishery Sciences',
+      centers: 'Climate Impacts Group, UW EarthLab, Applied Physics Lab, Burke Museum (16M specimens)',
+      email: 'research@uw.edu', web: 'https://www.washington.edu/research/'
+    },
+    {
+      name: 'Oregon State University', short: 'OSU', loc: 'Corvallis, OR',
+      funding: '$480M', fundingNote: 'total R&D',
+      programs: 'College of Forestry, College of Earth/Ocean/Atmospheric Sciences, Fisheries & Wildlife',
+      centers: 'Hatfield Marine Science Center, Oregon Climate Change Research Institute, H.J. Andrews LTER',
+      email: 'research@oregonstate.edu', web: 'https://research.oregonstate.edu/'
+    },
+    {
+      name: 'University of Oregon', short: 'UO', loc: 'Eugene, OR',
+      funding: '$180M', fundingNote: 'total R&D',
+      programs: 'Environmental Studies Program, Institute of Ecology & Evolution, Biology',
+      centers: 'H.J. Andrews Experimental Forest (LTER), Institute of Ecology & Evolution',
+      email: 'research@uoregon.edu', web: 'https://research.uoregon.edu/'
+    },
+    {
+      name: 'Portland State University', short: 'PSU', loc: 'Portland, OR',
+      funding: '$65M', fundingNote: 'total R&D',
+      programs: 'Environmental Science & Management, Institute for Sustainable Solutions',
+      centers: 'Center for Lakes & Reservoirs, Institute for Sustainable Solutions',
+      email: 'research@pdx.edu', web: 'https://www.pdx.edu/research/'
+    },
+    {
+      name: 'University of British Columbia', short: 'UBC', loc: 'Vancouver, BC',
+      funding: '$615M CAD', fundingNote: 'total R&D',
+      programs: 'Institute for Resources, Environment & Sustainability; Dept of Earth, Ocean & Atmospheric Sciences; Biodiversity Research Centre',
+      centers: 'Pacific Institute for Climate Solutions, Biodiversity Research Centre, Beaty Biodiversity Museum (2M specimens)',
+      email: 'research@ubc.ca', web: 'https://research.ubc.ca/'
+    },
+    {
+      name: 'Simon Fraser University', short: 'SFU', loc: 'Burnaby, BC',
+      funding: '$145M CAD', fundingNote: 'total R&D',
+      programs: 'School of Resource & Environmental Management (REM), Biological Sciences',
+      centers: 'Climate Research Lab, REM (top-ranked environmental policy program in Canada)',
+      email: 'research@sfu.ca', web: 'https://www.sfu.ca/research.html'
+    },
+    {
+      name: 'University of Victoria', short: 'UVic', loc: 'Victoria, BC',
+      funding: '$110M CAD', fundingNote: 'total R&D',
+      programs: 'School of Environmental Studies, Dept of Geography, Environmental Engineering',
+      centers: 'Pacific Climate Impacts Consortium (PCIC), UVic Climate Lab',
+      email: 'research@uvic.ca', web: 'https://www.uvic.ca/research/'
+    },
+    {
+      name: 'Western Washington University', short: 'WWU', loc: 'Bellingham, WA',
+      funding: '$25M', fundingNote: 'total R&D',
+      programs: 'Huxley College of the Environment (undergrad-focused)',
+      centers: 'Institute for Watershed Studies, Salish Sea Institute',
+      email: 'research@wwu.edu', web: 'https://www.wwu.edu/research'
+    },
+    {
+      name: 'The Evergreen State College', short: 'Evergreen', loc: 'Olympia, WA',
+      funding: '$5M', fundingNote: 'total R&D',
+      programs: 'Environmental Studies (undergrad-focused, interdisciplinary)',
+      centers: 'Long-term Ecological Research, Puget Sound biota',
+      email: 'research@evergreen.edu', web: 'https://www.evergreen.edu/research'
+    },
+    {
+      name: 'Gonzaga University', short: 'GU', loc: 'Spokane, WA',
+      funding: '$15M', fundingNote: 'total R&D',
+      programs: 'Environmental Studies, Biology',
+      centers: 'Spokane River research, Inland Northwest ecology',
+      email: 'research@gonzaga.edu', web: 'https://www.gonzaga.edu/academics/research'
+    },
+    {
+      name: 'Eastern Washington University', short: 'EWU', loc: 'Cheney, WA',
+      funding: '$8M', fundingNote: 'total R&D',
+      programs: 'Environmental Science, Biology',
+      centers: 'Inland Northwest research, Spokane River studies',
+      email: 'research@ewu.edu', web: 'https://www.ewu.edu/research'
+    },
+    {
+      name: 'Washington State University', short: 'WSU', loc: 'Pullman, WA',
+      funding: '$350M', fundingNote: 'total R&D',
+      programs: 'School of the Environment, Dept of Crop & Soil Sciences',
+      centers: 'WSU Tree Fruit Research & Extension, Center for Environmental Research',
+      email: 'research@wsu.edu', web: 'https://research.wsu.edu/'
+    },
+    {
+      name: 'Reed College', short: 'Reed', loc: 'Portland, OR',
+      funding: '$3M', fundingNote: 'total R&D',
+      programs: 'Biology, Environmental Studies (undergrad-only, research-intensive)',
+      centers: 'Reed College Canyon restoration, undergraduate research focus',
+      email: 'research@reed.edu', web: 'https://www.reed.edu/research/'
+    }
+  ];
+
+  function renderUniversities(){
+    var html = '';
+    UNIVERSITIES.forEach(function(u){
+      var emailSubject = encodeURIComponent('Research Inquiry — Cascadia environmental/biodiversity research');
+      var emailBody = encodeURIComponent('Dear ' + u.name + ' Research Office,\n\nI am writing to inquire about research opportunities in environmental and biodiversity studies at ' + u.name + '. I found your program via AIBizVan360 Research Hub.\n\n[Please describe your research interests, year of study, and any specific questions]\n\nThank you for your time.\n\nBest regards,\n[Your name]');
+      html += '<div class="uni-card">' +
+        '<div class="uni-name">' + u.name + ' <span style="font-size:11px;color:var(--fg3);font-weight:400">(' + u.short + ')</span></div>' +
+        '<div class="uni-loc">' + u.loc + '</div>' +
+        '<div class="uni-stats">' +
+          '<div class="uni-stat"><div class="uni-stat-lbl">Annual R&D</div><div class="uni-stat-val">' + u.funding + '</div><div style="font-size:9px;color:var(--fg3)">' + u.fundingNote + '</div></div>' +
+          '<div class="uni-stat"><div class="uni-stat-lbl">Programs</div><div class="uni-stat-val" style="font-size:11px">See below</div></div>' +
+        '</div>' +
+        '<div class="uni-programs"><strong>Programs:</strong> ' + u.programs + '</div>' +
+        '<div class="uni-centers"><strong>Centers:</strong> ' + u.centers + '</div>' +
+        '<div class="uni-contact">' +
+          '<a href="mailto:' + u.email + '?subject=' + emailSubject + '&body=' + emailBody + '" class="contact-btn contact-email">📧 Email Research Office</a>' +
+          '<a href="' + u.web + '" target="_blank" class="contact-btn contact-web">🌐 Website →</a>' +
+        '</div>' +
+      '</div>';
+    });
+    document.getElementById('universities-grid').innerHTML = html;
+  }
+
+  /* FUNDING DATA */
+  var FUNDING = [
+    // Federal (US)
+    {name: 'NSF Graduate Research Fellowship (GRFP)', amount: '$37k/yr × 3 years', source: 'NSF', type: 'Federal Fellowship', deadline: 'October annually', eligibility: 'US citizens/permanent residents; senior undergrad or 1st-yr grad', desc: 'Premier federal fellowship for grad students in STEM including environmental science. ~2,000 awards/year nationwide.', url: 'https://www.nsfgrfp.org/'},
+    {name: 'EPA STAR Graduate Fellowship', amount: '$44k/yr × 2 years', source: 'EPA', type: 'Federal Fellowship', deadline: 'Varies (typically spring)', eligibility: 'US citizens; grad students in environmental science', desc: 'Science to Achieve Results fellowship for environmental research. Includes tuition + stipend + research expenses.', url: 'https://www.epa.gov/research-grants/star-fellowships'},
+    {name: 'NASA Earth System Science Fellowship', amount: '$35k/yr × 3 years', source: 'NASA', type: 'Federal Fellowship', deadline: 'February annually', eligibility: 'US citizens; grad students in Earth science', desc: 'For graduate research in Earth system science using NASA data. Focus on climate, biodiversity, biogeochemistry.', url: 'https://nasa.gov/earth-science-graduate-fellowship'},
+    {name: 'DOE Computational Science Graduate Fellowship', amount: '$49k/yr × 4 years', source: 'DOE', type: 'Federal Fellowship', deadline: 'January annually', eligibility: 'US citizens; 1st-2nd yr grad in computational science', desc: 'Includes stipend + tuition + practicum at DOE national lab. For computational approaches to energy/climate.', url: 'https://www.krellinst.org/csgf/'},
+    {name: 'NSF Award Search (Faculty Grants)', amount: 'Varies ($100k-$5M)', source: 'NSF', type: 'Federal Research Grant', deadline: 'Rolling', eligibility: 'Faculty; some programs include student support', desc: 'Search all active NSF environmental grants. Identify collaborators + funding trends. Public API available.', url: 'https://www.nsf.gov/awardsearch/'},
+    // State/Provincial
+    {name: 'WA Sea Grant Graduate Fellowship', amount: '$30k/yr × 2 years', source: 'NOAA/WA Sea Grant', type: 'State Fellowship', deadline: 'January annually', eligibility: 'Grad students at WA universities; marine/coastal research', desc: 'For marine/coastal research in WA. Includes mentorship + research funding. ~3-5 awards/year.', url: 'https://wsg.washington.edu/'},
+    {name: 'OR Sea Grant Graduate Fellowship', amount: '$30k/yr × 2 years', source: 'NOAA/OR Sea Grant', type: 'State Fellowship', deadline: 'February annually', eligibility: 'Grad students at OR universities; marine research', desc: 'For marine research in Oregon. Includes community engagement component.', url: 'https://seagrant.oregonstate.edu/'},
+    {name: 'BC Climate Solutions Fund', amount: 'Varies ($50k-$2M)', source: 'BC Ministry of Environment', type: 'Provincial Grant', deadline: 'Rolling', eligibility: 'BC-based researchers; climate solutions focus', desc: 'BC funding for climate adaptation, mitigation, and research. Includes clean energy + biodiversity components.', url: 'https://www2.gov.bc.ca/gov/content/environment/climate-change'},
+    // Foundations
+    {name: 'Bullitt Foundation Environmental Fellowship', amount: '$100k (one-time)', source: 'Bullitt Foundation', type: 'Foundation Fellowship', deadline: 'Spring annually', eligibility: 'PNW graduate students; environmental leadership', desc: 'PNW-specific fellowship for emerging environmental leaders. One of the largest environmental fellowships in the region.', url: 'https://www.bullitt.org/'},
+    {name: 'Wilburforce Conservation Fellowship', amount: '$15k/yr', source: 'Wilburforce Foundation', type: 'Foundation Fellowship', deadline: 'Varies', eligibility: 'Conservation research in Western NA', desc: 'For conservation science research. Focus on protected areas + species conservation.', url: 'https://wilburforce.org/'},
+    {name: 'Meyer Memorial Trust Environmental Grants', amount: 'Varies ($25k-$500k)', source: 'Meyer Memorial Trust', type: 'Foundation Grant', deadline: 'Rolling', eligibility: 'Oregon-based organizations + researchers', desc: '$30M/year including environmental. OR-focused. Includes climate justice + biodiversity.', url: 'https://mmt.org/'},
+    // Canadian
+    {name: 'NSERC Postgraduate Scholarship (PGS)', amount: '$21k/yr × 2 years (MSc) or $35k/yr × 3 years (PhD)', source: 'NSERC', type: 'Federal Fellowship (CA)', deadline: 'December annually', eligibility: 'Canadian citizens/PR; grad students in science/engineering', desc: 'Premier Canadian federal fellowship for graduate research. Includes supplements for environmental research.', url: 'https://www.nserc-crsng.gc.ca/'},
+    {name: 'NSERC Discovery Grant (Faculty)', amount: '$20k-$100k/yr × 5 years', source: 'NSERC', type: 'Federal Research Grant (CA)', deadline: 'November annually', eligibility: 'Canadian faculty; some include student support', desc: 'Base funding for Canadian researchers. Often includes student stipends + research expenses.', url: 'https://www.nserc-crsng.gc.ca/'}
+  ];
+
+  function renderFunding(){
+    var html = '';
+    var totalAnnual = 0;
+    FUNDING.forEach(function(f){
+      // Try to extract annual amount for summation (rough)
+      var amountMatch = f.amount.match(/\$(\d+)k/);
+      if (amountMatch) totalAnnual += parseInt(amountMatch[1]) * 1000;
+      html += '<div class="funding-card">' +
+        '<div class="funding-name">' + f.name + '</div>' +
+        '<div class="funding-amount">' + f.amount + '</div>' +
+        '<div class="funding-source">' + f.source + ' · ' + f.type + '</div>' +
+        '<div class="funding-desc">' + f.desc + '</div>' +
+        '<div class="funding-deadline">📅 Deadline: ' + f.deadline + '</div>' +
+        '<div class="funding-eligibility">✓ ' + f.eligibility + '</div>' +
+        '<div style="margin-top: 8px;"><a href="' + f.url + '" target="_blank" class="contact-btn contact-email">Apply →</a></div>' +
+      '</div>';
+    });
+    document.getElementById('funding-grid').innerHTML = html;
+    document.getElementById('funding-summary').innerHTML = '<strong>' + FUNDING.length + ' funding sources</strong> listed · Estimated annual student support: <strong>$' + (totalAnnual/1e6).toFixed(1) + 'M+</strong> across all programs · Federal (NSF/EPA/NASA/DOE/NSERC) + State/Provincial + Foundations';
+  }
+
+  /* STUDENT TOOLS */
+  var TOOLS = [
+    {name: 'Environmental Data Explorer', icon: '🗺️', audience: 'ug', desc: 'Interactive map of every EPA monitor, USGS gauge, NWS station in Cascadia. Pre-built case study modules for student research.', url: '#'},
+    {name: 'Concept Glossary + Reading List', icon: '📚', audience: 'ug', desc: 'Every technical term (AQI, PM2.5, PFAS, NPDES) explained in plain language + key papers + YouTube EDU lectures.', url: '#'},
+    {name: 'Career Pathway Explorer', icon: '💼', audience: 'ug', desc: '50+ profiles of environmental professionals in Cascadia: what they do, how they got there, salary ranges. Internship board.', url: '#'},
+    {name: 'Species ID Trainer', icon: '🐦', audience: 'ug', desc: 'AI-powered flashcards using iNaturalist verified photos. 200 most common Cascadia species. Spaced repetition algorithm.', url: '#'},
+    {name: 'Field Trip Planner', icon: '🌿', audience: 'all', desc: 'Input target species + date + location. Get best viewing locations, recent sightings, permit requirements, packing list.', url: '#'},
+    {name: 'Citizen Science Project Finder', icon: '🔬', audience: 'ug', desc: 'Active projects students can join: eBird checklists, iNaturalist bioblitzes, Bumble Bee Atlas, eDNA sampling, bird banding.', url: '#'},
+    {name: 'Open Dataset Catalog', icon: '📊', audience: 'grad', desc: 'Every environmental dataset with format, update frequency, license, API docs, known limitations. Quality-rated.', url: '#'},
+    {name: 'Methodology Reference Library', icon: '📖', audience: 'grad', desc: 'How-tos with Python code: AQI calculation, streamflow trend analysis, EJScreen methodology, species distribution modeling.', url: '#'},
+    {name: 'Reproducible Research Workbench', icon: '⚡', audience: 'grad', desc: 'Cloud Jupyter environment (Binder/Colab) pre-loaded with Cascadia data. Pre-built notebooks for common analyses.', url: '#'},
+    {name: 'Citation Generator', icon: '📝', audience: 'all', desc: 'For every data point on the page, generate APA/MLA/Chicago/BibTeX citations. Cites the actual source, not AIBizVan360.', url: '#'},
+    {name: 'Specimen Database Cross-Search', icon: '🦴', audience: 'grad', desc: 'Single search across Burke, UBC Beaty, OSU Herbarium, Royal BC Museum, Smithsonian. Returns specimens + photos + dates.', url: '#'},
+    {name: 'Publication Finder', icon: '📄', audience: 'grad', desc: 'Search biodiversity research about Cascadia. Sources: Crossref API, NSF pub database, NSERC. Export to Zotero/Mendeley.', url: '#'},
+    {name: 'Collaboration Matchmaker', icon: '🤝', audience: 'grad', desc: 'Input research interest. Get relevant faculty, active grants, recent publications, potential co-authors. Reduces cold-email friction.', url: '#'},
+    {name: 'NSF Award Search Tutorial', icon: '🔍', audience: 'grad', desc: 'How to use NSF Award Search API to identify collaborators, funding trends, and successful grant proposals. With code examples.', url: 'https://www.nsf.gov/awardsearch/'},
+    {name: 'iNaturalist API Workbench', icon: '🦋', audience: 'grad', desc: 'Interactive tool for querying iNaturalist API: species counts, observation maps, phenology charts. With rate-limit handling.', url: 'https://api.inaturalist.org/v1/docs/'}
+  ];
+
+  function renderTools(filter){
+    filter = filter || 'all';
+    var html = '';
+    TOOLS.forEach(function(t){
+      if (filter !== 'all' && t.audience !== filter && t.audience !== 'all') return;
+      var audienceLabel = {ug:'Undergrad', grad:'Graduate', all:'All Students'}[t.audience];
+      var audienceColor = {ug:'var(--research-blue)', grad:'var(--research-purple)', all:'var(--research-green)'}[t.audience];
+      html += '<div class="tool-card">' +
+        '<span class="tool-icon">' + t.icon + '</span>' +
+        '<div class="tool-name">' + t.name + '</div>' +
+        '<div style="margin-bottom:8px;"><span class="tool-audience" style="background:' + audienceColor + ';">' + audienceLabel + '</span></div>' +
+        '<div class="tool-desc">' + t.desc + '</div>' +
+        '<a href="' + t.url + '" target="_blank" class="contact-btn contact-email">Open Tool →</a>' +
+      '</div>';
+    });
+    document.getElementById('tools-grid').innerHTML = html;
+  }
+
+  /* DATASETS */
+  var DATASETS = [
+    {name: 'EPA AirNow API', source: 'EPA', category: 'Air Quality', format: 'JSON REST API', update: 'Hourly', quality: 'high', license: 'Public domain', desc: 'Real-time AQI for ~1,200 US monitors. Free API key required. Includes PM2.5, O3, NO2, CO, SO2.', url: 'https://docs.airnowapi.org/'},
+    {name: 'EPA Envirofacts', source: 'EPA', category: 'Facilities', format: 'REST API + CSV', update: 'Quarterly', quality: 'high', license: 'Public domain', desc: 'TRI facilities, Superfund sites, air emissions, water discharge. 1M+ facilities nationwide.', url: 'https://www.epa.gov/enviro/envirofacts-data-service-api'},
+    {name: 'USGS Water Services', source: 'USGS', category: 'Water', format: 'JSON REST API + RDB', update: 'Real-time (15-60 min)', quality: 'high', license: 'Public domain', desc: 'Streamflow, groundwater, water quality for 13,000+ US gauges. Instant values + historical.', url: 'https://waterservices.usgs.gov/'},
+    {name: 'NOAA NWS API', source: 'NOAA', category: 'Weather', format: 'JSON REST API', update: 'Real-time', quality: 'high', license: 'Public domain', desc: 'Active alerts, forecasts, observations, climate data. No API key required. Public domain.', url: 'https://www.weather.gov/documentation/services-web-api'},
+    {name: 'NASA FIRMS', source: 'NASA', category: 'Wildfire', format: 'CSV + KML + WMS', update: '3-hourly', quality: 'high', license: 'Public domain', desc: 'Active fire detections from MODIS + VIIRS satellites. Global coverage. Free MAP_KEY required.', url: 'https://firms.modaps.eosdis.nasa.gov/api/'},
+    {name: 'Open-Meteo Air Quality', source: 'Open-Meteo (CAMS)', category: 'Air Quality', format: 'JSON REST API', update: 'Hourly', quality: 'high', license: 'CC-BY 4.0', desc: 'Global AQI forecasts from CAMS European model. No API key. Includes PM2.5, O3, NO2, SO2, CO.', url: 'https://open-meteo.com/en/docs/air-quality-api'},
+    {name: 'Open-Meteo Archive (ERA5)', source: 'Open-Meteo (ECMWF)', category: 'Climate', format: 'JSON REST API', update: 'Historical (1940+)', quality: 'high', license: 'CC-BY 4.0', desc: 'ERA5 reanalysis: temp, precip, wind, snow back to 1940. For climate normals + trend analysis.', url: 'https://open-meteo.com/en/docs/historical-weather-api'},
+    {name: 'EIA API', source: 'EIA', category: 'Energy', format: 'JSON REST API', update: 'Monthly-hourly', quality: 'high', license: 'Public domain', desc: 'Electricity generation by source, fuel prices, transmission. Free API key required.', url: 'https://www.eia.gov/opendata/'},
+    {name: 'iNaturalist API', source: 'iNaturalist', category: 'Biodiversity', format: 'JSON REST API', update: 'Real-time', quality: 'high', license: 'CC-BY observations', desc: 'Citizen-science species observations. 300k+ in Cascadia. Photos, locations, dates. No key required.', url: 'https://api.inaturalist.org/v1/docs/'},
+    {name: 'GBIF API', source: 'GBIF', category: 'Biodiversity', format: 'JSON REST API', update: 'Daily', quality: 'high', license: 'CC-BY 4.0', desc: 'Global Biodiversity Information Facility. 2B+ occurrence records. Includes museum specimens + observations.', url: 'https://www.gbif.org/developer/summary'},
+    {name: 'eBird API', source: 'Cornell Lab', category: 'Biodiversity', format: 'JSON REST API', update: 'Real-time', quality: 'high', license: 'CC-BY-NC', desc: 'Bird observations worldwide. 1B+ checklists. Free API key required. Includes regional stats.', url: 'https://documenter.getpostman.com/view/664302/S1ENwy59'},
+    {name: 'USFWS ECOS', source: 'USFWS', category: 'Biodiversity', format: 'REST API + web', update: 'Weekly', quality: 'high', license: 'Public domain', desc: 'Endangered species status, critical habitat, recovery plans. ~1,700 US-listed species.', url: 'https://ecos.fws.gov/'},
+    {name: 'NOAA Climate Data Online', source: 'NOAA NCEI', category: 'Climate', format: 'JSON REST API', update: 'Daily-historical', quality: 'high', license: 'Public domain', desc: 'Official NOAA climate data: temp, precip, degree days, normals. Station + gridded products.', url: 'https://www.ncdc.noaa.gov/cdo-web/'},
+    {name: 'NSF Award Search API', source: 'NSF', category: 'Research Grants', format: 'JSON REST API', update: 'Daily', quality: 'high', license: 'Public domain', desc: 'Every NSF grant awarded since 1989. Search by topic, PI, institution, year. For collaborators + trends.', url: 'https://www.nsf.gov/awardsearch/'},
+    {name: 'NSERC Awards Database', source: 'NSERC', category: 'Research Grants', format: 'Searchable web + CSV', update: 'Annual', quality: 'high', license: 'Public', desc: 'Canadian federal science + engineering grants. Search by researcher, institution, topic.', url: 'https://www.nserc-crsng.gc.ca/ase-oro/index_eng.asp'},
+    {name: 'Crossref API', source: 'Crossref', category: 'Publications', format: 'JSON REST API', update: 'Real-time', quality: 'high', license: 'CC0', desc: '100M+ scholarly publications. Search by topic, author, DOI. Free, no key. For literature reviews.', url: 'https://api.crossref.org/'},
+    {name: 'WorldClim', source: 'WorldClim', category: 'Climate', format: 'GeoTIFF', update: 'Static (v2 2020)', quality: 'high', license: 'CC-BY 4.0', desc: 'Global climate layers at 1km resolution. Current + future (CMIP6) scenarios. For species distribution modeling.', url: 'https://www.worldclim.org/'},
+    {name: 'US Census ACS', source: 'US Census', category: 'Demographics', format: 'JSON REST API', update: 'Annual', quality: 'high', license: 'Public domain', desc: 'American Community Survey: income, race, education at census tract level. For environmental justice analysis.', url: 'https://www.census.gov/data/developers/data-sets/acs-5year.html'},
+    {name: 'Statistics Canada Census', source: 'StatCan', category: 'Demographics', format: 'JSON REST API + CSV', update: '5-year cycle', quality: 'high', license: 'Open Government License', desc: 'Canadian census data: income, education, demographics at dissemination area level. For EJ analysis.', url: 'https://www12.statcan.gc.ca/census-recensement/index.cfm?Lang=eng'},
+    {name: 'WA Dept of Ecology Open Data', source: 'WA Ecology', category: 'State Environmental', format: 'CSV + ArcGIS REST', update: 'Varies', quality: 'med', license: 'Public', desc: 'WA-specific: air quality, water quality, toxic cleanup sites, hazardous waste.', url: 'https://data.wa.gov/'},
+    {name: 'BC Data Catalogue', source: 'BC Gov', category: 'Provincial Environmental', format: 'CSV + ArcGIS REST + API', update: 'Varies', quality: 'med', license: 'Open Government License BC', desc: 'BC-specific: air quality, water licenses, contaminated sites, ecosystem mapping.', url: 'https://catalogue.data.gov.bc.ca/'},
+    {name: 'EPA EJScreen', source: 'EPA', category: 'Environmental Justice', format: 'Web + ArcGIS REST', update: 'Annual', quality: 'high', license: 'Public domain', desc: 'Environmental justice screening tool. Demographics + environmental exposures + health disparities.', url: 'https://www.epa.gov/ejscreen'},
+    {name: 'USDA NRCS Web Soil Survey', source: 'USDA NRCS', category: 'Soil', format: 'Web + WMS', update: 'Static', quality: 'high', license: 'Public domain', desc: 'Detailed soil maps for all US. Includes engineering properties, ecological sites, hydric soils.', url: 'https://websoilsurvey.sc.egov.usda.gov/'},
+    {name: 'NIFC Fire Information', source: 'NIFC', category: 'Wildfire', format: 'Web + KML + CSV', update: 'Daily during fire season', quality: 'high', license: 'Public domain', desc: 'National Interagency Fire Center: current fires, year-to-date stats, historical records.', url: 'https://www.nifc.gov/'},
+    {name: 'InciWeb', source: 'NIFC/USGS', category: 'Wildfire', format: 'RSS + web', update: 'Daily', quality: 'med', license: 'Public domain', desc: 'Federal incident info: wildfires, prescribed burns, evacuations. US-focused.', url: 'https://inciweb.nwcg.gov/'},
+    {name: 'BC Wildfire Service', source: 'BC Gov', category: 'Wildfire', format: 'Web + ArcGIS REST', update: 'Real-time during fire season', quality: 'high', license: 'Open Government License BC', desc: 'Real-time BC wildfire info: active fires, evacuation orders, fire danger ratings.', url: 'https://wildfiresituation.nrs.gov.bc.ca/map'},
+    {name: 'USGS National Land Cover', source: 'USGS', category: 'Land Cover', format: 'GeoTIFF', update: 'Static (2021 v3)', quality: 'high', license: 'Public domain', desc: 'National Land Cover Database: 30m resolution, 16 land cover classes. For habitat + urbanization analysis.', url: 'https://www.mrlc.gov/'},
+    {name: 'NWS Storm Events Database', source: 'NOAA NWS', category: 'Hazards', format: 'CSV + search', update: 'Monthly', quality: 'high', license: 'Public domain', desc: 'All NWS-verified storm events since 1950. Includes wildfires, floods, heat events. For hazard analysis.', url: 'https://www.ncdc.noaa.gov/stormevents/'},
+    {name: 'EPA Safe Drinking Water (SDWIS)', source: 'EPA', category: 'Drinking Water', format: 'REST API + CSV', update: 'Quarterly', quality: 'high', license: 'Public domain', desc: 'Every public water system: violations, lead service lines, PFAS testing, consumer confidence reports.', url: 'https://www.epa.gov/ground-water-and-drinking-water/safe-drinking-water-information-system-sdwis-federal-reporting'}
+  ];
+
+  function renderDatasets(){
+    var html = '';
+    var byCategory = {};
+    DATASETS.forEach(function(d){
+      byCategory[d.category] = (byCategory[d.category] || 0) + 1;
+    });
+    DATASETS.forEach(function(d){
+      var qCls = d.quality === 'high' ? 'quality-high' : 'quality-med';
+      var qLabel = d.quality === 'high' ? 'HIGH QUALITY' : 'MEDIUM QUALITY';
+      html += '<div class="dataset-card">' +
+        '<div class="dataset-name">' + d.name + '</div>' +
+        '<div class="dataset-source">' + d.source + ' · ' + d.category + '</div>' +
+        '<div class="dataset-desc" style="font-size:11px;color:var(--fg2);line-height:1.5;margin:6px 0;">' + d.desc + '</div>' +
+        '<div class="dataset-meta">' +
+          '<div><strong>Format:</strong> ' + d.format + '</div>' +
+          '<div><strong>Update:</strong> ' + d.update + '</div>' +
+          '<div><strong>License:</strong> ' + d.license + '</div>' +
+          '<div><span class="dataset-quality ' + qCls + '">' + qLabel + '</span></div>' +
+        '</div>' +
+        '<div style="margin-top:8px;"><a href="' + d.url + '" target="_blank" class="contact-btn contact-email">Access API →</a></div>' +
+      '</div>';
+    });
+    document.getElementById('datasets-grid').innerHTML = html;
+    var summary = '<strong>' + DATASETS.length + ' open datasets</strong> · ';
+    summary += Object.keys(byCategory).slice(0, 6).map(function(k){ return k + ' (' + byCategory[k] + ')'; }).join(' · ');
+    summary += ' · All free · Most have APIs · Quality-rated';
+    document.getElementById('dataset-summary').innerHTML = summary;
+  }
+
+  /* Init */
+  renderUniversities();
+  renderFunding();
+  renderTools('all');
+  renderDatasets();
+
+  /* Filter buttons */
+  document.querySelectorAll('[data-filter]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('[data-filter]').forEach(function(b){
+        b.classList.remove('contact-email');
+        b.classList.add('contact-web');
+      });
+      btn.classList.remove('contact-web');
+      btn.classList.add('contact-email');
+      renderTools(btn.getAttribute('data-filter'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

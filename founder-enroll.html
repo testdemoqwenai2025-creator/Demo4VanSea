@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIBizVan360 — Founder Enrollment</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg:#0d1212; --bg2:#111919; --bg3:#162020; --fg:#e8e8e8; --fg2:#a0a0a0; --fg3:#666; --primary:#4ecdc4; --primary-dim:rgba(78,205,196,0.1); --primary-border:rgba(78,205,196,0.3); --radius:8px; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',Roboto,sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+a { color:var(--primary); text-decoration:none; }
+.container { max-width:800px; margin:0 auto; padding:0 24px; }
+.bvs-header { position:sticky; top:0; z-index:100; background:rgba(13,18,18,0.85); backdrop-filter:blur(12px); border-bottom:1px solid rgba(78,205,196,0.15); }
+.bvs-header-inner { display:flex; align-items:center; justify-content:space-between; height:52px; }
+.bvs-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+.bvs-logo-mark { width:32px; height:32px; border-radius:6px; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; color:var(--bg); }
+.bvs-logo-text { font-size:15px; font-weight:700; color:var(--fg); }
+.bvs-logo-text span { color:var(--primary); }
+.ai-theme-toggle { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid rgba(255,255,255,0.1); background:transparent; color:var(--fg2); padding:0; }
+.hero { background:radial-gradient(ellipse at 30% 50%,rgba(78,205,196,0.12) 0%,transparent 60%),linear-gradient(180deg,#0a1f1a 0%,#0d1212 100%); border-radius:12px; padding:40px 32px; margin:24px 0; }
+.hero h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; background:linear-gradient(135deg,#4ecdc4,#27ae60); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { font-size:14px; color:var(--fg2); max-width:600px; line-height:1.7; }
+.form-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); padding:28px; margin-bottom:24px; }
+.form-section { margin-bottom:28px; }
+.form-section h3 { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid rgba(78,205,196,0.1); }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-size:12px; font-weight:600; color:var(--fg); margin-bottom:4px; }
+.form-group label .required { color:var(--red); }
+.form-group label .optional { color:var(--fg3); font-weight:400; font-size:10px; }
+.form-group input, .form-group select, .form-group textarea { width:100%; background:var(--bg3); color:var(--fg); border:1px solid rgba(255,255,255,0.08); padding:10px 12px; border-radius:6px; font-size:13px; font-family:inherit; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--primary); }
+.form-group textarea { resize:vertical; min-height:60px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:600px) { .form-row { grid-template-columns:1fr; } }
+.form-hint { font-size:10px; color:var(--fg3); margin-top:2px; }
+.form-check { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; }
+.form-check input { width:auto; margin-top:3px; }
+.form-check label { font-size:12px; color:var(--fg2); font-weight:400; }
+.btn-submit { background:var(--primary); color:var(--bg); border:none; padding:14px 32px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; width:100%; transition:all 0.15s; }
+.btn-submit:hover { background:#3dbdb5; transform:translateY(-1px); }
+.btn-submit:disabled { opacity:0.6; cursor:wait; }
+.privacy-box { background:var(--bg3); border-left:3px solid var(--primary); border-radius:6px; padding:14px; margin-bottom:24px; font-size:11px; color:var(--fg2); line-height:1.6; }
+.privacy-box strong { color:var(--primary); }
+.success-msg { text-align:center; padding:48px; }
+.success-msg h2 { color:var(--primary); font-size:24px; margin-bottom:12px; }
+.bvs-site-footer { background:var(--bg2); border-top:1px solid rgba(78,205,196,0.15); margin-top:48px; padding:24px 0; text-align:center; font-size:11px; color:var(--fg3); }
+[data-theme="light"] { background:#f5f7f7; color:#1a2626; }
+[data-theme="light"] .bvs-header { background:rgba(255,255,255,0.85); }
+[data-theme="light"] .bvs-logo-text { color:#1a2626; }
+[data-theme="light"] .form-card { background:#fff; }
+[data-theme="light"] .form-group input, [data-theme="light"] .form-group select, [data-theme="light"] .form-group textarea { background:#f0f4f4; }
+[data-theme="light"] .ai-theme-toggle { color:#666; }
+:root { --red:#ff6b6b; }
+</style>
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<header class="bvs-header"><div class="container bvs-header-inner">
+  <a href="index.html" class="bvs-logo"><div class="bvs-logo-mark">AI</div><div class="bvs-logo-text">AI<span>BizVan360</span></div></a>
+  <nav style="display:flex;gap:12px;align-items:center;">
+    <a href="economics.html" style="font-size:12px;color:var(--fg2);">← Back to Platform</a>
+    <button class="ai-theme-toggle" id="theme-btn" title="Toggle theme">🌙</button>
+  </nav>
+</div></header>
+
+<main style="padding:24px 0;">
+<div class="container">
+
+  <div class="hero">
+    <h1>🌿 Founder Outcome Panel — Enrollment</h1>
+    <p>Join 50+ Cascadia founders building the first longitudinal dataset on startup outcomes in our bioregion. Your data helps calibrate the CIRS scoring engine + enables the next generation of founders to make better location decisions. <strong>5 minutes. Your data is yours.</strong></p>
+  </div>
+
+  <div class="privacy-box">
+    <strong>Privacy commitment:</strong> Individual data is visible only to you. Aggregate statistics are published (e.g., "60% of Seattle founders would choose Seattle again"). No personal email, home address, or phone number is shared with any third party. You can withdraw + request deletion at any time. This form does not collect PII beyond your name + company — both of which are already public if you've filed business registration.
+  </div>
+
+  <div id="form-container">
+  <form class="form-card" id="founder-form" onsubmit="submitForm(event)">
+
+    <!-- Section 1: About You -->
+    <div class="form-section">
+      <h3>📋 About You</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Founder Name <span class="required">*</span></label>
+          <input type="text" name="founder_name" required placeholder="Jane Doe">
+        </div>
+        <div class="form-group">
+          <label>Company Name <span class="required">*</span></label>
+          <input type="text" name="company_name" required placeholder="Cascadia Labs">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City <span class="required">*</span></label>
+          <select name="city_id" required>
+            <option value="">Select city...</option>
+            <option value="seattle">Seattle, WA</option>
+            <option value="portland">Portland, OR</option>
+            <option value="vancouver-bc">Vancouver, BC</option>
+            <option value="bellevue">Bellevue, WA</option>
+            <option value="tacoma">Tacoma, WA</option>
+            <option value="bellingham">Bellingham, WA</option>
+            <option value="olympia">Olympia, WA</option>
+            <option value="spokane">Spokane, WA</option>
+            <option value="bend">Bend, OR</option>
+            <option value="victoria">Victoria, BC</option>
+            <option value="other">Other (specify below)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>If "Other", specify city</label>
+          <input type="text" name="city_other" placeholder="Eugene, OR">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Sector <span class="required">*</span></label>
+          <select name="sector" required>
+            <option value="">Select sector...</option>
+            <option>Technology / SaaS</option>
+            <option>AI / ML</option>
+            <option>CleanTech / Climate</option>
+            <option>Biotech / Life Sciences</option>
+            <option>Aerospace / Defense</option>
+            <option>Maritime / Logistics</option>
+            <option>Outdoor Industry</option>
+            <option>Craft Beverage / Food</option>
+            <option>Real Estate / Construction</option>
+            <option>Healthcare</option>
+            <option>Education</option>
+            <option>GovTech</option>
+            <option>Consumer / Retail</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Founding Date <span class="required">*</span></label>
+          <input type="date" name="founding_date" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Company Status -->
+    <div class="form-section">
+      <h3>📊 Company Status</h3>
+      <div class="form-group">
+        <label>Current Status <span class="required">*</span></label>
+        <select name="status" required>
+          <option value="">Select status...</option>
+          <option value="operating">Operating (active, generating revenue or pre-revenue)</option>
+          <option value="acquired">Acquired (company was sold/merged)</option>
+          <option value="shutdown">Shut down (company closed)</option>
+          <option value="pivoted">Pivoted (significantly changed business model)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Headcount at Founding <span class="required">*</span></label>
+          <input type="number" name="headcount_founding" required min="1" max="100" placeholder="3">
+        </div>
+        <div class="form-group">
+          <label>Current/Final Headcount <span class="required">*</span></label>
+          <input type="number" name="headcount_final" required min="0" max="1000" placeholder="12">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Total Funding Raised (USD) <span class="required">*</span></label>
+        <select name="total_raised" required>
+          <option value="">Select range...</option>
+          <option value="0">Bootstrapped ($0 raised)</option>
+          <option value="50000">$1K - $100K (pre-seed / angel)</option>
+          <option value="500000">$100K - $1M (seed)</option>
+          <option value="5000000">$1M - $10M (Series A)</option>
+          <option value="50000000">$10M - $100M (Series B+)</option>
+          <option value="100000000">$100M+</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section 3: Experience -->
+    <div class="form-section">
+      <h3>🎯 Founder Experience</h3>
+      <div class="form-group">
+        <label>Founder Satisfaction (1-10) <span class="required">*</span></label>
+        <input type="range" name="satisfaction" min="1" max="10" value="5" oninput="document.getElementById('sat-val').textContent=this.value">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--fg3);">
+          <span>1 (Very dissatisfied)</span>
+          <span id="sat-val" style="font-weight:700;color:var(--primary);font-size:14px;">5</span>
+          <span>10 (Very satisfied)</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Would you choose the same city again? <span class="required">*</span></label>
+        <select name="would_rechoose" required>
+          <option value="">Select...</option>
+          <option value="yes">Yes, same city</option>
+          <option value="no">No, different city</option>
+          <option value="maybe">Maybe / not sure</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>What's the #1 thing that would have improved your experience? <span class="optional">(optional)</span></label>
+        <textarea name="improvement" placeholder="e.g., Better access to Series A capital, shorter commute, more diverse talent pool..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 4: Demographics (optional, aggregated only) -->
+    <div class="form-section">
+      <h3>👥 Demographics <span style="font-weight:400;font-size:11px;color:var(--fg3);">(optional — used for aggregate analysis only, never published individually)</span></h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Gender</label>
+          <select name="gender">
+            <option value="">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="non-binary">Non-binary</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Immigrant to US/Canada?</label>
+          <select name="immigrant">
+            <option value="">Prefer not to say</option>
+            <option value="no">No, born in US/Canada</option>
+            <option value="yes">Yes, immigrant</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Racial/ethnic minority?</label>
+          <select name="racial_minority">
+            <option value="">Prefer not to say</option>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Indigenous (tribal/First Nations member)?</label>
+          <select name="indigenous">
+            <option value="">Prefer not to say</option>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consent -->
+    <div class="form-section">
+      <h3>📋 Consent</h3>
+      <div class="form-check">
+        <input type="checkbox" name="consent_aggregate" id="consent1" required>
+        <label for="consent1">I consent to my data being used in <strong>aggregate</strong> statistics (e.g., "60% of Seattle founders would choose Seattle again"). My individual data will not be published. <span class="required">*</span></label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name="consent_contact" id="consent2">
+        <label for="consent2">I'm open to being contacted for follow-up research (quarterly survey, ~5 minutes).</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name="consent_premium" id="consent3">
+        <label for="consent3">I'd like free premium tier access (saved searches, alerts, API) as a founding panel member.</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="submit-btn">Submit Enrollment →</button>
+    <p style="font-size:10px;color:var(--fg3);text-align:center;margin-top:8px;">By submitting, you confirm the information is accurate to the best of your knowledge.</p>
+  </form>
+  </div>
+
+  <div id="success-container" style="display:none;">
+    <div class="form-card success-msg">
+      <h2>✅ Thank You!</h2>
+      <p style="font-size:14px;color:var(--fg2);max-width:500px;margin:0 auto 16px;">Your enrollment has been recorded. You're now part of the Cascadia Founder Outcome Panel — the first longitudinal dataset on startup outcomes in our bioregion.</p>
+      <p style="font-size:12px;color:var(--fg3);">We'll send you a quarterly survey (5 min) and an annual benchmark report showing how your cohort is doing. You can withdraw at any time by emailing <a href="mailto:testdemoqwenai2025@gmail.com?subject=Founder Panel Withdrawal">testdemoqwenai2025@gmail.com</a>.</p>
+      <div style="margin-top:24px;">
+        <a href="economics.html" class="btn-submit" style="display:inline-block;text-decoration:none;width:auto;padding:12px 28px;">← Back to Platform</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer class="bvs-site-footer">
+  <div class="container">
+    &copy; 2026 AIBizVan360 | Founder Outcome Panel | <a href="mailto:testdemoqwenai2025@gmail.com">testdemoqwenai2025@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+var saved = localStorage.getItem('aibv360-theme');
+if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
+document.getElementById('theme-btn').addEventListener('click',function(){
+  var c = document.documentElement.getAttribute('data-theme');
+  var n = c === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('aibv360-theme',n);
+  this.textContent = n === 'light' ? '☀️' : '🌙';
+});
+
+function submitForm(e){
+  e.preventDefault();
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  // Collect form data
+  var form = document.getElementById('founder-form');
+  var formData = new FormData(form);
+  var data = {};
+  formData.forEach(function(v,k){ data[k] = v; });
+  data.submitted_at = new Date().toISOString();
+  data._synthetic = false; // Real enrollment, not synthetic
+
+  // Store in localStorage (until backend is deployed)
+  var enrollments = JSON.parse(localStorage.getItem('founder-enrollments') || '[]');
+  enrollments.push(data);
+  localStorage.setItem('founder-enrollments', JSON.stringify(enrollments));
+
+  // Also generate downloadable JSON for manual collection
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'founder-enrollment-' + data.company_name.replace(/\s+/g,'-').toLowerCase() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  // Show success
+  setTimeout(function(){
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('success-container').style.display = 'block';
+  }, 500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2625 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "last_updated": "2026-09-03",
+    "region": "Cascadia Bioregion (US/CA Pacific Northwest)",
+    "notes": "Figures are baseline estimates compiled from US Census ACS, BEA GDP-by-metro, Statistics Canada, Bureau of Labor Statistics QCEW, and university IPEDS/Statistics Canada data. Annual verification recommended \u2014 see sources field per city. All currency in USD; CAD figures converted at 1 USD = 1.36 CAD.",
+    "sources_global": [
+      "BEA GDP by Metropolitan Area (2023 release)",
+      "US Census ACS 5-year estimates",
+      "Statistics Canada Census 2021 + updates",
+      "BLS Quarterly Census of Employment & Wages",
+      "Colliers North America Office Market Report Q4",
+      "IPEDS Completions Survey (CS degree data)",
+      "USGS National Seismic Hazard Maps",
+      "EPA Air Quality System"
+    ]
+  },
+  "cities": [
+    {
+      "id": "seattle",
+      "name": "Seattle",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6062,
+      "lng": -122.3321,
+      "population_metro": 4019000,
+      "gdp_metro_usd_billions": 471.2,
+      "gdp_growth_5yr_pct": 3.4,
+      "business_formations_per_1k": 14.2,
+      "median_household_income_usd": 110500,
+      "cost_of_living_index": 172.3,
+      "office_rent_psf_annual_usd": 54.0,
+      "top_sectors": [
+        {
+          "sector": "Technology",
+          "employment_share_pct": 18.6,
+          "location_quotient": 2.71
+        },
+        {
+          "sector": "Aerospace",
+          "employment_share_pct": 4.1,
+          "location_quotient": 3.95
+        },
+        {
+          "sector": "Retail/E-commerce HQ",
+          "employment_share_pct": 5.8,
+          "location_quotient": 4.12
+        },
+        {
+          "sector": "Life Sciences",
+          "employment_share_pct": 2.9,
+          "location_quotient": 1.84
+        },
+        {
+          "sector": "Maritime/Logistics",
+          "employment_share_pct": 3.4,
+          "location_quotient": 2.2
+        }
+      ],
+      "universities": [
+        {
+          "name": "University of Washington",
+          "enrollment": 60900,
+          "cs_grads_annual": 920,
+          "research_dollars_musd": 1620
+        },
+        {
+          "name": "Seattle University",
+          "enrollment": 7100,
+          "cs_grads_annual": 140,
+          "research_dollars_musd": 12
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 7
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 230
+      },
+      "quality": {
+        "transit_score_1_100": 70,
+        "bike_score_1_100": 67,
+        "aqi_avg": 42,
+        "hospital_beds_per_1k": 3.2
+      },
+      "vc_presence_score_1_10": 9,
+      "notable_companies": [
+        "Amazon",
+        "Microsoft (Redmond)",
+        "Starbucks",
+        "Expedia",
+        "Zillow"
+      ],
+      "ai_banner": {
+        "palette_primary": "#2E4756",
+        "palette_secondary": "#6B8E9B",
+        "palette_accent": "#D4A574",
+        "signature_elements": [
+          "Space Needle silhouette",
+          "Rainier Tower 'wrench' profile",
+          "Smith Tower pyramid",
+          "Port cranes at Harbor Island",
+          "ferry wake in Elliott Bay"
+        ],
+        "fog_haze_level": "heavy",
+        "time_of_day": "pre-dawn blue hour"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "efaf3e2d1d5fc4a0ba216ad5c946a0c95ab438226d62833bcae5ce01d54dab18",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f73854b9b46d50c324c6afae599e823de74ba08f80794daa035c63dae85d333c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "021817a6f65e9f598fa31b4b16e3870bf1251adfe177030325cac55d73e187d2",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "326d9f21ad8f5f55c509b5ba58bb4d15fbc93c503aff27f7832ce4edaf853f3c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "49a651c7200a6021eee5b00ff0bb393748a2e9c59493393dc6fa30e32b851db2",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "7d5312f98701e8571c3719f5d5274e770a1d958067c8660a89fef4d59f397c29",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "1cc63e07780cb5a80e43e6d9c2e7360c095b66e491bb377a4276354dc330cef2",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "dee48e06469ff527d551c429bb63ef2c7c7a7148656b9f650c7e96451f70c116",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "6591d1e1c2092014bf532c2ddfdb4ea802978947760d30abc9f9967b413c005d",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "bef3636cd00b62b2fdb74536e195703db6d81c14a7c95c2b25d62ef39090c405",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "f509ccb4880fa79984d0a9f90863187df28d7737f8e178e64df6ee60cc111085",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "a522ab23b2e3d67b08cab9e858a3b2b3ca766566d5df2eff0f3b8144969d504c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "ad59d83162ced98bdd70a92d76391d82e75150141da52ea87cbb8db8c94c83c9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ece66b40f3695dccc47f905055b76ba560c8367f4d78051e41d8c8af76b4be28",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "e17b9833a7de2128dc97e71357f077cd6c6798d950e4eea9f856caa25116244e",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "1cd28f610e0d765e11ae035616ec0beada222ec34941a30bdedd17a6285bf2f4"
+      }
+    },
+    {
+      "id": "portland",
+      "name": "Portland",
+      "state": "OR",
+      "country": "US",
+      "lat": 45.5152,
+      "lng": -122.6784,
+      "population_metro": 2510000,
+      "gdp_metro_usd_billions": 178.6,
+      "gdp_growth_5yr_pct": 2.6,
+      "business_formations_per_1k": 13.8,
+      "median_household_income_usd": 87300,
+      "cost_of_living_index": 148.7,
+      "office_rent_psf_annual_usd": 32.5,
+      "top_sectors": [
+        {
+          "sector": "Technology",
+          "employment_share_pct": 11.2,
+          "location_quotient": 1.63
+        },
+        {
+          "sector": "Sportswear/Outdoor",
+          "employment_share_pct": 4.4,
+          "location_quotient": 5.81
+        },
+        {
+          "sector": "Athletic & Footwear HQ",
+          "employment_share_pct": 3.1,
+          "location_quotient": 6.2
+        },
+        {
+          "sector": "Advanced Manufacturing",
+          "employment_share_pct": 7.8,
+          "location_quotient": 1.45
+        },
+        {
+          "sector": "Food & Beverage",
+          "employment_share_pct": 3.6,
+          "location_quotient": 2.1
+        }
+      ],
+      "universities": [
+        {
+          "name": "Oregon Health & Science University",
+          "enrollment": 2900,
+          "cs_grads_annual": 0,
+          "research_dollars_musd": 580
+        },
+        {
+          "name": "Portland State University",
+          "enrollment": 22600,
+          "cs_grads_annual": 280,
+          "research_dollars_musd": 65
+        },
+        {
+          "name": "University of Portland",
+          "enrollment": 4100,
+          "cs_grads_annual": 60,
+          "research_dollars_musd": 8
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "moderate",
+        "wildfire_risk_level": "moderate",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 12
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 410
+      },
+      "quality": {
+        "transit_score_1_100": 65,
+        "bike_score_1_100": 87,
+        "aqi_avg": 48,
+        "hospital_beds_per_1k": 2.6
+      },
+      "vc_presence_score_1_10": 6,
+      "notable_companies": [
+        "Nike (Beaverton)",
+        "Columbia Sportswear",
+        "Adidas NA",
+        "Intel (Hillsboro)",
+        "Puppet"
+      ],
+      "ai_banner": {
+        "palette_primary": "#3D5A4A",
+        "palette_secondary": "#8B7355",
+        "palette_accent": "#C8651E",
+        "signature_elements": [
+          "Big Pink (Wells Fargo Center)",
+          "St Johns Bridge cables",
+          "Mount Hood behind industrial sheds",
+          "Willamette River barge",
+          "Powell's Books awning suggestion"
+        ],
+        "fog_haze_level": "moderate",
+        "time_of_day": "early morning overcast"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "867e101168f2db691e688352aa18b31dc25a3195e3a7b8a72064ee4a3f7fe1db",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "9087db425697ea0a2523527af4f28bc92eae60f699966628b3136077d74b9590",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "3ead4e2348a4e2d073d5a8e0c9738f45eb7d073fe054746485e3d47f5520efb9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "1f48110ba1c107213ead0001a9f14132c075429ba9258892ca2c8b76f761c475",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "17699711b38dc1dedf6a7d3ad31441bbae8a6d73aea85e9152bbbe4811329852",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "c162b627c3e1f0b0b4454e336848e2f95d5a0f85845f1044fd7b3533a8003e24",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "df6b0fd8592f26ea23d6fbbd739520ea9f7205165f80cc0816219b7e5e732f22",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "e4af06be54513a0b6d2ac543db5baa6a7304843f58004109cee45b2ebe4b96ed",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "9a9cfc06dac35c4975d8a74a1e66c7bacc7fd9b7090d1ae95112639301f1b9db",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "febdd5cecf28a7436d2c85e9ee03eb2faaab5729585302ee70372d55ccb38915",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "e1a01a351d64b9bb3eaa64104ccce46d2663d3678a562e75afbe527e147d2a94",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f976ff69cc41499a9d6320cc5efbb4e4d7511442f14d44ccdc7f996535d8adc1",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "705adc59a16351ab23a33ab487688c01aee54f40bebf2b9698612fd65dacf919",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "45058a3b48ebe3fdbb26f1a0bb288e161e6c8bb443368fc7ebb17c6007467663",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "0e2c766bae75609cb4462d7756d6b29d1d2e39605f707509e27d08c8384e8d5f",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "e575a1a8f0cca7dbf2ff00fd208367d36ffdb78b2e68ff815693e956ec6b155f",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "bc7c2c14534c60fa7ed3ac9e8e469e309fa18b91815fee9e952b086259ca6f18",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "b2675da2d75e70c0f6accf5786f8f044ee4b413632e9f89a6233543ef6059ce8"
+      }
+    },
+    {
+      "id": "vancouver-bc",
+      "name": "Vancouver",
+      "state": "BC",
+      "country": "CA",
+      "lat": 49.2827,
+      "lng": -123.1207,
+      "population_metro": 2632000,
+      "gdp_metro_usd_billions": 152.8,
+      "gdp_growth_5yr_pct": 3.1,
+      "business_formations_per_1k": 11.6,
+      "median_household_income_usd": 75400,
+      "cost_of_living_index": 168.4,
+      "office_rent_psf_annual_usd": 41.0,
+      "top_sectors": [
+        {
+          "sector": "Technology",
+          "employment_share_pct": 9.8,
+          "location_quotient": 1.43
+        },
+        {
+          "sector": "Film & Television",
+          "employment_share_pct": 3.4,
+          "location_quotient": 4.27
+        },
+        {
+          "sector": "Natural Resources HQ",
+          "employment_share_pct": 4.1,
+          "location_quotient": 3.65
+        },
+        {
+          "sector": "Port/Logistics",
+          "employment_share_pct": 5.2,
+          "location_quotient": 2.95
+        },
+        {
+          "sector": "Tourism",
+          "employment_share_pct": 9.1,
+          "location_quotient": 2.18
+        }
+      ],
+      "universities": [
+        {
+          "name": "University of British Columbia",
+          "enrollment": 66500,
+          "cs_grads_annual": 720,
+          "research_dollars_musd": 615
+        },
+        {
+          "name": "Simon Fraser University",
+          "enrollment": 30100,
+          "cs_grads_annual": 410,
+          "research_dollars_musd": 145
+        },
+        {
+          "name": "BCIT",
+          "enrollment": 49000,
+          "cs_grads_annual": 380,
+          "research_dollars_musd": 12
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 9
+      },
+      "cross_border": {
+        "currency": "CAD",
+        "corp_tax_rate_pct": 27.0,
+        "immigration_difficulty_1_10": 4,
+        "distance_to_canada_km": 0
+      },
+      "quality": {
+        "transit_score_1_100": 78,
+        "bike_score_1_100": 79,
+        "aqi_avg": 38,
+        "hospital_beds_per_1k": 2.9
+      },
+      "vc_presence_score_1_10": 7,
+      "notable_companies": [
+        "Hootsuite",
+        "Slack (origin)",
+        "Clio",
+        "Electronic Arts Vancouver",
+        "Lululemon"
+      ],
+      "ai_banner": {
+        "palette_primary": "#1E4D5C",
+        "palette_secondary": "#5D7B6E",
+        "palette_accent": "#D4A882",
+        "signature_elements": [
+          "Marine Building art deco crown",
+          "Lions Gate Bridge towers",
+          "Harbour Centre viewing deck",
+          "North Shore mountains (Cypress/Howe)",
+          "False Creek seawall curve"
+        ],
+        "fog_haze_level": "moderate",
+        "time_of_day": "blue hour"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "c38c5c653de43f532e049d1c1cd96c0eb782151339a788f88c526b0c040fcb08",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "59c5b8f6916f96e4b7ee9d5a388ffd6db815749c95421f431f2056409f911c7a",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ea8f9f0e9267e2be29dc9ead0cf955821bfcda17aa23508463f709dbe60bcdf6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "5a6665fb4a6fd73776eb05f6d574ff7b676b414b8da7c0db724e4a4caf1c87dc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "5ec7c405cd9df14b34271f52abcdfa8310fb04247a417fc91b039962774a56fe",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "9d83cef504746bb8a2540beb89d72eb53990ee90e8ad7f3a8f37d15dc68de6f0",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "c417847bc60916644301bfec7662091523e4808cc48cc8bb17150a5a0b9aae22",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "80174c889015a72f6339032ac7b2836150b97368c20b717bb7659c086ee54113",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "886b77c2cf02b221ddd8bb52d6fdf066dab599db04dc2c6986bd8fbcedab6e6a",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "98fe5bd2e5cbdfd456fdee6072548472529425409958d9950963c99c4cb01a12",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "04c6a34b08cd32b0746d053b395a174320fa4d8f7d9f7184682894f4729841b1",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "35dfc38cc2cd46ae8c08c3d60e1cfc33e8908ec46a407a136fcf96080dd55f79",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "e060e296e2a4308230eb78af23f2629f1acaeba62b12f4ea907c99db9cfdd035",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "895e9a24a45020264db2652f5e55ea49d1f5ecaefecf3ba19cf2035594434acc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "171358f6df9c10d48d59f7f125f4713ce4334fb1758ab24b550456de86ddb42e",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ba273f0d28b8047be5194b6a5521f94f67a7eef2d8b4d8011c3828a5476757eb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "aac0f48650816f0030e2af0bbce96ff65211aa3413a6b271e72fca147c1f786c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "d38e8c26eb2db286d53cc13dedc0cbca4ffd85909fab0bd83996d8c59ad58df7"
+      }
+    },
+    {
+      "id": "bellevue",
+      "name": "Bellevue",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6101,
+      "lng": -122.2014,
+      "population_metro": 4019000,
+      "gdp_metro_usd_billions": 471.2,
+      "gdp_growth_5yr_pct": 3.4,
+      "business_formations_per_1k": 16.1,
+      "median_household_income_usd": 148600,
+      "cost_of_living_index": 178.9,
+      "office_rent_psf_annual_usd": 49.5,
+      "top_sectors": [
+        {
+          "sector": "Technology",
+          "employment_share_pct": 22.4,
+          "location_quotient": 3.26
+        },
+        {
+          "sector": "Gaming",
+          "employment_share_pct": 3.8,
+          "location_quotient": 5.94
+        },
+        {
+          "sector": "Cloud Infrastructure",
+          "employment_share_pct": 6.2,
+          "location_quotient": 6.81
+        },
+        {
+          "sector": "Real Estate/Dev",
+          "employment_share_pct": 4.1,
+          "location_quotient": 2.05
+        }
+      ],
+      "universities": [
+        {
+          "name": "Bellevue College",
+          "enrollment": 14300,
+          "cs_grads_annual": 180,
+          "research_dollars_musd": 3
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 6
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 240
+      },
+      "quality": {
+        "transit_score_1_100": 52,
+        "bike_score_1_100": 61,
+        "aqi_avg": 39,
+        "hospital_beds_per_1k": 2.8
+      },
+      "vc_presence_score_1_10": 8,
+      "notable_companies": [
+        "Microsoft",
+        "Smartsheet",
+        "Expedia Group",
+        " valve (HQ Bellevue/Redmond)",
+        "Symetra"
+      ],
+      "ai_banner": {
+        "palette_primary": "#34495E",
+        "palette_secondary": "#7D8C9A",
+        "palette_accent": "#B58860",
+        "signature_elements": [
+          "Bellevue skyline glass towers",
+          "Lake Washington reflective surface",
+          "SR-520 floating bridge",
+          "Evergreen tree line foreground",
+          "Mount Rainier distant anchor"
+        ],
+        "fog_haze_level": "light",
+        "time_of_day": "late afternoon golden"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "efaf3e2d1d5fc4a0ba216ad5c946a0c95ab438226d62833bcae5ce01d54dab18",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f73854b9b46d50c324c6afae599e823de74ba08f80794daa035c63dae85d333c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "021817a6f65e9f598fa31b4b16e3870bf1251adfe177030325cac55d73e187d2",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "454ea34b66a1d194500ff64c7fa9cd59213b130e890efef9e3502b4da45b07fb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "e50759b7c99cb24bb768c0e46aede4b5b07b9367cdf045f87d0fe93c6aa7ceef",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "b009e8c69b72c1a57044defb3096dd3acc13c5f3ec5ec1c0f504fd57308085d5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "efdc5f43affaec8921be64e0bf7f4541bd236c0c2703fa53f6baf2f66d463e20",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "6c8885f5caefbe65ab4a96bac905edd1a05f56f5cc0d5ec423ca92c69b3e1bb8",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "352690b856d476787e1a0fd056f6152bcb94c44bc87ec29184931ff1ed2baae9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "ecf1d710a2cd069366a2f7f62e1be24bb81c1ef35f767473c257c60ee9896929",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "9217d9d3a1930df46a1e6d0fb5edf3d94547cfe826a0c9d0acae67465bc1b0ca",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ee0ce5daab0817cc28fce199c094285ed0854c1779cb9e9f3a4f6c1aa579e069",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "9b1c7268232c9d9341058b10570e14f89e285514b15cfc72c06f714586ca6e0b",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "3405aa46ee24d2dee8f94612a3f5b044ba61c04ddf6f8654bc3537256d141949",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "2c961538523629daa823848f34ed2b551084b48df7ef95835610622f2580c945",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "8d73f6d7d38edd8afab3a2071c977783bee0c17da4acab413a6e4d3af7cb0b3d"
+      }
+    },
+    {
+      "id": "tacoma",
+      "name": "Tacoma",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.2529,
+      "lng": -122.4443,
+      "population_metro": 940000,
+      "gdp_metro_usd_billions": 38.4,
+      "gdp_growth_5yr_pct": 2.9,
+      "business_formations_per_1k": 9.7,
+      "median_household_income_usd": 76900,
+      "cost_of_living_index": 124.6,
+      "office_rent_psf_annual_usd": 26.0,
+      "top_sectors": [
+        {
+          "sector": "Port/Logistics",
+          "employment_share_pct": 8.4,
+          "location_quotient": 4.78
+        },
+        {
+          "sector": "Healthcare",
+          "employment_share_pct": 11.2,
+          "location_quotient": 1.42
+        },
+        {
+          "sector": "Military/Defense",
+          "employment_share_pct": 6.7,
+          "location_quotient": 3.12
+        },
+        {
+          "sector": "Manufacturing",
+          "employment_share_pct": 7.9,
+          "location_quotient": 1.65
+        },
+        {
+          "sector": "Education",
+          "employment_share_pct": 9.1,
+          "location_quotient": 1.48
+        }
+      ],
+      "universities": [
+        {
+          "name": "University of Puget Sound",
+          "enrollment": 2400,
+          "cs_grads_annual": 35,
+          "research_dollars_musd": 4
+        },
+        {
+          "name": "University of Washington Tacoma",
+          "enrollment": 5200,
+          "cs_grads_annual": 110,
+          "research_dollars_musd": 18
+        },
+        {
+          "name": "Pacific Lutheran University",
+          "enrollment": 3100,
+          "cs_grads_annual": 45,
+          "research_dollars_musd": 5
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 8
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 240
+      },
+      "quality": {
+        "transit_score_1_100": 48,
+        "bike_score_1_100": 52,
+        "aqi_avg": 45,
+        "hospital_beds_per_1k": 2.7
+      },
+      "vc_presence_score_1_10": 3,
+      "notable_companies": [
+        "MultiCare Health",
+        "State Farm regional HQ",
+        "Boeing (partial)",
+        "Emerald Queen Casino",
+        "Port of Tacoma"
+      ],
+      "ai_banner": {
+        "palette_primary": "#3F4A4F",
+        "palette_secondary": "#8B5A3C",
+        "palette_accent": "#D4A574",
+        "signature_elements": [
+          "Museum of Glass cone",
+          "Tacoma Narrows Bridge suspension cables",
+          "Port of Tacoma container cranes",
+          "Point Defiance fog line",
+          "Brown & Haley smokestack (ALMOND ROCA)"
+        ],
+        "fog_haze_level": "heavy",
+        "time_of_day": "early morning fog"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "67e037ac354f95de3fe635cdf021e332eb9fd27dc3a4e66cfc2b9e81967e4361",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "1703e05e434272e3d62590266279192d773a1027d98e441c87a18e14985129bb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "c74cc62dcb068b3c38bc7dbb380a6125df87372942ad76c66682e5fef9eee222",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "d8c9b930d6351d68b8451d090278f98bae407ae138be277cacd9ca3be6f06e21",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "08482f25b242155b73887d73a1bc30c42f311a36bd0f8e7532975b449e214bea",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "b7c76976e4640f11a5c9d441d7584dcec27603eff9951c1f5251ac66c5adf1db",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "8c207eac31e5dfead926f5535be9ad6824ead8a084db4becf22d9d1754f4e411",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0ac411cf07f69301d5747388b43c3180be9d9152b12cbaeac67e4c6d8cde263d",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "933fb8c7e84536692428e957e053c86386972e3d9a8c1060de9785b4a369fef7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "0626d2d7f7fb4497f05c4ff33c64e541744cfb256225f290e6b11d4f8102b677",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "46266fa3c427d879a958bb5cef17465be5c74b1e9b808ab1286565b5c2a32ad5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "409f09c001c8791b0f26f8a464e4eee4eceaac2fd00703512516be145f9b3dc5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "87c237e9f709ac5d1783f8a481c5be13ce7ea8ba9baeb5fe981a79df976670e5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "53c1dcff22380976189024fea714d53f13a4e747d109907fa1e172f065edb978",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "c167ea013405baed1741cd58041e0a9f999f9a99cffc50b23e376e85b8a22524",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "944f7ea1db55742906c80689e1e083785c81a95c74a5c401e8afc1e9203bc0f1"
+      }
+    },
+    {
+      "id": "bellingham",
+      "name": "Bellingham",
+      "state": "WA",
+      "country": "US",
+      "lat": 48.7491,
+      "lng": -122.4781,
+      "population_metro": 234000,
+      "gdp_metro_usd_billions": 6.8,
+      "gdp_growth_5yr_pct": 2.4,
+      "business_formations_per_1k": 12.3,
+      "median_household_income_usd": 65800,
+      "cost_of_living_index": 119.2,
+      "office_rent_psf_annual_usd": 21.0,
+      "top_sectors": [
+        {
+          "sector": "Education",
+          "employment_share_pct": 12.4,
+          "location_quotient": 2.01
+        },
+        {
+          "sector": "Tourism/Outdoor",
+          "employment_share_pct": 9.7,
+          "location_quotient": 2.32
+        },
+        {
+          "sector": "Healthcare",
+          "employment_share_pct": 10.1,
+          "location_quotient": 1.28
+        },
+        {
+          "sector": "Maritime/Fishing",
+          "employment_share_pct": 3.2,
+          "location_quotient": 3.85
+        },
+        {
+          "sector": "Craft Beverage",
+          "employment_share_pct": 1.8,
+          "location_quotient": 4.21
+        }
+      ],
+      "universities": [
+        {
+          "name": "Western Washington University",
+          "enrollment": 16100,
+          "cs_grads_annual": 180,
+          "research_dollars_musd": 22
+        },
+        {
+          "name": "Bellingham Technical College",
+          "enrollment": 2900,
+          "cs_grads_annual": 25,
+          "research_dollars_musd": 0
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 5
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 23
+      },
+      "quality": {
+        "transit_score_1_100": 41,
+        "bike_score_1_100": 68,
+        "aqi_avg": 35,
+        "hospital_beds_per_1k": 2.4
+      },
+      "vc_presence_score_1_10": 2,
+      "notable_companies": [
+        "Alpha Technologies",
+        "Wood Stone (home of Cascadia)",
+        "Boundary Bay Brewery",
+        "Bellingham Cold Storage"
+      ],
+      "ai_banner": {
+        "palette_primary": "#2C4A5E",
+        "palette_secondary": "#7A8B6E",
+        "palette_accent": "#D9A55C",
+        "signature_elements": [
+          "Bellingham Bay log booms",
+          "Mount Baker (Kulshan) glacial peak",
+          "Fairhaven historic brick storefronts",
+          "I-5 border crossing signage absence",
+          "Whatcom Creek salmon fence"
+        ],
+        "fog_haze_level": "moderate",
+        "time_of_day": "morning mist"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "7cf864a61a1fc4b8aaba484ec52991e8d7687d0ca72f48265224bd09bee34fad",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "887b921b530496750f82d7148bf1bb2f3c29f7e21340ad583b5a0baca30e8a37",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "92f300e3b98a76185b6f6229149d817b81eeef1a8e3c752ee1f20d1866ba6159",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "c53f11aeb358cff6a7c47658c5f8401d5b504b7680bee0bdbb8d954ec81e1a0a",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "90716cd008900ec65ac54fb79e83c44b30dda0b23f0880a0eb27210511ca3bcb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "d2a1b18d10411d9fc39ba69f823276fc66bfa482b992508cf4f5813c0fd50eb4",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "4a72a9ea6b3c16a32282151c7f6b9ecb9a9eff5579fd573493459dec2f066fa3",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "37d078387d779abde51b7db224a53e3f6bd287ba050709ed7686dbdbe65305f2",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "86a29d11adcfb360e122b8ffb4e6a56d8b61de8bb498ae87cbbf60d49b37d994",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "c5c1efa6a392a70e2d2a3d396680b70748ab4db86130713fbedac63c63fbbadc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "21824d913c48daa4df1c2fc56a1afe7a93af5085e44f056fa79ad698af0786db",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "a925aa9f9f06602cbb3eb109a829ddc53eae24610888cf4434971f030d3c4921",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "9048f140938c2d4f9107444c039991a74617a97e816e45a8d26ada01f5b93a83",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "4a7db74c4a63a4a2fb774c5d586347adfae4410f97f7615efb3c3efc02c9afd5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "f864086280caf925996709c4900b4dd2f9bab0963cc6222cc61c4ed88181decc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "527db43bdd56eb540409f5fe669b8b7586e0be5bb7b1ad5c44c1f1c82fb3f9a6"
+      }
+    },
+    {
+      "id": "olympia",
+      "name": "Olympia",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.0379,
+      "lng": -122.9007,
+      "population_metro": 305000,
+      "gdp_metro_usd_billions": 9.6,
+      "gdp_growth_5yr_pct": 2.1,
+      "business_formations_per_1k": 8.9,
+      "median_household_income_usd": 72800,
+      "cost_of_living_index": 117.8,
+      "office_rent_psf_annual_usd": 22.5,
+      "top_sectors": [
+        {
+          "sector": "Government",
+          "employment_share_pct": 24.3,
+          "location_quotient": 5.62
+        },
+        {
+          "sector": "Healthcare",
+          "employment_share_pct": 11.8,
+          "location_quotient": 1.49
+        },
+        {
+          "sector": "Education",
+          "employment_share_pct": 8.6,
+          "location_quotient": 1.39
+        },
+        {
+          "sector": "Brewing/Distilling",
+          "employment_share_pct": 1.2,
+          "location_quotient": 4.92
+        },
+        {
+          "sector": "Forestry/Natural Resources",
+          "employment_share_pct": 2.7,
+          "location_quotient": 2.18
+        }
+      ],
+      "universities": [
+        {
+          "name": "Evergreen State College",
+          "enrollment": 3800,
+          "cs_grads_annual": 0,
+          "research_dollars_musd": 4
+        },
+        {
+          "name": "South Puget Sound CC",
+          "enrollment": 6100,
+          "cs_grads_annual": 60,
+          "research_dollars_musd": 0
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 6
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 280
+      },
+      "quality": {
+        "transit_score_1_100": 44,
+        "bike_score_1_100": 58,
+        "aqi_avg": 36,
+        "hospital_beds_per_1k": 2.5
+      },
+      "vc_presence_score_1_10": 2,
+      "notable_companies": [
+        "State of Washington",
+        "WSECU",
+        "Heritage Bank",
+        "Olympic Health Alliance",
+        "Port of Olympia"
+      ],
+      "ai_banner": {
+        "palette_primary": "#3D5C5C",
+        "palette_secondary": "#8B7D6B",
+        "palette_accent": "#C18452",
+        "signature_elements": [
+          "State Capitol dome and reflecting pool",
+          "Budd Bay inlet at low tide",
+          "Capitol Forest treeline",
+          "Fourth Avenue Bridge",
+          "Deschutes River estuary mudflats"
+        ],
+        "fog_haze_level": "heavy",
+        "time_of_day": "winter solstice afternoon"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "614d3bc3d8cb710fe793b45f6779331a8ea65c8d74e35772024c0aa014697dcc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "54bdef81f20c4f477fe1f156259b7a7cc52b5f964b442d7a21bbfb0fbee6a8b4",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b4ed3fd919fc3454ef77996fd9e5d10d2f9b35c31e6b925d51d7900b4a3a2dfa",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "556fbee1a0e43b3e42ca09460d01986733cbbb35c5c58ab9b965627fe9c7b317",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "6362510ce616fd65fc906da4b030cd89a3a145602e0f46fbc405aa81423630d9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "ae3c4cddde80836dd3407437fdd040625ec8553465b15f02ce81d466d67c5e23",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "ba6aa4de0feb72daff36518f716cbc62f86f0d9795004a3cc1e076233055c4ce",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "c215b24ff944fcf1973c8ccbf2405447584f393a7dfcb7264b781691e480dfa3",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "cc6c8d599492aa84b4046c2ed8e6e5379d71a59fd3c7b958f01a34a1700d1b00",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "c5c1efa6a392a70e2d2a3d396680b70748ab4db86130713fbedac63c63fbbadc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "f5f10977b07c37c49b391a24e6d99660818d8423ca250b43ef3ecd54045d72fb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ee0ce5daab0817cc28fce199c094285ed0854c1779cb9e9f3a4f6c1aa579e069",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "5b3897a9eefbd7bb094b1524e57434a9b7342bf8c298082f45d31cdffbeee5af",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "705b8aaec4d7a843e86522664b789ea321f748e28ea1ee3ee4fdc4ec7ac1b27b",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "fbf5492e4e24703ca37643de15d2560d3cf06ceeade77ae7b762fd8c916df3d8",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "9b660b5b15778471e43afd7806a1ccbe3e723ed90242fe3fc6858ecc0e50d54b"
+      }
+    },
+    {
+      "id": "spokane",
+      "name": "Spokane",
+      "state": "WA",
+      "country": "US",
+      "lat": 47.6588,
+      "lng": -117.426,
+      "population_metro": 588000,
+      "gdp_metro_usd_billions": 24.7,
+      "gdp_growth_5yr_pct": 2.8,
+      "business_formations_per_1k": 10.2,
+      "median_household_income_usd": 64900,
+      "cost_of_living_index": 102.4,
+      "office_rent_psf_annual_usd": 19.0,
+      "top_sectors": [
+        {
+          "sector": "Healthcare",
+          "employment_share_pct": 13.8,
+          "location_quotient": 1.74
+        },
+        {
+          "sector": "Education",
+          "employment_share_pct": 9.4,
+          "location_quotient": 1.52
+        },
+        {
+          "sector": "Aerospace Manufacturing",
+          "employment_share_pct": 3.2,
+          "location_quotient": 3.08
+        },
+        {
+          "sector": "Logistics/Warehousing",
+          "employment_share_pct": 7.1,
+          "location_quotient": 1.88
+        },
+        {
+          "sector": "Ag-Tech",
+          "employment_share_pct": 1.9,
+          "location_quotient": 2.45
+        }
+      ],
+      "universities": [
+        {
+          "name": "Gonzaga University",
+          "enrollment": 7800,
+          "cs_grads_annual": 110,
+          "research_dollars_musd": 18
+        },
+        {
+          "name": "Eastern Washington University",
+          "enrollment": 11400,
+          "cs_grads_annual": 140,
+          "research_dollars_musd": 12
+        },
+        {
+          "name": "Washington State Spokane (Health Sci)",
+          "enrollment": 1600,
+          "cs_grads_annual": 0,
+          "research_dollars_musd": 48
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "low",
+        "wildfire_risk_level": "high",
+        "flood_risk_level": "moderate",
+        "smoke_days_avg": 22
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 180
+      },
+      "quality": {
+        "transit_score_1_100": 38,
+        "bike_score_1_100": 49,
+        "aqi_avg": 62,
+        "hospital_beds_per_1k": 3.0
+      },
+      "vc_presence_score_1_10": 3,
+      "notable_companies": [
+        "Itron",
+        "Goodwill Industries NW",
+        "Avista",
+        "Multiplying Good",
+        "Spokane Tribal Casino"
+      ],
+      "ai_banner": {
+        "palette_primary": "#5C5A3E",
+        "palette_secondary": "#9B7B4A",
+        "palette_accent": "#B58860",
+        "signature_elements": [
+          "Spokane Falls upper/lower falls",
+          "Riverfront Park clock tower",
+          "Monroe Street Bridge arches",
+          "Bing Crosby Theater marquee",
+          "Lilac bushes in foreground"
+        ],
+        "fog_haze_level": "light",
+        "time_of_day": "summer wildfire-smoke afternoon"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "cd91f1501c98878c9d0037715f9313001fd6b347075dc0d4056ee59fab18ccfb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b5e98f1482a4b9f9beb1a38ba7cbe53e1aa16904e74610913e494aca03d53361",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "271326d9e46c18b99a355a1e21575cfd4c513cc9cbd9c568611870e54fd8feaa",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "5e165bb200905247e7f76add3f3ab15284165938af415d16b6bcdd812f337a67",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "fd6916b342a71c2806bf7c3a92369a08f5f5e1bc162f2523e48484e652609522",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "7fe780a6e29573c963afad25af09bda92f6b6ec4f2af6f2385ee1cd0ced22200",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "14e4daa442205b174026f3a4719e4e9e9caf4dd7301e30ad10b938e86566e281",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0f9f027bd207aa162735922c50e96f29a881de1ccb1da92e1bc6ca5e9dd5c6ad",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "fa5b93c4bc450d1243c8a4ed464080da9c2f27321638dcb81acbb1225ea8bfe3",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "0626d2d7f7fb4497f05c4ff33c64e541744cfb256225f290e6b11d4f8102b677",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "a40f731946d9f2ecd77eff321528d4c685163558270cf38bb2a234511ea58fdc",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0d84c8292b513af5903ff66066ab265292e4e186037de22d2a1806b5d2a3627b",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "570259dc501afb86c2d5889f1f6e4c05f3b654362f85a8b8d7ca8ca75d737664",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "cee4755bcb8470442c9df942f85e7f0567dd769ab97f9e0ca7ba2386583a4c57",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "2a0f9e5fc8aad708fa24af5cb5b777af5765be8a1bd1731726f47c9609993413",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "65401db419523ba3df7de741b6e65091d7b868454f29ee72c2cf2e2d87b873a5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "eaa3f3ecd6f0cdd071805552ef4eb8e85cb9613dd1f8c0a8aa5384f153c0470a",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "96c4add09aaa8963c9d76a5e94caa88cc024b1ede6dd02ce85016bc587d6afd8"
+      }
+    },
+    {
+      "id": "bend",
+      "name": "Bend",
+      "state": "OR",
+      "country": "US",
+      "lat": 44.0582,
+      "lng": -121.3153,
+      "population_metro": 198000,
+      "gdp_metro_usd_billions": 7.9,
+      "gdp_growth_5yr_pct": 4.2,
+      "business_formations_per_1k": 18.6,
+      "median_household_income_usd": 82100,
+      "cost_of_living_index": 138.6,
+      "office_rent_psf_annual_usd": 28.0,
+      "top_sectors": [
+        {
+          "sector": "Outdoor Industry",
+          "employment_share_pct": 6.4,
+          "location_quotient": 8.43
+        },
+        {
+          "sector": "Craft Beverage",
+          "employment_share_pct": 2.1,
+          "location_quotient": 6.12
+        },
+        {
+          "sector": "Remote Work Tech",
+          "employment_share_pct": 8.2,
+          "location_quotient": 1.95
+        },
+        {
+          "sector": "Healthcare",
+          "employment_share_pct": 9.7,
+          "location_quotient": 1.23
+        },
+        {
+          "sector": "Aerospace Components",
+          "employment_share_pct": 1.6,
+          "location_quotient": 2.84
+        }
+      ],
+      "universities": [
+        {
+          "name": "Oregon State Cascades",
+          "enrollment": 1900,
+          "cs_grads_annual": 30,
+          "research_dollars_musd": 4
+        },
+        {
+          "name": "Central Oregon CC",
+          "enrollment": 7400,
+          "cs_grads_annual": 80,
+          "research_dollars_musd": 1
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "low",
+        "wildfire_risk_level": "high",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 18
+      },
+      "cross_border": {
+        "currency": "USD",
+        "corp_tax_rate_pct": 21.0,
+        "immigration_difficulty_1_10": 6,
+        "distance_to_canada_km": 580
+      },
+      "quality": {
+        "transit_score_1_100": 32,
+        "bike_score_1_100": 64,
+        "aqi_avg": 55,
+        "hospital_beds_per_1k": 2.0
+      },
+      "vc_presence_score_1_10": 4,
+      "notable_companies": [
+        "Les Schwab HQ",
+        "Mt Bachelor",
+        "PDT (Phocus)",
+        "Hydro Flask",
+        "Bend Research (Lonza)"
+      ],
+      "ai_banner": {
+        "palette_primary": "#6B5D3F",
+        "palette_secondary": "#A89058",
+        "palette_accent": "#7A4A2E",
+        "signature_elements": [
+          "Pilot Butte cinder cone",
+          "Deschutes River Mirror Pond",
+          "Three Sisters peaks on horizon",
+          "Old Mill District smokestacks",
+          "Ponderosa pine trunks in foreground"
+        ],
+        "fog_haze_level": "light smoke",
+        "time_of_day": "high desert golden hour"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "2774cf8114931a620f74e060c4330e58e1bfcf85f0380fca605d45d43d14b6ac",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f712e2c9f0ce15497588f9e3829efda1fa3097a8b8b40759b94448681658a826",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "067f53bf3dc19bc556e5ad2ee6ffe7ff87516314307112b4ea51459693b911aa",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "103978315e67d1bb4ce42b1724cb829afbbc1e1d6daa5d5fd7fcf6acb8d32c13",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ace7e57e8535c06d572038fcdc135560cac5f978d67645e3784f88eacdd97cea",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "850640ae0de1d1b468288d108e75dda55756eae7397bfc088d46c3bf69b89eb1",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "6c0ea4320de837aab390611f4b04f3a0c332b49e3e293efe9c924e1485a86846",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "7c46df3b5cfc890045281637dc45f19722a2e33648796d574a813647354ec7eb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "a0a84d5d9ebe9ecd0e07ab009595fc9342305d905a4a7199f258fee112c051fe",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "d26510b5ca7eb6e098bc87e570fdce22363ad394c7015591cdb2fba73389cffb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "43744498481a81b097f778075b94217d82032e7a7eb195edb000c32de042cda3",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0d84c8292b513af5903ff66066ab265292e4e186037de22d2a1806b5d2a3627b",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "570259dc501afb86c2d5889f1f6e4c05f3b654362f85a8b8d7ca8ca75d737664",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0ce5e438c7420db7bfe66fceef70a34c9175d8bd9b1b881918ebebf6eb480bda",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "febc95da25b7d1f23157ee7b79fbba441c155c9ab6a0e256c26992fe567a66e9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "3269006342e6efb63097f969dc85396f426959269c00914b884be82e55c61502",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "44acb5ffeb69eca6da49846516c3406f1d8a7e46214d4362eef5e37aff346530",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "b21aeb162ce773ec1337654ebd3337db471fa8e7ee15ce3336dd09c89b8cb601",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "a397992cc964968f081c52ba0a4547b8ba9d657d3974ede81096c9cce9a8bca6",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "8ed31fc4701ec23130a19597d41a5a0ebbd3f6ab4854a2e074d89f3ea23e4d25"
+      }
+    },
+    {
+      "id": "victoria",
+      "name": "Victoria",
+      "state": "BC",
+      "country": "CA",
+      "lat": 48.4284,
+      "lng": -123.3656,
+      "population_metro": 397000,
+      "gdp_metro_usd_billions": 18.4,
+      "gdp_growth_5yr_pct": 2.7,
+      "business_formations_per_1k": 10.4,
+      "median_household_income_usd": 71200,
+      "cost_of_living_index": 152.8,
+      "office_rent_psf_annual_usd": 27.5,
+      "top_sectors": [
+        {
+          "sector": "Technology",
+          "employment_share_pct": 8.6,
+          "location_quotient": 1.25
+        },
+        {
+          "sector": "Tourism",
+          "employment_share_pct": 12.4,
+          "location_quotient": 2.97
+        },
+        {
+          "sector": "Government (Provincial)",
+          "employment_share_pct": 14.1,
+          "location_quotient": 3.26
+        },
+        {
+          "sector": "Marine/Ocean Sciences",
+          "employment_share_pct": 1.8,
+          "location_quotient": 4.18
+        },
+        {
+          "sector": "Retiree Services",
+          "employment_share_pct": 6.7,
+          "location_quotient": 2.04
+        }
+      ],
+      "universities": [
+        {
+          "name": "University of Victoria",
+          "enrollment": 22100,
+          "cs_grads_annual": 280,
+          "research_dollars_musd": 145
+        },
+        {
+          "name": "Royal Roads University",
+          "enrollment": 3400,
+          "cs_grads_annual": 45,
+          "research_dollars_musd": 8
+        },
+        {
+          "name": "Camosun College",
+          "enrollment": 18500,
+          "cs_grads_annual": 180,
+          "research_dollars_musd": 2
+        }
+      ],
+      "climate": {
+        "quake_risk_level": "high",
+        "wildfire_risk_level": "low",
+        "flood_risk_level": "low",
+        "smoke_days_avg": 4
+      },
+      "cross_border": {
+        "currency": "CAD",
+        "corp_tax_rate_pct": 27.0,
+        "immigration_difficulty_1_10": 4,
+        "distance_to_canada_km": 0
+      },
+      "quality": {
+        "transit_score_1_100": 55,
+        "bike_score_1_100": 73,
+        "aqi_avg": 31,
+        "hospital_beds_per_1k": 2.6
+      },
+      "vc_presence_score_1_10": 4,
+      "notable_companies": [
+        "Bench Accounting (origin)",
+        "Kano Insights",
+        "Carmanah Tech",
+        "BC Ferries HQ",
+        "DND Pacific"
+      ],
+      "ai_banner": {
+        "palette_primary": "#2E4A3F",
+        "palette_secondary": "#8B9D7E",
+        "palette_accent": "#D4B07A",
+        "signature_elements": [
+          "BC Parliament Buildings lit at dusk",
+          "Empress Hotel ivy facade",
+          "Inner Harbour causeway",
+          "Olympic Mountains across Strait of Juan de Fuca",
+          "Butchart Gardens rose arbor suggestion"
+        ],
+        "fog_haze_level": "light",
+        "time_of_day": "twilight with twinkle lights"
+      },
+      "last_updated": "2026-09-03",
+      "provenance": {
+        "algorithm_version": "CIRS v1.0.0",
+        "dataset_version": "cities-data.json v1.0.0",
+        "retrieved_at": "2026-09-03T00:00:00Z",
+        "field_provenance": {
+          "population_metro": {
+            "source": "US Census Bureau ACS 5-year estimates / Statistics Canada Census 2021",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain (US government work) / Statistics Canada Open Licence",
+            "field_hash_sha256": "88e67ec06bdd132aa3730359b86186d4274c00f5c4d8a50fdbc1fece1719e1d1",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_metro_usd_billions": {
+            "source": "US Bureau of Economic Analysis GDP by Metropolitan Area",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "2a425529a87a4fa4034fdcc46fa7e6967d464893ef84d3c46b04f14ef6a873c1",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "gdp_growth_5yr_pct": {
+            "source": "US BEA GDP-by-Metro time series / Statistics Canada Provincial GDP",
+            "source_url": "https://www.bea.gov/data/gdp/gdp-metropolitan-area",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f3a260bf001853dcb38a76282c0ff81e27ea992ccdaf2ab29afe0a09d085c84d",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "business_formations_per_1k": {
+            "source": "US Census Bureau Business Formation Statistics / Statistics Canada Business Register",
+            "source_url": "https://www.census.gov/programs-surveys/bfs.html",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "c1eeeaf54a9b58ac3c2a70989df7aabf15b797d45953199854cdda5fd14c3886",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "median_household_income_usd": {
+            "source": "US Census ACS / Statistics Canada Census 2021 income data",
+            "source_url": "https://www.census.gov/programs-surveys/acs",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "864a18625f2816534b2a6bc1b773e592317da03080a757d43f2c5a532c61538b",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cost_of_living_index": {
+            "source": "Council for Community and Economic Research (C2ER) Cost of Living Index",
+            "source_url": "https://coli.org/",
+            "taxpayer_funded": false,
+            "license": "C2ER subscription (regional economic research consortium)",
+            "field_hash_sha256": "d7c605b79cde559bb89b969cd976de6a973231d5ff09c1fcf049bfe2f1243ca4",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "office_rent_psf_annual_usd": {
+            "source": "Colliers North America Office Market Report Q4",
+            "source_url": "https://www.colliers.com/en/research",
+            "taxpayer_funded": false,
+            "license": "Commercial real estate data \u2014 Colliers subscription",
+            "field_hash_sha256": "1494dad2b332acd681dbbca262244992516064009dec8672af271546b478460f",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "top_sectors": {
+            "source": "US BLS Quarterly Census of Employment & Wages / Statistics Canada Labour Force Survey",
+            "source_url": "https://www.bls.gov/cew/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "f54ebd2cab3337256ff1ae8d2567127a77ed522b9b04b8bdbcb5d40e57c517dd",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "universities": {
+            "source": "IPEDS Completions Survey (US) / Statistics Canada Postsecondary Information System (CA)",
+            "source_url": "https://nces.ed.gov/ipeds/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "60d5df334d5cd517ee1dc803037975fdcdb736997c445e646e263884d9d2dd62",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "vc_presence_score_1_10": {
+            "source": "Composite \u2014 Crunchbase News VC Activity Index + NVCA regional reports",
+            "source_url": "https://news.crunchbase.com/venture-finance/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription / NVCA public reports",
+            "field_hash_sha256": "d26510b5ca7eb6e098bc87e570fdce22363ad394c7015591cdb2fba73389cffb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "notable_companies": {
+            "source": "Crunchbase company headquarters data + Wikipedia",
+            "source_url": "https://www.crunchbase.com/",
+            "taxpayer_funded": false,
+            "license": "Crunchbase subscription + Wikipedia CC-BY-SA",
+            "field_hash_sha256": "89463147f48550c8921281f91046d9060f33fa696c487278d970e1d7bb442fd5",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.quake_risk_level": {
+            "source": "USGS National Seismic Hazard Maps / Natural Resources Canada Seismic Hazard",
+            "source_url": "https://earthquake.usgs.gov/hazards/",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "0718e09f3593bc7f0d344eaadd2fba7435b87bdc27132d138aa55ab94eb960c7",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.wildfire_risk_level": {
+            "source": "USDA Forest Service Wildfire Risk to Communities / BC Wildfire Service",
+            "source_url": "https://www.fs.usda.gov/managing-land/fire",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "8143bbe234efbf7147d7c36343cf8a7e1708c05d88fe97725ba635bec9f66da9",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "climate.smoke_days_avg": {
+            "source": "EPA Air Quality System / Environment Canada National Air Pollution Surveillance",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "982feec9757ea8490f459ad7ad29e39809e7fb10bbf0e0c89a1841eab7368752",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.transit_score_1_100": {
+            "source": "Walk Score / Transit Score (Redfin Real Estate)",
+            "source_url": "https://www.walkscore.com/",
+            "taxpayer_funded": false,
+            "license": "Walk Score API",
+            "field_hash_sha256": "e9d0e8a1fd9c98fe5d4bad7120c61010aa8506b32e4ae6df6954cc7db734ce1d",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.aqi_avg": {
+            "source": "EPA Air Quality System / Environment Canada NAPS",
+            "source_url": "https://www.epa.gov/outdoor-air-quality-data",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ee619c74a75f404070beab9d34f91b2bca34e5356ce6f5d7bbd1269a4ac8b617",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "quality.hospital_beds_per_1k": {
+            "source": "American Hospital Association Annual Survey / Canadian Institute for Health Information",
+            "source_url": "https://www.aha.org/",
+            "taxpayer_funded": false,
+            "license": "AHA subscription / CIHI Open Data",
+            "field_hash_sha256": "bc7c2c14534c60fa7ed3ac9e8e469e309fa18b91815fee9e952b086259ca6f18",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.corp_tax_rate_pct": {
+            "source": "IRS corporate tax rate (21%) / Canada Revenue Agency corporate tax rate (15% federal + 12% BC = 27%)",
+            "source_url": "https://www.irs.gov/businesses/corporations",
+            "taxpayer_funded": true,
+            "license": "Public domain",
+            "field_hash_sha256": "ba273f0d28b8047be5194b6a5521f94f67a7eef2d8b4d8011c3828a5476757eb",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          },
+          "cross_border.immigration_difficulty_1_10": {
+            "source": "Composite \u2014 USCIS H-1B lottery odds + IRCC Express Entry CRS cutoffs",
+            "source_url": "https://www.uscis.gov/ / https://www.canada.ca/en/immigration-refugees-citizenship.html",
+            "taxpayer_funded": true,
+            "license": "Public domain (composite scoring by AIBizVan360)",
+            "field_hash_sha256": "aac0f48650816f0030e2af0bbce96ff65211aa3413a6b271e72fca147c1f786c",
+            "retrieved_at": "2026-09-03T00:00:00Z"
+          }
+        },
+        "city_record_hash": "8e73d31a128502a6a37f6bae5d9a0ae2544084ebf1a586995118afaa84ab47f7"
+      }
+    }
+  ],
+  "_provenance_meta": {
+    "schema_version": "1.0.0",
+    "algorithm_version": "CIRS v1.0.0",
+    "signed_at": "2026-09-03T08:53:03.024276+00:00",
+    "dataset_hash_sha256": "d4761be3e155ceeacc92963b697cdbd33e2c685342a70f9ea632cf4f0b30816b",
+    "field_count": 190,
+    "taxpayer_funded_fields": 130,
+    "private_source_fields": 60,
+    "v2_roadmap": [
+      "Ed25519 cryptographic signing of dataset (replaces SHA-256 hash only)",
+      "Public key published to repo + Keybase",
+      "Per-report signature (every Deep Dive Report gets its own signature)",
+      "Verification endpoint: GET /verify/{report_id} returns signed computation chain",
+      "Integration with CIRS engine: every score includes hash of inputs + algorithm version"
+    ],
+    "disclaimer": "v1 uses SHA-256 hashes for integrity verification. v2 will add Ed25519 cryptographic signing for non-repudiation. Both are designed so that any modification to a data point can be detected by recomputing the hash and comparing to the signed original."
+  }
+}
