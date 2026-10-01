@@ -1163,6 +1163,45 @@ a:hover { text-decoration: underline; }
 @media(max-width:640px){.os-fab{font-size:12px;padding:6px 10px;bottom:8px;right:8px}}
 </style>
 
+
+<style>
+.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}
+.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}
+.os-home-fab .ic{width:16px;height:16px;display:inline-block}
+[data-theme="light"] .os-home-fab{background:#ffffff;color:#0d9488;border-color:#0d9488}
+@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}
+</style>
+
+
+<style>
+/* Cascadia OS Vision section — injected landing-page section */
+.cos-landing{padding:48px 0 24px;border-top:1px solid rgba(78,205,196,0.15);margin-top:32px}
+.cos-landing-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:8px}
+.cos-landing h2{font-size:clamp(24px,4vw,32px);font-weight:800;margin-bottom:12px;line-height:1.2}
+.cos-landing h2 .accent{color:var(--primary)}
+.cos-landing .lede{font-size:15px;color:var(--fg2);max-width:720px;margin-bottom:24px;line-height:1.6}
+.cos-preview-callout{background:linear-gradient(135deg,rgba(78,205,196,0.10),rgba(78,205,196,0.02));border:1px solid var(--primary);border-radius:12px;padding:16px 20px;margin:24px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.cos-preview-callout .pulse{width:10px;height:10px;border-radius:50%;background:var(--red);animation:cos-pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes cos-pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.cos-preview-callout .text{flex:1;min-width:240px}
+.cos-preview-callout .text strong{color:var(--fg)}
+.cos-preview-callout .text span{color:var(--fg2);font-size:13px;display:block;margin-top:2px}
+.cos-preview-callout a{background:var(--primary);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+.cos-preview-callout a:hover{background:#3dbdb5}
+[data-theme="light"] .cos-preview-callout{background:linear-gradient(135deg,rgba(13,148,136,0.08),rgba(13,148,136,0.02))}
+[data-theme="light"] .cos-preview-callout a{color:#fff}
+.cos-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+@media(max-width:1024px){.cos-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cos-cards{grid-template-columns:1fr}}
+.cos-card{background:var(--bg2);border:1px solid rgba(78,205,196,0.10);border-radius:12px;padding:18px;text-decoration:none;transition:border-color .15s,transform .15s;display:block}
+[data-theme="light"] .cos-card{background:#fff;border-color:rgba(0,0,0,0.07)}
+.cos-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.cos-card .ic{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#5eead4);display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:18px;font-weight:800;margin-bottom:10px}
+.cos-card h3{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:4px}
+.cos-card p{font-size:12.5px;color:var(--fg2);margin:0;line-height:1.5}
+.cos-card .arrow{color:var(--primary);font-size:14px;margin-top:8px;display:inline-block}
+</style>
+
 </head><body>
 <header class="bvs-header"><div class="bvs-header-inner">
     <a href="index.html" class="bvs-logo">
@@ -1249,6 +1288,75 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
 </section>
+
+<section class="cos-landing">
+  <div class="container">
+    <div class="cos-landing-eyebrow">Strategic evolution — October 2026</div>
+    <h2>From dashboard to <span class="accent">Operating System</span> for the Cascadia Economy</h2>
+    <p class="lede">The demo is the foundation. The strategic evolution is a 20-year composable, AI-native, multi-sided platform that anticipates needs, automates compliance, maps physical supply chains to financial instruments, and embeds itself in the daily workflows of investors, procurement officers, logistics managers, and policymakers. Four permanent principles — modularity, data sovereignty, agentic AI, climate resilience — chosen because they survive technology cycles.</p>
+
+    <div class="cos-preview-callout">
+      <div class="pulse"></div>
+      <div class="text">
+        <strong>24/7/365 public preview — no NDA, no login, no access request</strong>
+        <span>Served via GitHub Pages CDN from the public <code>Demo4VanSea</code> repo. The public repo holds only <strong>.html files</strong> — all other artifacts (code, .md, .pdf, .json, .js, .png) live exclusively in the private <code>AISeaVanBiz4</code> source-of-truth repo.</span>
+      </div>
+      <a href="preview-availability.html">Preview details →</a>
+    </div>
+
+    <div class="cos-cards">
+      <a href="vision.html" class="cos-card">
+        <div class="ic">V</div>
+        <h3>Vision</h3>
+        <p>From dashboard to OS. Four principles. Wedge → platform → federation → canonical.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="vision-architecture.html" class="cos-card">
+        <div class="ic">A</div>
+        <h3>Architecture</h3>
+        <p>Data mesh + event-driven. Versioned contracts. CQRS. Provenance ledger anchored monthly to public blockchain.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="vision-roadmap.html" class="cos-card">
+        <div class="ic">R</div>
+        <h3>Roadmap</h3>
+        <p>5-phase 20-year trajectory. Year-1 wedge: cross-border tender compliance matching. $400K MRR target.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="vision-moat.html" class="cos-card">
+        <div class="ic">M</div>
+        <h3>Moat</h3>
+        <p>USMCA rules of origin, BC Indigenous procurement, WA Climate Commitment Act. Three compounding pillars.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="skills.html" class="cos-card">
+        <div class="ic">S</div>
+        <h3>Skills</h3>
+        <p>Agent fleet + workflow. ~20 skills in Year 1, growing to ~100 by Year 7. LangGraph + Claude + Pydantic-AI.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="security.html" class="cos-card">
+        <div class="ic">🔒</div>
+        <h3>Security</h3>
+        <p>Responsible disclosure. 48-hour ack, 5-day response, 30-day patch. Safe harbor. Indigenous-nation data sovereignty.</p>
+        <span class="arrow">Read →</span>
+      </a>
+      <a href="dashboard-2.html" class="cos-card">
+        <div class="ic">📊</div>
+        <h3>Dashboard</h3>
+        <p>10-city Cascadia corridor intelligence dashboard. Live environmental, economic, and biodiversity data.</p>
+        <span class="arrow">Open →</span>
+      </a>
+      <a href="economics.html" class="cos-card">
+        <div class="ic">$</div>
+        <h3>Economics</h3>
+        <p>Cascadia Investor Readiness Score (CIRS). Deep Dive Reports. Four Moats. Cross-Border Friction Model.</p>
+        <span class="arrow">Open →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <div class="bvs-ticker"><div class="bvs-ticker-inner">
   <span><strong>TRADE:</strong> Port of Vancouver TEU throughput +18.3% YoY</span>
   <span><strong>TECH:</strong> VC investment reaches $8.7B across corridor</span>
@@ -1564,5 +1672,6 @@ a:hover { text-decoration: underline; }
   document.addEventListener('click',function(e){var c=e.target.closest('[data-detail]');if(c)dpClick(c.getAttribute('data-detail'));});
 })();
 </script>
-<a href="os-vision.html" class="os-fab" title="Cascadia OS — vision, architecture, roadmap, moat"><span class="dot"></span>Cascadia OS →</a>
+<a href="vision.html" class="os-fab" title="Cascadia OS — vision, architecture, roadmap, moat"><span class="dot"></span>Cascadia OS →</a>
+<a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
 </body></html>
