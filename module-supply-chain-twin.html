@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vision — From Dashboard to Operating System</title>
+<title>Module C — Physical-Digital Supply Chain Twin</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 <style>
@@ -214,61 +214,78 @@ body {
       Operating System for the Cascadia Economy
     </div>
   </a>
-  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="active">Vision</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
 </header>
 
 <section class="os-hero">
-  <h1>Vision — From Dashboard to Operating System</h1>
-  <p class="lede">From dashboard to Operating System for the Cascadia Economy: a 20-year composable, AI-native, multi-sided platform that anticipates needs, automates compliance, maps physical supply chains to financial instruments, and embeds itself in the daily workflows of investors, procurement officers, logistics managers, and policymakers.</p>
-  <div class="os-tag-row"><span class="os-tag">20-year OS</span><span class="os-tag">AI-native</span><span class="os-tag">Multi-sided</span><span class="os-tag">Modular</span></div>
+  <h1>Module C — Physical-Digital Supply Chain Twin</h1>
+  <p class="lede">Live geospatial map of the I-5 / Highway 99 corridor. Multi-tier supplier graph with propagation alerts. Dynamic Scope 3 carbon ledger per route.</p>
+  <div class="os-tag-row"><span class="os-tag">Phase 2</span><span class="os-tag">Logistics</span><span class="os-tag">WASM map</span><span class="os-tag">Carbon ledger</span></div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">1</span> From Dashboard to Operating System</h2>
-  <p>The original AIBizVan360 demo proves the macroeconomic vision: ten-city cross-border intelligence, live environmental data, biodiversity, and the proprietary Cascadia Investor Readiness Score (CIRS). It is a compelling artifact — but it is not yet a daily habit.</p>
-  <p>Professionals in the Cascadia corridor today toggle between Bloomberg Terminal for finance, SAM.gov / BC Bid for tenders, MarineTraffic for logistics, and disparate news feeds for regulatory updates. The information is fragmented; the workflow is fragmented; the value capture is fragmented. No single system speaks the corridor's dialect — <strong>USMCA rules of origin, BC Indigenous procurement mandates, Washington's Climate Commitment Act</strong>.</p>
-  <p>The strategic shift: <strong>from a dashboard that <em>displays</em> regional data, to an Operating System that <em>runs</em> the regional economy.</strong></p>
+  <h2><span class="num">1</span> Purpose</h2>
+  <p>Provide a live, geospatial, multi-tier digital twin of the Cascadia supply chain corridor. The user sees: where their goods are, where their suppliers' suppliers are, where the disruptions are, and what the carbon impact is.</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">2</span> The Four OS Responsibilities</h2>
-  <p>An OS, not a dashboard, has four functional responsibilities — features come second, these come first:</p>
-  <div class="os-grid cols-4">
-    <div class="os-card"><div class="icon">1</div><h3>Schedule resources</h3><p>Match capital, talent, and physical supply-chain capacity to tenders, projects, and policy windows across WA / OR / BC.</p></div>
-    <div class="os-card"><div class="icon">2</div><h3>Persist state</h3><p>Maintain an immutable, cryptographically-signed provenance record for every fact, score, and prediction — trust compounds annually.</p></div>
-    <div class="os-card"><div class="icon">3</div><h3>Mediate actors</h3><p>Multi-sided surface where investors, procurement officers, logistics managers, and policymakers each see role-appropriate views of shared state.</p></div>
-    <div class="os-card"><div class="icon">4</div><h3>Adapt hardware</h3><p>Plug in new data domains (drone telemetry, carbon markets, quantum-resilient signing) without rewriting the core.</p></div>
+  <h2><span class="num">2</span> Key Features</h2>
+
+  <h3>2.1 Corridor Geospatial Map</h3>
+  <p>An interactive, real-time map of the I-5 / Highway 99 / Trans-Canada Highway 1 corridor. Overlays include:</p>
+  <ul>
+    <li><strong>Live border wait times</strong> — Pacific Highway, Peace Arch, Lynden, Sumas crossings (CBSA + WSDOT APIs)</li>
+    <li><strong>Port of Vancouver / Seattle / Tacoma berth occupancy and crane availability</strong> — USACE + port-authority feeds</li>
+    <li><strong>Rail schedules</strong> — BNSF, CN, CPKC (public track warrant data)</li>
+    <li><strong>Weather overlays</strong> — wildfire smoke (NASA FIRMS), atmospheric river forecasts (NOAA AR Alerts), flood watches (NWS)</li>
+    <li><strong>Construction closures</strong> — WSDOT, BC MoTI</li>
+  </ul>
+  <div class="os-callout">
+    <div class="label">Why WebAssembly (WASM)</div>
+    <p>The map must render 10,000+ live positions (vessels, trucks, rail cars) at 60fps. JS libraries (D3, deck.gl) struggle past 100k DOM elements; WASM (Rust + WebGPU) handles millions. Be selective — WASM is overkill for 90% of the UI. Commit to WASM for 3 specific surfaces: (1) supply-chain graph viz, (2) port/logistics map, (3) carbon-ledger route optimizer.</p>
+  </div>
+
+  <h3>2.2 Multi-Tier Supplier Graph</h3>
+  <p>A Neo4j (or Apache Age — Postgres-native graph extension that uses Cypher) visualization showing Tier 1, Tier 2, Tier 3 suppliers. Click a node to see the supplier's profile, click an edge to see the relationship (contract value, lead time, dependency type).</p>
+  <div class="os-callout">
+    <div class="label">Killer feature — propagation alerts</div>
+    <p>If a sub-supplier (Tier 2 or Tier 3) is hit by a disruption (strike, fire, regulatory shutdown, earthquake), the OS propagates the impact up the graph and alerts the Tier 1 manufacturer: "Your widget supplier's Tier 2 steel provider is in a strike zone. Affected contracts: 3. Estimated impact: 4-week delay on Contract #ABC123."</p>
+  </div>
+  <div class="os-callout">
+    <div class="label">Refinement — supplier data sovereignty</div>
+    <p>Implement a consent layer: each supplier in the graph controls how many tiers DOWN they consent to expose. Default is Tier 1 only (the user sees their direct suppliers). Tier 2 exposure requires explicit per-supplier consent. This is the data sovereignty principle applied at the supplier-graph layer.</p>
+  </div>
+
+  <h3>2.3 Dynamic Carbon Ledger</h3>
+  <p>Automatically calculates the Scope 3 emissions of a specific logistics route, factoring in:</p>
+  <ul>
+    <li><strong>Grid carbon intensity</strong> — BC Hydro: 11.4 gCO2/kWh (hydro-dominant); WA grid: 191 gCO2/kWh (mixed); OR grid: 235 gCO2/kWh (coal + natural gas)</li>
+    <li><strong>Mode of transport</strong> — diesel truck, rail, marine vessel (each with different gCO2/tonne-km)</li>
+    <li><strong>Origin and destination</strong> — route distance</li>
+    <li><strong>CCA compliance cost</strong> — if WA-grid-powered, applies the CCA allowance price</li>
+    <li><strong>BC carbon tax cost</strong> — if BC operations, applies the carbon tax</li>
+  </ul>
+  <p>The ledger is per-route, per-shipment. Exported as CSV for the user's own ESG reporting. Every calculation is hash-anchored in the provenance ledger so the user's ESG report is auditable.</p>
+  <div class="os-callout">
+    <div class="label">Refinement — calculate avoided emissions too</div>
+    <p>If the user reroutes from truck to rail, how much carbon did they avoid? This is the metric ESG-conscious shippers care about, and it's a moat — competitors without the live grid-carbon-intensity data can't compute it.</p>
   </div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">3</span> The Four Permanent Principles</h2>
-  <p>These are the load-bearing walls. Everything else is finish carpentry that can be replaced.</p>
-  <div class="os-grid cols-4">
-    <div class="os-card"><div class="icon">M</div><h3>Modularity</h3><p>Independently deployable domain services. Each module rewriteable in whatever language / framework is current without forcing a rewrite of its neighbors.</p></div>
-    <div class="os-card"><div class="icon">D</div><h3>Data Sovereignty</h3><p>Every fact carries provenance. Every Indigenous nation retains sovereignty over data about their community. The platform cannot, by design, exfiltrate what it does not own.</p></div>
-    <div class="os-card"><div class="icon">A</div><h3>Agentic AI</h3><p>Routine cognitive work delegated to specialized agents that run continuously and surface exceptions to humans. Operator shifts from data-gatherer to strategist.</p></div>
-    <div class="os-card"><div class="icon">C</div><h3>Climate Resilience</h3><p>Pacific Northwest is the most seismically and climatically volatile region in North America. The OS keeps functioning during regional-scale disruption.</p></div>
-  </div>
+  <h2><span class="num">3</span> Dependencies</h2>
+  <table class="os-table">
+    <thead><tr><th>Domain</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><code>logistics</code></td><td>Vessel positions, port manifests, rail schedules</td></tr>
+      <tr><td><code>climate</code></td><td>Weather, wildfire, flood, atmospheric river</td></tr>
+      <tr><td><code>users</code></td><td>User's supply chain graph (with consent)</td></tr>
+      <tr><td><code>regulations</code></td><td>CCA / BC carbon tax / WAC 173-442 citations</td></tr>
+      <tr><td><code>provenance</code></td><td>Every carbon calculation is hash-anchored</td></tr>
+    </tbody>
+  </table>
+  <p><strong>External:</strong> USACE port data, CBSA border wait times, NOAA, NASA FIRMS, BC Hydro, WA grid operator.</p>
 </section>
-
-<section class="os-section">
-  <h2><span class="num">4</span> The Wedge → Platform → Federation Trajectory</h2>
-  <p>The OS is not launched; it is built one wedge at a time. The wedge is the daily-pain feature that establishes daily-active usage by one user type; the platform emerges as adjacent modules compound; the federation happens when sibling regional OSes adopt the template.</p>
-  <div class="os-phases">
-    <div class="os-phase"><div class="year">Year 1</div><div class="phase-name">Wedge</div><div class="phase-detail">Automated cross-border tender compliance matching. Target: 500 DAU, $400K MRR.</div></div>
-    <div class="os-phase"><div class="year">Years 2–3</div><div class="phase-name">Horizontal</div><div class="phase-detail">Logistics, capital, regulatory diff. 4 user types. $1–2M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 4–7</div><div class="phase-name">Platform</div><div class="phase-detail">Third-party module catalog. Government "OS-compatible" formats. $5–10M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 8–12</div><div class="phase-name">Federation</div><div class="phase-detail">Salmon Nation, Great Lakes, Gulf, Northeast OSes. $15–25M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 13–20</div><div class="phase-name">Canonical</div><div class="phase-detail">Federated OSes as canonical reference for regional intelligence. $30–50M ARR.</div></div>
-  </div>
-  <p style="margin-top: 18px;"><a href="vision-roadmap.html" style="color: var(--accent); text-decoration: none;">See the full roadmap →</a></p>
-</section>
-
-<div class="os-callout">
-  <div class="label">What this OS is NOT</div>
-  <p>Not a data broker. Not a portal. Not a single-product company. Not a global platform with regional customization. <strong>We are regionally native first.</strong> Global platforms cannot navigate USMCA, BC Indigenous procurement, and WA CCA with the specificity that daily-use professionals require.</p>
-</div>
 
 
 <footer class="os-foot">

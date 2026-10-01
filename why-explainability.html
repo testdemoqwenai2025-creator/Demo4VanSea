@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vision — From Dashboard to Operating System</title>
+<title>Why? — Algorithmic Transparency Demo</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 <style>
@@ -214,61 +214,77 @@ body {
       Operating System for the Cascadia Economy
     </div>
   </a>
-  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="active">Vision</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="active">Why?</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
 </header>
 
 <section class="os-hero">
-  <h1>Vision — From Dashboard to Operating System</h1>
-  <p class="lede">From dashboard to Operating System for the Cascadia Economy: a 20-year composable, AI-native, multi-sided platform that anticipates needs, automates compliance, maps physical supply chains to financial instruments, and embeds itself in the daily workflows of investors, procurement officers, logistics managers, and policymakers.</p>
-  <div class="os-tag-row"><span class="os-tag">20-year OS</span><span class="os-tag">AI-native</span><span class="os-tag">Multi-sided</span><span class="os-tag">Modular</span></div>
+  <h1>Why? — Algorithmic Transparency Demo</h1>
+  <p class="lede">Click 'Why?' on any AI recommendation to see the exact weighted factors, the evidence chain, and the provenance anchor. No black boxes — auditable, not just explainable.</p>
+  <div class="os-tag-row"><span class="os-tag">Explainability</span><span class="os-tag">Provenance</span><span class="os-tag">Auditable</span><span class="os-tag">No black boxes</span></div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">1</span> From Dashboard to Operating System</h2>
-  <p>The original AIBizVan360 demo proves the macroeconomic vision: ten-city cross-border intelligence, live environmental data, biodiversity, and the proprietary Cascadia Investor Readiness Score (CIRS). It is a compelling artifact — but it is not yet a daily habit.</p>
-  <p>Professionals in the Cascadia corridor today toggle between Bloomberg Terminal for finance, SAM.gov / BC Bid for tenders, MarineTraffic for logistics, and disparate news feeds for regulatory updates. The information is fragmented; the workflow is fragmented; the value capture is fragmented. No single system speaks the corridor's dialect — <strong>USMCA rules of origin, BC Indigenous procurement mandates, Washington's Climate Commitment Act</strong>.</p>
-  <p>The strategic shift: <strong>from a dashboard that <em>displays</em> regional data, to an Operating System that <em>runs</em> the regional economy.</strong></p>
+  <h2><span class="num">1</span> The Explainability Dashboard</h2>
+  <p>For every AI recommendation the OS surfaces, the user can click <strong>"Why?"</strong> to see the exact weighted factors. No black boxes.</p>
+
+  <div class="os-callout">
+    <div class="label">Worked example</div>
+    <p>The AI suggests "85% match confidence on Tender #2026-Q4-0142." The user clicks "Why?" and sees the breakdown below.</p>
+  </div>
+
+  <h3>Recommendation: Tender #2026-Q4-0142 — match confidence 85%</h3>
+  <table class="os-table">
+    <thead><tr><th>Factor</th><th>Score</th><th>Weight</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>NAICS code match</td><td style="color:var(--ok);">95%</td><td>30%</td><td>Your NAICS 238210 (Electrical Contractor) matches the tender's primary NAICS</td></tr>
+      <tr><td>Geography match</td><td style="color:var(--ok);">90%</td><td>20%</td><td>You operate in WA; tender is WA-based</td></tr>
+      <tr><td>Size standard match</td><td style="color:var(--ok);">100%</td><td>15%</td><td>You're under the $17M small-business threshold for NAICS 238210</td></tr>
+      <tr><td>Indigenous set-aside</td><td style="color:var(--warm);">60%</td><td>15%</td><td>This tender has a 10% Indigenous participation requirement; your JV partner status is unverified</td></tr>
+      <tr><td>USMCA rule-of-origin</td><td style="color:var(--ok);">90%</td><td>10%</td><td>Your 65% US content exceeds the 60% threshold</td></tr>
+      <tr><td>WA CCA exposure</td><td style="color:var(--warm);">70%</td><td>10%</td><td>Your CCA-covered status is unverified; estimate $42K compliance cost (range $35K-$58K)</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Composite:</strong> 0.30×0.95 + 0.20×0.90 + 0.15×1.00 + 0.15×0.60 + 0.10×0.90 + 0.10×0.70 = <strong>0.85 = 85%</strong></p>
+  <p style="margin-top: 12px; font-family: monospace; font-size: 12px; color: var(--accent);">Provenance anchor: sha256:abc123def456...<br>Every factor above is a hyperlink to its underlying evidence.<br>This recommendation was anchored to the Polygon blockchain on 2026-10-15 (block 0x...).</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">2</span> The Four OS Responsibilities</h2>
-  <p>An OS, not a dashboard, has four functional responsibilities — features come second, these come first:</p>
-  <div class="os-grid cols-4">
-    <div class="os-card"><div class="icon">1</div><h3>Schedule resources</h3><p>Match capital, talent, and physical supply-chain capacity to tenders, projects, and policy windows across WA / OR / BC.</p></div>
-    <div class="os-card"><div class="icon">2</div><h3>Persist state</h3><p>Maintain an immutable, cryptographically-signed provenance record for every fact, score, and prediction — trust compounds annually.</p></div>
-    <div class="os-card"><div class="icon">3</div><h3>Mediate actors</h3><p>Multi-sided surface where investors, procurement officers, logistics managers, and policymakers each see role-appropriate views of shared state.</p></div>
-    <div class="os-card"><div class="icon">4</div><h3>Adapt hardware</h3><p>Plug in new data domains (drone telemetry, carbon markets, quantum-resilient signing) without rewriting the core.</p></div>
+  <h2><span class="num">2</span> What the Dashboard Does NOT Show</h2>
+  <p>The dashboard does NOT show:</p>
+  <ul>
+    <li>The model's training data (proprietary — competitors could replicate)</li>
+    <li>The model's weights (same reason)</li>
+    <li>Internal confidence intervals that aren't user-facing (debugging signals, not user-facing claims)</li>
+  </ul>
+  <p>What it DOES show: the feature values used in this specific prediction, the weights applied, the composite score, the evidence chain for each feature, the provenance anchor.</p>
+  <div class="os-callout">
+    <div class="label">The distinction</div>
+    <p>The user can audit <em>the recommendation</em>, not <em>the model</em>. This is the right balance between transparency and defensibility.</p>
   </div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">3</span> The Four Permanent Principles</h2>
-  <p>These are the load-bearing walls. Everything else is finish carpentry that can be replaced.</p>
-  <div class="os-grid cols-4">
-    <div class="os-card"><div class="icon">M</div><h3>Modularity</h3><p>Independently deployable domain services. Each module rewriteable in whatever language / framework is current without forcing a rewrite of its neighbors.</p></div>
-    <div class="os-card"><div class="icon">D</div><h3>Data Sovereignty</h3><p>Every fact carries provenance. Every Indigenous nation retains sovereignty over data about their community. The platform cannot, by design, exfiltrate what it does not own.</p></div>
-    <div class="os-card"><div class="icon">A</div><h3>Agentic AI</h3><p>Routine cognitive work delegated to specialized agents that run continuously and surface exceptions to humans. Operator shifts from data-gatherer to strategist.</p></div>
-    <div class="os-card"><div class="icon">C</div><h3>Climate Resilience</h3><p>Pacific Northwest is the most seismically and climatically volatile region in North America. The OS keeps functioning during regional-scale disruption.</p></div>
-  </div>
+  <h2><span class="num">3</span> The "No Black-Box Decisions" Commitment</h2>
+  <p>The OS commits: <strong>no AI recommendation is acted on autonomously on financial or legal decisions.</strong> Specifically:</p>
+  <table class="os-table">
+    <thead><tr><th>Action</th><th>AI can</th><th>AI cannot</th></tr></thead>
+    <tbody>
+      <tr><td>Bid submission</td><td>Draft the bid</td><td>Submit the bid</td></tr>
+      <tr><td>Trade execution</td><td>Suggest the trade</td><td>Execute the trade</td></tr>
+      <tr><td>Documentation modification</td><td>Suggest the change</td><td>Modify without explicit per-edit approval</td></tr>
+    </tbody>
+  </table>
+  <p>This is the "human-in-the-loop" pattern from the risk-mitigation strategy, made concrete. The AI is the drafter and advisor, not the submitter or executor.</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">4</span> The Wedge → Platform → Federation Trajectory</h2>
-  <p>The OS is not launched; it is built one wedge at a time. The wedge is the daily-pain feature that establishes daily-active usage by one user type; the platform emerges as adjacent modules compound; the federation happens when sibling regional OSes adopt the template.</p>
-  <div class="os-phases">
-    <div class="os-phase"><div class="year">Year 1</div><div class="phase-name">Wedge</div><div class="phase-detail">Automated cross-border tender compliance matching. Target: 500 DAU, $400K MRR.</div></div>
-    <div class="os-phase"><div class="year">Years 2–3</div><div class="phase-name">Horizontal</div><div class="phase-detail">Logistics, capital, regulatory diff. 4 user types. $1–2M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 4–7</div><div class="phase-name">Platform</div><div class="phase-detail">Third-party module catalog. Government "OS-compatible" formats. $5–10M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 8–12</div><div class="phase-name">Federation</div><div class="phase-detail">Salmon Nation, Great Lakes, Gulf, Northeast OSes. $15–25M ARR.</div></div>
-    <div class="os-phase"><div class="year">Years 13–20</div><div class="phase-name">Canonical</div><div class="phase-detail">Federated OSes as canonical reference for regional intelligence. $30–50M ARR.</div></div>
+  <h2><span class="num">4</span> Why This Is a Moat</h2>
+  <p>The Explainability Dashboard, combined with the provenance ledger, makes the OS's recommendations <strong>auditable, not just explainable</strong>. A user can prove to a third party (auditor, contracting officer, lawyer) that the OS made a specific recommendation on a specific date with a specific reasoning — and that the reasoning was not tampered with after the fact.</p>
+  <div class="os-callout">
+    <div class="label">Compounds annually</div>
+    <p>As AI-generated content floods the internet over the next 5-10 years, <em>verifiable provenance</em> becomes the scarcest resource. The OS will have years of accumulated provenance history that no competitor can fabricate.</p>
   </div>
-  <p style="margin-top: 18px;"><a href="vision-roadmap.html" style="color: var(--accent); text-decoration: none;">See the full roadmap →</a></p>
 </section>
-
-<div class="os-callout">
-  <div class="label">What this OS is NOT</div>
-  <p>Not a data broker. Not a portal. Not a single-product company. Not a global platform with regional customization. <strong>We are regionally native first.</strong> Global platforms cannot navigate USMCA, BC Indigenous procurement, and WA CCA with the specificity that daily-use professionals require.</p>
-</div>
 
 
 <footer class="os-foot">
