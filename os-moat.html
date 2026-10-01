@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia OS — Moat</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+}
+.os-brand { display: flex; align-items: center; gap: 12px; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.os-nav a {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+}
+.os-nav a:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-phases {
+  display: grid; gap: 0; margin-top: 20px;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 880px) { .os-phases { grid-template-columns: 1fr; } }
+.os-phase {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 16px; position: relative;
+}
+.os-phase:not(:last-child) { border-right: none; }
+.os-phase .year {
+  font-size: 11px; color: var(--accent); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.os-phase .phase-name { font-size: 15px; font-weight: 700; margin: 4px 0 8px; }
+.os-phase .phase-detail { font-size: 12px; color: var(--fg-2); line-height: 1.55; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <div class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </div>
+  <nav class="os-nav"><a href="os-vision.html">Vision</a><a href="os-architecture.html">Architecture</a><a href="os-roadmap.html">Roadmap</a><a href="os-moat.html" class="active">Moat</a><a href="index.html">Demo ↗</a></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Cascadia OS — Moat</h1>
+  <p class="lede">Regional specificity as the defensible advantage</p>
+  <div class="os-tag-row"><span class="os-tag">USMCA</span><span class="os-tag">BC Indigenous</span><span class="os-tag">WA CCA</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> The Paradox of Global Platforms</h2>
+  <p>A reasonable question: why cannot Bloomberg, S&P Global, Thomson Reuters, or a hypothetical "Cascadia desk" inside Yahoo Finance build this? They have more capital, more salespeople, more brand recognition. The answer is the <strong>regional moat</strong>.</p>
+  <p>Global platforms optimize for the average of a national or global user base. The marginal investment to support USMCA Schedule IV §6 citation tracking helps only Cascadia users; the marginal investment to support RCW 39.80 Indigenous preference language helps only Washington users; the marginal investment to support WAC 173-442 cap-and-invest compliance cost calculation helps only WA covered-sector users. Each feature serves perhaps 5,000 paying users globally.</p>
+  <p>A global platform serving 500,000 users cannot allocate product engineering to features that serve 1% of its base, especially when those features require deep regulatory interpretation that does not transfer to any other region. <strong>Regional specificity is a wedge-shaped moat: narrow enough that global players will not enter, deep enough that once we hold it, they cannot catch up without the same years of compounding usage history.</strong></p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> The Three Pillars</h2>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div class="icon">1</div>
+    <h3 style="font-size:18px;">USMCA Rules of Origin — Cross-Border Trade</h3>
+    <p style="margin-top: 8px;">The United States–Mexico–Canada Agreement (USMCA, in force July 1, 2020) governs preferential tariff treatment for goods traded among the US, Canada, and Mexico. To claim preferential treatment, a good must meet a regional value content (RVC) threshold specified by its HS code, often supplemented by a tariff shift requirement.</p>
+    <p style="margin-top: 8px;">For Cascadia: a contractor building a hydrogen electrolyzer stack with cells fabricated in Burnaby BC, balance-of-plant assembled in Everett WA, and catalyst imported from Mexico must calculate the RVC of the finished good. This requires maintaining the USMCA Schedule IV text, CBP and CBSA rulings, the HS taxonomy, and the user's supply-chain graph.</p>
+    <p style="margin-top: 8px;"><strong>No global platform maintains this for Cascadia at the depth that daily use requires.</strong></p>
+  </div>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div class="icon">2</div>
+    <h3 style="font-size:18px;">BC's Indigenous Procurement Mandates</h3>
+    <p style="margin-top: 8px;">British Columbia's Indigenous procurement framework is more developed than any US state's: BC Bid Indigenous set-asides, the Indigenous Business and Investment Council (IBIC), the New Relationship Trust (NRT), the BC Procurement Reform Initiative, and TRC Call to Action #92.</p>
+    <p style="margin-top: 8px;">The OS must detect on every BC Bid tender whether it is an Indigenous set-aside, identify the eligibility criteria, maintain a consented directory of Indigenous-owned businesses (with explicit opt-in per data sovereignty principle), and recommend JV partners when a non-Indigenous user wants to bid on an Indigenous set-aside.</p>
+    <p style="margin-top: 8px;">The Muckleshoot outreach letter is the <em>first</em> step in a years-long relationship. The OS will build analogous relationships with the Squamish, Tsleil-Waututh, Musqueam, Tulalip, Stillaguamish, Puyallup, Suquamish, Umatilla, Yakama, Nez Perce, Warm Springs, Grand Ronde, Siletz, and others as capacity allows. <strong>A competitor cannot replicate this without the same years of trust-building.</strong></p>
+  </div>
+
+  <div class="os-card">
+    <div class="icon">3</div>
+    <h3 style="font-size:18px;">Washington's Climate Commitment Act (CCA)</h3>
+    <p style="margin-top: 8px;">The CCA (RCW 70A.65, in force January 1, 2023) is Washington state's economy-wide cap-and-invest program covering ~75% of state GHG emissions. It imposes compliance obligations on fuel suppliers, natural gas utilities, electricity importers, and large industrial facilities.</p>
+    <p style="margin-top: 8px;">For Cascadia procurement officers, the CCA matters in three ways: bid cost calculation (compliance cost flows through to fuel costs), allowable cost documentation (WAC 173-442 lets contractors claim carbon compliance as allowable cost <em>if documented properly</em>), and the auction-revenue circular flow (CCA funds grants that contractors bid on).</p>
+    <p style="margin-top: 8px;">The OS's CCA module maintains current allowance price, the list of covered entities (subset of 1,010 EPA TRI facilities in WA), cost-of-compliance per unit of fuel, and the WAC 173-442 citation for cost-allowability documentation.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> Why Each Pillar Compounds</h2>
+  <table class="os-table">
+    <thead><tr><th>Pillar</th><th>What compounds</th><th>Cannot be backdated because</th></tr></thead>
+    <tbody>
+      <tr><td>USMCA rules of origin</td><td>Every bid drafted and every Certification of Origin produced refines the supply-chain content interpretation graph</td><td>Every refinement is hash-anchored in the provenance ledger</td></tr>
+      <tr><td>BC Indigenous procurement</td><td>Each Indigenous-nation relationship deepens (capacity, trust, consent for data sharing)</td><td>Relationships do not transfer; competitors start from zero</td></tr>
+      <tr><td>WA CCA compliance</td><td>Every bid's cost-of-compliance estimate is benchmarked against actual auction prices and bid outcomes</td><td>Historical allowance prices are public record but the OS's interpretation history is proprietary</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">After 5 years</div>
+    <p>No competitor can match the depth. <strong>After 20 years, the moat is permanent.</strong></p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> Defensibility Matrix</h2>
+  <table class="os-table">
+    <thead><tr><th>Moat</th><th>Year 1</th><th>Year 5</th><th>Year 20</th></tr></thead>
+    <tbody>
+      <tr><td>Provenance ledger</td><td>50K claims, 12 anchors</td><td>5M claims, 60 anchors</td><td class="accent">50M claims, 240 anchors (cannot be backdated)</td></tr>
+      <tr><td>Compliance knowledge graph</td><td>200 bids interpreted</td><td>50K bids interpreted</td><td class="accent">1M+ bids interpreted (definitive)</td></tr>
+      <tr><td>Indigenous-nation relationships</td><td>1 (Muckleshoot)</td><td>10+ in Cascadia</td><td class="accent">30+ across federated regions</td></tr>
+      <tr><td>CIRS methodology</td><td>10 cities, v1.0</td><td>10 cities, v3.0 (counterfactual)</td><td class="accent">50+ cities, v5.0 (causal inference)</td></tr>
+      <tr><td>Regional specificity</td><td>3 pillars</td><td>6+ pillars</td><td class="accent">20+ pillars across federation</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="os-callout">
+  <div class="label">Federation (Year 4+)</div>
+  <p>By Year 4, the OS will have established the Cascadia corridor as the federated anchor. Sibling regional OSes — Salmon Nation, Great Lakes, Gulf of Mexico, Northeast Corridor — adopt the template. Each is independently operated; all share the provenance ledger protocol, the event bus contract, and the data sovereignty framework. <strong>Cascadia is the anchor; siblings follow the same template.</strong></p>
+</div>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth repo AISeaVanBiz4 · public no-NDA preview Demo4VanSea</div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+</body>
+</html>

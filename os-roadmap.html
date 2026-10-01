@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia OS — Roadmap</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+}
+.os-brand { display: flex; align-items: center; gap: 12px; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.os-nav a {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+}
+.os-nav a:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-phases {
+  display: grid; gap: 0; margin-top: 20px;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 880px) { .os-phases { grid-template-columns: 1fr; } }
+.os-phase {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 16px; position: relative;
+}
+.os-phase:not(:last-child) { border-right: none; }
+.os-phase .year {
+  font-size: 11px; color: var(--accent); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.os-phase .phase-name { font-size: 15px; font-weight: 700; margin: 4px 0 8px; }
+.os-phase .phase-detail { font-size: 12px; color: var(--fg-2); line-height: 1.55; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <div class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </div>
+  <nav class="os-nav"><a href="os-vision.html">Vision</a><a href="os-architecture.html">Architecture</a><a href="os-roadmap.html" class="active">Roadmap</a><a href="os-moat.html">Moat</a><a href="index.html">Demo ↗</a></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Cascadia OS — Roadmap</h1>
+  <p class="lede">Wedge → horizontal → platform → federation → canonical reference</p>
+  <div class="os-tag-row"><span class="os-tag">5 phases</span><span class="os-tag">20-year horizon</span><span class="os-tag">Quarterly review</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> Five-Phase Trajectory</h2>
+  <p>The roadmap is organized into five phases. Each phase has a primary objective, a small number of modules built or extended, and explicit success criteria for graduating to the next phase.</p>
+  <div class="os-phases">
+    <div class="os-phase"><div class="year">Year 1</div><div class="phase-name">Wedge</div><div class="phase-detail">Cross-border tender compliance matching. 6 domains. 500 DAU / $400K MRR.</div></div>
+    <div class="os-phase"><div class="year">Years 2–3</div><div class="phase-name">Horizontal</div><div class="phase-detail">Logistics + capital + regulatory diff. 4 user types. $1–2M ARR.</div></div>
+    <div class="os-phase"><div class="year">Years 4–7</div><div class="phase-name">Platform</div><div class="phase-detail">Third-party module catalog. Government "OS-compatible" mandate. $5–10M ARR.</div></div>
+    <div class="os-phase"><div class="year">Years 8–12</div><div class="phase-name">Federation</div><div class="phase-detail">Salmon Nation, Great Lakes, Gulf, Northeast OSes. $15–25M ARR.</div></div>
+    <div class="os-phase"><div class="year">Years 13–20</div><div class="phase-name">Canonical</div><div class="phase-detail">Federated OSes as canonical reference for regional intelligence. $30–50M ARR.</div></div>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> Phase 1 — The Wedge (Year 1)</h2>
+  <p><strong>Objective:</strong> Establish daily-active usage by one user type (procurement officers in Cascadia mid-sized contractors) via a single wedge feature: automated cross-border tender compliance matching.</p>
+  <table class="os-table">
+    <thead><tr><th>Module</th><th>Owns</th></tr></thead>
+    <tbody>
+      <tr><td><code>tenders</code></td><td>Normalized tender records from SAM.gov, BC Bid, WA Commerce, OR Buys</td></tr>
+      <tr><td><code>regulations</code></td><td>USMCA, RCW, ORS, BC statutes, WAC, OAR — full-text indexed</td></tr>
+      <tr><td><code>compliance</code></td><td>The Compliance Reasoner — eligibility, USMCA, Indigenous, CCA exposure</td></tr>
+      <tr><td><code>users</code></td><td>Profiles, saved searches, watchlists, supply-chain declarations</td></tr>
+      <tr><td><code>bids</code></td><td>The Bid Drafter — drafts with provenance footnotes</td></tr>
+      <tr><td><code>provenance</code></td><td>Append-only ledger with monthly blockchain anchor</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Success criteria (graduation to Phase 2)</div>
+    <p>500 DAU · 5K weekly assessments · 200 monthly bid drafts · 15% win-rate uplift · $400K MRR · 50K provenance records/week · ≥1 Indigenous-nation partnership established</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> Phase 2 — Horizontal Expansion (Years 2–3)</h2>
+  <p><strong>Objective:</strong> Expand from one user type to four (procurement officers, logistics managers, investors, policy analysts) by adding the modules each type needs.</p>
+  <table class="os-table">
+    <thead><tr><th>Module</th><th>Why adjacent</th></tr></thead>
+    <tbody>
+      <tr><td><code>logistics</code></td><td>MarineTraffic, USACE + VFPA port manifests, BNSF / CN / CPKC rail</td></tr>
+      <tr><td><code>capital</code></td><td>SEC Form D, BCSC 45-106, consented VC disbursements</td></tr>
+      <tr><td><code>regulatory_diff</code></td><td>WA CCA vs OR CPP vs BC carbon pricing delta engine</td></tr>
+      <tr><td><code>climate</code></td><td>EPA AQS, USGS gauges, NOAA, NASA FIRMS, atmospheric rivers</td></tr>
+      <tr><td><code>biodiversity</code></td><td>iNaturalist, eBird, USGS BISON, BC CDC — Indigenous sovereignty enforced</td></tr>
+      <tr><td>Adjacent regimes</td><td>OR CPP, BC carbon tax, Buy Clean, IRA §60120, BC DRIPA, WA Directive 19-01</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Success criteria</div>
+    <p>3K DAU across 4 user types · $1–2M ARR · 5M provenance records / 60 anchor blocks · 5 Indigenous-nation partnerships · conversational interface prototype</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> Phase 3 — Platform Maturity (Years 4–7)</h2>
+  <p><strong>Objective:</strong> Transition from vertical product to horizontal platform by opening the OS to third-party module authors and government integration.</p>
+  <p>Modules added: <code>third_party_modules</code> (community-contributed agent catalog), <code>open_api</code> (public embedding API). Conversational interface becomes primary for 30%+ of interactions.</p>
+  <p>Strategic activities: at least one state/provincial government procurement mandate for "AIBizVan-OS-compatible" data formats; 30+ Indigenous-nation partnerships across Cascadia; 50+ contributed third-party modules.</p>
+  <div class="os-callout">
+    <div class="label">Success criteria</div>
+    <p>10K DAU · $5–10M ARR · 50M provenance records / 120 anchor blocks · first sibling-region OS (Salmon Nation) operational</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> Phase 4 — Federation (Years 8–12)</h2>
+  <p><strong>Objective:</strong> Federate the OS template to sibling regions. Cascadia remains the anchor; siblings operate independently with shared infrastructure.</p>
+  <p><strong>Sibling regions (prioritized):</strong></p>
+  <ul style="color:var(--fg-2); margin: 8px 0 18px 22px;">
+    <li><strong>Salmon Nation OS</strong> — Pacific Northwest coast bioregion (extending Cascadia northward to Alaska, southward to N. California). Most aligned.</li>
+    <li><strong>Great Lakes OS</strong> — Chicago / Detroit / Toronto / Cleveland corridor.</li>
+    <li><strong>Gulf of Mexico OS</strong> — Houston / New Orleans / Tampa / Veracruz corridor.</li>
+    <li><strong>Northeast Corridor OS</strong> — Boston / NYC / Philadelphia / DC.</li>
+  </ul>
+  <div class="os-callout">
+    <div class="label">Success criteria</div>
+    <p>3+ federated regional OSes · 50K DAU across federation · $15–25M ARR · 250M provenance records / 180 anchor blocks · 30+ Indigenous nations partnered across federation</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">6</span> Phase 5 — Canonical Reference (Years 13–20)</h2>
+  <p><strong>Objective:</strong> Federated OSes operate as the canonical reference for regional economic intelligence. Government procurement, Indigenous-nation governance, and major industry consortia reference "AIBizVan-OS-compatible" as a standard.</p>
+  <p>Indicative milestones: 5+ federated regional OSes · 100+ Indigenous nations partnered · 1B+ provenance records / 240 anchor blocks (cannot be backdated) · 50+ cities with CIRS 5.0 (causal inference) · quantum-resilient signing · conversational primary interface · edge-deployable agent runtimes · 3–5 humans + 15–20 agents per regional OS · $30–50M ARR.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">7</span> Decision Tree for New Modules</h2>
+  <p>Every new module idea is evaluated against this decision tree before being committed:</p>
+  <table class="os-table">
+    <thead><tr><th>#</th><th>Question</th><th>If no</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Serves one of the existing user types or opens a new user type?</td><td>Defer</td></tr>
+      <tr><td>2</td><td>Is the pain acute and recurring for that user type?</td><td>Defer</td></tr>
+      <tr><td>3</td><td>Is the data available, consented, and provenance-backable?</td><td>Defer until it is</td></tr>
+      <tr><td>4</td><td>Does it compound the moat — does using it make the OS harder to replicate?</td><td>Defer</td></tr>
+      <tr><td>5</td><td>Does it require cross-domain writes or shared schemas?</td><td>Defer until refactored</td></tr>
+      <tr><td>6</td><td>Can it be built as a new domain without touching existing domains?</td><td>Refactor first</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth repo AISeaVanBiz4 · public no-NDA preview Demo4VanSea</div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+</body>
+</html>

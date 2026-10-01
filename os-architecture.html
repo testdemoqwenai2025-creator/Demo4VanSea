@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia OS — Architecture</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+}
+.os-brand { display: flex; align-items: center; gap: 12px; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.os-nav a {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+}
+.os-nav a:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-phases {
+  display: grid; gap: 0; margin-top: 20px;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 880px) { .os-phases { grid-template-columns: 1fr; } }
+.os-phase {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 16px; position: relative;
+}
+.os-phase:not(:last-child) { border-right: none; }
+.os-phase .year {
+  font-size: 11px; color: var(--accent); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.os-phase .phase-name { font-size: 15px; font-weight: 700; margin: 4px 0 8px; }
+.os-phase .phase-detail { font-size: 12px; color: var(--fg-2); line-height: 1.55; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <div class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </div>
+  <nav class="os-nav"><a href="os-vision.html">Vision</a><a href="os-architecture.html" class="active">Architecture</a><a href="os-roadmap.html">Roadmap</a><a href="os-moat.html">Moat</a><a href="index.html">Demo ↗</a></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Cascadia OS — Architecture</h1>
+  <p class="lede">Data Mesh + Event-Driven Architecture: pluggable domains, versioned event contracts</p>
+  <div class="os-tag-row"><span class="os-tag">Data Mesh</span><span class="os-tag">EDA</span><span class="os-tag">CQRS</span><span class="os-tag">Agentic</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> Why Not a Monolith</h2>
+  <p>The single most common cause of platform death at year 5–7 is the monolith: a single codebase that has accreted so many features that every change risks breaking something else. The original demo is intentionally monolithic — a single <code>built-output/</code> directory of static HTML, a single <code>cities-data.json</code> backbone, a single scoring engine. That is the correct shape for a demo. It is the wrong shape for an OS.</p>
+  <p>The OS commits to two architectural patterns that, together, define how the system breathes: <strong>Data Mesh</strong> (every domain independently owned and deployable) and <strong>Event-Driven Architecture</strong> (services communicate via versioned events, not synchronous API calls).</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> The Data Mesh: Domain Map</h2>
+  <p>Every data domain is owned by an independent service with its own storage, schema, team (or agent), and deployment cadence. Domains publish data products to the mesh; no domain writes to another domain's storage.</p>
+
+  <h3 style="font-size:17px;margin:20px 0 10px;color:var(--fg);">Year 1 — Wedge Domains</h3>
+  <div class="os-grid cols-3">
+    <div class="os-card"><div class="icon">T</div><h3>tenders</h3><p>Normalized tender records from SAM.gov, BC Bid, WA Commerce, OR Buys, US DOE, BC Hydro.</p></div>
+    <div class="os-card"><div class="icon">R</div><h3>regulations</h3><p>USMCA, RCW, ORS, BC statutes, WAC, OAR — indexed by citation, full-text searchable.</p></div>
+    <div class="os-card"><div class="icon">C</div><h3>compliance</h3><p>Assessments from the Compliance Reasoner — eligibility, USMCA, Indigenous, CCA exposure.</p></div>
+    <div class="os-card"><div class="icon">U</div><h3>users</h3><p>Profiles, company profiles, supply-chain declarations, saved searches, watchlists.</p></div>
+    <div class="os-card"><div class="icon">B</div><h3>bids</h3><p>Bid drafts, prior bid corpus for few-shot learning, Word attachments in S3.</p></div>
+    <div class="os-card"><div class="icon">P</div><h3>provenance</h3><p>Append-only hash-anchored claims ledger, monthly Merkle anchor to public blockchain.</p></div>
+  </div>
+
+  <h3 style="font-size:17px;margin:28px 0 10px;color:var(--fg);">Years 2–3 — Horizontal Expansion</h3>
+  <div class="os-grid cols-3">
+    <div class="os-card"><div class="icon">L</div><h3>logistics</h3><p>MarineTraffic, USACE + VFPA port manifests, BNSF / CN / CPKC rail schedules.</p></div>
+    <div class="os-card"><div class="icon">$</div><h3>capital</h3><p>SEC Form D, BCSC 45-106, consented VC disbursements.</p></div>
+    <div class="os-card"><div class="icon">Δ</div><h3>regulatory_diff</h3><p>WA CCA vs OR CPP vs BC carbon pricing delta engine.</p></div>
+    <div class="os-card"><div class="icon">☄</div><h3>climate</h3><p>EPA AQS, USGS gauges, NOAA, NASA FIRMS, atmospheric-river forecasts.</p></div>
+    <div class="os-card"><div class="icon">⌬</div><h3>biodiversity</h3><p>iNaturalist, eBird, USGS BISON, BC CDC — with Indigenous-nation data sovereignty.</p></div>
+    <div class="os-card"><div class="icon">+</div><h3>adjacent regimes</h3><p>OR CPP, BC carbon tax, Buy Clean, IRA §60120, BC DRIPA, WA Directive 19-01.</p></div>
+  </div>
+
+  <h3 style="font-size:17px;margin:28px 0 10px;color:var(--fg);">Years 4+ — Platform & Federation</h3>
+  <div class="os-grid cols-2">
+    <div class="os-card"><div class="icon">⊕</div><h3>third_party_modules</h3><p>Catalog of community-contributed domain services — a "Cascadia OS App Store" of agents. Indigenous nations operate their own modules with their own data governance.</p></div>
+    <div class="os-card"><div class="icon">⤴</div><h3>open_api</h3><p>Versioned public API surface for embedding Cascadia OS signals into external systems (Bloomberg-style terminal embedding, ERP integration, GRC integration).</p></div>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> The Event Bus Contract</h2>
+  <p>All cross-domain communication happens via the event bus. Every event has:</p>
+  <table class="os-table">
+    <thead><tr><th>Field</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>event_id</code></td><td>UUID v7 (time-sortable)</td></tr>
+      <tr><td><code>event_type</code></td><td>e.g., <code>tender.published</code>, <code>compliance.assessed</code></td></tr>
+      <tr><td><code>event_version</code></td><td>Semantic version — old consumers consume old, new consume new</td></tr>
+      <tr><td><code>producer</code></td><td>Domain service name (e.g., <code>tenders.ingestor</code>)</td></tr>
+      <tr><td><code>schema_url</code></td><td>URL to the JSON Schema — fetched by consumers for validation</td></tr>
+      <tr><td><code>payload</code></td><td>Conforms to <code>schema_url</code></td></tr>
+      <tr><td><code>provenance_hash</code></td><td>SHA-256 of payload + producer signature — anchored monthly</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Why schema URL matters</div>
+    <p>When a producer changes the schema, it bumps <code>event_version</code> and publishes a new <code>schema_url</code>. Old consumers continue consuming old versions; new consumers consume new versions. The producer maintains backward compatibility for at least 2 minor versions. This is what lets the mesh evolve without coordinated rollouts.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> Worked Example: A New Data Source in 2029</h2>
+  <p>FAA drone delivery telemetry appears. A monolith would have to write a new ingestor, modify the central database schema, coordinate the rollout, and hope nothing breaks. The OS handles it like this:</p>
+  <table class="os-table">
+    <thead><tr><th>Step</th><th>Action</th><th>Touches existing domains?</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Stand up new <code>drone_telemetry</code> domain — own Postgres, own agents, own deployment cadence</td><td class="accent">No</td></tr>
+      <tr><td>2</td><td>Publish <code>drone_position.updated</code> events to the bus</td><td class="accent">No</td></tr>
+      <tr><td>3</td><td>Existing <code>logistics</code> domain can opt to consume new events by writing a new consumer</td><td class="accent">Optional, one-way</td></tr>
+      <tr><td>4</td><td>New Year-9 "last-mile logistics optimizer" can subscribe to both drone + vessel events, joining in real time</td><td class="accent">Neither producer knows</td></tr>
+    </tbody>
+  </table>
+  <p>No core rewrite. No coordinated rollout. <strong>The mesh accretes.</strong></p>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth repo AISeaVanBiz4 · public no-NDA preview Demo4VanSea</div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+</body>
+</html>
