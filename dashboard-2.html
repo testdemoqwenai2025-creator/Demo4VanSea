@@ -208,6 +208,7 @@ function toggleTheme() {
   <div style="display:flex;align-items:center;gap:4px">
     <a class="nav-link" href="index.html">Home</a>
     <a class="nav-link" href="dashboard.html">Dashboard</a>
+    <a class="nav-link" href="command-center.html" style="position:relative;">Command Center <span style="display:inline-block;margin-left:4px;padding:1px 6px;background:#4ecdc4;color:#0d1212;font-size:9px;font-weight:800;border-radius:4px;letter-spacing:0.05em;text-transform:uppercase;vertical-align:middle;">New</span></a>
     <a class="nav-link active" href="#original-dashboard">Dashboard 2</a>
     <a class="nav-link" href="#city-arena">City Arena</a>
     <a class="nav-link" href="#policy-tracker">Policy Tracker</a>
@@ -216,6 +217,9 @@ function toggleTheme() {
     <a class="nav-link" href="#deep-dive">Reports</a>
     <a class="nav-link" href="#export-studio">Export</a>
     <a class="nav-link" href="#corridor-pulse">Corridor Pulse</a>
+    <a href="command-center.html" style="padding:6px 14px;font-size:12px;font-weight:700;color:#0d1212;background:#4ecdc4;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-left:8px;">Try Command Center
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+    </a>
     <button class="ai-theme-toggle" id="ai-theme-btn" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
   </div>
 </nav>
@@ -232,6 +236,14 @@ function toggleTheme() {
   <p style="max-width:768px;margin:0 auto 32px;font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:#a0a0a0">AI-powered 360-degree intelligence across 30 cities spanning Washington, Oregon, and British Columbia &mdash; real-time economic, demographic, and infrastructure analytics with predictive modeling.</p>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:1024px;margin:0 auto">
     <span class="badge tag-muted">Neural Network Active</span>  <span class="badge tag-muted">8 AI Models</span>  <span class="badge tag-muted">2.4M+ Data Points</span>  <span class="badge tag-muted">15 Primary Cities</span>  <span class="badge tag-muted">15 Extended Cities</span>  <span class="badge tag-muted">GDP Models: 4</span>
+  </div>
+  <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center;">
+    <a href="command-center.html" style="padding:14px 28px;font-size:15px;font-weight:700;color:#0d1212;background:#4ecdc4;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Try the new Command Center
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+    </a>
+    <a href="command-center.html?tour=1" style="color:#a0a0a0;font-size:13px;text-decoration:none;border-bottom:1px dashed #555;padding-bottom:2px;">or take the 2-min guided tour ↓</a>
   </div>
 </section>
 
@@ -2101,6 +2113,107 @@ var er = document.getElementById('export-region');
 if (er) er.addEventListener('change', renderExportPreview);
 initCorridorPulse();
 </script>
+
+<!-- === NEW: What's New Since You Last Logged In === -->
+<section style="padding:48px 16px;background:#0d1212;border-top:1px solid rgba(78,205,196,0.15);">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#4ecdc4;font-weight:700;margin-bottom:6px;">▸ WHAT'S NEW · SINCE YOU LAST LOGGED IN</div>
+    <h2 style="font-size:24px;font-weight:800;color:#e8e8e8;margin-bottom:6px;">Six new features shipped this quarter</h2>
+    <p style="font-size:13px;color:#a0a0a0;max-width:640px;margin-bottom:24px;">Existing users get all of these on every plan. Upgrade to Pro to enable API access + saved searches + alert thresholds. Hover any card to learn more.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;">
+      <a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">🛰️</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">New</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Command Center</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">Multi-tender dashboard, compliance matrix, provenance chain, AI chat. Bloomberg-style command palette (Cmd+K).</div>
+      </a>
+      <a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">📡</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">Live</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Live Tender Pipeline</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">Hourly refresh from SAM.gov + BC Bid + WA Commerce + OR Buys. Every tender carries match-confidence score.</div>
+      </a>
+      <a href="founder-enroll.html" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">👥</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">Beta</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Founder Panel</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">12 founders enrolled across 8 cities. The first longitudinal Cascadia founder dataset. Aggregate stats public.</div>
+      </a>
+      <a href="command-center.html?tour=1" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">🎯</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">New</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Guided Tour</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">8-step spotlight walkthrough of the Command Center. Share <code style="background:#111919;padding:1px 4px;border-radius:2px;color:#4ecdc4;">?tour=1</code> in any URL to autoplay.</div>
+      </a>
+      <a href="environment-agency.html#data-sovereignty" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">🛡️</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">Moat</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Data Sovereignty Protocol</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">FPIC-native. SHA-256 + Polygon blockchain anchor. Every environmental claim tamper-evident forever.</div>
+      </a>
+      <a href="government.html" style="text-decoration:none;color:inherit;display:block;padding:16px;background:#111919;border:1px solid rgba(78,205,196,0.15);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor='#4ecdc4';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(78,205,196,0.15)';this.style.transform='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">📊</span><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.15);color:#4ecdc4;border-radius:3px;">New</span></div>
+        <div style="font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:4px;">Procurement Workflow</div>
+        <div style="font-size:11px;color:#a0a0a0;line-height:1.5;">6-step workflow for procurement officers. Live Cascadia procurement card grid filtered to gov sources.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- === NEW: Plan Comparison === -->
+<section style="padding:48px 16px;background:#0d1212;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#4ecdc4;font-weight:700;margin-bottom:6px;">▸ COMPARE PLANS</div>
+    <h2 style="font-size:24px;font-weight:800;color:#e8e8e8;margin-bottom:6px;">Pick the plan that fits your team</h2>
+    <p style="font-size:13px;color:#a0a0a0;max-width:640px;margin-bottom:24px;">All plans include the live dashboard, hourly tender refresh, and command center tour. Pro unlocks API + alerts + saved searches. Enterprise adds data sovereignty protocol + dedicated tenancy + custom compliance assessors.</p>
+
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;background:#111919;border-radius:10px;overflow:hidden;">
+      <thead>
+        <tr style="background:#162020;">
+          <th style="padding:12px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#666;font-weight:700;border-bottom:1px solid rgba(78,205,196,0.15);">Feature</th>
+          <th style="padding:12px 14px;text-align:center;font-size:13px;font-weight:800;color:#a0a0a0;border-bottom:1px solid rgba(78,205,196,0.15);">Free</th>
+          <th style="padding:12px 14px;text-align:center;font-size:13px;font-weight:800;color:#4ecdc4;background:rgba(78,205,196,0.08);border-bottom:1px solid rgba(78,205,196,0.15);">Pro</th>
+          <th style="padding:12px 14px;text-align:center;font-size:13px;font-weight:800;color:#f0a500;border-bottom:1px solid rgba(78,205,196,0.15);">Enterprise</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Live dashboard + command center tour</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Hourly tender refresh</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Founding panel access (read)</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">limited</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓ + raw export</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Saved searches + alert thresholds</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">API access (REST + GraphQL)</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">1000 req/day</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">unlimited</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Bid-drafter LLM (Y2 vLLM)</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">10 drafts/mo</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">unlimited</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Data sovereignty protocol (FPIC + blockchain anchor)</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#666;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Custom compliance assessors (e.g., tribal nation)</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#666;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr><td style="padding:10px 14px;color:#e8e8e8;border-bottom:1px solid rgba(255,255,255,0.04);">Dedicated tenancy + SSO</td><td style="text-align:center;color:#666;border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#666;background:rgba(78,205,196,0.05);border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center;color:#4ecdc4;border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+        <tr style="background:#162020;">
+          <td style="padding:14px;color:#e8e8e8;font-weight:700;">Pricing</td>
+          <td style="text-align:center;padding:14px;"><div style="font-size:22px;font-weight:800;color:#a0a0a0;">Free</div><div style="font-size:10px;color:#666;">forever</div></td>
+          <td style="text-align:center;padding:14px;background:rgba(78,205,196,0.05);"><div style="font-size:22px;font-weight:800;color:#4ecdc4;">$49/mo</div><div style="font-size:10px;color:#666;">per user</div></td>
+          <td style="text-align:center;padding:14px;"><div style="font-size:22px;font-weight:800;color:#f0a500;">Custom</div><div style="font-size:10px;color:#666;">from $25K/yr</div></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:11px;color:#666;margin-top:12px;">Founding panel members get Pro for life. Enterprise customers get white-glove onboarding + custom compliance assessors built for their jurisdiction. <a href="pricing.html" style="color:#4ecdc4;text-decoration:none;border-bottom:1px dashed #555;">Full pricing breakdown →</a></p>
+  </div>
+</section>
+
+<!-- === NEW: Bottom Upgrade CTA === -->
+<section style="padding:48px 16px;background:linear-gradient(135deg,rgba(78,205,196,0.08),rgba(78,205,196,0.02));border-top:1px solid rgba(78,205,196,0.15);border-bottom:1px solid rgba(78,205,196,0.15);">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#4ecdc4;font-weight:700;margin-bottom:12px;">▸ FOR EXISTING USERS</div>
+    <h2 style="font-size:28px;font-weight:800;color:#e8e8e8;margin-bottom:12px;">Upgrade to Pro — first 30 days on us</h2>
+    <p style="font-size:14px;color:#a0a0a0;max-width:640px;margin:0 auto 24px;line-height:1.6;">Unlock API access, saved searches, alert thresholds, and the bid-drafter LLM. Cancel anytime. Existing free-tier users get 30 days of Pro free, no credit card required.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="mailto:testdemoqwenai2025@gmail.com?subject=Upgrade%20to%20Pro%20-%2030%20day%20trial&body=I%27d%20like%20to%20start%20my%2030-day%20Pro%20trial.%0A%0APlan%3A%20Pro%20%28%2449%2Fmo%29%0AEmail%3A%20%5Bfill%20in%5D%0AUse%20case%3A%20%5Bbriefly%5D" style="padding:14px 28px;font-size:15px;font-weight:700;color:#0d1212;background:#4ecdc4;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+        Start Pro trial
+      </a>
+      <a href="mailto:testdemoqwenai2025@gmail.com?subject=Enterprise%20inquiry" style="padding:14px 28px;font-size:14px;color:#a0a0a0;background:transparent;border:1px solid #444;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+        Talk to Enterprise sales →
+      </a>
+    </div>
+    <p style="font-size:11px;color:#666;margin-top:16px;">Already on Pro? <a href="command-center.html" style="color:#4ecdc4;text-decoration:none;">Open Command Center</a> · <a href="founder-enroll.html" style="color:#4ecdc4;text-decoration:none;">Refer a founder</a> (get 1 month free per referral)</p>
+  </div>
+</section>
 
 
 <div class='vban-wrap' id='vban-wrap'>
