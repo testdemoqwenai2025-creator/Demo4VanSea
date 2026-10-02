@@ -1995,6 +1995,7 @@ a:hover { text-decoration: underline; }
       var starWeight = isSaved ? '700' : '400';
       return '<a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s;position:relative;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'none\'">' +
         '<button onclick="event.preventDefault();event.stopPropagation();toggleWatchlist(\'' + t.id + '\')" style="position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:14px;color:' + starColor + ';font-weight:' + starWeight + ';padding:2px 4px;line-height:1;" title="' + (isSaved ? 'Remove from watchlist' : 'Save to watchlist') + '">' + (isSaved ? '★' : '☆') + '</button>' +
+        '<button onclick="event.preventDefault();event.stopPropagation();openChecklist(\'' + t.id + '\')" style="position:absolute;top:8px;right:32px;background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);color:var(--primary);cursor:pointer;font-size:10px;font-weight:700;padding:2px 6px;line-height:1;border-radius:3px;" title="Generate compliance checklist">📋 Check</button>' +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">' +
           '<span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:var(--bg3);color:var(--fg2);border-radius:3px;">' + t.source + '</span>' +
         '</div>' +
@@ -2041,6 +2042,7 @@ a:hover { text-decoration: underline; }
       allTenders = (data.tenders || []).filter(function(t){
         return ['SAM.gov','BC Bid','WA Commerce','OR Buys'].indexOf(t.source) >= 0;
       });
+      window.allTenders = allTenders;  // expose for checklist generator
       filteredTenders = allTenders;
       applyFilters();
       status.textContent = 'Source: tenders.json · ' + allTenders.length + ' gov tenders · refreshed hourly in production';
@@ -2468,6 +2470,337 @@ function showNewsletterSuccess() {
     </div>
   </div>
 </section>
+
+<!-- === NEW: Compliance Checklist Generator (B1) === -->
+<section class="container" style="padding:32px 0;" id="checklist-generator">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ COMPLIANCE CHECKLIST GENERATOR · B1</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Generate a tailored 12-item compliance checklist</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:680px;margin-bottom:24px;">Click the <code style="background:var(--bg2);padding:1px 6px;border-radius:3px;color:var(--primary);">📋 Check</code> button on any tender card above. We generate a 12-item checklist tailored to that tender's set-asides, NAICS code, geography, and contract value. Each item links back to the relevant regulation explainer. State persists in your browser localStorage — close and reopen anytime.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">📋</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">12 items per tender</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Always 12. Conditional rules determine which apply (REQUIRED) vs N/A.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">⚖️</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">Citation-backed</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Every item cites a real statute or regulation. Click through to verify.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">💾</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">Per-tender state</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Check off items as you complete them. Persists per tender in localStorage.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">🖨️</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">Printable</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Hit "Print checklist" in the modal to get a PDF for your bid file.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal HTML + CSS + JS for B1 checklist generator -->
+<style>
+/* === Checklist modal === */
+.checklist-modal { position:fixed; inset:0; z-index:200; display:none; align-items:flex-start; justify-content:center; padding:20px 16px; overflow-y:auto; }
+.checklist-modal.open { display:flex; }
+.checklist-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:199; }
+.checklist-panel { position:relative; z-index:200; width:100%; max-width:820px; background:var(--bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.5); margin:auto; }
+.checklist-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:flex-start; gap:16px; background:var(--bg2); border-radius:12px 12px 0 0; }
+.checklist-eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--primary); font-weight:700; margin-bottom:6px; }
+.checklist-header h2 { font-size:20px; font-weight:800; line-height:1.3; margin-bottom:6px; }
+.checklist-meta { font-size:11px; color:var(--fg2); line-height:1.5; }
+.checklist-close { background:transparent; border:1px solid var(--border); color:var(--fg2); font-size:18px; padding:4px 10px; border-radius:6px; cursor:pointer; line-height:1; flex-shrink:0; }
+.checklist-close:hover { border-color:var(--primary); color:var(--primary); }
+.checklist-body { padding:20px 24px; max-height:60vh; overflow-y:auto; }
+.checklist-item { padding:14px 0; border-bottom:1px solid var(--border); display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:flex-start; }
+.checklist-item:last-child { border-bottom:none; }
+.checklist-item.na { opacity:0.4; }
+.checklist-toggle { width:28px; height:28px; border-radius:6px; border:2px solid var(--border); background:var(--bg2); color:var(--fg2); font-size:14px; cursor:pointer; transition:all .15s; flex-shrink:0; padding:0; line-height:1; display:flex; align-items:center; justify-content:center; }
+.checklist-toggle:hover { border-color:var(--primary); }
+.checklist-item.checked .checklist-toggle { background:var(--ok); border-color:var(--ok); color:#fff; }
+.checklist-item-content { min-width:0; }
+.checklist-item-title { font-size:13px; font-weight:700; color:var(--fg); margin-bottom:4px; line-height:1.3; }
+.checklist-item-desc { font-size:11px; color:var(--fg2); line-height:1.5; margin-bottom:6px; }
+.checklist-citation { font-family:monospace; font-size:10px; color:var(--primary); display:inline-block; padding:2px 6px; background:var(--bg2); border:1px solid var(--border); border-radius:3px; text-decoration:none; }
+.checklist-citation:hover { border-color:var(--primary); }
+.checklist-required-badge { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; padding:3px 8px; border-radius:3px; flex-shrink:0; align-self:flex-start; }
+.checklist-required-badge.required { background:rgba(248,113,113,0.15); color:var(--danger); border:1px solid var(--danger); }
+.checklist-required-badge.na { background:var(--bg3); color:var(--fg3); border:1px solid var(--border); }
+.checklist-footer { padding:16px 24px; border-top:1px solid var(--border); background:var(--bg2); border-radius:0 0 12px 12px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.checklist-progress { flex:1; min-width:200px; }
+.checklist-progress-bar { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; margin-bottom:6px; }
+.checklist-progress-fill { height:100%; background:linear-gradient(90deg, var(--primary), var(--ok)); transition:width .3s ease; width:0%; }
+.checklist-progress-text { font-size:11px; color:var(--fg2); }
+.checklist-progress-text strong { color:var(--primary); font-weight:700; }
+.checklist-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.checklist-actions button, .checklist-actions a { padding:8px 14px; border-radius:6px; font-size:12px; font-weight:600; text-decoration:none; cursor:pointer; border:1px solid var(--border); background:var(--bg3); color:var(--fg); font-family:inherit; display:inline-flex; align-items:center; gap:6px; }
+.checklist-actions button:hover, .checklist-actions a:hover { border-color:var(--primary); color:var(--primary); }
+.checklist-actions a.primary { background:var(--primary); color:var(--bg); border-color:var(--primary); }
+.checklist-actions a.primary:hover { opacity:0.9; }
+@media (max-width:640px) {
+  .checklist-header { padding:14px 16px; flex-direction:column; }
+  .checklist-body { padding:14px 16px; }
+  .checklist-footer { padding:12px 16px; flex-direction:column; align-items:stretch; }
+  .checklist-item { grid-template-columns:auto 1fr; }
+  .checklist-required-badge { grid-column:2; justify-self:start; margin-top:4px; }
+}
+@media print {
+  .checklist-backdrop { display:none; }
+  .checklist-modal { position:static; }
+  .checklist-panel { box-shadow:none; max-width:100%; }
+  .checklist-body { max-height:none; overflow:visible; }
+  .checklist-actions { display:none; }
+  body * { visibility:hidden; }
+  .checklist-modal.open, .checklist-modal.open * { visibility:visible; }
+}
+</style>
+
+<div class="checklist-modal" id="checklist-modal">
+  <div class="checklist-backdrop" onclick="closeChecklist()"></div>
+  <div class="checklist-panel">
+    <div class="checklist-header">
+      <div>
+        <div class="checklist-eyebrow">▸ COMPLIANCE CHECKLIST · B1</div>
+        <h2 id="checklist-tender-title">Tender title</h2>
+        <div id="checklist-tender-meta" class="checklist-meta">Tender meta info</div>
+      </div>
+      <button class="checklist-close" onclick="closeChecklist()" title="Close">×</button>
+    </div>
+    <div class="checklist-body" id="checklist-body">
+      <div style="text-align:center;padding:48px 16px;color:var(--fg2);font-size:13px;">Loading checklist…</div>
+    </div>
+    <div class="checklist-footer">
+      <div class="checklist-progress">
+        <div class="checklist-progress-bar"><div id="checklist-progress-fill" class="checklist-progress-fill"></div></div>
+        <span class="checklist-progress-text" id="checklist-progress-text">0 of 12 items complete</span>
+      </div>
+      <div class="checklist-actions">
+        <button onclick="window.print()">🖨️ Print</button>
+        <a href="command-center.html" class="primary">Open in Command Center →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === Compliance Checklist Generator (B1) ===
+function generateChecklistItems(tender) {
+  var sa = tender.setAsides || [];
+  var geo = tender.geography || [];
+  var valHigh = tender.valueHigh || 0;
+  var valLow = tender.valueLow || 0;
+  var naics = tender.naicsCode || '';
+  var isConstruction = naics.indexOf('236') === 0 || naics.indexOf('237') === 0 || naics.indexOf('238') === 0;
+  var isCAD = geo.indexOf('CA-BC') >= 0;
+  var isUS = geo.some(function(g){ return g.indexOf('US-') === 0; });
+  var isWA = geo.indexOf('US-WA') >= 0;
+  var isCrossBorder = isUS && isCAD;
+  var valueAbove150K = valHigh > 150000;
+  var valueAbove1M = valHigh > 1000000;
+  
+  return [
+    {
+      id: 'naics_match',
+      title: '1. NAICS Code Match',
+      desc: 'Your primary NAICS code matches the tender\'s NAICS code. If different, you may need a JV or sub-contract arrangement.',
+      citation: 'NAICS 2022 · 13 CFR Part 121',
+      link: '#procurement-glossary',
+      applies: true,
+      required: true
+    },
+    {
+      id: 'buy_america',
+      title: '2. Buy America Compliance Plan',
+      desc: 'Submit certification that iron, steel, and manufactured products used are US-produced. Attach mill test certificates from your suppliers.',
+      citation: '41 U.S.C. § 8301–8303',
+      link: '#regulations-explainer',
+      applies: sa.indexOf('buy_america') >= 0,
+      required: sa.indexOf('buy_america') >= 0
+    },
+    {
+      id: 'davis_bacon',
+      title: '3. Davis-Bacon Prevailing Wage Commitment',
+      desc: 'Commit to paying locally-prevailing wages per DOL wage determination. Submit weekly certified payroll reports during contract performance.',
+      citation: '40 U.S.C. §§ 3141–3148 · 29 CFR Part 5',
+      link: '#regulations-explainer',
+      applies: isConstruction && isUS,
+      required: isConstruction && isUS
+    },
+    {
+      id: 'indigenous_participation',
+      title: '4. Indigenous Participation Plan',
+      desc: sa.indexOf('indigenous_required') >= 0 
+        ? 'REQUIRED: Include enrolled tribal member or tribally-owned business as prime or sub. Engage with relevant Nation (Muckleshoot / Musqueam / Squamish). Document consultation.'
+        : (sa.indexOf('indigenous_preferred') >= 0
+          ? 'PREFERRED: Engage with relevant Nation (Muckleshoot / Musqueam / Squamish). Soft pass if no JV — but document outreach attempts.'
+          : 'No Indigenous set-aside on this tender. Best practice: outreach to local Nation even if not required.'),
+      citation: 'RCW 39.80 · E.O. 14112',
+      link: '#regulations-explainer',
+      applies: sa.indexOf('indigenous_required') >= 0 || sa.indexOf('indigenous_preferred') >= 0,
+      required: sa.indexOf('indigenous_required') >= 0
+    },
+    {
+      id: 'cca_estimate',
+      title: '5. WA Climate Commitment Act Cost Estimate',
+      desc: 'Include CCA compliance cost (currently ~$50/tonne CO2) as an allowable cost in your bid pricing. Show calculation per line item with fuel-intensive equipment.',
+      citation: 'RCW 173-442 · Chapter 70A.65 RCW',
+      link: '#regulations-explainer',
+      applies: sa.indexOf('cca_triggered') >= 0 || (isWA && isConstruction),
+      required: sa.indexOf('cca_triggered') >= 0
+    },
+    {
+      id: 'buy_clean_wa',
+      title: '6. Buy Clean WA Embodied Carbon Disclosure',
+      desc: 'Submit embodied carbon GWP disclosure for structural steel, concrete, asphalt supplied. Must meet WA thresholds (max GWP per unit). Include EPDs from suppliers.',
+      citation: 'ESHB 1181 (2023) · RCW 39.04.350',
+      link: '#regulations-explainer',
+      applies: sa.indexOf('buy_clean') >= 0 || (isWA && isConstruction),
+      required: sa.indexOf('buy_clean') >= 0
+    },
+    {
+      id: 'usmca_rvc',
+      title: '7. USMCA Regional Value Content Documentation',
+      desc: 'Calculate Regional Value Content (RVC) — must be ≥60% (transaction value method) or ≥50% (net cost method) for USMCA preferential tariff treatment. Include supplier attestations.',
+      citation: 'USMCA Schedule IV § 6 · Article 4.3',
+      link: '#regulations-explainer',
+      applies: isCrossBorder,
+      required: isCrossBorder
+    },
+    {
+      id: 'subcontractor_list',
+      title: '8. Subcontractor List + Commitments',
+      desc: 'List all subcontractors (name, address, NAICS, scope of work, % of work). Subs above $25K require written commitment letters. Include with bid.',
+      citation: 'FAR Subpart 44.2',
+      link: '#procurement-glossary',
+      applies: valueAbove1M,
+      required: valueAbove1M
+    },
+    {
+      id: 'bid_bond',
+      title: '9. Bid Bond (5-20% of bid value)',
+      desc: 'Submit bid bond from a surety company listed on Treasury Circular 570. Typically 5% of bid value for federal; up to 20% for some WA state contracts.',
+      citation: 'Miller Act · 40 U.S.C. § 3131 · RCW 39.08.010',
+      link: '#procurement-glossary',
+      applies: valueAbove150K,
+      required: valueAbove150K
+    },
+    {
+      id: 'performance_bonds',
+      title: '10. Performance + Payment Bonds (100% of contract)',
+      desc: 'Within 10 days of award: submit performance bond (100% of contract value) + payment bond (100% of contract value) from a Treasury-listed surety.',
+      citation: '40 U.S.C. § 3131 · RCW 39.08.010',
+      link: '#procurement-glossary',
+      applies: valueAbove150K,
+      required: valueAbove150K
+    },
+    {
+      id: 'past_performance',
+      title: '11. Past Performance (3 similar projects)',
+      desc: 'Document 3 past projects similar in scope + value. For each: client contact, contract value, completion date, outcome (on-time / over-budget / quality issues).',
+      citation: 'FAR 15.305(a)(2)',
+      link: '#procurement-glossary',
+      applies: true,
+      required: true
+    },
+    {
+      id: 'insurance_certs',
+      title: '12. Insurance Certificates (GL + Workers\' Comp + Auto)',
+      desc: 'Submit Certificates of Insurance: General Liability ($1M per occurrence / $2M aggregate), Workers\' Comp (statutory limits), Auto ($1M combined single limit).',
+      citation: 'FAR 28.307 · RCW 51.12.070',
+      link: '#procurement-glossary',
+      applies: true,
+      required: true
+    }
+  ];
+}
+
+var _checklistCurrentTender = null;
+
+function openChecklist(tenderId) {
+  var tender = (window.allTenders || []).find(function(t){ return t.id === tenderId; });
+  if (!tender) {
+    alert('Tender not found.');
+    return;
+  }
+  _checklistCurrentTender = tender;
+  
+  document.getElementById('checklist-tender-title').textContent = tender.title;
+  document.getElementById('checklist-tender-meta').innerHTML = 
+    '<strong style="color:var(--fg);">' + tender.org + '</strong> · ' +
+    '<span style="color:var(--primary);font-weight:600;">' + tender.source + '</span> · ' +
+    'Deadline: ' + (tender.deadline || '—') + ' · ' +
+    'Value: $' + (tender.valueLow/1e6).toFixed(1) + '-' + (tender.valueHigh/1e6).toFixed(1) + 'M ' + (tender.source === 'BC Bid' ? 'CAD' : 'USD') + ' · ' +
+    'NAICS: ' + (tender.naicsCode || '—');
+  
+  renderChecklistItems(tender);
+  document.getElementById('checklist-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeChecklist() {
+  document.getElementById('checklist-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderChecklistItems(tender) {
+  var items = generateChecklistItems(tender);
+  var stateKey = 'gov-checklist-' + tender.id;
+  var state = JSON.parse(localStorage.getItem(stateKey) || '{}');
+  var body = document.getElementById('checklist-body');
+  
+  var html = items.map(function(item, idx) {
+    var isChecked = state[item.id] === true;
+    var itemCls = item.applies ? (isChecked ? 'checklist-item checked' : 'checklist-item') : 'checklist-item na';
+    var badgeCls = item.applies && item.required ? 'required' : 'na';
+    var badgeText = item.applies && item.required ? 'Required' : (item.applies ? 'Recommended' : 'N/A');
+    var toggleIcon = isChecked ? '✓' : (item.applies ? '⏳' : '—');
+    var onclick = item.applies ? 'onclick="toggleChecklistItem(\'' + tender.id + '\',\'' + item.id + '\')"' : '';
+    return '<div class="' + itemCls + '" data-item-id="' + item.id + '">' +
+      '<button class="checklist-toggle" ' + onclick + ' ' + (item.applies ? '' : 'disabled') + '>' + toggleIcon + '</button>' +
+      '<div class="checklist-item-content">' +
+        '<div class="checklist-item-title">' + item.title + '</div>' +
+        '<div class="checklist-item-desc">' + item.desc + '</div>' +
+        '<a class="checklist-citation" href="' + item.link + '" ' + (item.link.startsWith('#') ? 'onclick=\'closeChecklist();\'' : 'target="_blank" rel="noopener"') + '>' + item.citation + ' →</a>' +
+      '</div>' +
+      '<span class="checklist-required-badge ' + badgeCls + '">' + badgeText + '</span>' +
+    '</div>';
+  }).join('');
+  body.innerHTML = html;
+  updateProgress(tender, items, state);
+}
+
+function toggleChecklistItem(tenderId, itemId) {
+  var stateKey = 'gov-checklist-' + tenderId;
+  var state = JSON.parse(localStorage.getItem(stateKey) || '{}');
+  state[itemId] = !state[itemId];
+  localStorage.setItem(stateKey, JSON.stringify(state));
+  if (_checklistCurrentTender && _checklistCurrentTender.id === tenderId) {
+    renderChecklistItems(_checklistCurrentTender);
+  }
+}
+
+function updateProgress(tender, items, state) {
+  var applicableItems = items.filter(function(i){ return i.applies; });
+  var checkedCount = applicableItems.filter(function(i){ return state[i.id] === true; }).length;
+  var total = applicableItems.length;
+  var pct = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
+  document.getElementById('checklist-progress-fill').style.width = pct + '%';
+  document.getElementById('checklist-progress-text').innerHTML = '<strong>' + checkedCount + '</strong> of <strong>' + total + '</strong> applicable items complete' + (pct === 100 ? ' · ✓ Bid-ready!' : '');
+}
+
+window.openChecklist = openChecklist;
+window.closeChecklist = closeChecklist;
+window.toggleChecklistItem = toggleChecklistItem;
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('checklist-modal').classList.contains('open')) {
+    closeChecklist();
+  }
+});
+</script>
 
 </main>
 <div class='vban-wrap' id='vban-wrap'>
