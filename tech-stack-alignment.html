@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tech Stack Alignment + 3 Concrete Specs</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  /* Dark theme (default) */
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.10);
+}
+[data-theme="light"] {
+  /* Light theme — overrides */
+  --bg: #f4f7f7;
+  --bg-2: #ffffff;
+  --card: #ffffff;
+  --border: #dde2e3;
+  --fg: #1a1a2e;
+  --fg-2: #4a4a5a;
+  --accent: #0d9488;
+  --accent-2: #14b8a6;
+  --warm: #d97706;
+  --danger: #dc2626;
+  --ok: #0d9488;
+  --toggle-bg: rgba(0,0,0,0.03);
+  --toggle-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .2s, color .2s;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+}
+.os-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.os-nav a, .os-nav button {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+  background: transparent; cursor: pointer; font-family: inherit;
+}
+.os-nav a:hover, .os-nav button:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+.os-home-btn {
+  background: var(--accent) !important; color: var(--bg) !important;
+  font-weight: 600 !important; border-color: var(--accent) !important;
+}
+.os-home-btn:hover { background: var(--accent-2) !important; color: var(--bg) !important; }
+.os-theme-toggle {
+  width: 32px; height: 32px; padding: 0 !important; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--toggle-border) !important;
+  background: var(--toggle-bg) !important;
+  color: var(--fg-2) !important;
+}
+.os-theme-toggle:hover { color: var(--fg) !important; background: var(--card) !important; }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section h3 { font-size: 17px; margin: 20px 0 8px; color: var(--fg); }
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+.os-section ul, .os-section ol { color: var(--fg-2); margin: 8px 0 16px 24px; }
+.os-section li { margin-bottom: 6px; }
+.os-section code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+[data-theme="light"] .os-callout {
+  background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(13,148,136,0.02));
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+
+<style>
+.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}
+.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}
+.os-home-fab .ic{width:16px;height:16px;display:inline-block}
+[data-theme="light"] .os-home-fab{background:#ffffff;color:#0d9488;border-color:#0d9488}
+@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}
+</style>
+
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <a href="index.html" class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </a>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="active">Stack</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Tech Stack Alignment + 3 Concrete Specs</h1>
+  <p class="lede">Layer-by-layer evaluation of the user's 5-layer tech-stack breakdown (Edge/Streaming/Storage/Agentic/UX) + 3 concrete specs: Sovereign Schema Matrix, Agent Workflow Definition (LangGraph state machines), Financial Hedging Spec (tokenised invoice factoring triggered by port congestion indices).</p>
+  <div class="os-tag-row"><span class="os-tag">5-layer eval</span><span class="os-tag">WASI sovereign plugins</span><span class="os-tag">LangGraph state machine</span><span class="os-tag">Tokenised factoring</span><span class="os-tag">Protocol Buffers schema</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> Layer-by-Layer Evaluation</h2>
+  <p>Per <code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> (private source-of-truth), the OS evaluates the user's 5-layer tech-stack breakdown against existing commitments. Each layer is rated <strong>ADOPT</strong> (commit now), <strong>DEFER</strong> (commit later), or <strong>EVALUATE</strong> (study before committing).</p>
+
+  <h3>Layer 1 — Edge &amp; Compute Runtime</h3>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Recommendation</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Rust</td><td style="color:var(--ok);">Already aligned</td><td>Scoped to 3 hot-path services per <code>09-modern-tooling-stack.md</code> §3.1</td></tr>
+      <tr><td>WebAssembly (Wasm)</td><td style="color:var(--ok);">Already aligned</td><td>3 surfaces (graph + map + carbon-ledger) per <code>09</code> §2.3 + <code>15-4-layer-reference-architecture.md</code> §3.1</td></tr>
+      <tr><td><strong>WASI (sovereign plugins)</strong></td><td class="accent">ADOPT (Y4-5)</td><td>Third-party module sandbox. Capability-based. Makes Phase 3 module marketplace safe.</td></tr>
+      <tr><td><strong>Tokio (Rust async)</strong></td><td class="accent">ADOPT (now)</td><td>Implicit in modern Rust; making explicit removes ambiguity</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Marketplace advantage: SIGNIFICANT (WASI)</div>
+    <p>WASI enables a safe third-party module marketplace — the OS retains sovereignty over its own runtime; third-party modules execute in capability-scoped sandboxes. Without WASI, the marketplace would require manual code review of every contributed module. This is a competitive differentiator.</p>
+  </div>
+
+  <h3>Layer 2 — Real-Time Data Streaming</h3>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Recommendation</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Apache Kafka</td><td style="color:var(--ok);">Already aligned</td><td>Redpanda for Y1 (Kafka-protocol); managed Kafka Y2+</td></tr>
+      <tr><td><strong>Apache Flink</strong></td><td style="color:var(--warm);">DEFER to Y3+</td><td>Stream processing framework. Wedge doesn't need millisecond streams (Y1 cadence is 15-min). Y3+ when logistics + climate data justify it.</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Marketplace advantage: MARGINAL</div>
+    <p>Flink is operationally heavy (separate cluster, state management, checkpointing). For Y1-Y2, Go services handle stream transformation. Flink becomes the Y3+ upgrade target when volume justifies.</p>
+  </div>
+
+  <h3>Layer 3 — Vector &amp; Graph Storage</h3>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Recommendation</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Neo4j</td><td style="color:var(--ok);">Already aligned</td><td>Apache Age for Y1 (Postgres-native graph), migrate to Neo4j Y2+ if needed</td></tr>
+      <tr><td>pgvector</td><td style="color:var(--ok);">Already aligned</td><td>Y1 vector store; migrate when corpus &gt;1M</td></tr>
+      <tr><td><strong>Qdrant (alternative to Milvus)</strong></td><td class="accent">EVALUATE → likely ADOPT (Y2)</td><td>Rust-based vector DB. Update migration path: pgvector (Y1) → <strong>Qdrant</strong> (Y2) → Milvus if Qdrant underperforms (Y5+). Operational simplicity rationale (same as Redpanda over Kafka).</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Marketplace advantage: MARGINAL</div>
+    <p>Both Qdrant and Milvus work; the choice is operational simplicity. Qdrant's Rust implementation aligns with the OS's Rust-for-hot-path-services commitment.</p>
+  </div>
+
+  <h3>Layer 4 — Agentic Framework</h3>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Recommendation</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>LangGraph (as primary)</strong></td><td class="accent">ADOPT (now)</td><td>Multi-step agent framework. State machine semantics. Human-in-the-loop checkpoints. Composes with LlamaIndex (RAG) + Pydantic-AI (typed tools).</td></tr>
+      <tr><td>LlamaIndex</td><td style="color:var(--ok);">Already aligned</td><td>For RAG (single-shot retrieval + generation). Composes with LangGraph.</td></tr>
+      <tr><td>Pydantic-AI</td><td style="color:var(--ok);">Already aligned</td><td>For typed tool outputs (strict JSON schema). The user's "strict JSON schema outputs" requirement.</td></tr>
+      <tr><td><strong>AutoGen Core (alternative)</strong></td><td style="color:var(--warm);">EVALUATE (Y2)</td><td>Microsoft multi-agent framework. Alternative for specific multi-agent coordination patterns. LangGraph handles via sub-graphs; AutoGen handles via agent-to-agent messaging. Evaluate in Y2.</td></tr>
+      <tr><td><strong>State machine governance</strong></td><td class="accent">ADOPT (now)</td><td>Formalization of <code>11-data-governance-ethical-framework.md</code> §3.3. Agents cannot transition to irreversible states without human approval. Implemented in LangGraph.</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Marketplace advantage: SIGNIFICANT (state machine governance)</div>
+    <p>Generic AI agent platforms (AutoGPT, BabyAGI) take autonomous actions that users have to undo. The OS's commitment to state machine governance is a competitive differentiator for high-stakes procurement / financial / compliance use cases.</p>
+  </div>
+
+  <h3>Layer 5 — Visualization &amp; UX</h3>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Recommendation</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Next.js (React)</td><td style="color:var(--ok);">Already aligned</td><td>Per <code>09</code> §2.1</td></tr>
+      <tr><td>WebGPU</td><td style="color:var(--ok);">Already aligned</td><td>Per <code>15-4-layer-reference-architecture.md</code> §3.1</td></tr>
+      <tr><td>React Server Components</td><td class="accent">ADOPT (now, implicit)</td><td>Implicit in Next.js App Router. Make explicit: use RSC for read-heavy pages (tender detail, compliance matrix, bid drafting).</td></tr>
+      <tr><td><strong>Deck.gl</strong></td><td class="accent">ADOPT (now)</td><td>Geospatial viz for the 3 WASM/WebGPU surfaces. Handles million-point supply-chain graph at 60fps.</td></tr>
+      <tr><td><strong>MapLibre GL</strong></td><td class="accent">ADOPT (now)</td><td>Open-source fork of Mapbox GL JS. Avoids proprietary Mapbox licensing dependency.</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Marketplace advantage: MARGINAL (except MapLibre GL — slight)</div>
+    <p>Deck.gl + MapLibre GL are industry standards. The advantage is the open-source commitment (MapLibre over Mapbox), which avoids a recurring licensing cost.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> Net Marketplace Advantage Summary</h2>
+  <table class="os-table">
+    <thead><tr><th>Piece</th><th>Advantage</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>WASI for sovereign plugins</td><td class="accent">Significant</td><td>Enables safe third-party module marketplace</td></tr>
+      <tr><td>Tokio</td><td>Marginal</td><td>Implicit in modern Rust; explicit doc only</td></tr>
+      <tr><td>Flink</td><td>Marginal (Y1-Y2)</td><td>Defer to Y3+ when volume justifies</td></tr>
+      <tr><td>Qdrant over Milvus</td><td>Marginal</td><td>Operational simplicity only</td></tr>
+      <tr><td>LangGraph as primary</td><td class="accent">Significant</td><td>State machine governance is a differentiator</td></tr>
+      <tr><td>AutoGen Core</td><td>Marginal</td><td>Evaluate for specific patterns in Y2</td></tr>
+      <tr><td>State machine governance</td><td class="accent">Significant</td><td>Formalization of human-in-the-loop; competitive differentiator</td></tr>
+      <tr><td>Deck.gl</td><td>Marginal</td><td>Industry standard</td></tr>
+      <tr><td>MapLibre GL</td><td>Slight</td><td>Avoids Mapbox licensing</td></tr>
+      <tr><td>React Server Components</td><td>Marginal</td><td>Implicit in Next.js</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Net:</strong> WASI + state machine governance + MapLibre GL are the significant differentiators. The rest are tactical improvements.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> The 3 Concrete Specs</h2>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div class="icon">📋</div>
+    <h3 style="font-size:18px;">Spec 1 — The Sovereign Schema Matrix</h3>
+    <p style="margin-top:6px;">A concrete zero-trust data contract schema (<strong>Protocol Buffers + JSON Schema</strong>) for cross-border public-private procurement sharing.</p>
+    <p style="margin-top:8px;"><strong>5 schemas in v1.0.0:</strong></p>
+    <ul>
+      <li><code>Tender</code> — the canonical procurement opportunity record (matches the existing <code>services/tenders-ingestor/internal/domain/tender.go</code> struct)</li>
+      <li><code>ComplianceAssessment</code> — Compliance Reasoner's output (with match_confidence, NOT win_probability)</li>
+      <li><code>BidDraft</code> — Bid Drafter's output (with Word document S3 URL + provenance footnotes)</li>
+      <li><code>PartnershipCitation</code> — for Indigenous-nation revenue-share accounting (5% revenue share, smart-contract payout tracking)</li>
+      <li><code>ResidencyGuarantee</code> — the Bi-National Query Mesh's response wrapper (hash-anchored residency guarantee field)</li>
+    </ul>
+    <p style="margin-top:8px;"><strong>Why both Protocol Buffers + JSON Schema:</strong> Protocol Buffers for binary serialization (low-bandwidth, schema-evolution-friendly, strong typing across languages); JSON Schema for human-readable validation and API documentation.</p>
+    <p style="margin-top:8px;"><strong>Schema evolution:</strong> additive only (new fields get new numbers; old fields never removed). Major version bumps require Federation Council ratification. Backward compatibility for ≥2 minor versions.</p>
+    <p style="margin-top:8px;color:var(--accent);font-size:13px;">Full schema definitions in <code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> §3.1 (private repo)</p>
+  </div>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div class="icon">🤖</div>
+    <h3 style="font-size:18px;">Spec 2 — The Agent Workflow Definition</h3>
+    <p style="margin-top:6px;">Complete <strong>LangGraph state machines</strong> detailing human-in-the-loop validation for multi-jurisdiction municipal bidding.</p>
+    <p style="margin-top:8px;"><strong>The 7-state bid-drafting workflow:</strong></p>
+    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:12px;border-radius:8px;overflow-x:auto;font-size:11px;color:var(--fg-2);margin-top:8px;">
+[START]
+  ↓
+[tender_ingested]              ← event: tender.published
+  ↓
+[capability_matched]           ← match_confidence > 0.7?
+  ↓ (yes)
+[compliance_assessed]          ← HUMAN CHECKPOINT #1 (user reviews)
+  ↓ (user approves)
+[bid_drafted]                  ← HUMAN CHECKPOINT #2 (user reviews + edits)
+  ↓ (user approves)
+[bid_ready_for_submission]     ← HUMAN CHECKPOINT #3 (user clicks "Submit")
+  ↓
+[bid_submitted]                ← IRREVERSIBLE — triggers PartnershipCitation
+  ↓
+[END]
+    </pre>
+    <p style="margin-top:8px;"><strong>Multi-jurisdictional sub-graphs:</strong> separate validation rules per jurisdiction (US federal / BC / WA / OR) — each is a LangGraph conditional edge with jurisdiction-specific validators.</p>
+    <p style="margin-top:8px;"><strong>Irreversible states (cannot be entered without explicit user click):</strong> <code>bid_submitted</code>. Triggers external API call to procurement portal + PartnershipCitation event for Indigenous-nation revenue-share accounting.</p>
+    <p style="margin-top:8px;"><strong>Implementation:</strong> Python (LangGraph) for orchestration; Go services for underlying domains (tenders, compliance, bids). State persists in Postgres via LangGraph's checkpointer pattern.</p>
+    <p style="margin-top:8px;color:var(--accent);font-size:13px;">Full state machine definition in <code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> §3.2 (private repo)</p>
+  </div>
+
+  <div class="os-card">
+    <div class="icon">💹</div>
+    <h3 style="font-size:18px;">Spec 3 — The Financial Hedging Spec</h3>
+    <p style="margin-top:6px;">A design for <strong>tokenised invoice factoring triggered directly by port congestion indices</strong>.</p>
+    <p style="margin-top:8px;"><strong>The scenario:</strong></p>
+    <ol style="margin:8px 0 12px 22px;color:var(--fg-2);">
+      <li>Cascadia contractor ships goods via marine vessel to Port of Vancouver</li>
+      <li>Supplier issues $50K invoice to buyer, payable in 60 days</li>
+      <li>Supplier wants cash now, not in 60 days</li>
+      <li>OS detects HIGH port congestion (dwell time &gt;48h, berth occupancy &gt;90%, anchor wait &gt;24h) → shipment delayed</li>
+      <li>Supplier initiates factoring via OS UI</li>
+      <li>Investor buys invoice at discount ($47K now for $50K in 60 days)</li>
+      <li>OS mints factoring token on Polygon (EVM smart contract)</li>
+      <li>Shipment clears port → smart contract auto-pays token holder</li>
+      <li>OS takes 1% minting fee ($500 on a $50K invoice)</li>
+    </ol>
+    <p style="margin-top:8px;"><strong>Congestion index formula (v1.0):</strong></p>
+    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:10px;border-radius:8px;font-size:11px;color:var(--fg-2);">
+port_congestion_index =
+  0.4 × (vessel_dwell_time_hours / median_dwell_time)
++ 0.3 × (berth_occupancy_percent / 100)
++ 0.3 × (anchor_wait_hours / median_anchor_wait)
+
+Index &gt; 1.5 = HIGH congestion
+Index &gt; 2.0 = SEVERE congestion
+Threshold configurable per supplier
+    </pre>
+    <p style="margin-top:8px;"><strong>Why port congestion as the trigger:</strong> generic factoring exists (BlueVine, Fundbox, traditional banks) — no moat there. Port-congestion-triggered factoring is unique because the OS has real-time logistics data no traditional factor has. The trigger is the congestion index crossing a user-set threshold. The smart contract guarantees payment when shipment clears — trust layer that traditional factoring lacks.</p>
+    <p style="margin-top:8px;"><strong>Legal framework:</strong> BC PIPA-compliant (no PII in the index); WA UCC Article 9 (invoice factoring = perfected security interest); smart-contract enforceability (case law evolving); cross-border USMCA financial-services chapter + BC Securities Act exemption for accredited investors.</p>
+    <p style="margin-top:8px;"><strong>Timeline:</strong> Y2 design (congestion index formula + smart contract); Y3 deploy (alongside smart_contracts domain Y3 production); Y3+ launch factoring marketplace; Y4+ volume scaling + cross-port expansion (Seattle, Tacoma, Portland).</p>
+    <p style="margin-top:8px;"><strong>Risk + mitigation:</strong> Legal risk (smart-contract enforceability varies); liquidity risk (need investor capital); operational risk (congestion index heuristic may mis-trigger). Mitigation: <strong>manual override always available; smart contract requires explicit supplier initiation, not automatic execution</strong> (per state machine governance).</p>
+    <p style="margin-top:8px;color:var(--accent);font-size:13px;">Full spec in <code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> §3.3 (private repo)</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> What Changed in the Existing Docs</h2>
+  <ul>
+    <li><code>09-modern-tooling-stack.md</code> §3.1 — added Tokio (Rust async runtime) + WASI (sovereign plugins sandbox) commitments</li>
+    <li><code>09-modern-tooling-stack.md</code> §2.5 NEW — added Deck.gl + MapLibre GL + React Server Components commitments</li>
+    <li><code>11-data-governance-ethical-framework.md</code> §3.4 NEW — formalized State Machine Governance (LangGraph state machines with reversible vs. irreversible states; marketplace advantage)</li>
+    <li><code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> NEW (~13KB) — the master evaluation doc with all 3 specs (Sovereign Schema Matrix, Agent Workflow Definition, Financial Hedging Spec)</li>
+  </ul>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> Source-of-Truth Reference</h2>
+  <p>The full evaluation + 3 specs live in the private source-of-truth repo at <code>docs/architecture/16-tech-stack-evaluation-and-specs.md</code> (~13KB). This public page is a summary; the private doc is the source of truth.</p>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('cas-os-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      // Default: respect system preference
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
+    }
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+function casOSToggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = (cur === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('cas-os-theme', next); } catch (e) {}
+  // Update button label
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (next === 'dark') ? '☀' : '☾';
+    b.title = (next === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+  });
+}
+// Wait for DOM, then init button labels
+document.addEventListener('DOMContentLoaded', function(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (cur === 'dark') ? '☀' : '☾';
+    b.title = (cur === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+    b.addEventListener('click', casOSToggleTheme);
+  });
+});
+</script>
+
+<a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+</body>
+</html>
