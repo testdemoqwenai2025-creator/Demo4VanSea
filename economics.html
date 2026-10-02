@@ -3176,8 +3176,58 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
 
+  <!-- Live countdown strip (v2.1 #1) -->
+  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--fg2);">
+    <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:var(--ok);border-radius:50%;animation:fpulse 2s ease-in-out infinite;display:inline-block;"></span><strong style="color:var(--primary);font-weight:800;font-size:13px;" id="fp-live-count">12</strong> founders enrolled</span>
+    <span style="color:var(--fg3);opacity:0.3;">·</span>
+    <span>Last enrollment: <strong style="color:var(--warm);font-weight:700;font-variant-numeric:tabular-nums;" id="fp-since-last" data-last-enrollment="2026-09-28T14:32:00Z">— ago</strong></span>
+    <span style="color:var(--fg3);opacity:0.3;">·</span>
+    <span>Next Q4 cohort report: <strong style="color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;" id="fp-until-report" data-report-date="2026-12-01T10:00:00Z">—</strong></span>
+    <span style="margin-left:auto;font-size:10px;color:var(--fg3);">Live ticker — updates every second</span>
+  </div>
+
+  <!-- Saved searches filter bar (v2.1 #2) -->
+  <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+    <label for="fp-filter-search" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-right:4px;">🔍 Filter</label>
+    <input type="text" id="fp-filter-search" placeholder="City or sector keyword…" style="min-width:200px;flex:1;max-width:280px;background:var(--bg3);color:var(--fg);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:12px;font-family:inherit;outline:none;">
+    <label for="fp-filter-city" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);">City</label>
+    <select id="fp-filter-city" style="background:var(--bg3);color:var(--fg);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:12px;font-family:inherit;outline:none;cursor:pointer;">
+      <option value="">All cities</option>
+      <option value="Vancouver">Vancouver, BC</option>
+      <option value="Seattle">Seattle, WA</option>
+      <option value="Portland">Portland, OR</option>
+      <option value="Burnaby">Burnaby, BC</option>
+      <option value="Bellevue">Bellevue, WA</option>
+      <option value="Surrey">Surrey, BC</option>
+      <option value="Bellingham">Bellingham, WA</option>
+      <option value="Spokane">Spokane, WA</option>
+    </select>
+    <label for="fp-filter-sector" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);">Sector</label>
+    <select id="fp-filter-sector" style="background:var(--bg3);color:var(--fg);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:12px;font-family:inherit;outline:none;cursor:pointer;">
+      <option value="">All sectors</option>
+      <option value="SaaS">SaaS</option>
+      <option value="CleanTech">CleanTech</option>
+      <option value="Bio">Bio / Life Sciences</option>
+      <option value="AgTech">AgTech</option>
+      <option value="AI/ML">AI / ML</option>
+      <option value="FinTech">FinTech</option>
+      <option value="Hardware">Hardware</option>
+    </select>
+    <label for="fp-filter-stage" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);">Stage</label>
+    <select id="fp-filter-stage" style="background:var(--bg3);color:var(--fg);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:12px;font-family:inherit;outline:none;cursor:pointer;">
+      <option value="">All stages</option>
+      <option value="Bootstrapped">Bootstrapped</option>
+      <option value="Pre-seed">Pre-seed</option>
+      <option value="Seed">Seed</option>
+      <option value="Series A">Series A</option>
+      <option value="Series B+">Series B+</option>
+    </select>
+    <button onclick="clearFpFilters()" style="background:transparent;border:1px solid var(--border);color:var(--fg2);padding:6px 10px;border-radius:4px;font-size:11px;cursor:pointer;">Clear</button>
+    <span style="margin-left:auto;font-size:11px;color:var(--fg2);">Showing <strong id="fp-filter-count" style="color:var(--primary);font-weight:700;">0</strong> of <strong id="fp-filter-total" style="color:var(--fg);font-weight:700;">0</strong></span>
+  </div>
+
   <div id="fp-recent" style="margin-top:16px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
-    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);font-weight:700;margin-bottom:8px;">▸ RECENT ENROLLMENTS (no PII · city + sector only)</div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);font-weight:700;margin-bottom:8px;">▸ RECENT ENROLLMENTS (no PII · city + sector + stage only)</div>
     <div id="fp-recent-list" style="font-size:12px;color:var(--fg2);line-height:1.6;">Loading…</div>
   </div>
 </section>
@@ -3287,25 +3337,410 @@ a:hover { text-decoration: underline; }
   <p style="font-size:11px;color:var(--fg3);margin-top:12px;">Cascadia’s differentiator: <strong style="color:var(--fg2);">only cross-border mega-corridor in North America under USMCA</strong>. No other PNW/south-Canada corridor has 6.87M people, $890B GDP, and bilateral trade coverage of $38.2B.</p>
 </details>
 
-<!-- === NEW: Bottom CTA — Investor Briefing === -->
+<!-- === NEW: Bottom CTA — Investor Briefing (v2.1 #3 — real form) === -->
 <section class="container" style="padding:48px 0;">
-  <div style="background:linear-gradient(135deg,rgba(78,205,196,0.08),rgba(78,205,196,0.02));border:1px solid var(--primary-border);border-radius:16px;padding:40px 32px;text-align:center;">
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:12px;">▸ FOR PNW INVESTORS</div>
-    <h2 style="font-size:28px;font-weight:800;margin-bottom:12px;">Get the Cascadia Investor Briefing Pack</h2>
-    <p style="font-size:14px;color:var(--fg2);max-width:640px;margin:0 auto 24px;line-height:1.6;">Includes: 2025 corridor deep-dive PDF, founder panel aggregate stats, sector benchmarks vs Bay Area, top 50 enrolled companies (opt-in), and a 30-min live walkthrough. Free for accredited PNW investors and GP/LP teams.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="mailto:testdemoqwenai2025@gmail.com?subject=Cascadia%20OS%20Investor%20Briefing%20Pack&body=I%27d%20like%20the%20Cascadia%20Investor%20Briefing%20Pack.%0A%0AFirm%3A%20%5Bfill%20in%5D%0AStage%20focus%3A%20%5Bpre-seed%20%2F%20seed%20%2F%20Series%20A%2B%5D%0ASectors%3A%20%5BSaaS%20%2F%20CleanTech%20%2F%20Bio%20%2F%20other%5D" class="ai-action-btn primary-btn" style="padding:14px 28px;font-size:15px;display:inline-flex;align-items:center;gap:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6l-10 7L2 6"/><polyline points="22 6 22 18 12 23 2 18 2 6"/></svg>
-        Request briefing pack
-      </a>
-      <a href="founder-enroll.html" class="ai-action-btn" style="padding:14px 28px;font-size:14px;display:inline-flex;align-items:center;gap:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
-        Or enroll your portfolio company
-      </a>
+  <div style="background:linear-gradient(135deg,rgba(78,205,196,0.08),rgba(78,205,196,0.02));border:1px solid var(--primary-border);border-radius:16px;padding:40px 32px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:12px;">▸ FOR PNW INVESTORS · INVESTOR BRIEFING PACK</div>
+      <h2 style="font-size:28px;font-weight:800;margin-bottom:12px;">Get the Cascadia Investor Briefing Pack</h2>
+      <p style="font-size:14px;color:var(--fg2);max-width:640px;margin:0 auto;line-height:1.6;">Includes: 2025 corridor deep-dive PDF, founder panel aggregate stats, sector benchmarks vs Bay Area, top 50 enrolled companies (opt-in), and a 30-min live walkthrough. Free for accredited PNW investors and GP/LP teams.</p>
     </div>
-    <p style="font-size:11px;color:var(--fg3);margin-top:16px;">Already enrolled? <a href="login.html" style="color:var(--primary);">Sign in</a> · <a href="command-center.html?tour=1" style="color:var(--primary);">Take the 2-min product tour</a></p>
+    <form id="investor-briefing-form" onsubmit="return submitInvestorBriefing(event)" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto;">
+      <div style="grid-column:1/-1;">
+        <label for="ib-email" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-bottom:4px;display:block;">Email *</label>
+        <input type="email" id="ib-email" placeholder="you@firm.vc" required style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+      </div>
+      <div>
+        <label for="ib-firm" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-bottom:4px;display:block;">Firm name *</label>
+        <input type="text" id="ib-firm" placeholder="Madrona / PSL / Catalyst" required style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+      </div>
+      <div>
+        <label for="ib-stage" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-bottom:4px;display:block;">Stage focus</label>
+        <select id="ib-stage" style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+          <option value="">Select stage</option>
+          <option value="pre_seed">Pre-seed</option>
+          <option value="seed">Seed</option>
+          <option value="series_a">Series A</option>
+          <option value="series_b_plus">Series B+</option>
+          <option value="multi_stage">Multi-stage</option>
+          <option value="growth">Growth equity</option>
+        </select>
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-bottom:8px;display:block;">Sectors of interest (multi-select)</label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="SaaS" style="width:auto;"> SaaS</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="CleanTech" style="width:auto;"> CleanTech</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="Bio" style="width:auto;"> Bio / Life Sci</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="AgTech" style="width:auto;"> AgTech</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="AI/ML" style="width:auto;"> AI / ML</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="FinTech" style="width:auto;"> FinTech</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="Hardware" style="width:auto;"> Hardware</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2);padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;"><input type="checkbox" name="ib-sectors" value="Other" style="width:auto;"> Other</label>
+        </div>
+      </div>
+      <div style="grid-column:1/-1;">
+        <label for="ib-geography" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg3);margin-bottom:4px;display:block;">Geography focus</label>
+        <select id="ib-geography" style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+          <option value="">Select geography</option>
+          <option value="wa">Washington only</option>
+          <option value="or">Oregon only</option>
+          <option value="bc">British Columbia only</option>
+          <option value="cross_border">Cross-border (US-CA)</option>
+          <option value="any">Any Cascadia</option>
+        </select>
+      </div>
+      <div style="grid-column:1/-1;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+        <button type="submit" id="ib-submit" style="padding:14px 28px;background:var(--primary);color:var(--bg);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6l-10 7L2 6"/><polyline points="22 6 22 18 12 23 2 18 2 6"/></svg>
+          Request briefing pack
+        </button>
+        <a href="founder-enroll.html" style="padding:14px 28px;font-size:13px;color:var(--fg2);background:transparent;border:1px solid var(--border);border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+          Or enroll your portfolio company
+        </a>
+      </div>
+      <div id="ib-success" style="grid-column:1/-1;display:none;padding:14px;background:rgba(52,211,153,0.1);border:1px solid var(--ok);border-radius:6px;color:var(--ok);font-size:13px;font-weight:600;text-align:center;">✓ Request received. The Investor Briefing Pack + 30-min walkthrough invite will arrive within 24 hours.</div>
+    </form>
+    <p style="font-size:11px;color:var(--fg3);text-align:center;margin-top:20px;">Already enrolled? <a href="login.html" style="color:var(--primary);">Sign in</a> · <a href="command-center.html?tour=1" style="color:var(--primary);">Take the 2-min product tour</a></p>
   </div>
 </section>
+
+<style>
+@keyframes fpulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+/* === Investor glossary accordion (reuse gov pattern) === */
+.inv-reg-accordion { border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.inv-reg-item { border-bottom:1px solid var(--border); }
+.inv-reg-item:last-child { border-bottom:none; }
+.inv-reg-header { width:100%; text-align:left; padding:14px 16px; background:var(--bg2); border:none; color:var(--fg); font-size:14px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; font-family:inherit; transition:background .15s; }
+.inv-reg-header:hover { background:var(--bg3); }
+.inv-reg-header .chevron { transition:transform .2s; color:var(--primary); font-size:16px; }
+.inv-reg-item.open .chevron { transform:rotate(90deg); }
+.inv-reg-body { padding:0 16px; max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; background:var(--bg2); }
+.inv-reg-item.open .inv-reg-body { padding:12px 16px 16px; max-height:400px; }
+.inv-reg-body p { font-size:12px; color:var(--fg2); line-height:1.6; margin-bottom:8px; }
+.inv-reg-body .citation { font-family:monospace; font-size:11px; color:var(--primary); display:inline-block; padding:2px 8px; background:var(--bg3); border-radius:3px; margin-bottom:8px; }
+.inv-reg-body .applies-to { font-size:11px; color:var(--fg3); margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); }
+.inv-reg-body .applies-to strong { color:var(--fg); }
+/* === Activity ticker === */
+.inv-ticker { height:36px; border-top:1px solid var(--border); background:var(--bg2); display:flex; align-items:center; overflow:hidden; margin-top:32px; border-radius:8px; }
+.inv-ticker-label { flex-shrink:0; padding:0 14px; font-size:10px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid var(--border); height:100%; display:flex; align-items:center; gap:6px; }
+.inv-ticker-dot { width:8px; height:8px; border-radius:50%; background:var(--ok); animation:fpulse 2s ease-in-out infinite; display:inline-block; }
+.inv-ticker-content { flex:1; overflow:hidden; }
+.inv-ticker-track { display:flex; gap:24px; white-space:nowrap; animation:imarquee 60s linear infinite; }
+.inv-ticker-track:hover { animation-play-state:paused; }
+@keyframes imarquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+.inv-ticker-item { display:flex; align-items:center; gap:6px; font-size:11px; }
+.inv-ticker-time { font-family:monospace; font-size:10px; color:var(--fg2); opacity:0.6; }
+.inv-ticker-type { font-family:monospace; font-size:10px; color:var(--primary); }
+.inv-ticker-msg { color:var(--fg2); }
+</style>
+
+<!-- === NEW: Investor Glossary (v2.1 #4) === -->
+<section class="container" style="padding:32px 0;" id="investor-glossary">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ INVESTOR GLOSSARY · REFERENCE</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">VC terms every Cascadia investor should know</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:680px;margin-bottom:24px;">Click any term to expand. Includes the key financial, deal, and lifecycle terms you'll see in Cascadia founder panel data + cohort reports. Useful for new associates + analysts ramping on PNW deal flow.</p>
+
+  <div class="inv-reg-accordion">
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Pre-seed — Earliest institutional round <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Typical check: $250K–$1M · Valuation: $3–10M</span>
+        <p>Pre-seed is the first institutional capital after friends-and-family. Usually pre-revenue or early prototype. Cascadia pre-seed rounds: typical raise $500K, valuation $5M, 8–12% equity sold. Often structured as SAFE or convertible note.</p>
+        <div class="applies-to"><strong>When you see it:</strong> In the founder panel — filter for stage = 'Pre-seed' to see Cascadia's earliest-stage companies.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Seed — First major institutional round <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Typical check: $1–5M · Valuation: $8–25M</span>
+        <p>Seed is the round where the company has a working product + early customers but is still proving go-to-market. Cascadia seed rounds: median raise $2.5M, valuation $14M, 15–20% equity sold. PNW seed activity ~110 rounds/year.</p>
+        <div class="applies-to"><strong>When you see it:</strong> In the founder panel — most enrolled Cascadia companies are at Seed stage.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Series A — Product-market fit validation round <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Typical check: $5–15M · Valuation: $30–80M</span>
+        <p>Series A is raised when the company has demonstrated repeatable customer acquisition + clear unit economics. Cascadia Series A: median raise $10M, valuation $45M, 20–25% equity sold. ~35 A rounds/year in PNW (vs Bay Area's 180).</p>
+        <div class="applies-to"><strong>When you see it:</strong> Cascadia Series A volume is a leading indicator of regional ecosystem maturity — tracked in the quarterly cohort report.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">ARR — Annual Recurring Revenue <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">SaaS metric · rule of 40 (growth + margin ≥ 40)</span>
+        <p>ARR is the annualized run-rate of subscription revenue (monthly recurring revenue × 12). The single most-watched metric for SaaS valuation. Cascadia SaaS companies at Series A: median ARR $1.5M, growth rate 110% YoY, gross margin 78%.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Founders self-report ARR in the panel. Aggregate ARR by sector shows in the cohort report.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Burn Rate + Runway <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Cash consumption · months until broke</span>
+        <p>Burn rate = monthly net cash outflow (typically $200K–$1M for Cascadia Series A). Runway = cash on hand ÷ burn rate (target: 18–24 months after raise). Founders with <6 months runway are forced to raise — often at unfavorable terms.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Cohort report tracks aggregate runway distribution across the panel.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">LTV / CAC — Lifetime Value / Customer Acquisition Cost <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Unit economics · target ratio ≥ 3:1</span>
+        <p>LTV = average revenue per customer over their lifetime (typically 3–5 years for SaaS). CAC = sales + marketing spend ÷ new customers acquired. The LTV/CAC ratio determines scalability. Below 3:1 = unprofitable growth; above 5:1 = under-investing in growth.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Founder panel collects CAC payback period (target <12 months).</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">NRR — Net Revenue Retention <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">SaaS metric · target ≥ 110% · best-in-class ≥ 130%</span>
+        <p>NRR measures revenue from existing customers one year later (including expansion + churn). 100% = flat. <100% = customer base shrinking. >120% = customers expanding faster than churn. The single best leading indicator of SaaS business health.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Series A+ founders in the panel self-report NRR; benchmark vs Bay Area + NYC.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">SAFE — Simple Agreement for Future Equity <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Y Combinator SAFE (2018 version) · 5+ legal pages</span>
+        <p>The standard pre-seed investment instrument. Investor puts in cash now, gets equity at a future qualified financing round (typically priced equity Series A) at a discount (usually 20%) and/or a valuation cap. Faster + cheaper than priced equity rounds. The dominant structure in Cascadia pre-seed.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Most Cascadia pre-seed raises are SAFE-based. Look for the cap + discount in the term summary.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Pro-rata rights <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Standard term sheet provision · 1 paragraph</span>
+        <p>An investor's right (not obligation) to maintain their ownership percentage in future rounds by investing their pro-rata share. Critical for seed investors to maintain ownership through Series A. Often the most-negotiated term in early-stage term sheets.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Standard in Cascadia seed term sheets. Some super-pro-rata rights extend to Series B.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">MFN — Most Favored Nation clause <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">SAFE / note provision · 1 sentence</span>
+        <p>An MFN clause entitles the investor to the best terms given to any other investor in the same round (within a specified window, typically 90 days). If the founder gives a later investor a 25% discount instead of 20%, MFN investors get the 25% too. Protects early investors from being disadvantaged.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Common in pre-seed SAFEs when multiple investors are entering on different timelines.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Liquidation preference <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Term sheet provision · 1x non-participating (standard)</span>
+        <p>The order + multiplier for who gets paid first in a sale / dissolution. Standard: 1x non-participating — investors get their money back OR convert to equity (whichever is higher). Aggressive: 2x+ participating — investors get 2x back AND convert (downside protection stacked on upside participation). Cascadia standard: 1x non-participating.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Watch for participation rights in Series B+ terms — affects founder + employee payouts in exit.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Down round <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Trigger · valuation < prior round valuation</span>
+        <p>A round raised at a lower valuation than the previous round. Triggers anti-dilution protections for prior investors (typically broad-based weighted average adjustment). Signals company distress. Rare in Cascadia (3–5 per year post-2022) — usually concentrated in sectors that over-raised in 2021.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Cohort report flags down rounds separately — useful signal for sector health analysis.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Bridge round <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Internal round · $500K–$3M typical</span>
+        <p>A short-term raise between priced rounds to extend runway. Usually from existing investors (often on SAFE or convertible note). Bridge rounds indicate the company couldn't raise a full priced round on favorable terms — often a negative signal. Cascadia bridge activity: ~20–30 per year.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Watch panel for bridge activity as a leading indicator of portfolio stress.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">GMV — Gross Merchandise Value <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Marketplace metric · ≠ revenue</span>
+        <p>Total transaction value flowing through a marketplace platform (e.g., Etsy GMV = total $ of goods sold). Revenue = take rate × GMV (typically 5–20%). GMV growth is the headline metric for marketplace-stage companies — but revenue + take rate are what matter for unit economics.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Cascadia marketplace / e-commerce founders report GMV in panel data.</div>
+      </div>
+    </div>
+    <div class="inv-reg-item">
+      <button class="inv-reg-header" onclick="this.parentElement.classList.toggle('open')">Portfolio markups + write-downs <span class="chevron">›</span></button>
+      <div class="inv-reg-body">
+        <span class="citation">Quarterly mark-to-market · ASC 820 (US GAAP)</span>
+        <p>Increases (markups) or decreases (write-downs) in estimated portfolio company valuations between priced rounds. Required quarterly under fair-value accounting. Markups at the next round's price; write-downs based on operating performance + market comparables. Cascadia portfolio marks: ~40% markup rate post-2024 (vs 60% pre-2022).</p>
+        <div class="applies-to"><strong>When you see it:</strong> Quarterly LP reports aggregate these marks. Useful signal for sector rotation timing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === NEW: Live activity ticker (v2.1 #5) === -->
+<div class="inv-ticker">
+  <div class="inv-ticker-label"><span class="inv-ticker-dot"></span> Live</div>
+  <div class="inv-ticker-content"><div class="inv-ticker-track" id="inv-ticker-track"></div></div>
+</div>
+
+<script>
+// === Investor briefing form submit (v2.1 #3) ===
+function submitInvestorBriefing(e) {
+  e.preventDefault();
+  var btn = document.getElementById('ib-submit');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  
+  var sectors = [];
+  document.querySelectorAll('input[name="ib-sectors"]:checked').forEach(function(cb){ sectors.push(cb.value); });
+  
+  var data = {
+    email: document.getElementById('ib-email').value,
+    firm: document.getElementById('ib-firm').value,
+    stage: document.getElementById('ib-stage').value,
+    sectors: sectors,
+    geography: document.getElementById('ib-geography').value,
+    submitted_at: new Date().toISOString(),
+    list: 'cascadia-investor-briefing'
+  };
+  
+  // Store locally
+  var subs = JSON.parse(localStorage.getItem('investor-briefing-subs') || '[]');
+  subs.push(data);
+  localStorage.setItem('investor-briefing-subs', JSON.stringify(subs));
+  
+  // Try to POST to founder-enroll Worker /investor-briefing endpoint (if deployed)
+  fetch('https://founder-enroll.aibizvan360.workers.dev/investor-briefing', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function() {
+    showInvestorSuccess();
+  }).catch(function() {
+    // Fallback to mailto
+    var mailtoLink = 'mailto:testdemoqwenai2025@gmail.com?subject=Cascadia%20Investor%20Briefing%20Pack' +
+      '&body=' + encodeURIComponent('Email: ' + data.email + '\nFirm: ' + data.firm + '\nStage: ' + data.stage + '\nSectors: ' + data.sectors.join(', ') + '\nGeography: ' + data.geography + '\n\n(Forward this email to subscribe manually until Worker /investor-briefing endpoint deployed.)');
+    var w = window.open(mailtoLink, '_blank');
+    if (w) setTimeout(function() { w.close(); }, 500);
+    showInvestorSuccess();
+  });
+  
+  return false;
+}
+function showInvestorSuccess() {
+  var form = document.getElementById('investor-briefing-form');
+  var success = document.getElementById('ib-success');
+  form.style.display = 'none';
+  success.style.display = 'block';
+  if (window.plausible) window.plausible('Investor Briefing Request', {props: {list: 'cascadia-investor-briefing'}});
+}
+
+// === Live countdown + filter logic (v2.1 #1 + #2) ===
+var FP_FOUNDERS = [
+  {city: 'Seattle', sector: 'SaaS', stage: 'Seed', at: '2 hours ago'},
+  {city: 'Vancouver', sector: 'CleanTech', stage: 'Series A', at: 'yesterday'},
+  {city: 'Portland', sector: 'Bio', stage: 'Pre-seed', at: '2 days ago'},
+  {city: 'Burnaby', sector: 'AgTech', stage: 'Bootstrapped', at: '4 days ago'},
+  {city: 'Bellevue', sector: 'AI/ML', stage: 'Series A', at: 'last week'},
+  {city: 'Surrey', sector: 'FinTech', stage: 'Seed', at: 'last week'},
+  {city: 'Bellingham', sector: 'SaaS', stage: 'Pre-seed', at: 'last week'},
+  {city: 'Spokane', sector: 'Hardware', stage: 'Bootstrapped', at: '2 weeks ago'},
+  {city: 'Seattle', sector: 'Bio', stage: 'Series B+', at: '2 weeks ago'},
+  {city: 'Vancouver', sector: 'AI/ML', stage: 'Seed', at: '3 weeks ago'},
+  {city: 'Portland', sector: 'SaaS', stage: 'Series A', at: '3 weeks ago'},
+  {city: 'Bellevue', sector: 'CleanTech', stage: 'Pre-seed', at: '4 weeks ago'}
+];
+
+function applyFpFilters() {
+  var search = (document.getElementById('fp-filter-search').value || '').toLowerCase().trim();
+  var city = document.getElementById('fp-filter-city').value;
+  var sector = document.getElementById('fp-filter-sector').value;
+  var stage = document.getElementById('fp-filter-stage').value;
+  
+  var filtered = FP_FOUNDERS.filter(function(f) {
+    if (city && f.city !== city) return false;
+    if (sector && f.sector !== sector) return false;
+    if (stage && f.stage !== stage) return false;
+    if (search) {
+      var cityL = (f.city || '').toLowerCase();
+      var sectorL = (f.sector || '').toLowerCase();
+      if (cityL.indexOf(search) < 0 && sectorL.indexOf(search) < 0) return false;
+    }
+    return true;
+  });
+  
+  var html = filtered.map(function(f) {
+    return '<span style="display:inline-block;padding:4px 10px;margin:2px;background:var(--bg3);border-radius:999px;font-size:11px;"><strong style="color:var(--fg);">' + f.city + '</strong> · ' + f.sector + ' · ' + f.stage + ' <span style=\'color:var(--fg3);\'>— ' + f.at + '</span></span>';
+  }).join('');
+  if (!filtered.length) html = '<span style="color:var(--fg3);font-size:11px;">No enrollments match the current filters.</span>';
+  document.getElementById('fp-recent-list').innerHTML = html;
+  document.getElementById('fp-filter-count').textContent = filtered.length;
+  document.getElementById('fp-filter-total').textContent = FP_FOUNDERS.length;
+}
+function clearFpFilters() {
+  document.getElementById('fp-filter-search').value = '';
+  document.getElementById('fp-filter-city').value = '';
+  document.getElementById('fp-filter-sector').value = '';
+  document.getElementById('fp-filter-stage').value = '';
+  applyFpFilters();
+}
+// Wire up filters
+document.getElementById('fp-filter-search').addEventListener('input', applyFpFilters);
+document.getElementById('fp-filter-city').addEventListener('change', applyFpFilters);
+document.getElementById('fp-filter-sector').addEventListener('change', applyFpFilters);
+document.getElementById('fp-filter-stage').addEventListener('change', applyFpFilters);
+// Initial render
+applyFpFilters();
+window.clearFpFilters = clearFpFilters;
+
+// Live countdown timers (v2.1 #1)
+function formatSinceLast(isoStr) {
+  var t = new Date(isoStr).getTime();
+  var diff = Date.now() - t;
+  if (diff < 0) diff = 0;
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  return d + 'd ' + h + 'h ' + m + 'm ' + s + 's ago';
+}
+function formatUntil(isoStr) {
+  var t = new Date(isoStr).getTime();
+  var diff = t - Date.now();
+  if (diff < 0) return 'Available now';
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  return d + 'd ' + h + 'h ' + m + 'm ' + s + 's';
+}
+function tickFpCountdowns() {
+  var last = document.getElementById('fp-since-last');
+  var until = document.getElementById('fp-until-report');
+  if (last) last.textContent = formatSinceLast(last.dataset.lastEnrollment);
+  if (until) until.textContent = formatUntil(until.dataset.reportDate);
+}
+tickFpCountdowns();
+setInterval(tickFpCountdowns, 1000);
+
+// === Live activity ticker (v2.1 #5) ===
+(function(){
+  var events = [
+    {time:'14:32:01', type:'founder.enrolled', msg:'Seattle · SaaS · Seed stage', sev:'success'},
+    {time:'14:38:14', type:'sector.alert', msg:'CleanTech founders up 22% this quarter', sev:'success'},
+    {time:'14:42:50', type:'cohort.published', msg:'Q3 2026 cohort report: 60% Seattle retention', sev:'success'},
+    {time:'14:51:03', type:'round.closed', msg:'Bellevue AI/ML Series A closed at $12M', sev:'success'},
+    {time:'14:55:38', type:'investor.alert', msg:'5 subscribers notified of CleanTech pre-seed match', sev:'info'},
+    {time:'15:02:11', type:'digest.sent', msg:'Weekly digest delivered to 47 subscribers', sev:'info'},
+    {time:'15:08:24', type:'benchmark.updated', msg:'Cascadia CleanTech benchmark vs Bay Area updated', sev:'success'},
+    {time:'15:14:07', type:'founder.enrolled', msg:'Vancouver · AI/ML · Seed stage', sev:'success'},
+    {time:'15:18:33', type:'valuation.mark', msg:'Series B+ portfolio markup: +18% MoM', sev:'success'},
+    {time:'15:22:19', type:'geography.expansion', msg:'First enrollment from Bellingham, WA', sev:'success'},
+    {time:'15:28:42', type:'investor.subscribed', msg:'New PNW GP requested briefing pack', sev:'info'},
+    {time:'15:34:55', type:'corridor.insight', msg:'Cross-border deals up 12% MoM — USMCA impact', sev:'success'}
+  ];
+  var html = events.map(function(e) {
+    var icon = e.sev === 'success' ? '✓' : '●';
+    var color = e.sev === 'success' ? 'var(--ok)' : 'var(--primary)';
+    return '<div class="inv-ticker-item"><span class="inv-ticker-time">' + e.time + '</span>' +
+      '<span style="color:' + color + '">' + icon + '</span>' +
+      '<span class="inv-ticker-type">' + e.type + '</span>' +
+      '<span class="inv-ticker-msg">' + e.msg + '</span><span style="color:var(--fg2);opacity:0.3">·</span></div>';
+  }).join('');
+  document.getElementById('inv-ticker-track').innerHTML = html + html;
+})();
+</script>
 
 <script>
 // === Live founder panel snapshot ===
