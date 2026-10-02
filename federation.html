@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Federation — Sibling-Region OSes</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  /* Dark theme (default) */
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.10);
+}
+[data-theme="light"] {
+  /* Light theme — overrides */
+  --bg: #f4f7f7;
+  --bg-2: #ffffff;
+  --card: #ffffff;
+  --border: #dde2e3;
+  --fg: #1a1a2e;
+  --fg-2: #4a4a5a;
+  --accent: #0d9488;
+  --accent-2: #14b8a6;
+  --warm: #d97706;
+  --danger: #dc2626;
+  --ok: #0d9488;
+  --toggle-bg: rgba(0,0,0,0.03);
+  --toggle-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .2s, color .2s;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+}
+.os-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.os-nav a, .os-nav button {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+  background: transparent; cursor: pointer; font-family: inherit;
+}
+.os-nav a:hover, .os-nav button:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+.os-home-btn {
+  background: var(--accent) !important; color: var(--bg) !important;
+  font-weight: 600 !important; border-color: var(--accent) !important;
+}
+.os-home-btn:hover { background: var(--accent-2) !important; color: var(--bg) !important; }
+.os-theme-toggle {
+  width: 32px; height: 32px; padding: 0 !important; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--toggle-border) !important;
+  background: var(--toggle-bg) !important;
+  color: var(--fg-2) !important;
+}
+.os-theme-toggle:hover { color: var(--fg) !important; background: var(--card) !important; }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section h3 { font-size: 17px; margin: 20px 0 8px; color: var(--fg); }
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+.os-section ul, .os-section ol { color: var(--fg-2); margin: 8px 0 16px 24px; }
+.os-section li { margin-bottom: 6px; }
+.os-section code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+[data-theme="light"] .os-callout {
+  background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(13,148,136,0.02));
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+
+<style>
+.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}
+.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}
+.os-home-fab .ic{width:16px;height:16px;display:inline-block}
+[data-theme="light"] .os-home-fab{background:#ffffff;color:#0d9488;border-color:#0d9488}
+@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}
+</style>
+
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <a href="index.html" class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </a>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="active">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Federation — Sibling-Region OSes</h1>
+  <p class="lede">Cascadia OS is the anchor regional OS. By Year 4-5, the OS template gets licensed to other bioregions. Salmon Nation first, Great Lakes second, Gulf of Mexico third, Northeast Corridor fourth.</p>
+  <div class="os-tag-row"><span class="os-tag">4 sibling regions</span><span class="os-tag">Salmon Nation Y4-5</span><span class="os-tag">Great Lakes Y6-7</span><span class="os-tag">Inquire to partner</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> What is Federation?</h2>
+  <p>Cascadia OS is the <strong>anchor</strong> regional OS. By Year 4-5, the OS template gets licensed to other bioregions. Each sibling is independently operated — own team, own regional moat, own Indigenous-nation relationships — but shares the OS's infrastructure contracts (event bus protocol, provenance ledger cross-anchoring, data sovereignty framework).</p>
+  <p>Think of it like the Linux distribution model: Cascadia OS is upstream; sibling-region OSes are downstream distros that take the kernel and specialize for their region. The OS doesn't <em>operate</em> the siblings; it <em>licenses the template</em> to them.</p>
+  <div class="os-callout">
+    <div class="label">Why federation, not expansion?</div>
+    <p>If Cascadia OS tried to <em>be</em> the Great Lakes OS, it would have to build relationships with the Anishinaabe, parse the Ontario Building Code, ingest the Michigan DOT tender feed — none of which transfer to Cascadia. Federation multiplies the moat instead of diluting it.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> The Four Sibling-Region OSes</h2>
+  <p>Each candidate is a North American bioregion — a region defined by geography + economic corridor + shared regulatory frameworks. The federation strategy is "start with the most aligned region, expand outward."</p>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="icon">1</div>
+        <h3 style="font-size:20px;margin-top:8px;">Salmon Nation OS</h3>
+        <p style="color:var(--fg-2);font-size:13px;margin-top:4px;">Pacific Northwest coast bioregion — extends Cascadia northward to Alaska, southward to northern California, including the entire Columbia River basin and Salish Sea watershed</p>
+      </div>
+      <span style="background:rgba(45,212,191,0.15);color:var(--accent);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--accent);">Year 4-5 · Planning</span>
+    </div>
+    <table class="os-table" style="margin-top:16px;">
+      <tbody>
+        <tr><td><strong>Population / GDP</strong></td><td>~12M people · ~$700B GDP</td></tr>
+        <tr><td><strong>Why first</strong></td><td>Lowest federation cost. Indigenous-nation partnerships overlap with Cascadia's existing partners (Muckleshoot, Squamish, Tulalip). Regulatory regimes overlap (USMCA, Washington CCA, BC PIPA). Salish Sea watershed is one ecosystem.</td></tr>
+        <tr><td><strong>Adds to Cascadia</strong></td><td>Alaska (oil, gas, fisheries); northern California coast (redwoods, Klamath River); interior Columbia basin (agriculture, hydropower)</td></tr>
+        <tr><td><strong>Indigenous-nation expansion</strong></td><td>Tlingit, Haida, Tsimshian (Alaska/BC coast); Karuk, Yurok, Hupa (Klamath); Nez Perce, Cayuse, Umatilla (Columbia plateau)</td></tr>
+      </tbody>
+    </table>
+    <a href="mailto:federation@aibizvan360.com?subject=[Federation Inquiry] Salmon Nation OS" style="display:inline-block;margin-top:14px;background:var(--accent);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;">Inquire about Salmon Nation OS partnership →</a>
+  </div>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="icon">2</div>
+        <h3 style="font-size:20px;margin-top:8px;">Great Lakes OS</h3>
+        <p style="color:var(--fg-2);font-size:13px;margin-top:4px;">Chicago / Detroit / Toronto / Cleveland / Pittsburgh corridor — 5 US states (IL, IN, MI, OH, PA) + 2 Canadian provinces (ON, QC)</p>
+      </div>
+      <span style="background:rgba(251,191,36,0.10);color:var(--warm);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--warm);">Year 6-7 · Forecast</span>
+    </div>
+    <table class="os-table" style="margin-top:16px;">
+      <tbody>
+        <tr><td><strong>Population / GDP</strong></td><td>~55M people · ~$3.5T GDP</td></tr>
+        <tr><td><strong>Why second</strong></td><td>Heavy trade-corridor overlap with Cascadia via the Pacific-to-Atlantic rail (BNSF/CN/CPKC). Cascadia shippers move goods through Chicago; Great Lakes manufacturers ship through Vancouver BC.</td></tr>
+        <tr><td><strong>What's different</strong></td><td>Different regulatory regime (US-Canada only, no Mexico). Different climate risks (lake-effect snow, aging industrial infrastructure). Different Indigenous nations (Anishinaabe, Haudenosaunee/Iroquois, Dakota).</td></tr>
+      </tbody>
+    </table>
+    <a href="mailto:federation@aibizvan360.com?subject=[Federation Inquiry] Great Lakes OS" style="display:inline-block;margin-top:14px;background:var(--card);color:var(--accent);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--accent);">Inquire about Great Lakes OS partnership →</a>
+  </div>
+
+  <div class="os-card" style="margin-bottom: 18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="icon">3</div>
+        <h3 style="font-size:20px;margin-top:8px;">Gulf of Mexico OS</h3>
+        <p style="color:var(--fg-2);font-size:13px;margin-top:4px;">Houston / New Orleans / Tampa / Veracruz corridor — 4 US states (TX, LA, MS, AL/FL) + 6 Mexican states (Tamaulipas, Veracruz, Tabasco, Campeche, Yucatán, Quintana Roo)</p>
+      </div>
+      <span style="background:rgba(248,113,113,0.10);color:var(--danger);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--danger);">Year 8-9 · Forecast</span>
+    </div>
+    <table class="os-table" style="margin-top:16px;">
+      <tbody>
+        <tr><td><strong>Population / GDP</strong></td><td>~50M people · ~$2.8T GDP</td></tr>
+        <tr><td><strong>Why third</strong></td><td>Energy-corridor overlap with Cascadia (PNW Hydrogen Hub ↔ Gulf Coast refineries). Cross-border trade is US-Mexico (Spanish-language primary interface required).</td></tr>
+        <tr><td><strong>What's different</strong></td><td>Spanish-language primary interface. Mexican Indigenous-nation framework (no equivalent to OCAP® — fundamentally different consent model). Different climate risks (hurricanes, sea-level rise, oil spill risk).</td></tr>
+      </tbody>
+    </table>
+    <a href="mailto:federation@aibizvan360.com?subject=[Federation Inquiry] Gulf of Mexico OS" style="display:inline-block;margin-top:14px;background:var(--card);color:var(--accent);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--accent);">Inquire about Gulf of Mexico OS partnership →</a>
+  </div>
+
+  <div class="os-card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="icon">4</div>
+        <h3 style="font-size:20px;margin-top:8px;">Northeast Corridor OS</h3>
+        <p style="color:var(--fg-2);font-size:13px;margin-top:4px;">Boston / New York / Philadelphia / Washington DC — 6 US states (MA, CT, NY, NJ, PA, MD) + DC</p>
+      </div>
+      <span style="background:rgba(160,179,204,0.10);color:var(--fg-2);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--border);">Year 10-12 · Aspirational</span>
+    </div>
+    <table class="os-table" style="margin-top:16px;">
+      <tbody>
+        <tr><td><strong>Population / GDP</strong></td><td>~50M people · ~$4T GDP</td></tr>
+        <tr><td><strong>Why last</strong></td><td>Financial-corridor overlap — Cascadia tech firms IPO via NYSE/NASDAQ; Northeast investors fund Cascadia startups. But Bloomberg's home turf is the hardest market to crack. Federation only attempted after Cascadia OS has the canonical-reference moat (Year 8-9 milestone).</td></tr>
+        <tr><td><strong>What's different</strong></td><td>Highest density of incumbents (Bloomberg, Reuters, S&P Global). Different climate risks (Nor'easters, sea-level rise, Sandy-class events). Different Indigenous-nation framework (Lenape, Wampanoag, Mohegan).</td></tr>
+      </tbody>
+    </table>
+    <a href="mailto:federation@aibizvan360.com?subject=[Federation Inquiry] Northeast Corridor OS" style="display:inline-block;margin-top:14px;background:var(--card);color:var(--accent);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--accent);">Inquire about Northeast Corridor OS partnership →</a>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> Federation Economic Model</h2>
+  <p>When a sibling-region OS launches, it pays Cascadia OS:</p>
+  <table class="os-table">
+    <thead><tr><th>Term</th><th>Rate</th><th>Duration</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Revenue share (initial)</td><td>2%</td><td>First 5 years</td><td>Funds Cascadia OS continued development + Federation Council operations</td></tr>
+      <tr><td>Revenue share (ongoing)</td><td>1%</td><td>Perpetual</td><td>Ongoing license fee</td></tr>
+      <tr><td>Federation Council seat</td><td>—</td><td>2-year rotating terms</td><td>Cross-federation governance</td></tr>
+    </tbody>
+  </table>
+  <p>In exchange, the sibling gets:</p>
+  <ul>
+    <li>The architecture docs (14 documents in <code>docs/architecture/</code>)</li>
+    <li>The data-mesh reference implementation (e.g., <code>services/tenders-ingestor/</code>)</li>
+    <li>The provenance-ledger protocol (Ed25519 signing, monthly Merkle anchor to public blockchain)</li>
+    <li>The event-bus contract (versioned, schema-enforced)</li>
+    <li>The agent-stack reference (per <code>docs/SKILLS.md</code>)</li>
+    <li>The Indigenous Data Governance Council template (per <code>docs/architecture/11-data-governance-ethical-framework.md</code> §4)</li>
+  </ul>
+  <p>The sibling owns its own implementation, its own team, its own regional moat. Cascadia OS doesn't own the sibling — it licenses the template.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> What "First Federation" Actually Means</h2>
+  <p>"Salmon Nation OS first" doesn't mean Cascadia OS <em>operates</em> Salmon Nation OS. It means:</p>
+  <ol>
+    <li>The Cascadia OS team publishes the architecture docs + reference implementation + federation protocol (already done — see the <a href="vision-architecture.html" style="color:var(--accent);">architecture page</a> and the OS source repo)</li>
+    <li>An independent team (most likely: a coalition of Pacific Northwest Indigenous-led tech nonprofits + a WA/OR state economic development office + a BC tech nonprofit) licenses the template</li>
+    <li>That team stands up the Salmon Nation OS with their own funding (grant-funded + SaaS revenue from day 1)</li>
+    <li>Cascadia OS gets a 2% revenue share for 5 years + a permanent Federation Council seat</li>
+  </ol>
+  <p>This is the Linux-distribution model applied to regional-intelligence platforms. Cascadia is upstream; siblings are downstream distros.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> Federation Council</h2>
+  <p>By Year 5 (when Salmon Nation OS is operational), the Federation Council convenes.</p>
+  <table class="os-table">
+    <thead><tr><th>Seat</th><th>Holder</th><th>Term</th></tr></thead>
+    <tbody>
+      <tr><td>Permanent seat</td><td>Cascadia OS (project lead)</td><td>Permanent</td></tr>
+      <tr><td>Rotating seat</td><td>Each operational sibling-region OS contributes one representative</td><td>2-year terms (Salmon Nation from Year 5, Great Lakes from Year 7, Gulf from Year 9, Northeast from Year 12)</td></tr>
+      <tr><td>Indigenous-nation observer</td><td>Designated by the OS's Indigenous Data Governance Council; rotates among partner nations across federated regions</td><td>1-year, non-voting</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Cadence:</strong> Quarterly meetings; emergency convening on any cross-federation matter.</p>
+  <p><strong>Authority (limited to cross-federation matters):</strong></p>
+  <ul>
+    <li>Event-bus protocol versioning (changes require Council ratification)</li>
+    <li>Provenance ledger cross-anchoring policy</li>
+    <li>Indigenous-nation data sovereignty framework updates (only with the Indigenous observer seat's consent)</li>
+    <li>Federation license terms (any change to the 2%/1% revenue share requires unanimous Council approval)</li>
+  </ul>
+  <p>The Council does <strong>not</strong> have authority over individual OS operations. Each sibling OS is sovereign over its own region.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">6</span> Inquiry Path for Interested Parties</h2>
+  <p>If you represent a coalition, government, foundation, or Indigenous-nation government interested in operating a sibling-region OS:</p>
+  <table class="os-table">
+    <thead><tr><th>Step</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td>1. Email</td><td>Send to <code>federation@aibizvan360.com</code> with subject <code>[Federation Inquiry] &lt;your region&gt;</code></td></tr>
+      <tr><td>2. Prospectus</td><td>We send back: architecture docs index, reference implementation walkthrough, license terms, estimated first-year cost (typically $500K-1M for the operating team, of which 2% goes back to Cascadia OS as license), Indigenous Data Governance Council template</td></tr>
+      <tr><td>3. Initial conversation</td><td>60-minute call to discuss your region's moat candidates, regulatory landscape, partnership readiness</td></tr>
+      <tr><td>4. Decision</td><td>Both parties decide whether to proceed. If yes, a Memorandum of Understanding is drafted.</td></tr>
+      <tr><td>5. Operational launch</td><td>Typically 12-18 months from MOU signing (assuming funding + team are in place)</td></tr>
+    </tbody>
+  </table>
+  <div class="os-callout">
+    <div class="label">Ready to inquire?</div>
+    <p>Email <a href="mailto:federation@aibizvan360.com?subject=[Federation Inquiry]" style="color:var(--accent);">federation@aibizvan360.com</a> with subject <code>[Federation Inquiry] &lt;your region&gt;</code>. We respond within 5 business days.</p>
+  </div>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('cas-os-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      // Default: respect system preference
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
+    }
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+function casOSToggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = (cur === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('cas-os-theme', next); } catch (e) {}
+  // Update button label
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (next === 'dark') ? '☀' : '☾';
+    b.title = (next === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+  });
+}
+// Wait for DOM, then init button labels
+document.addEventListener('DOMContentLoaded', function(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (cur === 'dark') ? '☀' : '☾';
+    b.title = (cur === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+    b.addEventListener('click', casOSToggleTheme);
+  });
+});
+</script>
+
+<a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+</body>
+</html>
