@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia OS — 2-Minute Loom Demo Script</title>
+<style>
+@page { size: 210mm 297mm; margin: 14mm 14mm 16mm 14mm; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #ffffff; color: #0a1628; font-family: 'Noto Serif SC', 'Noto Sans SC', 'Liberation Serif', Georgia, serif; font-size: 11pt; line-height: 1.5; }
+
+/* === Header === */
+.header { border-bottom: 2px solid #0d9488; padding-bottom: 12pt; margin-bottom: 18pt; }
+.eyebrow { font-size: 9pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0d9488; margin-bottom: 4pt; }
+h1 { font-size: 22pt; font-weight: 800; margin: 0 0 6pt 0; line-height: 1.15; color: #0a1628; }
+.subtitle { font-size: 10.5pt; color: #4a5568; margin: 0; line-height: 1.5; }
+
+/* === Meta strip === */
+.meta-strip { display: flex; gap: 12pt; margin: 12pt 0 16pt 0; padding: 8pt 12pt; background: #f0fdfa; border-left: 3pt solid #0d9488; font-size: 9.5pt; color: #134e4a; }
+.meta-strip strong { color: #0a1628; }
+
+/* === Table === */
+table.script-table { width: 100%; border-collapse: collapse; margin-bottom: 18pt; }
+table.script-table th {
+  background: #0a1628;
+  color: #ffffff;
+  font-size: 9pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 7pt 9pt;
+  text-align: left;
+  border: 1pt solid #0a1628;
+}
+table.script-table td {
+  border: 0.5pt solid #d1d5db;
+  padding: 8pt 9pt;
+  vertical-align: top;
+  font-size: 10pt;
+  line-height: 1.5;
+}
+table.script-table tr:nth-child(even) td { background: #f9fafb; }
+
+/* Column widths */
+table.script-table col.col-time { width: 12%; }
+table.script-table col.col-spoken { width: 48%; }
+table.script-table col.col-screen { width: 40%; }
+
+td.time-cell {
+  font-family: 'Liberation Mono', 'Noto Sans Mono', monospace;
+  font-weight: 700;
+  color: #0d9488;
+  font-size: 10pt;
+  white-space: nowrap;
+}
+td.spoken-cell { color: #0a1628; }
+td.spoken-cell em { font-style: italic; color: #4a5568; }
+td.spoken-cell strong { font-weight: 700; color: #0a1628; }
+td.screen-cell { color: #4a5568; font-size: 9.5pt; }
+td.screen-cell code { font-family: 'Liberation Mono', monospace; background: #ecfeff; padding: 1pt 4pt; border-radius: 2pt; font-size: 9pt; color: #0d9488; }
+
+/* === Recording tips === */
+.tips-section { margin-top: 14pt; padding: 14pt 16pt; background: #f0fdfa; border: 1pt solid #99f6e4; border-radius: 6pt; }
+.tips-section h2 { font-size: 12pt; font-weight: 700; color: #0a1628; margin: 0 0 8pt 0; }
+.tips-section ul { margin: 0; padding-left: 16pt; }
+.tips-section li { font-size: 9.5pt; color: #134e4a; margin-bottom: 4pt; line-height: 1.5; }
+.tips-section li strong { color: #0a1628; }
+
+/* === Footer === */
+.footer { margin-top: 14pt; padding-top: 8pt; border-top: 0.5pt solid #d1d5db; font-size: 8.5pt; color: #6b7280; text-align: center; }
+
+/* Avoid breaking rows mid-row */
+table.script-table tr { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Sales Demo Script &nbsp;·&nbsp; Loom Walkthrough</div>
+  <h1>Cascadia OS Command Center — 2-Minute Demo</h1>
+  <p class="subtitle">For outreach emails to WA Commerce, Port of Seattle, and Madrona. Targets procurement officers evaluating bid-response tooling. Record at 1920&times;1080, 60fps, with mic on. Total run time: 2:00.</p>
+</div>
+
+<div class="meta-strip">
+  <div><strong>Audience:</strong> Procurement officers, economic-development leads, PNW investors</div>
+  <div><strong>Goal:</strong> Book 30-min walkthrough</div>
+  <div><strong>URL:</strong> <span style="font-family:'Liberation Mono',monospace;">Demo4VanSea/command-center.html?tour=1</span></div>
+</div>
+
+<table class="script-table">
+  <colgroup>
+    <col class="col-time">
+    <col class="col-spoken">
+    <col class="col-screen">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Spoken (verbatim)</th>
+      <th>On-screen action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td class="time-cell">0:00 – 0:08</td>
+      <td class="spoken-cell">"If you're a procurement officer in Cascadia, this is the tool you wish you had yesterday. Two minutes — let me show you why."</td>
+      <td class="screen-cell">Open on <code>government.html</code>. Camera centered on hero. Pause 1 sec on the LIVE INTELLIGENCE badge + 4 stat tiles.</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">0:08 – 0:20</td>
+      <td class="spoken-cell">"This is the Cascadia OS Government page. Four stats matter: six live tenders currently tracked, four procurement sources, six compliance assessors, fifty-two percent average match confidence."</td>
+      <td class="screen-cell">Slow scroll down to the <strong>Live Cascadia Procurement</strong> section. Cards render with live data — let them appear.</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">0:20 – 0:40</td>
+      <td class="spoken-cell">"These aren't synthetic — these are real tenders currently open across SAM.gov, BC Bid, WA Commerce, and OR Buys. Each card shows the issuing agency, deadline days remaining, contract value, and our composite match-confidence score. Click any one to drill in."</td>
+      <td class="screen-cell">Mouse-hover three cards in sequence: <strong>BC Hydro Transmission</strong> (85% green), <strong>Port of Seattle Pier 66 Shore Power</strong> (72% green), <strong>ODOT Portland-Eugene EA</strong> (38% red). Then click <strong>Port of Seattle</strong> card.</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">0:40 – 0:55</td>
+      <td class="spoken-cell">"Now we're in the Command Center. The sidebar shows every tracked tender. The main panel loads the selected one — Port of Seattle Pier 66, twelve million dollar shore-power contract. The gauge shows seventy-two percent match confidence — that's a BID."</td>
+      <td class="screen-cell">Land on <code>command-center.html</code>. Point cursor at sidebar. Then point at the <strong>gauge</strong> on the right (72% green).</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">0:55 – 1:15</td>
+      <td class="spoken-cell">"Switch to the Compliance Matrix. Every regulatory requirement — Buy Clean WA, CCA, prevailing wage, Indigenous participation — is traceable to a citation and a SHA-256 provenance hash. This is what makes the bid legally defensible."</td>
+      <td class="screen-cell">Click the <strong>Matrix</strong> tab. Slow-scroll the table. Hover one row, point at the <strong>Provenance</strong> column showing <code>sha256:9d85df35...</code></td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">1:15 – 1:30</td>
+      <td class="spoken-cell">"Provenance Chain. Every claim in the bid is anchored to source documents. A monthly Merkle root gets published to the Polygon blockchain — so the audit trail is tamper-evident, even months after submission."</td>
+      <td class="screen-cell">Click the <strong>Provenance</strong> tab. Hover the top node (Anchored ✓ green dot). Point at "Monthly Merkle Anchor" at the bottom (Pending, amber).</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">1:30 – 1:45</td>
+      <td class="spoken-cell">"And you can ask it questions. Watch — 'Why does USMCA pass?' [pause] The AI answers in natural language, citing the same provenance hashes we just saw. No black box."</td>
+      <td class="screen-cell">Click <strong>AI Chat</strong> tab. Type: <code>Why does USMCA pass?</code> Press Enter. Wait for response (~1s). Highlight the answer text.</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">1:45 – 1:55</td>
+      <td class="spoken-cell">"Everything you just saw is live, public, no login required. The Command Center is one click from the homepage."</td>
+      <td class="screen-cell">Return to <code>government.html</code> (or open homepage in new tab). Scroll to bottom — the <strong>Book a walkthrough</strong> CTA card.</td>
+    </tr>
+
+    <tr>
+      <td class="time-cell">1:55 – 2:00</td>
+      <td class="spoken-cell">"Book a 30-minute walkthrough — we'll load your agency's next five open tenders live and run a compliance assessment against your team's profile. See you there."</td>
+      <td class="screen-cell">Hover the <strong>Book a walkthrough</strong> button. Stop recording.</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div class="tips-section">
+  <h2>Recording tips</h2>
+  <ul>
+    <li><strong>Audio first.</strong> Record narration clean, then re-record screen if needed. Loom lets you overdub screen separately.</li>
+    <li><strong>Pause 1 second</strong> at every scene change. Helps viewers track where they are.</li>
+    <li><strong>Mouse moves slowly.</strong> Sudden cursor jumps look unprofessional. Use smooth motion.</li>
+    <li><strong>Don't read verbatim.</strong> Use the spoken column as a guide, not a script. Natural delivery beats robotic.</li>
+    <li><strong>If you flub</strong>, just restart the sentence. Loom's trim tool makes editing painless.</li>
+    <li><strong>After recording</strong>: rename to <code>cascadia-os-2min-demo.mp4</code>, upload to Loom, set thumbnail to the moment the gauge shows 72%. Embed in outreach emails with subject line: <em>"2-min demo: Cascadia procurement, AI-drafted bids"</em>.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  Cascadia OS &nbsp;·&nbsp; Sales Demo Script v1.0 &nbsp;·&nbsp; Generated for outreach to WA Commerce / Port of Seattle / Madrona
+</div>
+
+</body>
+</html>
