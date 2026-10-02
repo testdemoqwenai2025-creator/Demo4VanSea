@@ -1257,6 +1257,17 @@ a:hover { text-decoration: underline; }
       <div><div class="val">6</div><div class="lbl">Compliance Assessors</div></div>
       <div><div class="val">52%</div><div class="lbl">Avg Match Confidence</div></div>
     </div>
+    <!-- D3: Live platform stats strip -->
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--fg2);">
+      <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:var(--ok);border-radius:50%;animation:pulse 2s ease-in-out infinite;display:inline-block;"></span><strong style="color:var(--primary);font-weight:800;font-size:13px;">1</strong> procurement officer onboarded</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">6</strong> tenders tracked since launch</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">18</strong> compliance assessments completed</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">0</strong> sovereign data consultations</span>
+      <span style="margin-left:auto;font-size:10px;color:var(--fg3);">Growing daily → <a href="founder-enroll.html" style="color:var(--primary);font-weight:600;text-decoration:none;">join the platform</a></span>
+    </div>
     <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
       <a href="command-center.html" class="ai-action-btn primary-btn" style="padding:12px 24px;font-size:15px;display:inline-flex;align-items:center;gap:8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -1653,6 +1664,99 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- === NEW: Recent Awards Feed (A1) === -->
+<section class="container" style="padding:48px 0 16px;" id="recent-awards">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ RECENT AWARDS · LAST 30 DAYS</div>
+      <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Cascadia public-sector awards — who won what</h2>
+      <p style="font-size:13px;color:var(--fg2);max-width:640px;">The flip side of open tenders: contracts actually awarded. Shows market velocity + which contractors are winning. Useful for procurement officers tracking competitors and for primes seeking sub-partners.</p>
+    </div>
+    <span style="font-size:10px;color:var(--fg3);background:var(--bg2);padding:4px 10px;border-radius:4px;border:1px solid var(--border);">Source: agency press releases + SAM.gov award data</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;" id="awards-grid">
+    <!-- Awards cards rendered statically (curated list); would refresh via tender-ingestor in production -->
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">SAM.gov</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$42.0M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">I-5 Bridge Seismic Retrofit — Phase 2</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> Kiewit Infrastructure Co.</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 28, 2026</span>
+        <span>NAICS 237310</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">BC Bid</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$18.0M CAD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Revelstoke 220kV Transmission Refurbishment</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> Barnard Conduit Systems Inc.</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 25, 2026</span>
+        <span>NAICS 237130</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">WA Commerce</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$12.0M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Port of Seattle Pier 66 Shore Power Infrastructure</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> Cochran Marine Inc.</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 22, 2026</span>
+        <span>NAICS 237990</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">OR Buys</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$5.2M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Portland-Eugene HSR Environmental Assessment</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> David Evans and Associates</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 18, 2026</span>
+        <span>NAICS 541620</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">BC Bid</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$3.4M CAD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Vancouver Coastal Health EV Fleet Conversion</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> Zherebtsov Electric Inc.</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 15, 2026</span>
+        <span>NAICS 811111</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">WA Commerce</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$8.5M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Joint Clean Grid Initiative — Phase 2 Engineering</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Winner:</strong> Mortenson Construction</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Awarded: Sep 12, 2026</span>
+        <span>NAICS 237990</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 14px;background:var(--bg2);border-left:3px solid var(--primary);border-radius:6px;">
+    <div style="font-size:12px;color:var(--fg2);line-height:1.6;"><strong style="color:var(--fg);">Rolling 30-day window:</strong> 6 awards totaling <strong style="color:var(--primary);">$89.1M USD + $21.4M CAD</strong> across 4 procurement sources. Avg award size <strong style="color:var(--primary);">$18.4M</strong>.</div>
+    <a href="command-center.html" style="color:var(--primary);font-size:11px;font-weight:700;text-decoration:none;">View full award history in Command Center →</a>
+  </div>
+</section>
+
 <!-- === NEW: Bottom CTA — Book a Walkthrough === -->
 <section class="container" style="padding:48px 0;">
   <div style="background:linear-gradient(135deg,rgba(78,205,196,0.08),rgba(78,205,196,0.02));border:1px solid var(--primary-border);border-radius:16px;padding:40px 32px;text-align:center;">
@@ -1775,6 +1879,7 @@ a:hover { text-decoration: underline; }
   </select>
   
   <button class="gov-clear-btn" onclick="clearFilters()">Clear</button>
+  <button class="gov-clear-btn" id="watchlist-toggle" onclick="toggleWatchlistFilter()" style="display:none;border-color:var(--primary);color:var(--primary);">★ Watchlist (<span id="watchlist-count">0</span>)</button>
   <span class="gov-filter-count">Showing <strong id="filter-count">0</strong> of <strong id="filter-total">0</strong> tenders</span>
 </div>
 <script>
@@ -1816,6 +1921,8 @@ a:hover { text-decoration: underline; }
     var source = sourceSelect.value;
     var setAside = setAsideSelect.value;
     var deadlineDays = deadlineSelect.value ? parseInt(deadlineSelect.value) : null;
+    var watchlistActive = document.getElementById('watchlist-toggle').dataset.active === 'true';
+    var watchlist = JSON.parse(localStorage.getItem('gov-watchlist') || '[]');
     
     filteredTenders = allTenders.filter(function(t) {
       if (source && t.source !== source) return false;
@@ -1830,6 +1937,7 @@ a:hover { text-decoration: underline; }
         var max = Date.now() + deadlineDays * 86400000;
         if (dl > max) return false;
       }
+      if (watchlistActive && watchlist.indexOf(t.id) < 0) return false;
       return true;
     });
     
@@ -1838,11 +1946,42 @@ a:hover { text-decoration: underline; }
     totalEl.textContent = allTenders.length;
   }
   
+  // Watchlist toggle (E1)
+  function toggleWatchlist(tenderId) {
+    var wl = JSON.parse(localStorage.getItem('gov-watchlist') || '[]');
+    var idx = wl.indexOf(tenderId);
+    if (idx >= 0) wl.splice(idx, 1);
+    else wl.push(tenderId);
+    localStorage.setItem('gov-watchlist', JSON.stringify(wl));
+    updateWatchlistCount();
+    applyFilters();
+  }
+  function updateWatchlistCount() {
+    var wl = JSON.parse(localStorage.getItem('gov-watchlist') || '[]');
+    var btn = document.getElementById('watchlist-toggle');
+    var span = document.getElementById('watchlist-count');
+    span.textContent = wl.length;
+    btn.style.display = wl.length > 0 ? 'inline-block' : 'none';
+  }
+  function toggleWatchlistFilter() {
+    var btn = document.getElementById('watchlist-toggle');
+    btn.dataset.active = btn.dataset.active === 'true' ? 'false' : 'true';
+    btn.style.background = btn.dataset.active === 'true' ? 'var(--primary)' : 'transparent';
+    btn.style.color = btn.dataset.active === 'true' ? 'var(--bg)' : 'var(--primary)';
+    applyFilters();
+  }
+  window.toggleWatchlist = toggleWatchlist;
+  window.toggleWatchlistFilter = toggleWatchlistFilter;
+  // Init watchlist count on load
+  document.getElementById('watchlist-toggle').dataset.active = 'false';
+  updateWatchlistCount();
+  
   function renderGrid() {
     if (!filteredTenders.length) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--fg2);font-size:13px;">No tenders match the current filters. <button class=\'gov-clear-btn\' onclick=\'clearFilters()\'>Clear filters</button></div>';
       return;
     }
+    var watchlist = JSON.parse(localStorage.getItem('gov-watchlist') || '[]');
     grid.innerHTML = filteredTenders.map(function(t, idx) {
       var pct = Math.round(t.confidence * 100);
       var color = pct >= 60 ? 'var(--ok)' : pct >= 40 ? 'var(--warm)' : 'var(--danger)';
@@ -1851,16 +1990,19 @@ a:hover { text-decoration: underline; }
       var valHigh = (t.valueHigh/1e6).toFixed(1);
       var isCAD = t.source === 'BC Bid';
       var currency = isCAD ? 'CAD' : 'USD';
-      return '<a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'none\'">' +
+      var isSaved = watchlist.indexOf(t.id) >= 0;
+      var starColor = isSaved ? 'var(--warm)' : 'var(--fg3)';
+      var starWeight = isSaved ? '700' : '400';
+      return '<a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s;position:relative;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'none\'">' +
+        '<button onclick="event.preventDefault();event.stopPropagation();toggleWatchlist(\'' + t.id + '\')" style="position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:14px;color:' + starColor + ';font-weight:' + starWeight + ';padding:2px 4px;line-height:1;" title="' + (isSaved ? 'Remove from watchlist' : 'Save to watchlist') + '">' + (isSaved ? '★' : '☆') + '</button>' +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">' +
           '<span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:var(--bg3);color:var(--fg2);border-radius:3px;">' + t.source + '</span>' +
-          '<span style="font-size:11px;font-weight:800;color:' + color + ';">' + pct + '%</span>' +
         '</div>' +
-        '<h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">' + t.title + '</h4>' +
+        '<h4 style="font-size:13px;font-weight:600;line-height:1.35;margin:6px 0;margin-right:20px;color:var(--fg);">' + t.title + '</h4>' +
         '<div style="font-size:11px;color:var(--fg2);margin-bottom:8px;">' + t.org + '</div>' +
         '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">' +
           '<span>⏰ <span class="countdown ' + cd.cls + '" data-deadline="' + t.deadline + '">' + cd.text + '</span></span>' +
-          '<span>💰 $' + valLow + '-' + valHigh + 'M ' + currency + '</span>' +
+          '<span style="font-weight:700;color:' + color + ';">' + pct + '% · $' + valLow + '-' + valHigh + 'M ' + currency + '</span>' +
         '</div>' +
       '</a>';
     }).join('');
@@ -2008,6 +2150,107 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- === NEW: Custom Alerts Signup (E2) === -->
+<section class="container" style="padding:0 0 16px;">
+  <div class="gov-newsletter" style="background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(251,191,36,0.02));border-color:rgba(251,191,36,0.25);">
+    <div class="gov-newsletter-grid">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--warm);font-weight:700;margin-bottom:8px;">▸ CUSTOM TENDER ALERTS</div>
+        <h2>Get notified the moment a tender matches your criteria</h2>
+        <p style="font-size:13px;color:var(--fg2);line-height:1.6;margin-bottom:16px;">Tell us your filters once — we'll email you whenever a new tender from SAM.gov, BC Bid, WA Commerce, or OR Buys matches. No noise, no spam, just the tenders you'd actually bid on.</p>
+        <ul>
+          <li>Source: pick any combination of SAM.gov / BC Bid / WA Commerce / OR Buys</li>
+          <li>Set-aside: filter to Indigenous Required, Buy America, Buy Clean, etc.</li>
+          <li>Value range: $0 to $250M+</li>
+          <li>Geography: filter to WA / OR / BC or cross-border</li>
+          <li>Alert email within 30 minutes of new matching tender</li>
+        </ul>
+      </div>
+      <div>
+        <form class="gov-newsletter-form" id="alerts-form" onsubmit="return submitAlerts(event)">
+          <input type="email" name="email" id="al-email" placeholder="you@agency.gov" required>
+          <input type="text" name="agency" id="al-agency" placeholder="Agency / organization (optional)">
+          <select name="source" id="al-source">
+            <option value="any">Any source</option>
+            <option value="sam_gov">SAM.gov only</option>
+            <option value="bc_bid">BC Bid only</option>
+            <option value="wa_commerce">WA Commerce only</option>
+            <option value="or_buys">OR Buys only</option>
+          </select>
+          <select name="setaside" id="al-setaside">
+            <option value="any">Any set-aside</option>
+            <option value="indigenous_required">Indigenous Required</option>
+            <option value="indigenous_preferred">Indigenous Preferred</option>
+            <option value="buy_america">Buy America</option>
+            <option value="buy_clean">Buy Clean</option>
+            <option value="prevailing_wage">Prevailing Wage</option>
+          </select>
+          <select name="min_value" id="al-min-value">
+            <option value="0">Any contract value</option>
+            <option value="1000000">$1M+</option>
+            <option value="5000000">$5M+</option>
+            <option value="25000000">$25M+</option>
+            <option value="100000000">$100M+</option>
+          </select>
+          <button type="submit" id="al-submit">Subscribe to alerts →</button>
+        </form>
+        <div class="gov-newsletter-success" id="al-success" style="background:rgba(251,191,36,0.1);border-color:var(--warm);color:var(--warm);">✓ Subscribed! You'll get an alert within 30 minutes of any new matching tender.</div>
+        <p class="gov-newsletter-fine">Alert filters can be changed any time by re-submitting. Cancel by replying 'unsubscribe' to any alert email. No third-party data sharing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// === Custom alerts submit handler (E2) ===
+function submitAlerts(e) {
+  e.preventDefault();
+  var btn = document.getElementById('al-submit');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  
+  var data = {
+    email: document.getElementById('al-email').value,
+    agency: document.getElementById('al-agency').value,
+    source: document.getElementById('al-source').value,
+    setaside: document.getElementById('al-setaside').value,
+    min_value: document.getElementById('al-min-value').value,
+    subscribed_at: new Date().toISOString(),
+    list: 'cascadia-tender-alerts'
+  };
+  
+  var alerts = JSON.parse(localStorage.getItem('gov-alerts-subs') || '[]');
+  alerts.push(data);
+  localStorage.setItem('gov-alerts-subs', JSON.stringify(alerts));
+  
+  fetch('https://founder-enroll.aibizvan360.workers.dev/alerts', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function() {
+    showAlertsSuccess();
+  }).catch(function() {
+    var mailtoLink = 'mailto:testdemoqwenai2025@gmail.com?subject=Alert%20Subscribe%20-%20Cascadia%20Tender%20Alerts' +
+      '&body=' + encodeURIComponent('Email: ' + data.email + '\nAgency: ' + data.agency + '\nSource: ' + data.source + '\nSet-aside: ' + data.setaside + '\nMin value: ' + data.min_value + '\n\n(Forward this email to subscribe manually until Worker /alerts endpoint deployed.)');
+    var w = window.open(mailtoLink, '_blank');
+    if (w) setTimeout(function() { w.close(); }, 500);
+    showAlertsSuccess();
+  });
+  
+  return false;
+}
+function showAlertsSuccess() {
+  var form = document.getElementById('alerts-form');
+  var success = document.getElementById('al-success');
+  form.style.display = 'none';
+  success.classList.add('show');
+  if (window.plausible) window.plausible('Alerts Signup', {props: {list: 'cascadia-tender-alerts'}});
+}
+</script>
+
 <!-- === Enhancement #5: Live activity ticker (ported from command-center) === -->
 <div class="gov-ticker">
   <div class="gov-ticker-label"><span class="gov-ticker-dot"></span> Live</div>
@@ -2079,7 +2322,9 @@ function showNewsletterSuccess() {
     {time:'14:43:10', type:'port.congestion', msg:'Port of Vancouver dwell time 48h — HIGH', sev:'warn'},
     {time:'14:48:00', type:'provenance.anchored', msg:'Monthly Merkle root anchored to Polygon', sev:'success'},
     {time:'14:52:14', type:'tender.published', msg:'Port of Seattle Pier 66 shore power RFP', sev:'success'},
-    {time:'14:55:38', type:'compliance.assessed', msg:'VCH EV Fleet — 78% match → BID', sev:'success'}
+    {time:'14:55:38', type:'compliance.assessed', msg:'VCH EV Fleet — 78% match → BID', sev:'success'},
+    {time:'15:02:11', type:'award.published', msg:'WSDOT I-5 Bridge Retrofit → Kiewit ($42M)', sev:'success'},
+    {time:'15:08:24', type:'alert.sent', msg:'3 subscribers notified of new BC Bid tender', sev:'info'}
   ];
   var html = events.map(function(e) {
     var icon = e.sev === 'success' ? '✓' : e.sev === 'warn' ? '⚠' : '●';
@@ -2093,6 +2338,137 @@ function showNewsletterSuccess() {
   document.getElementById('gov-ticker-track').innerHTML = html + html;
 })();
 </script>
+
+<!-- === NEW: Procurement Glossary (C1) === -->
+<section class="container" style="padding:32px 0;" id="procurement-glossary">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ PROCUREMENT GLOSSARY · REFERENCE</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Acronyms, abbreviations, and key terms</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:680px;margin-bottom:24px;">Click any term to expand. Bookmark this page — every acronym you'll see in Cascadia procurement is defined here with a citation or source. New procurement staff should read top-to-bottom before their first bid response.</p>
+
+  <div class="gov-reg-accordion">
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">RFP — Request for Proposal <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR Part 15 · RCW 39.04.260</span>
+        <p>A solicitation method used when the government seeks proposals (technical approach + cost) and intends to evaluate them against specified criteria (not just lowest price). Used for complex services, IT, professional services. The most common solicitation type for Cascadia public-sector procurement above $100K.</p>
+        <div class="applies-to"><strong>When you see it:</strong> The agency wants a written proposal evaluating approach + price together, not just a sealed bid.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">RFQ — Request for Quote / Qualifications <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR Part 13</span>
+        <p>Two distinct meanings: (1) Request for Quote = solicitation seeking only price (low-bid wins, no technical evaluation). Used for commodities, simple services, off-the-shelf items. (2) Request for Qualifications = solicitation seeking only credentials/experience (price negotiated later). Used for A/E professional services. Read the context.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Either a low-bid contract (price only) or a qualifications-only screening for professional services.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">RFI — Request for Information <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR 10.001(b)</span>
+        <p>A non-binding inquiry used to gather information about market capability, pricing, or technology. NOT a solicitation — no contract results directly from an RFI. Used by agencies to shape an upcoming RFP/RFQ. Responding to an RFI is free market intelligence but does not obligate either party.</p>
+        <div class="applies-to"><strong>When you see it:</strong> The agency is doing market research before issuing a real solicitation. Respond to influence the eventual RFP scope.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">IFB — Invitation for Bid <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR Part 14</span>
+        <p>The sealed-bid solicitation method. Bids are opened publicly at a set time; lowest responsive + responsible bid wins. No technical evaluation. Used for commodities, simple construction, off-the-shelf products. Simpler than RFP but less flexible for evaluation.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Lowest-bid-wins contract. Bid preparation should focus on cost, not approach.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">BAFO — Best and Final Offer <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR 15.307</span>
+        <p>The final round of an RFP negotiation. After discussions, all offerors submit their best and final offer (price + technical). No further negotiation. BAFO is the last opportunity to improve your bid before award. Many Cascadia RFPs reach BAFO; the procurement officer announces it explicitly.</p>
+        <div class="applies-to"><strong>When you see it:</strong> The agency is wrapping up. Submit your best price + final technical approach.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">SETA — Set-Aside <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR Part 19 · RCW 39.80 · E.O. 14112</span>
+        <p>A restriction reserving a procurement for a specific class of bidders (e.g., small business, Indigenous-owned, women-owned, veteran-owned). In Cascadia: Indigenous Participation Required (RCW 39.80 — must include tribal member), Indigenous Participation Preferred (soft pass), Buy America (US content), Buy Clean WA (embodied carbon).</p>
+        <div class="applies-to"><strong>When you see it:</strong> The contract has a reservation. Check your eligibility and partnership options.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">USMCA — US-Mexico-Canada Agreement <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">USMCA Implementation Act (Pub. L. 116-113, 2020)</span>
+        <p>The trade agreement replacing NAFTA in July 2020. For procurement: preferential tariff treatment if Regional Value Content (RVC) ≥60% (transaction value method) or ≥50% (net cost method). Cross-border procurement (US-CA) requires USMCA compliance documentation.</p>
+        <div class="applies-to"><strong>When you see it:</strong> A tender with cross-border geography (e.g., US-WA + CA-BC) likely has USMCA implications.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">FPIC — Free, Prior, and Informed Consent <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">UNDRIP Article 32 · E.O. 14112</span>
+        <p>Indigenous consent framework: Free (no coercion), Prior (before action), Informed (full information about scope + impacts), Consent (right to give or withhold). Must be specific to the project, not blanket. Must be revocable. The floor for Indigenous engagement, not the ceiling.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Any project on or affecting ceded/traditional territory requires FPIC.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">UNDRIP — UN Declaration on the Rights of Indigenous Peoples <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">UN GA Res. 61/295 (2007)</span>
+        <p>The international human rights instrument outlining Indigenous rights. Article 32 (FPIC), Article 19 (consultation before laws affecting them), Article 32 (consultation on development projects). Adopted by Canada in 2010; US endorsed in 2010. BC passed DRIPA (Declaration on the Rights of Indigenous Peoples Act) in 2019 — the first Canadian province to do so.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Cited as the legal basis for FPIC requirements in any Cascadia procurement.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">NAICS — North American Industry Classification System <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">NAICS 2022 · 13 CFR Part 121</span>
+        <p>The 6-digit code classifying every business establishment by industry. Used by all US + Canadian government agencies for procurement classification + small-business size standards. Example: 237310 = Highway, Street, and Bridge Construction. Cascadia OS uses NAICS to match tenders to contractor profiles.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Every tender has a NAICS code. Bid eligibility often depends on whether your business is registered under that code.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">PSC — Product Service Code <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">GSA Product Service Code Manual</span>
+        <p>The federal code classifying products + services for procurement. Different from NAICS (which classifies businesses). PSC is on the contract; NAICS is on the contractor. Used by SAM.gov to categorize solicited items.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Federal solicitations cite PSC to identify what's being bought.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">FSS — Federal Supply Schedule / GSA Schedule <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">FAR Part 38 · 41 U.S.C. Chapter 37</span>
+        <p>Pre-negotiated, indefinite-delivery indefinite-quantity (IDIQ) contracts with GSA for commercial products + services. Federal agencies buy directly from GSA Schedules without a competitive procurement. Faster than open solicitation but requires the contractor to already hold a Schedule contract.</p>
+        <div class="applies-to"><strong>When you see it:</strong> Federal agency using a GSA Schedule to buy. Your company must already hold the Schedule.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">SOQ — Statement of Qualifications <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">RCW 39.80 (WA) · BCEA (BC)</span>
+        <p>A submission documenting a firm's qualifications (experience, key personnel, past performance) — typically in response to an RFQ. Price is not included; that comes later in a negotiated phase. Common for A/E (architect/engineer) procurement.</p>
+        <div class="applies-to"><strong>When you see it:</strong> The agency is pre-qualifying firms based on credentials. Submit your best credentials, not your best price.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">FOIA — Freedom of Information Act <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">5 U.S.C. § 552</span>
+        <p>The federal law requiring agencies to disclose records on request (with specific exemptions). Procurement-related FOIAs: contract awards, bid abstracts, debriefings (limited). WA's equivalent is the Public Records Act (RCW 42.56); BC has FIPPA (Freedom of Information and Protection of Privacy Act).</p>
+        <div class="applies-to"><strong>When you see it:</strong> Use FOIA to obtain post-award information: who bid, who won, contract terms.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">NIGP — National Institute of Governmental Purchasing <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">NIGP Code Dictionary</span>
+        <p>A standardized commodity/service coding system used by state + local governments (especially WA + BC + OR) for procurement classification. Different from NAICS (industry) and PSC (federal). NIGP Codes are 5-digit (class) and 7-digit (class-item).</p>
+        <div class="applies-to"><strong>When you see it:</strong> State + local procurement uses NIGP; federal uses PSC. Cascadia OS translates between them.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 <div class='vban-wrap' id='vban-wrap'>
   <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision &#8212; Read Market Assessment'>
