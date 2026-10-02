@@ -235,54 +235,55 @@ body {
         <span style="flex:1"></span>
         <button class="btn-primary btn" onclick="submitBid()">📤 Submit Bid</button>
       </div>
-      <div class="edit-area" id="edit-area" contenteditable="false"># Bid Response: Regional Hydrogen Hub Workforce Development Program
-
-**To:** US Department of Energy
-**From:** Cascadia Electrical Contractors LLC
-**Date:** October 2, 2026
-**Re:** Tender ID 01a0fb41-b0ce-7077-8099-aabbccddeeff
-
----
-
-## 1. Company Overview
-
-Cascadia Electrical Contractors LLC is a Cascadia-based contractor with expertise in NAICS codes 238210, 238910. We operate in US-WA, US-OR and have prior performance on regional procurement contracts.
-
-## 2. Compliance Summary
-
-Cascadia OS compliance assessment indicates a match confidence of 52%.
-
-| Requirement | Status | Notes |
-|---|---|---|
-| usmca.assessor | PASS | User RVC 65.0% exceeds threshold 60.0% (margin 5.0%) |
-| indigenous_procurement.assessor | PASS | PREFERRED; soft pass; engagement recommended per E.O. 14112 |
-| cca.assessor | PASS | CCA applies; estimated compliance cost $100 |
-
-## 3. Regulatory Compliance
-
-- User RVC 65.0% exceeds USMCA 60% threshold (Schedule IV §6) [1]
-- Indigenous participation preferred per E.O. 14112 [2]
-- WA CCA compliance cost estimated at $100 (range $80-$120) [3]
-
-## 4. Scope of Work
-
-We propose to execute the work described in the tender "Regional Hydrogen Hub Workforce Development Program" at a contract value of $3,500,000–$4,500,000 USD. Our team has the capacity, bonding, and prior performance to deliver on this scope.
-
-## 5. Indigenous Engagement Plan
-
-Per the tender's Indigenous participation requirements, we commit to engaging with the relevant Indigenous nations whose traditional territories overlap the project area. Our engagement will follow the principles of Free, Prior, and Informed Consent (FPIC) and the UN Declaration on the Rights of Indigenous Peoples (UNDRIP). We will contact the nation's tribal council before commencing work and maintain ongoing communication throughout the project lifecycle.
-
-## 6. Provenance + Verification
-
-Every claim in this bid response is traceable to a provenance-anchored source. The underlying compliance assessment (hash: sha256:a3940f16...) is verifiable on the Cascadia OS provenance ledger. The tender record is similarly verifiable.
-
----
-
-### Footnotes
-
-1. RVC exceeds threshold — USMCA Schedule IV §6 — https://www.cbp.gov/trade/usmca — sha256:9d85df35...
-2. Indigenous preferred — E.O. 14112 — https://www2.gov.bc.ca/gov/content/business/procurement — sha256:9d85df35...
-3. CCA cost — WAC 173-442 — https://ecology.wa.gov/CCA — sha256:9d85df35...</div>
+      <div class="edit-area bid-content" id="edit-area" contenteditable="false">
+        <h1>Bid Response: Regional Hydrogen Hub Workforce Development Program</h1>
+<br>
+<p class="meta-line"><strong>To:</strong> US Department of Energy</p>
+<p class="meta-line"><strong>From:</strong> Cascadia Electrical Contractors LLC</p>
+<p class="meta-line"><strong>Date:</strong> October 2, 2026</p>
+<p class="meta-line"><strong>Re:</strong> Tender ID 01a0fb41-b0ce-7077-8099-aabbccddeeff</p>
+<br>
+<hr>
+<br>
+<h2>1. Company Overview</h2>
+<br>
+<p>Cascadia Electrical Contractors LLC is a Cascadia-based contractor with expertise in NAICS codes 238210, 238910. We operate in US-WA, US-OR and have prior performance on regional procurement contracts.</p>
+<br>
+<h2>2. Compliance Summary</h2>
+<br>
+<p>Cascadia OS compliance assessment indicates a match confidence of 52%.</p>
+<br>
+<table>
+<tr><th>Requirement</th><th>Status</th><th>Notes</th></tr>
+<tr><td class="">usmca.assessor</td><td class="ok">PASS</td><td class="">User RVC 65.0% exceeds threshold 60.0% (margin 5.0%)</td></tr>
+<tr><td class="">indigenous_procurement.assessor</td><td class="ok">PASS</td><td class="">PREFERRED; soft pass; engagement recommended per E.O. 14112</td></tr>
+<tr><td class="">cca.assessor</td><td class="ok">PASS</td><td class="">CCA applies; estimated compliance cost $100</td></tr>
+</table>
+<br>
+<h2>3. Regulatory Compliance</h2>
+<br>
+<p>- User RVC 65.0% exceeds USMCA 60% threshold (Schedule IV §6) [1]</p>
+<p>- Indigenous participation preferred per E.O. 14112 [2]</p>
+<p>- WA CCA compliance cost estimated at $100 (range $80-$120) [3]</p>
+<br>
+<h2>4. Scope of Work</h2>
+<br>
+<p>We propose to execute the work at a contract value of $3,500,000–$4,500,000 USD. Our team has the capacity, bonding, and prior performance to deliver on this scope.</p>
+<br>
+<h2>5. Indigenous Engagement Plan</h2>
+<br>
+<p>Per the tender's Indigenous participation requirements, we commit to engaging with the relevant Indigenous nations. Our engagement follows FPIC principles and UNDRIP. We will contact the Muckleshoot Tribal Council before commencing work.</p>
+<br>
+<h2>6. Provenance + Verification</h2>
+<br>
+<p>Every claim is traceable to a provenance-anchored source. The compliance assessment (sha256:a3940f16...) is verifiable on the Cascadia OS provenance ledger.</p>
+<br>
+<hr>
+<br>
+<div class="footnote"><span class="fn-num">[1]</span> RVC exceeds threshold — USMCA Schedule IV §6 — <span class="fn-hash">sha256:9d85df351d3a6c2d9c29470e536c8ff5b64487d14932f192ec1eeb37df2e4f84</span></div>
+<div class="footnote"><span class="fn-num">[2]</span> Indigenous preferred — E.O. 14112 — <span class="fn-hash">sha256:9d85df351d3a6c2d9c29470e536c8ff5b64487d14932f192ec1eeb37df2e4f84</span></div>
+<div class="footnote"><span class="fn-num">[3]</span> CCA cost — WAC 173-442 — <span class="fn-hash">sha256:9d85df351d3a6c2d9c29470e536c8ff5b64487d14932f192ec1eeb37df2e4f84</span></div>
+      </div>
       <div class="char-count" id="char-count"></div>
     </div>
     <div class="review-sidebar">
@@ -328,7 +329,7 @@ Every claim in this bid response is traceable to a provenance-anchored source. T
 
 <section class="os-section">
   <h2><span class="num">3</span> Submission Receipt</h2>
-  <p>After clicking "Submit Bid" above, a receipt appears here simulating the <code>bid_submitted</code> state:</p>
+  <p>After clicking "Submit Bid" above, a receipt appears here:</p>
   <div class="receipt" id="receipt">
     <h3>✅ Bid Submitted Successfully</h3>
     <div class="receipt-row"><span>Bid ID</span><span>bid-1790932148</span></div>
@@ -345,7 +346,7 @@ Every claim in this bid response is traceable to a provenance-anchored source. T
 <section class="os-section">
   <h2><span class="num">4</span> What Happens on Submit (Production)</h2>
   <ol>
-    <li>The bid content + provenance hash is submitted to the procurement portal's API (SAM.gov / BC Bid / WA Commerce / OR Buys)</li>
+    <li>The bid content + provenance hash is submitted to the procurement portal API (SAM.gov / BC Bid / WA Commerce / OR Buys)</li>
     <li>A <code>bid.submitted</code> event is published on the event bus</li>
     <li>If the bid cites an Indigenous-nation partnership, a <code>PartnershipCitation</code> event is published (triggering 5% revenue-share accounting)</li>
     <li>The bid's provenance hash is queued for the next monthly Merkle anchor to Polygon blockchain</li>
@@ -356,7 +357,7 @@ Every claim in this bid response is traceable to a provenance-anchored source. T
 
 <script>
 var editMode = false;
-var originalContent = document.getElementById('edit-area').textContent;
+var originalContent = document.getElementById('edit-area').innerHTML;
 
 function toggleEdit() {
     editMode = !editMode;
@@ -392,8 +393,8 @@ function downloadTxt() {
 }
 
 function downloadHtml() {
-    var content = '<!DOCTYPE html><html><head><title>Bid Response</title></head><body><pre>' +
-        document.getElementById('edit-area').textContent.replace(/</g, '&lt;') + '</pre><a href="index.html" class="os-home-fab" title="Return to home"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    var content = '<!DOCTYPE html><html><head><title>Bid Response</title></head><body>' +
+        document.getElementById('edit-area').innerHTML + '<a href="index.html" class="os-home-fab" title="Return to home"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
 </body></html>';
     var blob = new Blob([content], {type: 'text/html'});
     var a = document.createElement('a');
@@ -411,28 +412,22 @@ function submitBid() {
         'This cannot be undone. The bid will be:\n' +
         '  1. Submitted to the procurement portal API\n' +
         '  2. Provenance-anchored in the ledger\n' +
-        '  3. PartnershipCitation event published (for Indigenous revenue share)\n' +
+        '  3. PartnershipCitation event published\n' +
         '  4. Confirmation receipt generated\n\n' +
         'Are you sure you want to submit?'
     );
     if (ok) {
-        // Disable the submit button
         var btn = event.target;
         btn.disabled = true;
         btn.textContent = '✅ Submitted';
         btn.style.opacity = '0.5';
-
-        // Show the receipt
         var receipt = document.getElementById('receipt');
         receipt.classList.add('visible');
         document.getElementById('submit-time').textContent = new Date().toISOString();
-
-        // Scroll to receipt
         receipt.scrollIntoView({behavior: 'smooth'});
     }
 }
 
-// Initialize
 updateCharCount();
 document.getElementById('edit-area').addEventListener('input', updateCharCount);
 </script>
