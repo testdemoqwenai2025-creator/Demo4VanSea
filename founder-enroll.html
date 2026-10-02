@@ -275,6 +275,12 @@ a { color:var(--primary); text-decoration:none; }
       </div>
     </div>
 
+    <!-- Honeypot: real users never see this; bots fill it in -->
+    <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;" aria-hidden="true" tabindex="-1">
+      <label>Website (leave blank)</label>
+      <input type="text" name="company_website_hp" tabindex="-1" autocomplete="off">
+    </div>
+
     <!-- Consent -->
     <div class="form-section">
       <h3>📋 Consent</h3>
@@ -318,6 +324,11 @@ a { color:var(--primary); text-decoration:none; }
 </footer>
 
 <script>
+// === Cloudflare Worker endpoint ===
+// Replace with your deployed worker URL after running `wrangler deploy`.
+// See services/founder-enroll-worker/README.md for setup.
+const ENROLLMENT_API_BASE = 'https://founder-enroll.aibizvan360.workers.dev';
+
 var saved = localStorage.getItem('aibv360-theme');
 if (saved === 'light') document.documentElement.setAttribute('data-theme','light');
 document.getElementById('theme-btn').addEventListener('click',function(){
@@ -342,24 +353,59 @@ function submitForm(e){
   data.submitted_at = new Date().toISOString();
   data._synthetic = false; // Real enrollment, not synthetic
 
-  // Store in localStorage (until backend is deployed)
+  // Persist locally as fallback (in case Worker is down)
   var enrollments = JSON.parse(localStorage.getItem('founder-enrollments') || '[]');
   enrollments.push(data);
   localStorage.setItem('founder-enrollments', JSON.stringify(enrollments));
 
-  // Also generate downloadable JSON for manual collection
-  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'founder-enrollment-' + data.company_name.replace(/\s+/g,'-').toLowerCase() + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  // Try to POST to Cloudflare Worker; fall back to downloadable JSON on failure
+  fetch(ENROLLMENT_API_BASE + '/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function(res){
+    // Server-side success — show success UI with enrollment_id
+    showSuccess(data, res.enrollment_id, res.count);
+    // Track in Plausible
+    if (window.plausible) window.plausible('Founder Enrolled', {props: {city: data.city, sector: data.sector}});
+  }).catch(function(err){
+    // Worker unreachable — fall back to downloadable JSON
+    console.warn('Worker POST failed, generating offline JSON:', err);
+    var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'founder-enrollment-' + (data.company_name || 'unknown').replace(/\s+/g,'-').toLowerCase() + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showSuccess(data, null, null);
+  });
+}
 
+function showSuccess(data, enrollmentId, liveCount){
   // Show success
   setTimeout(function(){
     document.getElementById('form-container').style.display = 'none';
-    document.getElementById('success-container').style.display = 'block';
+    var sc = document.getElementById('success-container');
+    sc.style.display = 'block';
+    // If we got an enrollment_id from the server, show it + live cohort count
+    if (enrollmentId) {
+      var badge = document.createElement('div');
+      badge.style.cssText = 'font-size:11px;color:var(--fg3);margin-top:8px;font-family:monospace;';
+      badge.innerHTML = 'Enrollment ID: <strong style="color:var(--primary)">' + enrollmentId + '</strong>' +
+        (liveCount ? ' &middot; You\'re founder #' + liveCount + ' in the panel' : '');
+      sc.querySelector('.form-card.success-msg p').appendChild(badge);
+    } else {
+      var note = document.createElement('p');
+      note.style.cssText = 'font-size:11px;color:var(--fg3);margin-top:8px;';
+      note.textContent = 'Could not reach the server — a JSON file was downloaded. Email it to testdemoqwenai2025@gmail.com to complete enrollment.';
+      sc.querySelector('.form-card.success-msg p').appendChild(note);
+    }
   }, 500);
 }
 </script>

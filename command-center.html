@@ -176,10 +176,30 @@ prov-chain { position: relative; }
 .receipt h3 { color: var(--ok); font-size: 16px; margin-bottom: 8px; }
 .receipt-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
 
+/* === Tour Overlay === */
+.tour-overlay { position: fixed; inset: 0; z-index: 200; pointer-events: none; }
+.tour-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.001); pointer-events: auto; }
+.tour-spotlight { position: absolute; border: 2px solid var(--accent); border-radius: 8px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.65); transition: all .3s ease; pointer-events: none; }
+.tour-tooltip { position: absolute; background: var(--card); border: 1px solid var(--accent); border-radius: 12px; padding: 18px; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); pointer-events: auto; transition: all .3s ease; z-index: 201; }
+.tour-progress { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+.tour-tooltip h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+.tour-tooltip p { font-size: 13px; color: var(--fg-2); line-height: 1.55; margin-bottom: 14px; }
+.tour-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tour-actions button { padding: 6px 14px; border-radius: 6px; font-size: 12px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); cursor: pointer; }
+.tour-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.tour-actions button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+.tour-actions .tour-skip { margin-left: auto; color: var(--fg-2); background: transparent; border: none; font-size: 11px; }
+.tour-arrow { position: absolute; width: 14px; height: 14px; background: var(--card); border: 1px solid var(--accent); transform: rotate(45deg); }
+.tour-pill { position: fixed; bottom: 16px; right: 16px; z-index: 199; display: none; align-items: center; gap: 6px; padding: 8px 14px; background: var(--accent); color: var(--bg); border-radius: 999px; font-size: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 20px rgba(45,212,191,0.35); transition: transform .15s, box-shadow .15s; }
+.tour-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(45,212,191,0.45); }
+.tour-pill .pulse-dot { width: 8px; height: 8px; background: var(--bg); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+
 /* === Responsive === */
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .content { padding: 8px; }
+  .tour-pill { bottom: 8px; right: 8px; padding: 6px 10px; font-size: 11px; }
+  .tour-tooltip { max-width: calc(100vw - 32px); }
 }
 </style>
 </head>
@@ -301,6 +321,27 @@ prov-chain { position: relative; }
     <div class="ticker-content"><div class="ticker-track" id="ticker-track"></div></div>
   </div>
 </div>
+
+<!-- Tour Overlay -->
+<div class="tour-overlay" id="tour-overlay" style="display:none">
+  <div class="tour-backdrop" id="tour-backdrop" onclick="closeTour()"></div>
+  <div class="tour-spotlight" id="tour-spotlight"></div>
+  <div class="tour-tooltip" id="tour-tooltip">
+    <div class="tour-arrow" id="tour-arrow"></div>
+    <div class="tour-progress">Step <span id="tour-step-num">1</span> of <span id="tour-total">8</span> · <span id="tour-step-name">Welcome</span></div>
+    <h3 id="tour-title">Loading…</h3>
+    <p id="tour-desc">Loading tour…</p>
+    <div class="tour-actions">
+      <button onclick="prevTour()" id="tour-prev">← Prev</button>
+      <button onclick="nextTour()" class="primary" id="tour-next">Next →</button>
+      <button onclick="closeTour()" class="tour-skip">Skip tour</button>
+    </div>
+  </div>
+</div>
+<a href="?tour=1" class="tour-pill" id="tour-pill" title="Take the 2-minute guided tour">
+  <span class="pulse-dot"></span>
+  ★ Guided tour
+</a>
 
 <!-- Command Palette -->
 <div class="palette-overlay" id="palette" onclick="if(event.target===this)closePalette()">
@@ -426,20 +467,209 @@ let selectedTender = TENDERS[0];
 let editMode = false;
 let chatMessages = [];
 let theme = 'dark';
+let tourIndex = 0;
+let tourActive = false;
+
+// === Tour Steps ===
+const TOUR_STEPS = [
+  {name:'Activity Ticker', selector:'.ticker', title:'Live Activity Ticker', desc:'Real-time events from across the corridor: tender publications, compliance assessments, port congestion, vessel positions, and blockchain provenance anchors. Hover to pause the scroll. This is the heartbeat of Cascadia OS — every event has a timestamp and a source.', side:'top'},
+  {name:'Three Themes', selector:'#theme-btn', title:'Three Native Themes', desc:'Click to cycle: dark (default), light, and coastal. Coastal is our signature look — Pacific Northwest fog palette with evergreen accents. Theme persists across reloads via localStorage.', side:'bottom'},
+  {name:'Command Palette', selector:'button.cmd-btn', title:'Bloomberg-style Command Palette', desc:'Press ⌘+K (or Ctrl+K) anywhere to open. Type "matrix", "provenance", "AAPL <GO>", or ask a natural-language question like "Why does USMCA pass?". This is the keyboard-first operator workflow.', side:'bottom'},
+  {name:'Tender Dashboard', selector:'#tender-list', title:'Multi-Tender Dashboard', desc:'Live tenders fetched from SAM.gov, BC Bid, WA Commerce, and OR Buys. Each card shows match-confidence %, source, deadline days, and contract value. Click any tender to load it into the main panel. Status badge in the header shows whether the feed is live or cached.', side:'right'},
+  {name:'Match Confidence', selector:'#gauge-container', title:'Composite Match Confidence', desc:'A composite score from 6 assessors: USMCA, Indigenous participation, CCA, NAICS match, geography, and prevailing wage. ≥60% → BID. 40-60% → review. <40% → gather more info. The gauge color-codes the recommendation.', side:'bottom'},
+  {name:'Compliance Matrix', selector:'.tabs .tab:nth-child(2)', title:'Compliance Matrix — Every Claim Traceable', desc:'Switch to the Matrix tab. Every regulatory requirement is traceable to a citation (USMCA §6, E.O. 14112, WAC 173-442) and a SHA-256 provenance hash. This is what makes the bid legally defensible. Click any row to drill into the source.', side:'bottom', action: function() { switchTab('matrix', document.querySelectorAll('.tab')[1]); }},
+  {name:'Provenance Chain', selector:'.tabs .tab:nth-child(3)', title:'Provenance Chain — Blockchain-Anchored', desc:'Switch to the Provenance tab. Every claim in the bid is anchored to source documents via SHA-256 hashes, and a monthly Merkle root is published to the Polygon blockchain — making the audit trail tamper-evident and irreversible. Click any node to see the anchor detail.', side:'bottom', action: function() { switchTab('provenance', document.querySelectorAll('.tab')[2]); }},
+  {name:'AI Chat', selector:'.tabs .tab:nth-child(5)', title:'AI Chat — Ask Anything', desc:'Switch to the AI Chat tab. Ask "Why does USMCA pass?", "What if I change supply chain to 70% US?", or "Compare WA CCA vs OR CPP". The assistant answers in natural language, citing the same provenance hashes used elsewhere in the command center.', side:'bottom', action: function() { switchTab('chat', document.querySelectorAll('.tab')[4]); }}
+];
 
 // === Init ===
-function init() {
+async function init() {
+  // Show tour pill on first visit (not when tour is auto-started)
+  var isTourAuto = location.search.includes('tour=1');
+  var tourDismissed = localStorage.getItem('cas-os-tour-dismissed');
+  if (!isTourAuto && !tourDismissed) {
+    document.getElementById('tour-pill').style.display = 'inline-flex';
+  }
+
+  // Fetch live tenders (falls back to hardcoded TENDERS if fetch fails — GitHub Pages still serves offline)
+  try {
+    var r = await fetch('tenders.json', {cache: 'no-store'});
+    if (r.ok) {
+      var data = await r.json();
+      if (data.tenders && data.tenders.length) {
+        // Replace TENDERS with live data, preserving the schema the rest of the app expects
+        TENDERS = data.tenders.map(function(t) {
+          return {
+            id: t.id,
+            title: t.title,
+            source: t.source,
+            org: t.org,
+            deadline: t.deadline,
+            confidence: t.confidence,
+            action: t.action,
+            setAsides: t.setAsides,
+            valueLow: t.valueLow,
+            valueHigh: t.valueHigh,
+            geography: t.geography,
+            // Enrichments carried for future use
+            noticeId: t.noticeId,
+            postedDate: t.postedDate,
+            sol: t.sol,
+            setAside: t.setAside,
+            resourceUrl: t.resourceUrl,
+            description: t.description
+          };
+        });
+        var badge = document.getElementById('status-badge');
+        badge.textContent = 'live feed · ' + TENDERS.length + ' tenders';
+        badge.title = 'Tenders fetched from tenders.json — snapshot of services/tenders-ingestor output. Refresh interval: hourly in production.';
+      }
+    }
+  } catch (e) {
+    // Network or CORS failure — keep hardcoded TENDERS
+    var badge2 = document.getElementById('status-badge');
+    badge2.textContent = 'cached · ' + TENDERS.length + ' tenders';
+    badge2.title = 'Live fetch failed — showing cached tenders. In production this is hourly-refreshed.';
+  }
+
   renderTenderList();
   selectTender(TENDERS[0]);
   renderTicker();
   startTicker();
   document.addEventListener('keydown', function(e) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openPalette(); }
-    if (e.key === 'Escape') closePalette();
+    if (e.key === 'Escape') { closePalette(); closeTour(); }
+    if (tourActive && e.key === 'ArrowRight') { e.preventDefault(); nextTour(); }
+    if (tourActive && e.key === 'ArrowLeft') { e.preventDefault(); prevTour(); }
   });
-  // Init theme
   var saved = localStorage.getItem('cas-os-theme') || 'dark';
   setTheme(saved);
+
+  // Auto-start tour if ?tour=1
+  if (isTourAuto) {
+    setTimeout(startTour, 600);
+  }
+}
+
+// === Tour Logic ===
+function startTour() {
+  tourIndex = 0;
+  tourActive = true;
+  document.getElementById('tour-overlay').style.display = 'block';
+  document.getElementById('tour-total').textContent = TOUR_STEPS.length;
+  document.getElementById('tour-pill').style.display = 'none';
+  showTourStep();
+}
+
+function showTourStep() {
+  var step = TOUR_STEPS[tourIndex];
+  document.getElementById('tour-step-num').textContent = tourIndex + 1;
+  document.getElementById('tour-step-name').textContent = step.name;
+  document.getElementById('tour-title').textContent = step.title;
+  document.getElementById('tour-desc').textContent = step.desc;
+  document.getElementById('tour-prev').disabled = (tourIndex === 0);
+  document.getElementById('tour-prev').style.opacity = (tourIndex === 0) ? '0.4' : '1';
+  document.getElementById('tour-next').textContent = (tourIndex === TOUR_STEPS.length - 1) ? 'Finish ✓' : 'Next →';
+  if (step.action) {
+    try { step.action(); } catch (e) {}
+  }
+  // Wait for any tab switch DOM update, then position
+  setTimeout(function() {
+    var target = document.querySelector(step.selector);
+    if (!target) {
+      // Fallback: position tooltip center-screen
+      var tt = document.getElementById('tour-tooltip');
+      tt.style.top = (window.innerHeight / 2 - 100) + 'px';
+      tt.style.left = (window.innerWidth / 2 - 180) + 'px';
+      document.getElementById('tour-spotlight').style.display = 'none';
+      document.getElementById('tour-arrow').style.display = 'none';
+      return;
+    }
+    target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+    setTimeout(function() { positionTour(target, step.side); }, 350);
+  }, 100);
+}
+
+function positionTour(target, side) {
+  var rect = target.getBoundingClientRect();
+  var padding = 6;
+  var spotlight = document.getElementById('tour-spotlight');
+  spotlight.style.display = 'block';
+  spotlight.style.top = (rect.top - padding) + 'px';
+  spotlight.style.left = (rect.left - padding) + 'px';
+  spotlight.style.width = (rect.width + padding * 2) + 'px';
+  spotlight.style.height = (rect.height + padding * 2) + 'px';
+
+  var tooltip = document.getElementById('tour-tooltip');
+  var ttRect = tooltip.getBoundingClientRect();
+  var ttW = Math.min(360, ttRect.width || 360);
+  var ttH = ttRect.height || 200;
+  var arrow = document.getElementById('tour-arrow');
+  arrow.style.display = 'block';
+
+  var top, left, arrowTop, arrowLeft, arrowTransform;
+  // Default: tooltip below target
+  if (side === 'top' || (side === 'bottom' && rect.bottom + ttH + 20 > window.innerHeight)) {
+    // Place above target
+    top = Math.max(12, rect.top - ttH - 20);
+    left = Math.max(12, Math.min(window.innerWidth - ttW - 12, rect.left + rect.width / 2 - ttW / 2));
+    arrowTop = top + ttH - 7;
+    arrowLeft = rect.left + rect.width / 2 - 7;
+    arrowTransform = 'rotate(225deg)';
+  } else if (side === 'right') {
+    // Right side: tooltip to the right of target
+    top = Math.max(12, rect.top + rect.height / 2 - ttH / 2);
+    left = Math.min(window.innerWidth - ttW - 12, rect.right + 20);
+    if (left + ttW > window.innerWidth) {
+      // Not enough space on right, place below
+      top = Math.min(window.innerHeight - ttH - 12, rect.bottom + 20);
+      left = Math.max(12, Math.min(window.innerWidth - ttW - 12, rect.left + rect.width / 2 - ttW / 2));
+      arrowTop = top - 7;
+      arrowLeft = rect.left + rect.width / 2 - 7;
+      arrowTransform = 'rotate(45deg)';
+    } else {
+      arrowTop = top + ttH / 2 - 7;
+      arrowLeft = left - 7;
+      arrowTransform = 'rotate(315deg)';
+    }
+  } else {
+    // bottom (default)
+    top = Math.min(window.innerHeight - ttH - 12, rect.bottom + 20);
+    left = Math.max(12, Math.min(window.innerWidth - ttW - 12, rect.left + rect.width / 2 - ttW / 2));
+    arrowTop = top - 7;
+    arrowLeft = rect.left + rect.width / 2 - 7;
+    arrowTransform = 'rotate(45deg)';
+  }
+
+  tooltip.style.top = top + 'px';
+  tooltip.style.left = left + 'px';
+  arrow.style.top = arrowTop + 'px';
+  arrow.style.left = arrowLeft + 'px';
+  arrow.style.transform = arrowTransform;
+}
+
+function nextTour() {
+  if (tourIndex < TOUR_STEPS.length - 1) {
+    tourIndex++;
+    showTourStep();
+  } else {
+    closeTour();
+  }
+}
+
+function prevTour() {
+  if (tourIndex > 0) {
+    tourIndex--;
+    showTourStep();
+  }
+}
+
+function closeTour() {
+  tourActive = false;
+  document.getElementById('tour-overlay').style.display = 'none';
+  localStorage.setItem('cas-os-tour-dismissed', '1');
+  // Don't auto-show pill again after manual close
+  document.getElementById('tour-pill').style.display = 'none';
 }
 
 function renderTenderList() {
@@ -769,6 +999,15 @@ function setTheme(t) {
 
 // === Boot ===
 init();
+
+// Re-position tour on resize
+window.addEventListener('resize', function() {
+  if (tourActive) {
+    var step = TOUR_STEPS[tourIndex];
+    var target = document.querySelector(step.selector);
+    if (target) positionTour(target, step.side);
+  }
+});
 </script>
 </body>
 </html>
