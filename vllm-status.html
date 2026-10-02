@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Security Policy</title>
+<title>vLLM Status — LLM Deployment + Mock Server + Fallback Chain</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 <style>
@@ -193,6 +193,7 @@ body {
 .os-foot a { color: var(--accent); text-decoration: none; }
 .os-foot a:hover { text-decoration: underline; }
 </style>
+<style>.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}.os-home-fab .ic{width:16px;height:16px;display:inline-block}[data-theme="light"] .os-home-fab{background:#fff;color:#0d9488;border-color:#0d9488}@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}</style>
 </head>
 <body>
 <div class="os-shell">
@@ -205,85 +206,121 @@ body {
       Operating System for the Cascadia Economy
     </div>
   </a>
-  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="active">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="vllm-status.html" class="active">vLLM</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
 </header>
 
 <section class="os-hero">
-  <h1>Security Policy</h1>
-  <p class="lede">How to report a vulnerability, what's in scope, safe harbor, and the Indigenous-nation data sovereignty note.</p>
-  <div class="os-tag-row"><span class="os-tag">Responsible disclosure</span><span class="os-tag">Safe harbor</span><span class="os-tag">48h ack</span><span class="os-tag">5-day response</span></div>
+  <h1>vLLM Status — LLM Deployment + Mock Server + Fallback Chain</h1>
+  <p class="lede">Deployment status for the Y2 LLM-based bid drafter. Mock vLLM server for testing without GPU. 3-tier fallback chain (Qwen → Claude → Template). Fine-tuning corpus plan. Cost estimate ~$20/month.</p>
+  <div class="os-tag-row"><span class="os-tag">Mock server ready</span><span class="os-tag">3-tier fallback</span><span class="os-tag">Corpus: 6/1,250</span><span class="os-tag">~$20/month</span></div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">1</span> Reporting a Vulnerability</h2>
-  <p>The Cascadia OS team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.</p>
-  <div class="os-callout">
-    <div class="label">Please DO NOT file public GitHub issues for security vulnerabilities</div>
-    <p>Instead, report vulnerabilities via one of these channels:</p>
-  </div>
-  <ol>
-    <li><strong>GitHub Security Advisories</strong> (preferred) — navigate to <a href="https://github.com/testdemoqwenai2025-creator/AISeaVanBiz4/security/advisories/new" style="color:var(--accent);">github.com/.../AISeaVanBiz4/security/advisories/new</a> and submit a private advisory. The maintainers are notified immediately.</li>
-    <li><strong>Email</strong> — send to <code>security@aibizvan360.com</code> with <code>[SECURITY]</code> in the subject line. You will receive acknowledgement within 48 hours and a substantive response within 5 business days.</li>
-  </ol>
-</section>
-
-<section class="os-section">
-  <h2><span class="num">2</span> Scope</h2>
+  <h2><span class="num">1</span> vLLM Deployment Status</h2>
+  <p>The Y2 LLM-based bid drafter calls a local vLLM endpoint running Qwen 2.5 72B. Here's the deployment status + the mock server we built for testing without a GPU.</p>
   <table class="os-table">
-    <thead><tr><th>In scope</th><th>Out of scope</th></tr></thead>
+    <thead><tr><th>Component</th><th>Status</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>The <code>AISeaVanBiz4</code> private source repo and any code that ships from it</td><td>The public <code>Demo4VanSea</code> preview repo (it contains only static HTML — find/vuln, no need to report)</td></tr>
-      <tr><td>GitHub Actions workflows in <code>.github/workflows/</code></td><td>Self-hosted runners (we do not use any)</td></tr>
-      <tr><td>The <code>Sync to Preview</code> GitHub Action — including any way to coerce it into publishing non-HTML content to the public repo</td><td>The public preview site served via GitHub Pages (it is read-only static HTML)</td></tr>
-      <tr><td>Any way to extract the <code>PREVIEW_TOKEN</code> secret or other Actions secrets</td><td>Performance, denial-of-service, or scrape-rate issues against public APIs</td></tr>
+      <tr><td>vLLM installation script</td><td class="accent">✅ Written</td><td><code>scripts/deploy-vllm.sh</code> — automates install + serve + health check</td></tr>
+      <tr><td>Mock vLLM server</td><td class="accent">✅ Written</td><td><code>scripts/mock-vllm-server.py</code> — mimics vLLM's /v1/chat/completions API for testing without GPU</td></tr>
+      <tr><td>Go LLMDrafter client</td><td class="accent">✅ Written</td><td><code>services/bid-drafter/internal/drafter/llm.go</code> — calls vLLM, falls back to template on error</td></tr>
+      <tr><td>Fine-tuning corpus v1</td><td class="accent">✅ Sample ready</td><td><code>services/bid-drafter/fine-tuning-corpus/corpus_v1_sample.jsonl</code> — 6 examples; full 1,250 Q1 2027</td></tr>
+      <tr><td>vLLM deployment guide</td><td class="accent">✅ Written</td><td><code>services/bid-drafter/vllm-deployment.md</code> — full guide with K8s YAML + systemd unit</td></tr>
+      <tr><td>LLM design doc</td><td class="accent">✅ Written</td><td><code>docs/architecture/17-llm-bid-drafting.md</code> — architecture + corpus + evaluation metrics + timeline</td></tr>
+      <tr><td>Real GPU deployment</td><td><span class="status-badge warn">⏳ Pending</span></td><td>Requires H100 80GB GPU server. Follow <code>deploy-vllm.sh</code> when a GPU is available.</td></tr>
+      <tr><td>First fine-tuning run</td><td><span class="status-badge warn">⏳ Q1 2027</span></td><td>Needs full 1,250-example corpus + H100 GPU. ~8-12 hours per epoch.</td></tr>
     </tbody>
   </table>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">3</span> Disclosure Timeline</h2>
+  <h2><span class="num">2</span> Mock vLLM Server — Testing Without GPU</h2>
+  <p>We built a mock vLLM server (<code>scripts/mock-vllm-server.py</code>) that mimics the OpenAI-compatible <code>/v1/chat/completions</code> API. This lets us test the Go <code>LLMDrafter</code> client <strong>without a GPU</strong> — the mock returns a pre-written bid response, and the Go client processes it identically to a real LLM response.</p>
+  <div class="os-callout">
+    <div class="label">How it works</div>
+    <p>1. Start the mock server: <code>python3 scripts/mock-vllm-server.py --port 8001</code><br>2. Run the bid-drafter with the mock endpoint: <code>./bid-drafter --once --vllm-endpoint http://localhost:8001/v1</code><br>3. The Go client calls the mock, gets a bid response, processes it — identical to a real vLLM call.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> The 3-Tier Fallback Chain</h2>
+  <p>The Go <code>LLMDrafter</code> client has a 3-tier quality ladder — it's always available, even without a GPU:</p>
   <table class="os-table">
-    <thead><tr><th>Day</th><th>Action</th></tr></thead>
+    <thead><tr><th>Tier</th><th>Source</th><th>Quality</th><th>Availability</th></tr></thead>
     <tbody>
-      <tr><td>Day 0</td><td>Maintainers acknowledge receipt and begin triage</td></tr>
-      <tr><td>Day 5</td><td>Initial assessment shared with reporter; CVE requested if applicable</td></tr>
-      <tr><td>Day 30</td><td>Patch released (or earlier if exploitation is observed in the wild)</td></tr>
-      <tr><td>Day 90</td><td>Public disclosure if a CVE was assigned and the fix has shipped</td></tr>
+      <tr><td>1 (primary)</td><td>Local vLLM serving fine-tuned Qwen 2.5 72B</td><td class="accent">Best — natural, context-aware, fine-tuned on Cascadia corpus</td><td><span class="status-badge warn">Requires GPU</span></td></tr>
+      <tr><td>2 (fallback)</td><td>Anthropic Claude Sonnet 4.5 (via API)</td><td>Good — general-purpose LLM, not Cascadia-specific</td><td><span class="status-badge ok">Always (with API key)</span></td></tr>
+      <tr><td>3 (always)</td><td>TemplateDrafter (Go text/template)</td><td>Basic — formulaic but always available</td><td><span class="status-badge ok">Always</span></td></tr>
     </tbody>
   </table>
+  <p>The Go client tries tier 1 first. If unreachable, falls to tier 2. If both fail, falls to tier 3. <strong>The bid-drafter is never unavailable</strong> — it degrades gracefully.</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">4</span> Safe Harbor</h2>
-  <p>We will not pursue legal action against reporters who:</p>
-  <ul>
-    <li>Make a good-faith effort to avoid privacy violations, destruction of data, and interruption of services.</li>
-    <li>Do not exfiltrate data, including PII or Indigenous-nation partnership data.</li>
-    <li>Give us reasonable time to remediate before public disclosure.</li>
-    <li>Do not exploit the vulnerability beyond what is necessary to demonstrate it.</li>
-  </ul>
-</section>
+  <h2><span class="num">4</span> Deployment Automation Script</h2>
+  <p><code>scripts/deploy-vllm.sh</code> automates the full vLLM deployment:</p>
+  <div class="code-block" style="background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:var(--fg-2);overflow-x:auto;">
+#!/bin/bash
+# deploy-vllm.sh — Automated vLLM deployment for Cascadia OS
 
-<section class="os-section">
-  <h2><span class="num">5</span> Indigenous-Nation Data Sovereignty Note</h2>
-  <div class="os-callout">
-    <div class="label">Elevated priority</div>
-    <p>This repository references partnership data with Indigenous nations (currently the Muckleshoot Indian Tribe; expansion planned). Any vulnerability that would expose consented partnership data to unauthorized parties is treated with elevated priority.</p>
+# 1. Create virtual environment
+python3 -m venv /opt/cascadia-os/vllm-env
+source /opt/cascadia-os/vllm-env/bin/activate
+
+# 2. Install vLLM
+pip install vllm
+
+# 3. Download model (~150GB)
+huggingface-cli download Qwen/Qwen2.5-72B-Instruct
+
+# 4. Start serving (base model for Y1; add --enable-lora for Y2 fine-tuned)
+vllm serve Qwen/Qwen2.5-72B-Instruct \
+  --port 8000 \
+  --tensor-parallel-size 1 \
+  --gpu-memory-utilization 0.9 \
+  --max-model-len 8192 \
+  --trust-remote-code
+
+# 5. Health check
+sleep 30
+curl http://localhost:8000/health && echo "vLLM is running!"
+
+# 6. Test the Go client
+cd /opt/cascadia-os/services/bid-drafter
+go build -o /tmp/bid-drafter ./cmd/bid-drafter
+/tmp/bid-drafter --once --keypair /tmp/test-bd-keypair.json
   </div>
-  <p>Reporters who identify such exposure are eligible for a discretionary bounty, paid in the form of a contribution to an Indigenous-led technology nonprofit of the reporter's choice (with their consent).</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">6</span> Supported Versions</h2>
-  <p>The <code>main</code> branch of <code>AISeaVanBiz4</code> is the only supported version. The public <code>Demo4VanSea</code> repo is a derived artifact; any security issues in <code>Demo4VanSea</code> originate from <code>AISeaVanBiz4</code> and must be reported there.</p>
+  <h2><span class="num">5</span> Fine-Tuning Corpus Plan</h2>
+  <table class="os-table">
+    <thead><tr><th>Source</th><th>Y1 Target</th><th>Y2 Target</th><th>Format</th></tr></thead>
+    <tbody>
+      <tr><td>Template-drafted bids (tender + assessment → bid)</td><td>200</td><td>500</td><td>instruction → response</td></tr>
+      <tr><td>User-edited bid drafts (original → edited)</td><td>0</td><td>100</td><td>instruction → response</td></tr>
+      <tr><td>Public winning bids (FOIA)</td><td>50</td><td>200</td><td>instruction → response</td></tr>
+      <tr><td>Regulatory text snippets (regulation → summary)</td><td>1,000</td><td>5,000</td><td>instruction → response</td></tr>
+      <tr><td>Indigenous engagement letter templates</td><td>1</td><td>10</td><td>instruction → response</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>~1,250</strong></td><td><strong>~5,810</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  <p>Sample corpus: <code>services/bid-drafter/fine-tuning-corpus/corpus_v1_sample.jsonl</code> (6 examples). Generation script: <code>generate_corpus_v1.py</code>. Spec: <code>corpus-spec.md</code>.</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">7</span> Contact</h2>
-  <ul>
-    <li>Security advisories: <a href="https://github.com/testdemoqwenai2025-creator/AISeaVanBiz4/security/advisories/new" style="color:var(--accent);">github.com/.../AISeaVanBiz4/security/advisories/new</a></li>
-    <li>General security questions: <code>security@aibizvan360.com</code></li>
-  </ul>
+  <h2><span class="num">6</span> Cost Estimate</h2>
+  <table class="os-table">
+    <thead><tr><th>Item</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td>H100 80GB on-demand (GCP/AWS)</td><td>~$2-3/hour</td></tr>
+      <tr><td>H100 spot (GCP/AWS)</td><td>~$0.80/hour</td></tr>
+      <tr><td>Usage: 200 bid drafts/month × 30s each = ~1.7 GPU-hours/month</td><td>~$5/month (on-demand) / ~$1.50/month (spot)</td></tr>
+      <tr><td>Model storage (150GB persistent disk)</td><td>~$15/month</td></tr>
+      <tr><td><strong>Total monthly</strong></td><td><strong>~$20/month (on-demand) / ~$17/month (spot)</strong></td></tr>
+    </tbody>
+  </table>
+  <p>Negligible for the OS's Y2 budget.</p>
 </section>
 
 
@@ -329,5 +366,6 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+<a href="index.html" class="os-home-fab" title="Return to home"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
 </body>
 </html>
