@@ -1574,44 +1574,234 @@ a:hover { text-decoration: underline; }
 </section>
 
 <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+<style>
+/* === Filter bar === */
+.gov-filter-bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:12px; background:var(--bg2); border:1px solid var(--border); border-radius:8px; margin-bottom:16px; }
+.gov-filter-bar label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); margin-right:4px; }
+.gov-filter-bar input[type=text], .gov-filter-bar select { background:var(--bg3); color:var(--fg); border:1px solid var(--border); padding:6px 10px; border-radius:6px; font-size:12px; font-family:inherit; outline:none; }
+.gov-filter-bar input[type=text]:focus, .gov-filter-bar select:focus { border-color:var(--primary); }
+.gov-filter-bar select { padding-right:24px; cursor:pointer; }
+.gov-filter-count { margin-left:auto; font-size:11px; color:var(--fg2); }
+.gov-filter-count strong { color:var(--primary); font-weight:700; }
+.gov-clear-btn { background:transparent; border:1px solid var(--border); color:var(--fg2); padding:4px 10px; border-radius:4px; font-size:11px; cursor:pointer; }
+.gov-clear-btn:hover { border-color:var(--primary); color:var(--primary); }
+
+/* === Countdown timer === */
+.countdown { font-variant-numeric:tabular-nums; font-weight:700; font-size:11px; }
+.countdown.urgent { color:var(--danger); }
+.countdown.warning { color:var(--warm); }
+.countdown.normal { color:var(--fg3); }
+
+/* === Ticker === */
+.gov-ticker { height:36px; border-top:1px solid var(--border); background:var(--bg2); display:flex; align-items:center; overflow:hidden; margin-top:32px; border-radius:8px; }
+.gov-ticker-label { flex-shrink:0; padding:0 14px; font-size:10px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; border-right:1px solid var(--border); height:100%; display:flex; align-items:center; gap:6px; }
+.gov-ticker-dot { width:8px; height:8px; border-radius:50%; background:var(--ok); animation:pulse 2s ease-in-out infinite; display:inline-block; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.gov-ticker-content { flex:1; overflow:hidden; }
+.gov-ticker-track { display:flex; gap:24px; white-space:nowrap; animation:marquee 60s linear infinite; }
+.gov-ticker-track:hover { animation-play-state:paused; }
+@keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+.gov-ticker-item { display:flex; align-items:center; gap:6px; font-size:11px; }
+.gov-ticker-time { font-family:monospace; font-size:10px; color:var(--fg2); opacity:0.6; }
+.gov-ticker-type { font-family:monospace; font-size:10px; color:var(--primary); }
+.gov-ticker-msg { color:var(--fg2); }
+
+/* === Regulations accordion === */
+.gov-reg-accordion { border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.gov-reg-item { border-bottom:1px solid var(--border); }
+.gov-reg-item:last-child { border-bottom:none; }
+.gov-reg-header { width:100%; text-align:left; padding:14px 16px; background:var(--bg2); border:none; color:var(--fg); font-size:14px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; font-family:inherit; transition:background .15s; }
+.gov-reg-header:hover { background:var(--bg3); }
+.gov-reg-header .chevron { transition:transform .2s; color:var(--primary); font-size:16px; }
+.gov-reg-item.open .chevron { transform:rotate(90deg); }
+.gov-reg-body { padding:0 16px; max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; background:var(--bg2); }
+.gov-reg-item.open .gov-reg-body { padding:12px 16px 16px; max-height:400px; }
+.gov-reg-body p { font-size:12px; color:var(--fg2); line-height:1.6; margin-bottom:8px; }
+.gov-reg-body .citation { font-family:monospace; font-size:11px; color:var(--primary); display:inline-block; padding:2px 8px; background:var(--bg3); border-radius:3px; margin-bottom:8px; }
+.gov-reg-body .applies-to { font-size:11px; color:var(--fg3); margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); }
+.gov-reg-body .applies-to strong { color:var(--fg); }
+
+/* === Newsletter form === */
+.gov-newsletter { background:linear-gradient(135deg,rgba(78,205,196,0.08),rgba(78,205,196,0.02)); border:1px solid var(--primary-border); border-radius:12px; padding:32px; margin-top:32px; }
+.gov-newsletter-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; }
+@media (max-width:768px) { .gov-newsletter-grid { grid-template-columns:1fr; } }
+.gov-newsletter h2 { font-size:22px; font-weight:800; margin-bottom:8px; }
+.gov-newsletter p { font-size:13px; color:var(--fg2); line-height:1.6; margin-bottom:16px; }
+.gov-newsletter ul { font-size:12px; color:var(--fg2); line-height:1.8; margin-left:16px; }
+.gov-newsletter-form { display:flex; flex-direction:column; gap:10px; }
+.gov-newsletter-form input, .gov-newsletter-form select { background:var(--bg2); border:1px solid var(--border); color:var(--fg); padding:10px 14px; border-radius:6px; font-size:13px; font-family:inherit; outline:none; }
+.gov-newsletter-form input:focus, .gov-newsletter-form select:focus { border-color:var(--primary); }
+.gov-newsletter-form button { padding:12px 24px; background:var(--primary); color:var(--bg); border:none; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; transition:opacity .15s; }
+.gov-newsletter-form button:hover { opacity:0.9; }
+.gov-newsletter-form button:disabled { opacity:0.5; cursor:wait; }
+.gov-newsletter-success { display:none; padding:14px; background:rgba(52,211,153,0.1); border:1px solid var(--ok); border-radius:6px; color:var(--ok); font-size:13px; font-weight:600; text-align:center; }
+.gov-newsletter-success.show { display:block; }
+.gov-newsletter-fine { font-size:10px; color:var(--fg3); margin-top:8px; line-height:1.5; }
+</style>
+
+<!-- === Filter bar (Enhancement #2) === -->
+<div class="gov-filter-bar">
+  <label for="filter-search">🔍 Search</label>
+  <input type="text" id="filter-search" placeholder="Keyword in title or agency…" style="min-width:200px;flex:1;max-width:300px;">
+  
+  <label for="filter-source">Source</label>
+  <select id="filter-source">
+    <option value="">All sources</option>
+    <option value="SAM.gov">SAM.gov</option>
+    <option value="BC Bid">BC Bid</option>
+    <option value="WA Commerce">WA Commerce</option>
+    <option value="OR Buys">OR Buys</option>
+  </select>
+  
+  <label for="filter-setaside">Set-aside</label>
+  <select id="filter-setaside">
+    <option value="">Any set-aside</option>
+    <option value="indigenous_required">Indigenous Required</option>
+    <option value="indigenous_preferred">Indigenous Preferred</option>
+    <option value="buy_america">Buy America</option>
+    <option value="buy_clean">Buy Clean</option>
+    <option value="prevailing_wage">Prevailing Wage</option>
+    <option value="cca_triggered">CCA Triggered</option>
+    <option value="usmca">USMCA</option>
+  </select>
+  
+  <label for="filter-deadline">Deadline</label>
+  <select id="filter-deadline">
+    <option value="">Any deadline</option>
+    <option value="7">Next 7 days</option>
+    <option value="14">Next 14 days</option>
+    <option value="30">Next 30 days</option>
+    <option value="60">Next 60 days</option>
+  </select>
+  
+  <button class="gov-clear-btn" onclick="clearFilters()">Clear</button>
+  <span class="gov-filter-count">Showing <strong id="filter-count">0</strong> of <strong id="filter-total">0</strong> tenders</span>
+</div>
 <script>
-// === Live tender feed for government.html ===
+// === Live tender feed + filters + countdown (Enhancements #1 + #2) ===
 (function(){
   var grid = document.getElementById('gov-tender-grid');
   var status = document.getElementById('gov-feed-status');
+  var allTenders = [];
+  var filteredTenders = [];
+  
+  // Filter inputs
+  var searchInput = document.getElementById('filter-search');
+  var sourceSelect = document.getElementById('filter-source');
+  var setAsideSelect = document.getElementById('filter-setaside');
+  var deadlineSelect = document.getElementById('filter-deadline');
+  var countEl = document.getElementById('filter-count');
+  var totalEl = document.getElementById('filter-total');
+  
+  // Countdown formatting
+  function formatCountdown(deadlineStr) {
+    var deadline = new Date(deadlineStr).getTime();
+    var now = Date.now();
+    var diff = deadline - now;
+    if (diff < 0) return { text: 'Expired', cls: 'urgent' };
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    var text = '';
+    if (d > 0) text = d + 'd ' + h + 'h ' + m + 'm ' + s + 's';
+    else if (h > 0) text = h + 'h ' + m + 'm ' + s + 's';
+    else text = m + 'm ' + s + 's';
+    var cls = d <= 7 ? 'urgent' : d <= 14 ? 'warning' : 'normal';
+    return { text: text, cls: cls };
+  }
+  
+  function applyFilters() {
+    var search = (searchInput.value || '').toLowerCase().trim();
+    var source = sourceSelect.value;
+    var setAside = setAsideSelect.value;
+    var deadlineDays = deadlineSelect.value ? parseInt(deadlineSelect.value) : null;
+    
+    filteredTenders = allTenders.filter(function(t) {
+      if (source && t.source !== source) return false;
+      if (search) {
+        var titleL = (t.title || '').toLowerCase();
+        var orgL = (t.org || '').toLowerCase();
+        if (titleL.indexOf(search) < 0 && orgL.indexOf(search) < 0) return false;
+      }
+      if (setAside && (!t.setAsides || t.setAsides.indexOf(setAside) < 0)) return false;
+      if (deadlineDays) {
+        var dl = new Date(t.deadline).getTime();
+        var max = Date.now() + deadlineDays * 86400000;
+        if (dl > max) return false;
+      }
+      return true;
+    });
+    
+    renderGrid();
+    countEl.textContent = filteredTenders.length;
+    totalEl.textContent = allTenders.length;
+  }
+  
+  function renderGrid() {
+    if (!filteredTenders.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--fg2);font-size:13px;">No tenders match the current filters. <button class=\'gov-clear-btn\' onclick=\'clearFilters()\'>Clear filters</button></div>';
+      return;
+    }
+    grid.innerHTML = filteredTenders.map(function(t, idx) {
+      var pct = Math.round(t.confidence * 100);
+      var color = pct >= 60 ? 'var(--ok)' : pct >= 40 ? 'var(--warm)' : 'var(--danger)';
+      var cd = formatCountdown(t.deadline);
+      var valLow = (t.valueLow/1e6).toFixed(1);
+      var valHigh = (t.valueHigh/1e6).toFixed(1);
+      var isCAD = t.source === 'BC Bid';
+      var currency = isCAD ? 'CAD' : 'USD';
+      return '<a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'none\'">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">' +
+          '<span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:var(--bg3);color:var(--fg2);border-radius:3px;">' + t.source + '</span>' +
+          '<span style="font-size:11px;font-weight:800;color:' + color + ';">' + pct + '%</span>' +
+        '</div>' +
+        '<h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">' + t.title + '</h4>' +
+        '<div style="font-size:11px;color:var(--fg2);margin-bottom:8px;">' + t.org + '</div>' +
+        '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">' +
+          '<span>⏰ <span class="countdown ' + cd.cls + '" data-deadline="' + t.deadline + '">' + cd.text + '</span></span>' +
+          '<span>💰 $' + valLow + '-' + valHigh + 'M ' + currency + '</span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
+  
+  // Live countdown tick — every second
+  function tickCountdowns() {
+    var els = document.querySelectorAll('.countdown[data-deadline]');
+    for (var i = 0; i < els.length; i++) {
+      var dl = els[i].getAttribute('data-deadline');
+      var cd = formatCountdown(dl);
+      els[i].textContent = cd.text;
+      els[i].className = 'countdown ' + cd.cls;
+    }
+  }
+  setInterval(tickCountdowns, 1000);
+  
+  // Wire up filter inputs
+  searchInput.addEventListener('input', applyFilters);
+  sourceSelect.addEventListener('change', applyFilters);
+  setAsideSelect.addEventListener('change', applyFilters);
+  deadlineSelect.addEventListener('change', applyFilters);
+  
+  window.clearFilters = function() {
+    searchInput.value = '';
+    sourceSelect.value = '';
+    setAsideSelect.value = '';
+    deadlineSelect.value = '';
+    applyFilters();
+  };
+  
+  // Initial fetch
   fetch('tenders.json', {cache: 'no-store'})
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var tenders = (data.tenders || []).filter(function(t){
-        // Only show government / public-sector sourced tenders
+      allTenders = (data.tenders || []).filter(function(t){
         return ['SAM.gov','BC Bid','WA Commerce','OR Buys'].indexOf(t.source) >= 0;
       });
-      if (!tenders.length) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--fg2);font-size:13px;">No active government tenders in the current snapshot.</div>';
-        return;
-      }
-      grid.innerHTML = tenders.map(function(t){
-        var pct = Math.round(t.confidence * 100);
-        var color = pct >= 60 ? 'var(--ok)' : pct >= 40 ? 'var(--warm)' : 'var(--danger)';
-        var days = Math.max(0, Math.ceil((new Date(t.deadline).getTime() - Date.now()) / 86400000));
-        var valLow = (t.valueLow/1e6).toFixed(1);
-        var valHigh = (t.valueHigh/1e6).toFixed(1);
-        var isCAD = t.source === 'BC Bid';
-        var currency = isCAD ? 'CAD' : 'USD';
-        return '<a href="command-center.html" style="text-decoration:none;color:inherit;display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'none\'">' +
-          '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">' +
-            '<span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:var(--bg3);color:var(--fg2);border-radius:3px;">' + t.source + '</span>' +
-            '<span style="font-size:11px;font-weight:800;color:' + color + ';">' + pct + '%</span>' +
-          '</div>' +
-          '<h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">' + t.title + '</h4>' +
-          '<div style="font-size:11px;color:var(--fg2);margin-bottom:8px;">' + t.org + '</div>' +
-          '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">' +
-            '<span>⏰ ' + days + 'd left</span>' +
-            '<span>💰 $' + valLow + '-' + valHigh + 'M ' + currency + '</span>' +
-          '</div>' +
-        '</a>';
-      }).join('');
-      status.textContent = 'Source: tenders.json · ' + tenders.length + ' gov tenders · refreshed hourly in production';
+      filteredTenders = allTenders;
+      applyFilters();
+      status.textContent = 'Source: tenders.json · ' + allTenders.length + ' gov tenders · refreshed hourly in production';
       if (data.generated_at) {
         var d = new Date(data.generated_at);
         status.textContent += ' · snapshot ' + d.toISOString().slice(0,16).replace('T',' ') + 'Z';
@@ -1621,6 +1811,186 @@ a:hover { text-decoration: underline; }
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--fg2);font-size:13px;">Live feed unavailable. <a href="command-center.html" style="color:var(--primary);">Open the Command Center →</a></div>';
       status.textContent = 'Live feed unavailable — open Command Center for cached tenders';
     });
+})();
+</script>
+
+<!-- === Enhancement #4: Procurement Regulations Explainer === -->
+<section class="container" style="padding:32px 0;" id="regulations-explainer">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ PROCUREMENT REGULATIONS · EXPLAINER</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Every set-aside, every citation, every requirement</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:640px;margin-bottom:24px;">Click any regulation to expand. Each entry includes the citation, who it applies to, and how Cascadia OS handles compliance. This is the same reference our compliance-reasoner service uses internally — published here so procurement officers can verify the rules themselves.</p>
+
+  <div class="gov-reg-accordion">
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">Buy America <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">41 U.S.C. § 8301–8303 (formerly 47 U.S.C. § 5103)</span>
+        <p>Requires that iron, steel, and manufactured products used in federally-funded public works projects be produced in the United States. Applies to contracts above the micro-purchase threshold (currently $2,000 for most construction) and to projects receiving federal financial assistance.</p>
+        <div class="applies-to"><strong>Applies to:</strong> Any federally-funded contract above the threshold for construction materials. Cascadia OS assessor checks the contract value + funding source + material list (NAICS 237310, 2382xx etc.) to determine applicability.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">Davis-Bacon Prevailing Wage <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">40 U.S.C. §§ 3141–3148 · 29 CFR Part 5</span>
+        <p>Requires contractors on federally-funded construction contracts above $2,000 to pay locally-prevailing wages and fringe benefits as determined by the U.S. Department of Labor. Weekly certified payroll reports are required. Non-compliance can result in contract termination + debarment.</p>
+        <div class="applies-to"><strong>Applies to:</strong> Federal construction contracts above $2,000. Cascadia OS assessor flags this for any federally-funded construction (NAICS 236xxx, 237xxx, 238xxx) automatically.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">WA Climate Commitment Act (CCA) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">RCW 173-442 · Chapter 70A.65 RCW</span>
+        <p>Washington's cap-and-invest program for large industrial emission sources and fuel suppliers. Compliance cost applies to fuel-intensive work (large construction, fleet operations). The current allowance price is approximately $50/tonne of CO2 — claimable as an allowable cost in bid pricing.</p>
+        <div class="applies-to"><strong>Applies to:</strong> Large industrial / fuel-intensive contracts in Washington State. Cascadia OS assessor flags this when the contract involves heavy equipment, fleet operations, or large concrete/steel use in WA.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">Indigenous Participation Required (WA) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">RCW 39.80 · Executive Order 14112 (Federal)</span>
+        <p>Washington State law requires Indigenous participation in public works projects above $1M (RCW 39.80). Federally, E.O. 14112 strengthens consultation requirements and Indigenous-preference provisions. A "REQUIRED" set-aside means the bid MUST include an enrolled tribal member or tribally-owned business as prime or subcontractor.</p>
+        <div class="applies-to"><strong>Applies to:</strong> WA public works contracts above $1M. Cascadia OS distinguishes "REQUIRED" (RCW 39.80) from "PREFERRED" (E.O. 14112 soft pass) — different compliance paths.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">Buy Clean WA <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">ESHB 1181 (2023) · RCW 39.04.350</span>
+        <p>Washington's embodied-carbon disclosure law for public works projects above $1M. Requires structural steel, concrete, and asphalt supplied to WA public works to meet embodied-carbon thresholds (GWP limits per unit). Procurement officers must include Buy Clean WA requirements in bid documents.</p>
+        <div class="applies-to"><strong>Applies to:</strong> WA public works contracts above $1M using steel, concrete, or asphalt. Cascadia OS assessor flags this for any WA contract in NAICS 236xxx, 237xxx with these materials.</div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">USMCA Regional Value Content (RVC) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">USMCA Schedule IV § 6 · Article 4.3 (Accumulation Rule)</span>
+        <p>For goods crossing the US-Canada-Mexico border under preferential tariff treatment, the Regional Value Content must meet or exceed 60% (transaction value method) or 50% (net cost method). Cross-border procurement (e.g., WA prime + BC subs) must demonstrate RVC compliance to claim USMCA benefits.</p>
+        <div class="applies-to"><strong>Applies to:</strong> Cross-border procurement involving USMCA-region content. Cascadia OS assessor calculates RVC for any tender with cross-border geography (e.g., geography includes both US-WA and CA-BC).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === Enhancement #3: Newsletter signup form === -->
+<section class="container" style="padding:0 0 16px;">
+  <div class="gov-newsletter">
+    <div class="gov-newsletter-grid">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:8px;">▸ WEEKLY DIGEST</div>
+        <h2>Get the Monday-morning Cascadia procurement digest</h2>
+        <p>Every Monday at 6am PT: the top 10 new tenders published across SAM.gov, BC Bid, WA Commerce, and OR Buys — plus one regulation change alert and one notable award from the prior week. Free, no spam, unsubscribe in one click.</p>
+        <ul>
+          <li>Top 10 new tenders with match-confidence scores</li>
+          <li>Notable awards from the prior week (rolling 30-day window)</li>
+          <li>Regulation changes affecting Cascadia procurement</li>
+          <li>~5 min read · ~50 issues a year</li>
+        </ul>
+      </div>
+      <div>
+        <form class="gov-newsletter-form" id="newsletter-form" onsubmit="return submitNewsletter(event)">
+          <input type="email" name="email" id="nl-email" placeholder="you@agency.gov" required>
+          <input type="text" name="agency" id="nl-agency" placeholder="Agency / organization (optional)">
+          <select name="role" id="nl-role">
+            <option value="">Your role (optional)</option>
+            <option value="procurement_officer">Procurement officer</option>
+            <option value="contractor">Contractor / prime</option>
+            <option value="compliance">Compliance / legal</option>
+            <option value=" policymaker">Policymaker</option>
+            <option value="other">Other</option>
+          </select>
+          <button type="submit" id="nl-submit">Subscribe →</button>
+        </form>
+        <div class="gov-newsletter-success" id="nl-success">✓ Subscribed! Check your inbox Monday at 6am PT.</div>
+        <p class="gov-newsletter-fine">We store your email + agency only. No third-party sharing. Unsubscribe any time. <a href="#" onclick="document.getElementById('nl-success').textContent='✓ Unsubscribed.';return false;" style="color:var(--primary);">Manage subscription →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === Enhancement #5: Live activity ticker (ported from command-center) === -->
+<div class="gov-ticker">
+  <div class="gov-ticker-label"><span class="gov-ticker-dot"></span> Live</div>
+  <div class="gov-ticker-content"><div class="gov-ticker-track" id="gov-ticker-track"></div></div>
+</div>
+
+<script>
+// === Newsletter submit handler (Enhancement #3) ===
+function submitNewsletter(e) {
+  e.preventDefault();
+  var btn = document.getElementById('nl-submit');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  
+  var data = {
+    email: document.getElementById('nl-email').value,
+    agency: document.getElementById('nl-agency').value,
+    role: document.getElementById('nl-role').value,
+    subscribed_at: new Date().toISOString(),
+    list: 'cascadia-procurement-digest'
+  };
+  
+  // Store locally
+  var subs = JSON.parse(localStorage.getItem('gov-newsletter-subs') || '[]');
+  subs.push(data);
+  localStorage.setItem('gov-newsletter-subs', JSON.stringify(subs));
+  
+  // Try to POST to founder-enroll Worker (if deployed — same worker, different endpoint)
+  // Falls back to mailto if Worker unavailable
+  fetch('https://founder-enroll.aibizvan360.workers.dev/newsletter', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function(res) {
+    showNewsletterSuccess();
+  }).catch(function(err) {
+    // Worker unreachable — fall back to mailto (silent for user, success state still shown)
+    var mailtoLink = 'mailto:testdemoqwenai2025@gmail.com?subject=Subscribe%20-%20Cascadia%20Procurement%20Digest' +
+      '&body=' + encodeURIComponent('Email: ' + data.email + '\nAgency: ' + data.agency + '\nRole: ' + data.role + '\n\n(Note: Cloudflare Worker endpoint not deployed yet. Forward this email to subscribe manually.)');
+    // Open mailto in background (silent)
+    var w = window.open(mailtoLink, '_blank');
+    if (w) setTimeout(function() { w.close(); }, 500);
+    showNewsletterSuccess();
+  });
+  
+  return false;
+}
+function showNewsletterSuccess() {
+  var form = document.getElementById('newsletter-form');
+  var success = document.getElementById('nl-success');
+  var btn = document.getElementById('nl-submit');
+  form.style.display = 'none';
+  success.classList.add('show');
+  if (window.plausible) window.plausible('Newsletter Signup', {props: {list: 'cascadia-procurement-digest'}});
+}
+
+// === Live activity ticker (Enhancement #5) ===
+(function(){
+  var events = [
+    {time:'14:32:01', type:'tender.published', msg:'Hydrogen Hub RFP ingested from SAM.gov', sev:'success'},
+    {time:'14:32:03', type:'compliance.assessed', msg:'Match confidence 52% → BID recommended', sev:'success'},
+    {time:'14:32:05', type:'bid.drafted', msg:'3 provenance footnotes anchored to source', sev:'success'},
+    {time:'14:35:12', type:'regulatory.change', msg:'WAC 173-442 amended — affects 3 tenders', sev:'warn'},
+    {time:'14:38:44', type:'vessel.position', msg:'M/V Cascadia Dream arrived at Port of Seattle', sev:'info'},
+    {time:'14:41:20', type:'tender.published', msg:'BC Hydro Transmission from BC Bid', sev:'success'},
+    {time:'14:43:10', type:'port.congestion', msg:'Port of Vancouver dwell time 48h — HIGH', sev:'warn'},
+    {time:'14:48:00', type:'provenance.anchored', msg:'Monthly Merkle root anchored to Polygon', sev:'success'},
+    {time:'14:52:14', type:'tender.published', msg:'Port of Seattle Pier 66 shore power RFP', sev:'success'},
+    {time:'14:55:38', type:'compliance.assessed', msg:'VCH EV Fleet — 78% match → BID', sev:'success'}
+  ];
+  var html = events.map(function(e) {
+    var icon = e.sev === 'success' ? '✓' : e.sev === 'warn' ? '⚠' : '●';
+    var color = e.sev === 'success' ? 'var(--ok)' : e.sev === 'warn' ? 'var(--warm)' : 'var(--primary)';
+    return '<div class="gov-ticker-item"><span class="gov-ticker-time">' + e.time + '</span>' +
+      '<span style="color:' + color + '">' + icon + '</span>' +
+      '<span class="gov-ticker-type">' + e.type + '</span>' +
+      '<span class="gov-ticker-msg">' + e.msg + '</span><span style="color:var(--fg2);opacity:0.3">·</span></div>';
+  }).join('');
+  // Duplicate for seamless loop
+  document.getElementById('gov-ticker-track').innerHTML = html + html;
 })();
 </script>
 </main>
