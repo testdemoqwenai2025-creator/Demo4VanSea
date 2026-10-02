@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture — 4-Layer Reference</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  /* Dark theme (default) */
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.10);
+}
+[data-theme="light"] {
+  /* Light theme — overrides */
+  --bg: #f4f7f7;
+  --bg-2: #ffffff;
+  --card: #ffffff;
+  --border: #dde2e3;
+  --fg: #1a1a2e;
+  --fg-2: #4a4a5a;
+  --accent: #0d9488;
+  --accent-2: #14b8a6;
+  --warm: #d97706;
+  --danger: #dc2626;
+  --ok: #0d9488;
+  --toggle-bg: rgba(0,0,0,0.03);
+  --toggle-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .2s, color .2s;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+}
+.os-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.os-nav a, .os-nav button {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+  background: transparent; cursor: pointer; font-family: inherit;
+}
+.os-nav a:hover, .os-nav button:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+.os-home-btn {
+  background: var(--accent) !important; color: var(--bg) !important;
+  font-weight: 600 !important; border-color: var(--accent) !important;
+}
+.os-home-btn:hover { background: var(--accent-2) !important; color: var(--bg) !important; }
+.os-theme-toggle {
+  width: 32px; height: 32px; padding: 0 !important; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--toggle-border) !important;
+  background: var(--toggle-bg) !important;
+  color: var(--fg-2) !important;
+}
+.os-theme-toggle:hover { color: var(--fg) !important; background: var(--card) !important; }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section h3 { font-size: 17px; margin: 20px 0 8px; color: var(--fg); }
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+.os-section ul, .os-section ol { color: var(--fg-2); margin: 8px 0 16px 24px; }
+.os-section li { margin-bottom: 6px; }
+.os-section code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+[data-theme="light"] .os-callout {
+  background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(13,148,136,0.02));
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+
+<style>
+.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}
+.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}
+.os-home-fab .ic{width:16px;height:16px;display:inline-block}
+[data-theme="light"] .os-home-fab{background:#ffffff;color:#0d9488;border-color:#0d9488}
+@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}
+</style>
+
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <a href="index.html" class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </a>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="active">Architecture</a><a href="modules.html" class="">Modules</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Architecture — 4-Layer Reference</h1>
+  <p class="lede">The Cascadia OS architecture organized into 4 layers: Unified Spatial & Agentic UX / Autonomous Agent & Orchestration Engine / Temporal Knowledge & Semantic Graph / Sovereign Ingestion & Execution Mesh. Aligned October 2026 with 5 new pieces added.</p>
+  <div class="os-tag-row"><span class="os-tag">4 layers</span><span class="os-tag">WebGPU</span><span class="os-tag">Smart Contracts</span><span class="os-tag">Entity Identity Mesh</span><span class="os-tag">Carbon MRV</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> The 4-Layer Reference Architecture</h2>
+  <p>Per <code>docs/architecture/15-4-layer-reference-architecture.md</code> (private source-of-truth), the Cascadia OS architecture is organized into four layers, top-to-bottom. This is the public-facing visualization of that diagram, with each layer's sub-components mapped to the existing commitments in docs 01-14 + the 5 new pieces introduced by doc 15.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> Visual Stack</h2>
+
+  <div class="arch-stack">
+
+    <div class="arch-layer">
+      <div class="arch-layer-num">Layer 1</div>
+      <div class="arch-layer-title">Unified Spatial &amp; Agentic UX Layer</div>
+      <div class="arch-layer-subs">
+        <span class="arch-sub new">WebGPU Digital Twin</span>
+        <span class="arch-sub new">Bi-National Query Mesh</span>
+        <span class="arch-sub">Composable Modules</span>
+      </div>
+    </div>
+    <div class="arch-connector"><span class="arch-arrow">▼</span></div>
+
+    <div class="arch-layer">
+      <div class="arch-layer-num">Layer 2</div>
+      <div class="arch-layer-title">Autonomous Agent &amp; Orchestration Engine (AOS)</div>
+      <div class="arch-layer-subs">
+        <span class="arch-sub">Cross-Border Tender Agents</span>
+        <span class="arch-sub new">Intermodal Hedging</span>
+        <span class="arch-sub new">Carbon MRV</span>
+      </div>
+    </div>
+    <div class="arch-connector"><span class="arch-arrow">▼</span></div>
+
+    <div class="arch-layer">
+      <div class="arch-layer-num">Layer 3</div>
+      <div class="arch-layer-title">Temporal Knowledge &amp; Semantic Graph</div>
+      <div class="arch-layer-subs">
+        <span class="arch-sub new">Entity Identity Mesh</span>
+        <span class="arch-sub new">Smart Contracts</span>
+        <span class="arch-sub new">Spatial Bioregion GIS</span>
+      </div>
+    </div>
+    <div class="arch-connector"><span class="arch-arrow">▼</span></div>
+
+    <div class="arch-layer">
+      <div class="arch-layer-num">Layer 4</div>
+      <div class="arch-layer-title">Sovereign Ingestion &amp; Execution Mesh</div>
+      <div class="arch-layer-subs">
+        <span class="arch-sub">Data Sovereignty by Design</span>
+        <span class="arch-sub">OCAP®-Compliant Indigenous Governance</span>
+        <span class="arch-sub">Data Mesh + Event-Driven Architecture</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size:12px;color:var(--fg-2);margin-top:10px;">The <span class="arch-sub new" style="display:inline;padding:2px 6px;font-size:10px;">NEW</span> badge marks the 5 pieces introduced by doc 15 (October 2026 alignment with the diagram). Existing commitments are unbadged.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> Layer-by-Layer Mapping</h2>
+
+  <h3>Layer 1 — Unified Spatial &amp; Agentic UX Layer</h3>
+  <table class="os-table">
+    <thead><tr><th>Sub-component</th><th>Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>WebGPU Digital Twin</td><td class="accent">NEW (Oct 2026)</td><td>WASM committed; WebGPU specifically for digital-twin surface. Y1: WASM (CPU). Y2: WebGPU for supply-chain graph + corridor map. Y3: WebGPU for carbon-ledger route optimizer. — <code>09-modern-tooling-stack.md</code> §2.3</td></tr>
+      <tr><td>Bi-National Query Mesh</td><td class="accent">NEW (Oct 2026)</td><td>Formal cross-jurisdictional query abstraction. Y1: implicit (storage-layer enforcement). Y2: formalized as <code>bi_national_query.mesh</code> service. Y3: federation-ready. — <code>10-core-feature-modules.md</code> §A.2.4, <code>03-data-mesh-event-driven-architecture.md</code> §10</td></tr>
+      <tr><td>Composable Modules</td><td>Existing</td><td>4 modules: A Nexus Terminal · B Procurement &amp; Gazette (wedge) · C Supply Chain Twin · D ESG &amp; Indigenous — <code>10-core-feature-modules.md</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Layer 2 — Autonomous Agent &amp; Orchestration Engine (AOS)</h3>
+  <table class="os-table">
+    <thead><tr><th>Sub-component</th><th>Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Cross-Border Tender Agents</td><td>Existing</td><td>Y1 reference implementation: <code>services/tenders-ingestor/</code> (Go) — sam_gov.poller, bc_bid.poller, wa_commerce.poller, rfp.normalizer, naics.classifier, set_aside.detector. — <code>docs/SKILLS.md</code> §2</td></tr>
+      <tr><td>Intermodal Hedging</td><td class="accent">NEW (Oct 2026)</td><td>Truck ↔ rail ↔ marine mode-hedging, distinct from cross-border commodity arbitrage. Y2: launch alongside Module C. Y3: <code>intermodal_hedging.agent</code> skill. — <code>10-core-feature-modules.md</code> §A.2.5</td></tr>
+      <tr><td>Carbon MRV</td><td class="accent">RENAMED (Oct 2026)</td><td>Was "Dynamic Carbon Ledger"; renamed to "Carbon MRV Ledger" (Measurement + Reporting + Verification). The V is new — every carbon calculation verified against provenance ledger. — <code>10-core-feature-modules.md</code> §C.2.3, <code>docs/SKILLS.md</code> (carbon_mrv.verifier)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Layer 3 — Temporal Knowledge &amp; Semantic Graph</h3>
+  <table class="os-table">
+    <thead><tr><th>Sub-component</th><th>Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Entity Identity Mesh</td><td class="accent">NEW (Oct 2026)</td><td>Cross-domain entity ID resolver. New <code>entity_identity</code> domain in the data mesh. Maintains equivalence graph (tender ↔ contract ↔ bid ↔ shipment). Y3 launch. — <code>09-modern-tooling-stack.md</code> §4.7, <code>03-data-mesh-event-driven-architecture.md</code> §2, <code>docs/SKILLS.md</code> (entity_identity.resolver)</td></tr>
+      <tr><td>Smart Contracts</td><td class="accent">NEW (Oct 2026)</td><td>On-chain executable logic (distinct from existing Merkle-root anchoring). 3 use cases: revenue-share payouts, compliance verification, carbon credit issuance. Chain: Polygon. Language: Solidity. Y2: design + audit. Y3: production. — <code>09-modern-tooling-stack.md</code> §4.6, <code>03-data-mesh-event-driven-architecture.md</code> §2 (smart_contracts domain), <code>docs/SKILLS.md</code> (smart_contract.executor)</td></tr>
+      <tr><td>Spatial Bioregion GIS</td><td class="accent">FORMALIZED (Oct 2026)</td><td>Was implicit (climate data without formal GIS layer). Now formalized: PostGIS extension on the climate domain; every climate resilience score computed from a hash-anchored geospatial query. Y2 launch. — <code>10-core-feature-modules.md</code> §D.2.2, <code>03-data-mesh-event-driven-architecture.md</code> §2 (climate domain)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Layer 4 — Sovereign Ingestion &amp; Execution Mesh</h3>
+  <table class="os-table">
+    <thead><tr><th>Sub-component</th><th>Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Data Sovereignty by Design</td><td>Existing</td><td>CA user data in AWS ca-central-1; US data in AWS us-east-1/us-west-2; cross-border queries anonymized + aggregated. — <code>11-data-governance-ethical-framework.md</code> §2</td></tr>
+      <tr><td>OCAP®-Compliant Indigenous Governance</td><td>Existing</td><td>Indigenous Data Governance Council (3 seats Y1 → 7 seats Y3+, $5K/meeting compensation, veto power). First action: formally adopt OCAP®. — <code>11-data-governance-ethical-framework.md</code> §4</td></tr>
+      <tr><td>Data Mesh + Event-Driven Architecture</td><td>Existing</td><td>Domain-owned services, versioned event bus (Redpanda Y1 → managed K8s Y2), append-only provenance ledger (monthly Merkle anchor to Polygon). Y1 reference implementation: <code>services/tenders-ingestor/</code>. — <code>03-data-mesh-event-driven-architecture.md</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> The 5 New Pieces (October 2026 Alignment)</h2>
+  <div class="os-grid cols-3">
+    <div class="os-card"><div class="icon">1</div><h3>WebGPU Digital Twin</h3><p>Commits our WASM surfaces to <strong>WebGPU specifically</strong> — the W3C standard for GPU-accelerated browser rendering. Y2: supply-chain graph + corridor map. Y3: carbon-ledger route optimizer.</p></div>
+    <div class="os-card"><div class="icon">2</div><h3>Bi-National Query Mesh</h3><p>Formal cross-jurisdictional query abstraction layer. Every cross-border query carries a <code>residency_guarantee</code> field (hash-anchored). Y2: formalized. Y3: federation-ready.</p></div>
+    <div class="os-card"><div class="icon">3</div><h3>Intermodal Hedging Engine</h3><p>Truck ↔ rail ↔ marine mode-hedging. Per-shipment recommendations ("reroute from BNSF rail to marine vessel, save $1,750 but add 3 days transit"). Y2 launch.</p></div>
+    <div class="os-card"><div class="icon">4</div><h3>Smart Contracts</h3><p>On-chain executable logic on Polygon (EVM-compatible, Solidity). 3 use cases: revenue-share payouts, compliance verification, carbon credit issuance. Y3 production.</p></div>
+    <div class="os-card"><div class="icon">5</div><h3>Entity Identity Mesh</h3><p>Cross-domain entity ID resolver service. Maintains equivalence graph: "this tender = this contract = this bid = this shipment." Y3 launch alongside Module A (Nexus Terminal).</p></div>
+    <div class="os-card"><div class="icon">+</div><h3>Carbon MRV Ledger (renamed)</h3><p>Was "Dynamic Carbon Ledger." Renamed to make the V (Verification) component explicit. Every carbon calculation verified against the provenance ledger's hash chain before being reported.</p></div>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> Sequencing — When Each New Piece Lands</h2>
+  <table class="os-table">
+    <thead><tr><th>Piece</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4+</th></tr></thead>
+    <tbody>
+      <tr><td>WebGPU Digital Twin</td><td>WASM (CPU) for 3 surfaces</td><td class="accent">WebGPU for graph + corridor map</td><td class="accent">WebGPU for carbon-ledger</td><td>(full digital twin)</td></tr>
+      <tr><td>Bi-National Query Mesh</td><td>Implicit (storage-layer)</td><td class="accent">Formalized as named service</td><td class="accent">Federation-ready</td><td>(cross-federation queries)</td></tr>
+      <tr><td>Intermodal Hedging</td><td>Not in scope</td><td class="accent">Launch alongside Module C</td><td class="accent">Agent skill added</td><td>(full intermodal coverage)</td></tr>
+      <tr><td>Smart Contracts</td><td>Not in scope</td><td class="accent">Design + audit</td><td class="accent">Production: revenue-share payouts</td><td>Compliance verification + carbon credits</td></tr>
+      <tr><td>Entity Identity Mesh</td><td>Not in scope</td><td class="accent">Design domain + contract</td><td class="accent">Production alongside Module A</td><td>(federation entity resolution)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">6</span> What This Diagram Doesn't Show (We Have)</h2>
+  <p>Three things in our architecture that the 4-layer diagram omits:</p>
+  <ul>
+    <li><strong>Provenance ledger with monthly blockchain anchoring</strong> — the 20-year-moat commitment. Diagram's "Temporal Knowledge" implies this but doesn't make it explicit. <code>03-data-mesh-event-driven-architecture.md</code> §6.</li>
+    <li><strong>Indigenous Data Governance Council with veto power</strong> — the 4th-pillar moat. Diagram's "Sovereign" nods at this but doesn't make the governance body explicit. <code>11-data-governance-ethical-framework.md</code> §4.</li>
+    <li><strong>Risk mitigation matrix with Partnership risk as a 5th category</strong> — diagram is purely architectural; doesn't show risk surfaces. <code>13-risk-mitigation-strategy.md</code> §6.</li>
+  </ul>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">7</span> The 20-Year Longevity Test</h2>
+  <p>For each layer, the test: "Will this choice still be defensible in 2046?"</p>
+  <table class="os-table">
+    <thead><tr><th>Layer</th><th>Sub-component</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>WebGPU Digital Twin</td><td class="accent">Commit — W3C standard; outlives any framework</td></tr>
+      <tr><td>1</td><td>Bi-National Query Mesh</td><td class="accent">Commit — residency laws will not be repealed</td></tr>
+      <tr><td>1</td><td>Composable Modules</td><td>Already committed</td></tr>
+      <tr><td>2</td><td>Cross-Border Tender Agents</td><td>Already committed</td></tr>
+      <tr><td>2</td><td>Intermodal Hedging</td><td class="accent">Commit — intermodal logistics is permanent</td></tr>
+      <tr><td>2</td><td>Carbon MRV</td><td class="accent">Commit — MRV pattern is permanent; V primitive is replaceable</td></tr>
+      <tr><td>3</td><td>Entity Identity Mesh</td><td class="accent">Commit — Cypher is the surviving abstraction</td></tr>
+      <tr><td>3</td><td>Smart Contracts</td><td class="accent">Commit — EVM is the surviving abstraction</td></tr>
+      <tr><td>3</td><td>Spatial Bioregion GIS</td><td class="accent">Commit — spatial query pattern is permanent</td></tr>
+      <tr><td>4</td><td>Sovereign Ingestion &amp; Execution Mesh</td><td>Already committed</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:14px;">Every layer passes the 20-year test, provided the OS honors the modularity principle and the team's discipline.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">8</span> Source-of-Truth Reference</h2>
+  <p>The full alignment document lives in the private source-of-truth repo at <code>docs/architecture/15-4-layer-reference-architecture.md</code> (~16KB). It contains the master layer-by-layer mapping, the 5 new pieces' detailed commitments, the sequencing table, the anti-patterns (still enforced), and the 20-year longevity test.</p>
+  <p>This public page is a summary; the private doc is the source of truth.</p>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('cas-os-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      // Default: respect system preference
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
+    }
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+function casOSToggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = (cur === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('cas-os-theme', next); } catch (e) {}
+  // Update button label
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (next === 'dark') ? '☀' : '☾';
+    b.title = (next === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+  });
+}
+// Wait for DOM, then init button labels
+document.addEventListener('DOMContentLoaded', function(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (cur === 'dark') ? '☀' : '☾';
+    b.title = (cur === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+    b.addEventListener('click', casOSToggleTheme);
+  });
+});
+</script>
+
+<a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+</body>
+</html>
