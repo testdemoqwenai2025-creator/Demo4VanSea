@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline Demo — End-to-End Output</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  /* Dark theme (default) */
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.10);
+}
+[data-theme="light"] {
+  /* Light theme — overrides */
+  --bg: #f4f7f7;
+  --bg-2: #ffffff;
+  --card: #ffffff;
+  --border: #dde2e3;
+  --fg: #1a1a2e;
+  --fg-2: #4a4a5a;
+  --accent: #0d9488;
+  --accent-2: #14b8a6;
+  --warm: #d97706;
+  --danger: #dc2626;
+  --ok: #0d9488;
+  --toggle-bg: rgba(0,0,0,0.03);
+  --toggle-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .2s, color .2s;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+}
+.os-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.os-nav a, .os-nav button {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+  background: transparent; cursor: pointer; font-family: inherit;
+}
+.os-nav a:hover, .os-nav button:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+.os-home-btn {
+  background: var(--accent) !important; color: var(--bg) !important;
+  font-weight: 600 !important; border-color: var(--accent) !important;
+}
+.os-home-btn:hover { background: var(--accent-2) !important; color: var(--bg) !important; }
+.os-theme-toggle {
+  width: 32px; height: 32px; padding: 0 !important; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--toggle-border) !important;
+  background: var(--toggle-bg) !important;
+  color: var(--fg-2) !important;
+}
+.os-theme-toggle:hover { color: var(--fg) !important; background: var(--card) !important; }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section h3 { font-size: 17px; margin: 20px 0 8px; color: var(--fg); }
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+.os-section ul, .os-section ol { color: var(--fg-2); margin: 8px 0 16px 24px; }
+.os-section li { margin-bottom: 6px; }
+.os-section code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+[data-theme="light"] .os-callout {
+  background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(13,148,136,0.02));
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+<style>.os-home-fab{position:fixed;bottom:16px;left:16px;z-index:9999;background:#0a1628;color:#2dd4bf;border:1px solid #2dd4bf;border-radius:10px;padding:8px 14px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(45,212,191,0.18);transition:transform .15s,box-shadow .15s;backdrop-filter:blur(4px);font-weight:600}.os-home-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,212,191,0.28)}.os-home-fab .ic{width:16px;height:16px;display:inline-block}[data-theme="light"] .os-home-fab{background:#fff;color:#0d9488;border-color:#0d9488}@media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}</style>
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <a href="index.html" class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </a>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="active">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+</header>
+
+<section class="os-hero">
+  <h1>Pipeline Demo — End-to-End Output</h1>
+  <p class="lede">Running ./pipeline --output summary produces 3 events: tender.published → compliance.assessment.completed → bid.draft_generated. Match confidence 52%, recommended action BID, 3 provenance footnotes. Full bid draft content shown.</p>
+  <div class="os-tag-row"><span class="os-tag">3 events</span><span class="os-tag">match_confidence 52%</span><span class="os-tag">BID</span><span class="os-tag">3 footnotes</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> End-to-End Pipeline Output</h2>
+  <p>Running <code>./pipeline --output summary</code> on the fixture tender produces 3 events in sequence. Here's the actual output:</p>
+  <div class="code-block"><span class="dim">2026/10/02 09:09:08</span> [compliance-reasoner] received tender.published: tender-01a0fb41
+<span class="dim">2026/10/02 09:09:08</span> [bid-drafter] received compliance.assessment.completed: assessment-assessme
+<span class="dim">2026/10/02 09:09:08</span> [compliance-reasoner] published compliance.assessment.completed: <span class="accent">match_confidence=0.52</span>
+<span class="dim">2026/10/02 09:09:08</span> [bid-drafter] published bid.draft_generated: <span class="accent">footnotes=3</span>
+<span class="dim">2026/10/02 09:09:08</span> [tenders-ingestor] published tender.published: Regional Hydrogen Hub Workforce Development Program
+
+╔══════════════════════════════════════════════════════════════════╗
+║         Cascadia OS Wedge Pipeline — End-to-End Summary          ║
+╚══════════════════════════════════════════════════════════════════╝
+
+Pipeline: tenders-ingestor → compliance-reasoner → bid-drafter
+State machine: [tender_ingested] → [compliance_assessed] → [bid_drafted]
+
+Events published: <span class="accent">3</span>
+  1. <span class="green">tender.published</span> (producer=tenders.ingestor, id=tender-01a0fb41)
+  2. <span class="green">compliance.assessment.completed</span> (producer=compliance.reasoner, id=assessment-assessme)
+  3. <span class="green">bid.draft_generated</span> (producer=bid.drafter, id=bid-bid-1790)
+
+Compliance Assessment:
+  match_confidence:   <span class="accent">0.52</span>
+  recommended_action: <span class="green">BID</span>
+  assessor_results:   3
+  evidence_chain:     3 entries
+  provenance_hash:    sha256:assessment-1790932148269805041
+
+Bid Draft:
+  bid_id:              bid-1790932148269891222
+  footnotes:           <span class="accent">3 provenance-anchored citations</span>
+  provenance_hash:    sha256:bid-1790932148269891537</div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> Event 1: tender.published</h2>
+  <p>Published by <code>tenders-ingestor</code> when a new tender is ingested from SAM.gov / BC Bid / WA Commerce / OR Buys:</p>
+  <div class="code-block">{
+  "event_id": "tender-01a0fb41",
+  "event_type": "tender.published",
+  "event_version": "1.0.0",
+  "producer": "tenders.ingestor",
+  "produced_at": "2026-10-02T09:09:08Z",
+  "schema_url": "https://cascadia-os.ai/schemas/tender.published.1.0.0.json",
+  "provenance_hash": "sha256:9d85df351d3a6c2d9c29470e536c8ff5b64487d14932f192ec1eeb37df2e4f84",
+  "payload": {
+    "id": "01a0fb41-b0ce-7077-8099-aabbccddeeff",
+    "title": "Regional Hydrogen Hub Workforce Development Program",
+    "source": "sam.gov",
+    "naics_codes": ["611519"],
+    "geography": ["US-WA", "US-OR", "CA-BC"],
+    "set_asides": ["indigenous_preferred", "prevailing_wage", "usmca"],
+    "contracting_org": "US Department of Energy",
+    "value_lower_usd": 3500000,
+    "value_upper_usd": 4500000,
+    "provenance_hash": "sha256:9d85df35..."
+  }
+}</div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> Event 2: compliance.assessment.completed</h2>
+  <p>Published by <code>compliance-reasoner</code> after running 3 assessors (USMCA + Indigenous + CCA) on the tender + user profile:</p>
+  <div class="code-block">{
+  "event_id": "assessment-assessme",
+  "event_type": "compliance.assessment.completed",
+  "event_version": "1.0.0",
+  "producer": "compliance.reasoner",
+  "payload": {
+    "match_confidence": <span class="accent">0.52</span>,
+    "recommended_action": "<span class="green">BID</span>",
+    "assessor_results": [
+      {"assessor_name": "usmca.assessor", "pass": true, "score": 0.70,
+       "notes": "User RVC 65.0% exceeds threshold 60.0% (margin 5.0%)"},
+      {"assessor_name": "indigenous_procurement.assessor", "pass": true, "score": 0.60,
+       "notes": "PREFERRED; soft pass; engagement recommended per E.O. 14112"},
+      {"assessor_name": "cca.assessor", "pass": true, "score": 1.0,
+       "notes": "CCA applies; estimated compliance cost $100"}
+    ],
+    "evidence_chain": [
+      {"claim": "RVC 65% exceeds USMCA 60% threshold",
+       "source_url": "https://www.cbp.gov/trade/usmca",
+       "source_section": "USMCA Schedule IV §6"},
+      {"claim": "Indigenous participation preferred per E.O. 14112",
+       "source_url": "https://www2.gov.bc.ca/gov/content/business/procurement",
+       "source_section": "BC Bid — Indigenous Procurement"},
+      {"claim": "WA CCA compliance cost estimated at $100",
+       "source_url": "https://ecology.wa.gov/CCA",
+       "source_section": "WAC 173-442"}
+    ],
+    "provenance_hash": "sha256:a3940f16..."
+  }
+}</div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> Event 3: bid.draft_generated</h2>
+  <p>Published by <code>bid-drafter</code> after generating the bid response with provenance footnotes. The full bid draft content:</p>
+  <div class="code-block"># Bid Response: Regional Hydrogen Hub Workforce Development Program
+
+**To:** US Department of Energy
+**From:** Cascadia Electrical Contractors LLC
+**Date:** October 2, 2026
+**Re:** Tender ID 01a0fb41-b0ce-7077-8099-aabbccddeeff
+
+---
+
+## 1. Company Overview
+
+Cascadia Electrical Contractors LLC is a Cascadia-based contractor with expertise in
+NAICS codes 238210, 238910. We operate in US-WA, US-OR and have prior performance
+on regional procurement contracts.
+
+## 2. Compliance Summary
+
+Cascadia OS compliance assessment indicates a match confidence of <span class="accent">52%</span>.
+
+| Requirement | Status | Notes |
+|---|---|---|
+| usmca.assessor | <span class="green">PASS</span> | User RVC 65.0% exceeds threshold 60.0% (margin 5.0%) |
+| indigenous_procurement.assessor | <span class="green">PASS</span> | PREFERRED; soft pass; engagement recommended |
+| cca.assessor | <span class="green">PASS</span> | CCA applies; estimated compliance cost $100 |
+
+## 3. Regulatory Compliance
+
+- User RVC 65.0% exceeds USMCA 60% threshold (Schedule IV §6) <span class="accent">[1]</span>
+- Indigenous participation preferred per E.O. 14112 <span class="accent">[2]</span>
+- WA CCA compliance cost estimated at $100 (range $80-$120) <span class="accent">[3]</span>
+
+## 4. Scope of Work
+
+We propose to execute the work at a contract value of $3,500,000–$4,500,000 USD.
+
+## 5. Indigenous Engagement Plan
+
+Per the tender's Indigenous participation requirements, we commit to engaging with the
+relevant Indigenous nations. Our engagement will follow the principles of Free, Prior,
+and Informed Consent (FPIC) and the UN Declaration on the Rights of Indigenous Peoples
+(UNDRIP).
+
+## 6. Provenance + Verification
+
+Every claim in this bid response is traceable to a provenance-anchored source.
+
+### Footnotes
+
+<span class="accent">1.</span> RVC exceeds threshold — USMCA Schedule IV §6 — sha256:9d85df35...
+<span class="accent">2.</span> Indigenous preferred — E.O. 14112 — sha256:9d85df35...
+<span class="accent">3.</span> CCA cost — WAC 173-442 — sha256:9d85df35...</div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> How to Reproduce</h2>
+  <p>The pipeline binary is in the private <code>AISeaVanBiz4</code> repo at <code>services/pipeline/cmd/pipeline/main.go</code>. To run:</p>
+  <div class="code-block">cd services/pipeline
+go build -o /tmp/pipeline ./cmd/pipeline
+/tmp/pipeline --output summary      # visual summary (above)
+/tmp/pipeline --output bid-markdown # full bid markdown
+/tmp/pipeline --output json         # all events as JSON</div>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('cas-os-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      // Default: respect system preference
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
+    }
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+function casOSToggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = (cur === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('cas-os-theme', next); } catch (e) {}
+  // Update button label
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (next === 'dark') ? '☀' : '☾';
+    b.title = (next === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+  });
+}
+// Wait for DOM, then init button labels
+document.addEventListener('DOMContentLoaded', function(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (cur === 'dark') ? '☀' : '☾';
+    b.title = (cur === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+    b.addEventListener('click', casOSToggleTheme);
+  });
+});
+</script>
+
+<a href="index.html" class="os-home-fab" title="Return to home"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+</body>
+</html>
