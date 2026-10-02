@@ -1456,6 +1456,106 @@ a:hover { text-decoration: underline; }
   </div>
 </section>
 
+<!-- === NEW: Cascadia Government Gazettes & Statutes (accordion dropdown) === -->
+<section class="container" style="padding:32px 0 0;" id="gazettes-statutes">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ OFFICIAL GAZETTES & STATUTES</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Cascadia government gazettes & statutes</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:680px;margin-bottom:24px;">Every Cascadia jurisdiction publishes an official gazette (or its equivalent) plus a consolidated corpus of statutes and regulations. We track all 10 below. Click any entry to expand the summary + jump straight to the source for verification.</p>
+
+  <div class="gov-reg-accordion">
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">📌 BC Gazette — Part I (weekly) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">bced.gov.bc.ca/doing/gazette.htm</span>
+        <p>The Province of British Columbia's official newspaper of record, published weekly. Contains: new regulations, government notices, public appointments, Crown corporation dissolutions, ministerial orders, bankruptcy notices, and statutory deadlines. The single most comprehensive source of BC government activity — procurement officers use it to track regulatory changes that affect bid pricing.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Tracking new BC regulations that trigger compliance changes. Cascadia OS polls BC Gazette weekly and cross-references with the active tender list to flag regulation changes affecting open procurement.</div>
+        <div style="margin-top:10px;"><a href="https://www.bced.gov.bc.ca/doing/gazette.htm" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View BC Gazette →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">📌 BC Gazette — Part II (legislative supplement) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">bced.gov.bc.ca/doing/gazette.htm (Part II)</span>
+        <p>Published during legislative sessions (typically Feb-May and Oct-Nov). Contains: bills introduced, Hansard transcripts, committee reports, royal assent notices, and statutory instrument enactments. The "what's the BC Legislature doing this week" reference.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Tracking BC legislation in progress. If a bill would affect your contract terms (e.g., new Indigenous consultation requirements), you'll see it here months before it becomes law.</div>
+        <div style="margin-top:10px;"><a href="https://www.bced.gov.bc.ca/doing/gazette.htm" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View BC Gazette Part II →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🇨🇦 Canada Gazette — Part I (weekly) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">gazette.gc.ca</span>
+        <p>Federal Canada official weekly publication. Contains: proposed regulations (with public comment periods), government notices, public appointments, procurement notices above $25K (Goods & Services), and statutory deadlines. Cross-border procurement (US-CA) requires monitoring both US Federal Register AND Canada Gazette Part I.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Federal CA regulatory changes affecting cross-border procurement under USMCA. Cascadia OS polls weekly for changes affecting any tender with CA-BC geography.</div>
+        <div style="margin-top:10px;"><a href="https://gazette.gc.ca" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View Canada Gazette →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🇨🇦 Canada Gazette — Part II (biweekly regulations) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">gazette.gc.ca (Part II)</span>
+        <p>Federal Canada regulations enacted and in force. Published biweekly: statutory instruments, regulations in force, orders-in-council, proclamations. The official legal record of all federal regulation changes — when a regulation cited in a bid moves from "proposed" to "enacted", this is where you'll find it.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Verifying the current regulatory status of any Canada federal regulation cited in a Cascadia tender. The single source of truth.</div>
+        <div style="margin-top:10px;"><a href="https://gazette.gc.ca" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View Canada Gazette Part II →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🇺🇸 Federal Register (daily, US) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">federalregister.gov</span>
+        <p>The single most comprehensive source of US federal regulatory activity. Published every business day. Contains: agency regulations (proposed and final), presidential documents (executive orders, proclamations), public meeting notices, and agency rulemaking agendas. Every federal rule, every executive order, every agency notice — all here.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Tracking federal regulatory changes affecting WA/OR/BC cross-border procurement under USMCA. E.O. 14112 (Indigenous consultation), Buy America amendments, Davis-Bacon rate updates all surface here first.</div>
+        <div style="margin-top:10px;"><a href="https://www.federalregister.gov" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View Federal Register →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🏔️ Washington State Register (weekly) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">sos.wa.gov/office/washington-state-register</span>
+        <p>WA's official weekly publication. Contains: state agency rule filings (proposed, expedited, permanent, emergency), governor's executive orders, public meeting notices (open public meetings act), and statutory deadlines. Required reading for any WA procurement officer.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Tracking WA-specific regulatory changes (e.g., WAC 173-442 amendments to the Climate Commitment Act). Cascadia OS polls weekly and flags changes affecting open WA tenders.</div>
+        <div style="margin-top:10px;"><a href="https://www.sos.wa.gov/office/washington-state-register" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View WA State Register →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🌲 Oregon Bulletin (monthly) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">secure.sos.state.or.us/oard/displayBulletin.action</span>
+        <p>OR's official monthly publication from the Oregon Archives Division. Contains: Attorney General opinions, agency rule filings (proposed, permanent, temporary, emergency), governor's executive orders, and statutory deadlines. Published the 1st of each month.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Tracking OR-specific regulatory changes affecting OR Buys procurement. Cascadia OS polls monthly (lower frequency than weekly WA/BC) and flags changes affecting open OR tenders.</div>
+        <div style="margin-top:10px;"><a href="https://secure.sos.state.or.us/oard/displayBulletin.action" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View OR Bulletin →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">📜 BC Laws (consolidated statutes + regulations) <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">bclaws.gov.bc.ca</span>
+        <p>Complete consolidated corpus of BC statutes and regulations. Maintained by the Queen's Printer. Searchable by citation (e.g., "Forest Act, RSBC 1996, c. 157"). Includes the current "in force" version of every BC law — the source of truth for any BC regulation cited in a Cascadia tender.</p>
+        <div class="applies-to"><strong>Use it for:</strong> Verifying the exact text of any BC statute or regulation cited in a tender's compliance matrix. Cascadia OS anchors every citation back to a bclaws.gov.bc.ca URL with SHA-256 provenance.</div>
+        <div style="margin-top:10px;"><a href="https://www.bclaws.gov.bc.ca" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View BC Laws →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🏛️ Revised Code of Washington (RCW) + WAC <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">app.leg.wa.gov/rcw · app.leg.wa.gov/wac</span>
+        <p>RCW: statutes passed by the WA Legislature. WAC: agency rules implementing those statutes. Both maintained by the WA Legislature and updated in real-time. The "in force" version of every WA law — search by citation (e.g., "RCW 39.80" for the Indigenous Participation law, or "WAC 173-442" for the CCA).</p>
+        <div class="applies-to"><strong>Use it for:</strong> Verifying exact text of any WA statute (RCW) or agency rule (WAC) cited in a Cascadia tender's compliance matrix. Cascadia OS anchors every citation back to app.leg.wa.gov with SHA-256 provenance.</div>
+        <div style="margin-top:10px;"><a href="https://app.leg.wa.gov/rcw" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View RCW →</a> · <a href="https://app.leg.wa.gov/wac" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View WAC →</a></div>
+      </div>
+    </div>
+    <div class="gov-reg-item">
+      <button class="gov-reg-header" onclick="this.parentElement.classList.toggle('open')">🌲 Oregon Revised Statutes (ORS) + OAR <span class="chevron">›</span></button>
+      <div class="gov-reg-body">
+        <span class="citation">oregonlegislature.gov/bills_laws/Pages/ORS.aspx · secure.sos.state.or.us/oard</span>
+        <p>ORS: statutes passed by the OR Legislature. OAR: agency rules implementing those statutes. ORS maintained by OR Legislature; OAR maintained by OR Archives Division. The "in force" version of every OR law — search by citation (e.g., "ORS 279A" for public contracting, or "OAR 731-040" for ODOT procurement rules).</p>
+        <div class="applies-to"><strong>Use it for:</strong> Verifying exact text of any OR statute (ORS) or agency rule (OAR) cited in an OR Buys tender's compliance matrix. Cascadia OS anchors every citation back to the source with SHA-256 provenance.</div>
+        <div style="margin-top:10px;"><a href="https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View ORS →</a> · <a href="https://secure.sos.state.or.us/oard/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;font-size:12px;">View OAR →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- === NEW: Live Cascadia Procurement === -->
 <section class="container" style="padding:48px 0 16px;" id="live-procurement">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
