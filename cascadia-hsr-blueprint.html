@@ -313,7 +313,7 @@ h1 { font-size:36px; font-weight:800; margin-bottom:8px; line-height:1.1; }
 <!-- Hero image -->
 <div style="margin-bottom:32px;border-radius:12px;overflow:hidden;">
   <div class="cas-scene-wrap">
-  <img id="hsr-hero-fallback" class="cas-scene-fallback" src="images/hsr/hsr-hero.png" alt="Cascadia Ultra-High-Speed Corridor — maglev train through Pacific Northwest forest" loading="lazy">
+  <img id="hsr-hero-fallback" class="cas-scene-fallback" data-src="images/hsr/hsr-hero.png" src="" alt="Cascadia Ultra-High-Speed Corridor — maglev train through Pacific Northwest forest" loading="lazy">
   <div id="hsr-hero-text-overlay" class="cas-scene-text-overlay">
     <div class="scene-eyebrow">▸ Interactive · click to load</div>
     <div class="scene-title">Cascadia Ultra-High-Speed Corridor</div>
@@ -730,7 +730,7 @@ h1 { font-size:36px; font-weight:800; margin-bottom:8px; line-height:1.1; }
   <h2>Cascadia as a Global Powerhouse — The 20-Year Transformation</h2>
   <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;">
     <div class="cas-scene-wrap cas-scene-powerhouse-wrap">
-  <img id="hsr-powerhouse-fallback" class="cas-scene-fallback" src="images/hsr/cascadia-powerhouse.png" alt="Cascadia mega-region at night — Vancouver Seattle Portland connected by ultra-high-speed rail corridor" loading="lazy">
+  <img id="hsr-powerhouse-fallback" class="cas-scene-fallback" data-src="images/hsr/cascadia-powerhouse.png" src="" alt="Cascadia mega-region at night — Vancouver Seattle Portland connected by ultra-high-speed rail corridor" loading="lazy">
   <div id="hsr-powerhouse-text-overlay" class="cas-scene-text-overlay">
     <div class="scene-eyebrow">▸ Interactive · click to load</div>
     <div class="scene-title">Cascadia Mega-Region at Night</div>
@@ -1080,9 +1080,12 @@ window.addEventListener('scroll', function() {
     var scene = document.getElementById('hsr-hero-scene');
     var btn = document.getElementById('hsr-hero-load-btn');
     var textOverlay = document.getElementById('hsr-hero-text-overlay');
+    var wrap = btn ? btn.closest('.cas-scene-wrap') : null;
     if (!scene || !btn) return;
-    // Hide fallback + button + text overlay; reveal scene
-    if (fallback) fallback.style.display = 'none';
+    // Mark wrap as scene-loaded — this signals the IntersectionObserver
+    // to never load the PNG even if it hasn't fired yet
+    if (wrap) wrap.classList.add('scene-loaded');
+    if (fallback) { fallback.style.display = 'none'; if (fallback.src) fallback.src = ''; }
     if (btn) btn.style.display = 'none';
     if (textOverlay) textOverlay.style.display = 'none';
     scene.style.display = 'block';
@@ -1134,8 +1137,11 @@ window.addEventListener('scroll', function() {
     var scene = document.getElementById('hsr-powerhouse-scene');
     var btn = document.getElementById('hsr-powerhouse-load-btn');
     var textOverlay = document.getElementById('hsr-powerhouse-text-overlay');
+    var wrap = btn ? btn.closest('.cas-scene-wrap') : null;
     if (!scene || !btn) return;
-    if (fallback) fallback.style.display = 'none';
+    // Mark wrap as scene-loaded — IntersectionObserver skips
+    if (wrap) wrap.classList.add('scene-loaded');
+    if (fallback) { fallback.style.display = 'none'; if (fallback.src) fallback.src = ''; }
     if (btn) btn.style.display = 'none';
     if (textOverlay) textOverlay.style.display = 'none';
     scene.style.display = 'block';
@@ -1179,6 +1185,46 @@ window.addEventListener('scroll', function() {
   function hideScene2Tooltip() {
     var t = document.getElementById('cas-scene-2-tooltip');
     if (t) t.classList.remove('visible');
+  }
+
+  // === Lazy-load PNG fallbacks via IntersectionObserver ===
+  // Pattern: <img class="cas-scene-fallback" data-src="..." src="" loading="lazy">
+  // The IntersectionObserver fires when the wrapper enters viewport. If the
+  // user has already clicked the SVG button (wrapper has 'scene-loaded'
+  // class), the PNG never loads. Otherwise, set img.src = img.dataset.src.
+  // Users who click 'Load interactive scene' before viewport entry NEVER
+  // download the 453 KB of PNG fallbacks.
+  function initHSRLazyLoader() {
+    var imgs = document.querySelectorAll('img.cas-scene-fallback[data-src]');
+    if (imgs.length === 0) return;
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: load all PNGs immediately (older browsers)
+      imgs.forEach(function(img) {
+        var wrap = img.closest('.cas-scene-wrap');
+        if (!wrap || !wrap.classList.contains('scene-loaded')) {
+          img.src = img.dataset.src;
+        }
+      });
+      return;
+    }
+    var lazyObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          var wrap = img.closest('.cas-scene-wrap');
+          if (wrap && !wrap.classList.contains('scene-loaded')) {
+            img.src = img.dataset.src;
+          }
+          lazyObs.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px' });
+    imgs.forEach(function(img) { lazyObs.observe(img); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHSRLazyLoader);
+  } else {
+    initHSRLazyLoader();
   }
 })();
 </script>

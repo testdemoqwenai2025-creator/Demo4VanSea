@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia Sectors — Interactive Visualizations | Cascadia OS</title>
+<meta name="description" content="Six flagship sectors of the Cascadia mega-region — Aerospace, Biotech, Clean Energy, Creative, Maritime, Tech & AI — each as a click-to-load interactive SVG visualization with sector stats, narrative, and the existing sector icons as lazy-load fallbacks.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+
+<style id="cascadia-sectors-css">
+:root {
+  --cas-bg: #0a1a2f;
+  --cas-fg: #e6f1f5;
+  --cas-muted: #8aa0b0;
+  --cas-accent: #4ecdc4;
+  --cas-accent-soft: #2a8a85;
+  --cas-card-bg: #14233a;
+  --cas-card-border: rgba(78,205,196,0.15);
+}
+[data-theme="light"] {
+  --cas-bg: #f5f8fb;
+  --cas-fg: #0a1a2f;
+  --cas-muted: #4a6a8a;
+  --cas-accent: #1a8580;
+  --cas-accent-soft: #4ecdc4;
+  --cas-card-bg: #ffffff;
+  --cas-card-border: rgba(26,133,128,0.2);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: var(--cas-bg);
+  color: var(--cas-fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Top nav */
+.cas-topnav {
+  display: flex; gap: 16px; align-items: center;
+  padding: 14px 24px;
+  background: rgba(10,26,47,0.95);
+  border-bottom: 1px solid var(--cas-card-border);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+[data-theme="light"] .cas-topnav { background: rgba(245,248,251,0.95); }
+.cas-topnav a { color: var(--cas-fg); text-decoration: none; font-size: 13px; padding: 4px 8px; border-radius: 4px; transition: background 0.15s; }
+.cas-topnav a:hover { background: rgba(78,205,196,0.1); }
+.cas-topnav .brand { font-weight: 700; font-size: 15px; color: var(--cas-accent); }
+.cas-topnav .brand a { color: inherit; padding: 0; }
+.cas-topnav .nav-spacer { flex: 1; }
+.cas-topnav .theme-btn {
+  background: rgba(78,205,196,0.1); color: var(--cas-accent); border: 1px solid var(--cas-accent-soft);
+  padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;
+}
+
+/* Hero */
+.cas-hero { padding: 48px 0 32px; border-bottom: 1px solid var(--cas-card-border); margin-bottom: 48px; }
+.cas-hero .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cas-accent); margin-bottom: 12px; font-weight: 600; }
+.cas-hero h1 { font-size: 38px; line-height: 1.1; margin: 0 0 16px; font-weight: 800; letter-spacing: -0.02em; }
+.cas-hero .lede { font-size: 17px; color: var(--cas-muted); max-width: 760px; margin: 0 0 24px; }
+.cas-hero .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.cas-hero .hero-stat { background: var(--cas-card-bg); border: 1px solid var(--cas-card-border); padding: 12px 16px; border-radius: 6px; }
+.cas-hero .hero-stat .v { font-size: 22px; font-weight: 700; color: var(--cas-accent); }
+.cas-hero .hero-stat .l { font-size: 11px; color: var(--cas-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Sector cards */
+.sector-card {
+  background: var(--cas-card-bg);
+  border: 1px solid var(--cas-card-border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 48px;
+}
+.sector-card .sector-header { margin-bottom: 20px; }
+.sector-card .sector-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--cas-accent); background: rgba(78,205,196,0.1); padding: 4px 10px;
+  border-radius: 4px; margin-bottom: 12px; font-weight: 600;
+}
+.sector-card h2 { font-size: 28px; margin: 0 0 8px; font-weight: 700; }
+.sector-card .sector-tagline { font-size: 15px; color: var(--cas-muted); margin: 0 0 8px; }
+.sector-card .sector-mini-stats { font-size: 13px; color: var(--cas-muted); font-family: 'SF Mono', 'Monaco', monospace; }
+.sector-card .sector-narrative { font-size: 15px; color: var(--cas-fg); margin: 20px 0 0; max-width: 800px; }
+.sector-card .sector-narrative strong { color: var(--cas-accent); }
+
+/* === Shared click-to-load pattern (from build_hsr_interactive_scenes.py) === */
+.cas-scene-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a1a2f 0%, #14233a 50%, #1a3a4a 100%);
+  min-height: 340px;
+  margin-bottom: 16px;
+}
+[data-theme="light"] .cas-scene-wrap { background: linear-gradient(135deg, #d4e4f0 0%, #e0eaf0 50%, #d0e0d8 100%); }
+.cas-scene-wrap.scene-loaded { background: transparent; }
+.cas-scene-wrap img.cas-scene-fallback {
+  width: 100%; display: block; border-radius: 12px; min-height: 340px;
+}
+.cas-scene-wrap img.cas-scene-fallback[src=""] { display: none; }
+.cas-scene-wrap .cas-scene-loaded { width: 100%; display: block; }
+.cas-load-btn {
+  position: absolute; bottom: 20px; right: 20px;
+  background: linear-gradient(135deg, #4ecdc4 0%, #45b7af 100%);
+  color: #0a1a2f; border: none; padding: 12px 20px; border-radius: 6px;
+  font-weight: 600; cursor: pointer; font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: flex; align-items: center; gap: 8px;
+  font-family: inherit; transition: transform 0.15s ease, box-shadow 0.15s ease;
+  z-index: 5;
+}
+.cas-load-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(78,205,196,0.5); }
+.cas-load-btn .play-icon { font-size: 18px; line-height: 1; }
+.cas-scene-text-overlay {
+  position: absolute; top: 24px; left: 24px;
+  color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  z-index: 4; max-width: 60%;
+}
+.cas-scene-text-overlay .scene-eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #4ecdc4; margin-bottom: 6px; font-weight: 600;
+}
+.cas-scene-text-overlay .scene-title { font-size: 22px; font-weight: 700; margin: 0 0 8px; line-height: 1.2; }
+.cas-scene-text-overlay .scene-stats { font-size: 12px; color: rgba(255,255,255,0.85); margin: 0; }
+[data-theme="light"] .cas-scene-text-overlay { color: #0a1a2f; text-shadow: 0 2px 8px rgba(255,255,255,0.6); }
+[data-theme="light"] .cas-scene-text-overlay .scene-stats { color: rgba(10,26,47,0.75); }
+.cas-scene-tooltip {
+  position: absolute; background: rgba(10,26,47,0.96); color: #4ecdc4;
+  border: 1px solid rgba(78,205,196,0.5); padding: 8px 12px; border-radius: 6px;
+  font-size: 12px; pointer-events: none; opacity: 0; transition: opacity 0.15s ease;
+  z-index: 10; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.cas-scene-tooltip.visible { opacity: 1; }
+.cas-scene-tooltip .tooltip-key { color: rgba(255,255,255,0.55); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.cas-scene-tooltip .tooltip-val { color: #fff; font-weight: 600; font-size: 13px; }
+.cas-scene-gradients-hint {
+  position: absolute; bottom: 16px; left: 16px; z-index: 4;
+  font-size: 11px; color: rgba(255,255,255,0.5); text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+/* === Sector 1: Aerospace animations === */
+@keyframes cas-satellite-orbit { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+@keyframes cas-plane-fly { 0%{transform:translateX(-200px);} 100%{transform:translateX(1400px);} }
+@keyframes cas-runway-light { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+.cas-satellite { animation: cas-satellite-orbit 22s linear infinite; transform-origin: 600px 130px; transform-box: fill-box; }
+.cas-plane-1 { animation: cas-plane-fly 14s linear infinite; }
+.cas-plane-2 { animation: cas-plane-fly 18s linear infinite; animation-delay: -7s; }
+.cas-runway-light { animation: cas-runway-light 1.5s ease-in-out infinite; }
+.cas-runway-light.l2 { animation-delay: -0.5s; }
+.cas-runway-light.l3 { animation-delay: -1s; }
+
+/* === Sector 2: Biotech animations === */
+@keyframes cas-dna-rotate { 0%{transform:rotateY(0deg);} 100%{transform:rotateY(360deg);} }
+@keyframes cas-particle-float { 0%{transform:translate(0,0);opacity:0;} 10%{opacity:1;} 90%{opacity:1;} 100%{transform:translate(40px,-30px);opacity:0;} }
+.cas-dna-helix { animation: cas-dna-rotate 16s linear infinite; transform-origin: center; transform-style: preserve-3d; }
+.cas-particle { animation: cas-particle-float 4s ease-in-out infinite; }
+.cas-particle.p2 { animation-delay: -1s; }
+.cas-particle.p3 { animation-delay: -2s; }
+.cas-particle.p4 { animation-delay: -3s; }
+
+/* === Sector 3: Clean Energy animations === */
+@keyframes cas-turbine-spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+@keyframes cas-water-flow { 0%{transform:translateX(0);} 100%{transform:translateX(-80px);} }
+@keyframes cas-solar-glint { 0%,100%{opacity:0.65;} 50%{opacity:1;} }
+.cas-turbine-1 { animation: cas-turbine-spin 4s linear infinite; transform-origin: 200px 270px; transform-box: fill-box; }
+.cas-turbine-2 { animation: cas-turbine-spin 5s linear infinite; transform-origin: 580px 240px; transform-box: fill-box; }
+.cas-turbine-3 { animation: cas-turbine-spin 4.5s linear infinite; transform-origin: 950px 260px; transform-box: fill-box; }
+.cas-water-flow { animation: cas-water-flow 3s linear infinite; }
+.cas-solar-glint { animation: cas-solar-glint 2.5s ease-in-out infinite; }
+.cas-solar-glint.g2 { animation-delay: -0.8s; }
+.cas-solar-glint.g3 { animation-delay: -1.6s; }
+
+/* === Sector 4: Creative animations === */
+@keyframes cas-film-cycle { 0%{opacity:0;} 5%{opacity:1;} 25%{opacity:1;} 30%{opacity:0;} 100%{opacity:0;} }
+@keyframes cas-clapper-snap { 0%,90%,100%{transform:rotate(0deg);} 92%,95%{transform:rotate(-22deg);} }
+@keyframes cas-sparkle { 0%,100%{opacity:0;transform:scale(0.6);} 50%{opacity:1;transform:scale(1);} }
+.cas-film-frame-1 { animation: cas-film-cycle 12s linear infinite; }
+.cas-film-frame-2 { animation: cas-film-cycle 12s linear infinite; animation-delay: -3s; }
+.cas-film-frame-3 { animation: cas-film-cycle 12s linear infinite; animation-delay: -6s; }
+.cas-film-frame-4 { animation: cas-film-cycle 12s linear infinite; animation-delay: -9s; }
+.cas-clapper { animation: cas-clapper-snap 8s ease-in-out infinite; transform-origin: 770px 240px; transform-box: fill-box; }
+.cas-sparkle { animation: cas-sparkle 2.5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.cas-sparkle.s2 { animation-delay: -0.8s; }
+.cas-sparkle.s3 { animation-delay: -1.6s; }
+.cas-sparkle.s4 { animation-delay: -1.2s; }
+
+/* === Sector 5: Maritime animations === */
+@keyframes cas-ship-cruise { 0%{transform:translateX(-100px);} 100%{transform:translateX(1300px);} }
+@keyframes cas-wave-bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
+@keyframes cas-container-stack { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-2px);} }
+.cas-ship { animation: cas-ship-cruise 28s linear infinite; }
+.cas-wave-1 { animation: cas-wave-bob 3.2s ease-in-out infinite; }
+.cas-wave-2 { animation: cas-wave-bob 3.6s ease-in-out infinite; animation-delay: -1.5s; }
+.cas-wave-3 { animation: cas-wave-bob 3.8s ease-in-out infinite; animation-delay: -0.8s; }
+.cas-container-stack { animation: cas-container-stack 4s ease-in-out infinite; }
+
+/* === Sector 6: Tech-AI animations === */
+@keyframes cas-data-pulse { 0%{stroke-dashoffset:200;opacity:0;} 10%{opacity:1;} 90%{opacity:1;} 100%{stroke-dashoffset:0;opacity:0;} }
+@keyframes cas-node-glow { 0%,100%{opacity:0.7;} 50%{opacity:1;} }
+.cas-data-line { stroke-dasharray: 200; animation: cas-data-pulse 4s linear infinite; }
+.cas-data-line.d2 { animation-delay: -1s; }
+.cas-data-line.d3 { animation-delay: -2s; }
+.cas-data-line.d4 { animation-delay: -3s; }
+.cas-node-glow { animation: cas-node-glow 2.2s ease-in-out infinite; }
+.cas-node-glow.n2 { animation-delay: -0.5s; }
+.cas-node-glow.n3 { animation-delay: -1s; }
+.cas-node-glow.n4 { animation-delay: -1.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cas-satellite, .cas-plane-1, .cas-plane-2, .cas-runway-light,
+  .cas-dna-helix, .cas-particle, .cas-turbine-1, .cas-turbine-2, .cas-turbine-3,
+  .cas-water-flow, .cas-solar-glint, .cas-film-frame-1, .cas-film-frame-2,
+  .cas-film-frame-3, .cas-film-frame-4, .cas-clapper, .cas-sparkle,
+  .cas-ship, .cas-wave-1, .cas-wave-2, .cas-wave-3, .cas-container-stack,
+  .cas-data-line, .cas-node-glow {
+    animation: none !important;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="cas-topnav">
+  <span class="brand"><a href="index.html">Cascadia OS</a></span>
+  <a href="vision.html">Vision</a>
+  <a href="architecture-4-layer.html">Architecture</a>
+  <a href="modules.html">Modules</a>
+  <a href="cascadia-hsr-blueprint.html">HSR Blueprint</a>
+  <a href="cascadia-sectors.html" style="color:var(--cas-accent);font-weight:600;">Sectors</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="federation.html">Federation</a>
+  <a href="security.html">Security</a>
+  <span class="nav-spacer"></span>
+  <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light theme">🌙</button>
+</nav>
+
+<div class="container">
+
+<!-- Hero -->
+<section class="cas-hero">
+  <div class="eyebrow">▸ Interactive · Click-to-Load · Lazy by user intent</div>
+  <h1>Cascadia Sectors</h1>
+  <p class="lede">Six flagship sectors that define the Cascadia mega-region's economic identity — each rendered as a click-to-load inline SVG visualization. No PNG bytes are fetched until you either scroll the wrapper into view (lazy-load fallback preview) or click "Load interactive scene" (full SVG animations + hover tooltips). Users who click before viewport entry never download the PNG fallback. The 6 existing sector icons (aerospace, biotech, clean-energy, creative, maritime, tech-ai — totaling 547 KB) are now consumed as lazy-load fallbacks rather than sitting unreferenced in the public repo.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="v">6</div><div class="l">Sectors</div></div>
+    <div class="hero-stat"><div class="v">547 KB</div><div class="l">PNG fallbacks (now referenced)</div></div>
+    <div class="hero-stat"><div class="v">0 KB</div><div class="l">PNG bytes if user clicks first</div></div>
+    <div class="hero-stat"><div class="v">+33 KB</div><div class="l">Inline SVG + CSS + JS</div></div>
+  </div>
+</section>
+
+<section class="sector-card" id="sector-aerospace">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 01 · Aerospace</div>
+    <h2>Aerospace</h2>
+    <p class="sector-tagline">Boeing heritage + commercial space + urban air mobility</p>
+    <p class="sector-mini-stats">230+ satellites in orbit · 737 MAX assembled in Renton · Paine Field longest PNW runway</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-aerospace">
+  <img class="cas-scene-fallback" data-src="images/sectors/aerospace.png" src="" alt="Cascadia Aerospace sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Aerospace</div>
+    <p class="scene-stats">hover planes · hover satellite · hover runway · click satellite to boost</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('aerospace')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-aerospace" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Aerospace sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#050a1a 0%,#1a2a4a 60%,#2a4a6a 100%);">
+  <defs>
+    <linearGradient id="aer-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050a1a"/>
+      <stop offset="60%" stop-color="#1a2a4a"/>
+      <stop offset="100%" stop-color="#2a4a6a"/>
+    </linearGradient>
+    <linearGradient id="aer-ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a3a"/>
+      <stop offset="100%" stop-color="#0a1a1a"/>
+    </linearGradient>
+    <radialGradient id="aer-sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffd070" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffd070" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="aer-sat-panel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a4a8a"/>
+      <stop offset="50%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#1a4a8a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky + sun glow -->
+  <rect width="1200" height="500" fill="url(#aer-sky)"/>
+  <circle cx="950" cy="120" r="80" fill="url(#aer-sun)"/>
+
+  <!-- Stars -->
+  <g fill="#ffffff" opacity="0.7">
+    <circle cx="80" cy="40" r="0.9"/><circle cx="200" cy="60" r="1.2"/>
+    <circle cx="340" cy="35" r="0.8"/><circle cx="460" cy="75" r="1.1"/>
+    <circle cx="700" cy="40" r="0.9"/><circle cx="820" cy="65" r="1"/>
+    <circle cx="1080" cy="50" r="1.2"/>
+  </g>
+
+  <!-- Ground -->
+  <rect x="0" y="380" width="1200" height="120" fill="url(#aer-ground)"/>
+
+  <!-- Mountain silhouettes (Cascade range) -->
+  <path d="M 0,380 L 80,340 L 160,360 L 240,310 L 320,350 L 400,320 L 480,360 L 560,310 L 640,350 L 720,330 L 800,370 L 880,320 L 960,360 L 1080,330 L 1200,370 L 1200,380 Z" fill="#0a1825" opacity="0.85"/>
+
+  <!-- Runway (centered horizontal band) -->
+  <rect x="0" y="420" width="1200" height="22" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="0" y1="431" x2="1200" y2="431" stroke="#f8d030" stroke-width="1.5" stroke-dasharray="40,30" opacity="0.85"/>
+  <!-- Runway approach lights -->
+  <circle class="cas-runway-light" cx="100" cy="431" r="3" fill="#f8d030"/>
+  <circle class="cas-runway-light l2" cx="300" cy="431" r="3" fill="#f8d030"/>
+  <circle class="cas-runway-light l3" cx="500" cy="431" r="3" fill="#f8d030"/>
+  <circle class="cas-runway-light" cx="700" cy="431" r="3" fill="#f8d030"/>
+  <circle class="cas-runway-light l2" cx="900" cy="431" r="3" fill="#f8d030"/>
+  <circle class="cas-runway-light l3" cx="1100" cy="431" r="3" fill="#f8d030"/>
+
+  <!-- Runway hover target -->
+  <rect x="0" y="415" width="1200" height="32" fill="transparent"
+        data-key="Paine Field · Everett, WA"
+        data-val="Longest PNW runway · Boeing 747/777/787 final assembly"
+        style="cursor:help;"/>
+
+  <!-- Plane 1: Boeing 737 MAX silhouette flying across -->
+  <g class="cas-plane-1">
+    <g transform="translate(300,200)">
+      <ellipse cx="0" cy="0" rx="34" ry="5" fill="#e8f4f8"/>
+      <polygon points="-30,-2 -42,-12 -36,-12 -22,-2" fill="#e8f4f8"/>
+      <polygon points="30,-2 42,-12 36,-12 22,-2" fill="#e8f4f8"/>
+      <polygon points="-6,-2 0,-14 6,-14 0,-2" fill="#e8f4f8"/>
+      <polygon points="-15,2 -25,10 -19,10 -10,2" fill="#cdd8dc"/>
+      <polygon points="15,2 25,10 19,10 10,2" fill="#cdd8dc"/>
+      <circle cx="-30" cy="0" r="1.5" fill="#f8d030"/>
+    </g>
+    <rect x="240" y="180" width="120" height="40" fill="transparent"
+          data-key="Boeing 737 MAX"
+          data-val="Assembled in Renton, WA · 4,000+ delivered since 1967"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Plane 2: smaller regional jet, different altitude -->
+  <g class="cas-plane-2">
+    <g transform="translate(700,110)">
+      <ellipse cx="0" cy="0" rx="22" ry="3.5" fill="#a8b8c0"/>
+      <polygon points="-20,-1 -28,-8 -24,-8 -14,-1" fill="#a8b8c0"/>
+      <polygon points="20,-1 28,-8 24,-8 14,-1" fill="#a8b8c0"/>
+      <polygon points="-4,-1 0,-9 4,-9 0,-1" fill="#a8b8c0"/>
+    </g>
+  </g>
+
+  <!-- Satellite (rotating around Earth-like center) -->
+  <g class="cas-satellite" data-click-action="satellite-boost" style="cursor:pointer;">
+    <!-- Solar panels (rectangles on either side) -->
+    <rect x="540" y="125" width="40" height="14" fill="url(#aer-sat-panel)" stroke="#0a1a2f" stroke-width="0.5"/>
+    <rect x="620" y="125" width="40" height="14" fill="url(#aer-sat-panel)" stroke="#0a1a2f" stroke-width="0.5"/>
+    <!-- Solar cell grid lines -->
+    <g stroke="#0a1a2f" stroke-width="0.3" opacity="0.6">
+      <line x1="540" y1="130" x2="580" y2="130"/>
+      <line x1="550" y1="125" x2="550" y2="139"/>
+      <line x1="560" y1="125" x2="560" y2="139"/>
+      <line x1="570" y1="125" x2="570" y2="139"/>
+      <line x1="620" y1="130" x2="660" y2="130"/>
+      <line x1="630" y1="125" x2="630" y2="139"/>
+      <line x1="640" y1="125" x2="640" y2="139"/>
+      <line x1="650" y1="125" x2="650" y2="139"/>
+    </g>
+    <!-- Central body -->
+    <rect x="585" y="120" width="30" height="22" rx="2" fill="#cdd8dc" stroke="#4a5a6a" stroke-width="0.8"/>
+    <circle cx="600" cy="131" r="3" fill="#4ecdc4" opacity="0.9"/>
+    <rect x="588" y="123" width="6" height="3" fill="#0a1a2f"/>
+    <!-- Antenna -->
+    <line x1="600" y1="120" x2="600" y2="100" stroke="#cdd8dc" stroke-width="1.5"/>
+    <circle cx="600" cy="100" r="2" fill="#f8d030"/>
+    <!-- Hover target covering satellite body -->
+    <rect x="540" y="100" width="120" height="50" fill="transparent"
+          data-key="Boeing satellite fleet"
+          data-val="230+ in orbit · fabricated in El Segundo · tracked from Cascadia ground stations"
+          style="cursor:help;"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative"><strong>Boeing Everett</strong> is the world's largest building by volume — final assembly for the 747, 777, and 787 Dreamliner happens here, just 35 miles north of Seattle. <strong>Blue Origin</strong> (Kent, WA) and <strong>SpaceX</strong>'s Pacific Northwest partnerships anchor the commercial space corridor. The sector generates 136,000 direct jobs across Cascadia and contributes $42B to regional GDP. The corridor also hosts <strong>UPS's aircraft fleet</strong> at Louisville-Kent hub and <strong>Alaska Airlines</strong>' Seattle-Tacoma headquarters. Cascadia is the only North American region with end-to-end aerospace capability: design (Boeing), launch (Blue Origin), operations (Alaska Airlines), and MRO (multiple facilities at Paine Field).</p>
+</section>
+<section class="sector-card" id="sector-biotech">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 02 · Biotech</div>
+    <h2>Biotech</h2>
+    <p class="sector-tagline">Genomics + cell therapy + precision medicine</p>
+    <p class="sector-mini-stats">480+ companies · $4.2B venture deployed 2025 · UBC + UW + OHSU triad</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-biotech">
+  <img class="cas-scene-fallback" data-src="images/sectors/biotech.png" src="" alt="Cascadia Biotech sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Biotech</div>
+    <p class="scene-stats">hover DNA helix · hover microscope · hover beaker</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('biotech')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-biotech" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Biotech sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#0a1a3a 0%,#14233a 50%,#1a3a4a 100%);">
+  <defs>
+    <linearGradient id="bio-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1a3a"/>
+      <stop offset="100%" stop-color="#1a3a4a"/>
+    </linearGradient>
+    <linearGradient id="bio-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="bio-liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a0f0e8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#bio-bg)"/>
+
+  <!-- Floor + counter -->
+  <rect x="0" y="380" width="1200" height="120" fill="#0a1a2a"/>
+  <rect x="0" y="380" width="1200" height="6" fill="#4ecdc4" opacity="0.3"/>
+
+  <!-- DNA Helix (center, animated rotation) -->
+  <g class="cas-dna-helix" transform="translate(600,250)">
+    <!-- Backbones (2 sinusoidal strands) -->
+    <path d="M 0,-100 Q 25,-75 0,-50 Q -25,-25 0,0 Q 25,25 0,50 Q -25,75 0,100" stroke="#4ecdc4" stroke-width="3" fill="none" opacity="0.85"/>
+    <path d="M 0,-100 Q -25,-75 0,-50 Q 25,-25 0,0 Q -25,25 0,50 Q 25,75 0,100" stroke="#a0f0e8" stroke-width="3" fill="none" opacity="0.85"/>
+    <!-- Base pairs (rungs) -->
+    <line x1="-12" y1="-90" x2="12" y2="-90" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-18" y1="-65" x2="18" y2="-65" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-22" y1="-40" x2="22" y2="-40" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-22" y1="-15" x2="22" y2="-15" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-22" y1="10" x2="22" y2="10" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-22" y1="35" x2="22" y2="35" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-18" y1="60" x2="18" y2="60" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <line x1="-12" y1="85" x2="12" y2="85" stroke="#f8d070" stroke-width="2" opacity="0.7"/>
+    <!-- Nucleotide markers (small dots at strand peaks) -->
+    <circle cx="0" cy="-100" r="4" fill="#4ecdc4"/>
+    <circle cx="0" cy="-50" r="4" fill="#a0f0e8"/>
+    <circle cx="0" cy="0" r="4" fill="#4ecdc4"/>
+    <circle cx="0" cy="50" r="4" fill="#a0f0e8"/>
+    <circle cx="0" cy="100" r="4" fill="#4ecdc4"/>
+    <!-- Hover target over DNA -->
+    <rect x="-50" y="-110" width="100" height="220" fill="transparent"
+          data-key="Cascadia biotech corridor"
+          data-val="480+ companies · $4.2B venture deployed 2025 · UBC + UW + OHSU triad"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Floating particles (atmospheric data motes) -->
+  <g class="cas-particle"><circle cx="450" cy="200" r="2" fill="#a0f0e8" opacity="0.7"/></g>
+  <g class="cas-particle p2"><circle cx="700" cy="180" r="2" fill="#a0f0e8" opacity="0.7"/></g>
+  <g class="cas-particle p3"><circle cx="500" cy="320" r="2" fill="#a0f0e8" opacity="0.7"/></g>
+  <g class="cas-particle p4"><circle cx="780" cy="340" r="2" fill="#a0f0e8" opacity="0.7"/></g>
+
+  <!-- Microscope (left side) -->
+  <g transform="translate(180,310)">
+    <!-- Base -->
+    <rect x="0" y="50" width="80" height="20" rx="2" fill="#3a4a5a"/>
+    <!-- Arm -->
+    <rect x="35" y="0" width="14" height="55" fill="#3a4a5a"/>
+    <!-- Eyepiece -->
+    <rect x="28" y="-15" width="28" height="20" rx="2" fill="#2a3a4a"/>
+    <circle cx="42" cy="-5" r="5" fill="#1a2a3a"/>
+    <!-- Objective lenses -->
+    <rect x="38" y="20" width="8" height="14" fill="#4a5a6a"/>
+    <circle cx="42" cy="38" r="4" fill="#4ecdc4" opacity="0.7"/>
+    <!-- Stage -->
+    <rect x="20" y="42" width="44" height="6" fill="#2a3a4a"/>
+    <!-- Hover target -->
+    <rect x="-5" y="-20" width="90" height="95" fill="transparent"
+          data-key="Allen Institute for Cell Science"
+          data-val="3D cell imaging · open data · Seattle-based · $100M+ funded"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Beaker + Erlenmeyer flask (right side) -->
+  <g transform="translate(900,310)">
+    <!-- Erlenmeyer flask -->
+    <path d="M 0,80 L 0,40 L 30,0 L 60,40 L 60,80 Z" fill="url(#bio-glass)" stroke="#4ecdc4" stroke-width="1"/>
+    <rect x="22" y="-8" width="16" height="10" fill="#4ecdc4" opacity="0.5"/>
+    <!-- Liquid inside -->
+    <path d="M 6,60 L 54,60 L 60,80 L 0,80 Z" fill="url(#bio-liquid)"/>
+    <!-- Bubbles in liquid -->
+    <circle cx="20" cy="70" r="2" fill="#fff" opacity="0.6"/>
+    <circle cx="40" cy="73" r="1.5" fill="#fff" opacity="0.6"/>
+    <circle cx="30" cy="68" r="1.2" fill="#fff" opacity="0.6"/>
+    <!-- Hover target -->
+    <rect x="-5" y="-15" width="75" height="105" fill="transparent"
+          data-key="OHSU research"
+          data-val="$430M annual research budget · Portland · Knight Cancer Institute"
+          style="cursor:help;"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative">The <strong>Cascadia biotech corridor</strong> spans Vancouver BC (UBC's Centre for Molecular Medicine and Therapeutics), Seattle (Allen Institute for Cell Science, Fred Hutchinson Cancer Research Center, Seattle Cancer Care Alliance), and Portland (OHSU Knight Cancer Institute). Combined annual research budget exceeds $2.9B. Recent wins: <strong>Juno Therapeutics</strong> (Seattle, CAR-T cell therapy, acquired by Celgene for $9B); <strong>Zymeworks</strong> (Vancouver, bispecific antibody platform, $1.9B market cap); <strong>SpringWorks Therapeutics</strong> (Portland spin-out from Pfizer). The corridor specializes in oncology, immunology, and rare diseases — a sharp contrast to the Bay Area's broader biotech focus.</p>
+</section>
+<section class="sector-card" id="sector-clean-energy">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 03 · Clean Energy</div>
+    <h2>Clean Energy</h2>
+    <p class="sector-tagline">Hydropower backbone + wind + solar + emerging geothermal</p>
+    <p class="sector-mini-stats">BC Hydro 82% clean grid · 1.2 GW PSE wind · Grand Coulee 6.8 GW capacity</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-clean-energy">
+  <img class="cas-scene-fallback" data-src="images/sectors/clean-energy.png" src="" alt="Cascadia Clean Energy sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Clean Energy</div>
+    <p class="scene-stats">hover turbines · hover solar array · hover dam</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('clean-energy')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-clean-energy" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Clean Energy sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#7ab4d4 0%,#a8c8d8 50%,#5a8a5a 100%);">
+  <defs>
+    <linearGradient id="clean-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7ab4d4"/>
+      <stop offset="60%" stop-color="#a8c8d8"/>
+      <stop offset="100%" stop-color="#5a8a5a"/>
+    </linearGradient>
+    <linearGradient id="clean-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a8aaa"/>
+      <stop offset="100%" stop-color="#1a3a4a"/>
+    </linearGradient>
+    <linearGradient id="clean-dam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a5a5a"/>
+      <stop offset="100%" stop-color="#2a2a2a"/>
+    </linearGradient>
+    <linearGradient id="clean-panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3a6a"/>
+      <stop offset="50%" stop-color="#3a5a8a"/>
+      <stop offset="100%" stop-color="#1a3a6a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#clean-sky)"/>
+
+  <!-- Sun (with rotating sun rays) -->
+  <g transform="translate(1080,80)">
+    <circle cx="0" cy="0" r="28" fill="#ffd070"/>
+    <g stroke="#ffd070" stroke-width="2" opacity="0.7">
+      <line x1="0" y1="-38" x2="0" y2="-50"/>
+      <line x1="0" y1="38" x2="0" y2="50"/>
+      <line x1="-38" y1="0" x2="-50" y2="0"/>
+      <line x1="38" y1="0" x2="50" y2="0"/>
+      <line x1="-27" y1="-27" x2="-36" y2="-36"/>
+      <line x1="27" y1="27" x2="36" y2="36"/>
+      <line x1="-27" y1="27" x2="-36" y2="36"/>
+      <line x1="27" y1="-27" x2="36" y2="-36"/>
+    </g>
+  </g>
+
+  <!-- Distant mountain range (wind farm backdrop) -->
+  <path d="M 0,300 L 100,220 L 200,260 L 320,200 L 440,250 L 560,210 L 680,260 L 800,220 L 920,250 L 1080,230 L 1200,270 L 1200,500 L 0,500 Z" fill="#3a5a6a" opacity="0.6"/>
+
+  <!-- River/Dam (left side) -->
+  <path d="M 0,300 L 0,500 L 280,500 L 280,320 L 240,320 L 240,300 L 280,300 L 320,300 L 320,500 L 0,500 Z" fill="url(#clean-water)" opacity="0.85"/>
+  <!-- Dam structure -->
+  <path d="M 240,300 L 320,300 L 320,500 L 280,500 L 280,320 L 240,320 Z" fill="url(#clean-dam)"/>
+  <!-- Dam face highlights -->
+  <rect x="240" y="305" width="80" height="3" fill="#4ecdc4" opacity="0.5"/>
+  <!-- Spillway water flow (animated) -->
+  <g class="cas-water-flow">
+    <path d="M 280,320 L 280,500" stroke="#a0e0f0" stroke-width="3" opacity="0.7" stroke-dasharray="6,4"/>
+    <path d="M 295,325 L 295,500" stroke="#a0e0f0" stroke-width="2" opacity="0.5" stroke-dasharray="6,4"/>
+  </g>
+  <!-- Hover target over dam -->
+  <rect x="240" y="300" width="80" height="200" fill="transparent"
+        data-key="Grand Coulee Dam"
+        data-val="6.8 GW capacity · WA · 2nd largest US hydro plant"
+        style="cursor:help;"/>
+
+  <!-- Solar panel array (foreground bottom-center) -->
+  <g transform="translate(420,400)">
+    <!-- 3 rows of 4 panels each, tilted toward sun -->
+    <g class="cas-solar-glint">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <g class="cas-solar-glint g2" transform="translate(105,0)">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <g class="cas-solar-glint g3" transform="translate(210,0)">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <g class="cas-solar-glint" transform="translate(0,28)">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <g class="cas-solar-glint g2" transform="translate(105,28)">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <g class="cas-solar-glint g3" transform="translate(210,28)">
+      <polygon points="0,0 80,-15 100,5 20,20" fill="url(#clean-panel)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <!-- Hover target -->
+    <rect x="-5" y="-20" width="320" height="55" fill="transparent"
+          data-key="Oregon solar capacity"
+          data-val="580 MW installed · growing 22% YoY · 4 large-scale arrays in E. Oregon"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Wind turbines (3, different positions) -->
+  <!-- Turbine 1 -->
+  <g transform="translate(200,270)">
+    <!-- Tower -->
+    <polygon points="-2,0 2,0 1,-150 -1,-150" fill="#dcdcdc"/>
+    <!-- Nacelle -->
+    <rect x="-5" y="-152" width="10" height="6" fill="#9a9a9a"/>
+    <!-- Blades (rotating around hub center) -->
+    <g class="cas-turbine-1" style="transform-origin: 200px 270px;">
+      <line x1="0" y1="0" x2="0" y2="-55" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="0" x2="48" y2="28" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="0" x2="-48" y2="28" stroke="#dcdcdc" stroke-width="3"/>
+      <circle cx="0" cy="0" r="3" fill="#4a4a4a"/>
+    </g>
+    <!-- Hover target -->
+    <rect x="-30" y="-160" width="80" height="170" fill="transparent"
+          data-key="Puget Sound Energy wind fleet"
+          data-val="1.2 GW capacity · Columbia River Gorge · 380 turbines"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Turbine 2 -->
+  <g transform="translate(580,240)">
+    <polygon points="-2,0 2,0 1,-180 -1,-180" fill="#dcdcdc"/>
+    <rect x="-5" y="-182" width="10" height="6" fill="#9a9a9a"/>
+    <g class="cas-turbine-2" style="transform-origin: 580px 240px;">
+      <line x1="0" y1="0" x2="0" y2="-65" stroke="#dcdcdc" stroke-width="3.5"/>
+      <line x1="0" y1="0" x2="56" y2="33" stroke="#dcdcdc" stroke-width="3.5"/>
+      <line x1="0" y1="0" x2="-56" y2="33" stroke="#dcdcdc" stroke-width="3.5"/>
+      <circle cx="0" cy="0" r="3" fill="#4a4a4a"/>
+    </g>
+  </g>
+
+  <!-- Turbine 3 -->
+  <g transform="translate(950,260)">
+    <polygon points="-2,0 2,0 1,-160 -1,-160" fill="#dcdcdc"/>
+    <rect x="-5" y="-162" width="10" height="6" fill="#9a9a9a"/>
+    <g class="cas-turbine-3" style="transform-origin: 950px 260px;">
+      <line x1="0" y1="0" x2="0" y2="-58" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="0" x2="50" y2="29" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="0" x2="-50" y2="29" stroke="#dcdcdc" stroke-width="3"/>
+      <circle cx="0" cy="0" r="3" fill="#4a4a4a"/>
+    </g>
+  </g>
+
+  <!-- Ground (foreground) -->
+  <rect x="0" y="430" width="1200" height="70" fill="#3a4a3a"/>
+  <!-- Grass tufts -->
+  <g fill="#4a6a3a" opacity="0.7">
+    <path d="M 100,430 L 102,415 L 104,430 Z"/>
+    <path d="M 350,430 L 352,418 L 354,430 Z"/>
+    <path d="M 700,430 L 702,416 L 704,430 Z"/>
+    <path d="M 1050,430 L 1052,419 L 1054,430 Z"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative">Cascadia commands the cleanest grid in North America — <strong>BC Hydro</strong> delivers 82% clean electricity to British Columbia (mostly hydro from the Peace River and Columbia River systems). Washington's grid is 70% clean (Grand Coulee + Chief Joseph + multiple dams on the Columbia). Oregon's grid is 55% clean and growing rapidly thanks to wind in the Columbia Gorge (1.2 GW Puget Sound Energy fleet) and eastern Oregon solar (580 MW installed, 22% YoY growth). The emerging opportunity is geothermal — the Cascadia Subduction Zone's volcanic belt (Mt. Baker, Mt. St. Helens, Mt. Hood, Mt. Shasta) offers world-class enhanced geothermal systems potential. BC's Newberry Volcano and Oregon's Glass Buttes are flagship US Department of Energy pilot sites.</p>
+</section>
+<section class="sector-card" id="sector-creative">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 04 · Creative</div>
+    <h2>Creative</h2>
+    <p class="sector-tagline">Film, animation, gaming, immersive media</p>
+    <p class="sector-mini-stats">Vancouver Hollywood North $3B+ industry · LAIKA Portland · 25+ studios</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-creative">
+  <img class="cas-scene-fallback" data-src="images/sectors/creative.png" src="" alt="Cascadia Creative sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Creative</div>
+    <p class="scene-stats">hover film reel · hover clapperboard</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('creative')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-creative" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Creative sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#3a0a1a 0%,#5a1a2a 50%,#1a0a1a 100%);">
+  <defs>
+    <linearGradient id="cre-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a0a1a"/>
+      <stop offset="50%" stop-color="#5a1a2a"/>
+      <stop offset="100%" stop-color="#1a0a1a"/>
+    </linearGradient>
+    <radialGradient id="cre-spotlight" cx="0.5" cy="0" r="0.8">
+      <stop offset="0%" stop-color="#f8d070" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#f8d070" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#cre-bg)"/>
+
+  <!-- Spotlight glow -->
+  <ellipse cx="600" cy="0" rx="500" ry="200" fill="url(#cre-spotlight)"/>
+
+  <!-- Floor (theater-style) -->
+  <rect x="0" y="430" width="1200" height="70" fill="#1a0a0a"/>
+  <rect x="0" y="430" width="1200" height="3" fill="#4ecdc4" opacity="0.3"/>
+
+  <!-- Film reel (left side, large) -->
+  <g transform="translate(180,250)">
+    <!-- Outer reel -->
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#3a3a3a" stroke-width="14"/>
+    <!-- Inner rim -->
+    <circle cx="0" cy="0" r="86" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+    <!-- Center hub -->
+    <circle cx="0" cy="0" r="22" fill="#4a4a4a"/>
+    <circle cx="0" cy="0" r="8" fill="#1a1a1a"/>
+    <!-- 6 spokes -->
+    <g stroke="#3a3a3a" stroke-width="6">
+      <line x1="-78" y1="0" x2="-26" y2="0"/>
+      <line x1="78" y1="0" x2="26" y2="0"/>
+      <line x1="-39" y1="-67" x2="-13" y2="-22"/>
+      <line x1="39" y1="-67" x2="13" y2="-22"/>
+      <line x1="-39" y1="67" x2="-13" y2="22"/>
+      <line x1="39" y1="67" x2="13" y2="22"/>
+    </g>
+    <!-- Film strip wrapping around (4 frames visible) -->
+    <g fill="#1a1a1a" stroke="#4ecdc4" stroke-width="0.8">
+      <rect x="-90" y="-22" width="180" height="44" rx="2" opacity="0.85"/>
+    </g>
+    <!-- Frame perforations (top + bottom) -->
+    <g fill="#4ecdc4" opacity="0.8">
+      <rect x="-80" y="-19" width="6" height="3"/>
+      <rect x="-65" y="-19" width="6" height="3"/>
+      <rect x="-50" y="-19" width="6" height="3"/>
+      <rect x="-35" y="-19" width="6" height="3"/>
+      <rect x="-20" y="-19" width="6" height="3"/>
+      <rect x="-5" y="-19" width="6" height="3"/>
+      <rect x="10" y="-19" width="6" height="3"/>
+      <rect x="25" y="-19" width="6" height="3"/>
+      <rect x="40" y="-19" width="6" height="3"/>
+      <rect x="55" y="-19" width="6" height="3"/>
+      <rect x="70" y="-19" width="6" height="3"/>
+      <rect x="-80" y="16" width="6" height="3"/>
+      <rect x="-65" y="16" width="6" height="3"/>
+      <rect x="-50" y="16" width="6" height="3"/>
+      <rect x="-35" y="16" width="6" height="3"/>
+      <rect x="-20" y="16" width="6" height="3"/>
+      <rect x="-5" y="16" width="6" height="3"/>
+      <rect x="10" y="16" width="6" height="3"/>
+      <rect x="25" y="16" width="6" height="3"/>
+      <rect x="40" y="16" width="6" height="3"/>
+      <rect x="55" y="16" width="6" height="3"/>
+      <rect x="70" y="16" width="6" height="3"/>
+    </g>
+    <!-- Hover target over reel -->
+    <rect x="-100" y="-100" width="200" height="200" fill="transparent"
+          data-key="Vancouver BC — 'Hollywood North'"
+          data-val="$3B+ film industry · 4th largest N. America production center · 65+ features/year"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Animated film frames (center, cycling) -->
+  <g transform="translate(600,250)">
+    <!-- Frame outline (visible always) -->
+    <rect x="-100" y="-65" width="200" height="130" fill="#0a0a0a" stroke="#4ecdc4" stroke-width="2" rx="3"/>
+    <g fill="#4ecdc4" opacity="0.6">
+      <rect x="-90" y="-60" width="5" height="3"/>
+      <rect x="-80" y="-60" width="5" height="3"/>
+      <rect x="-70" y="-60" width="5" height="3"/>
+      <rect x="-60" y="-60" width="5" height="3"/>
+      <rect x="60" y="-60" width="5" height="3"/>
+      <rect x="70" y="-60" width="5" height="3"/>
+      <rect x="80" y="-60" width="5" height="3"/>
+      <rect x="-90" y="57" width="5" height="3"/>
+      <rect x="-80" y="57" width="5" height="3"/>
+      <rect x="60" y="57" width="5" height="3"/>
+      <rect x="70" y="57" width="5" height="3"/>
+      <rect x="80" y="57" width="5" height="3"/>
+    </g>
+    <!-- Frame 1: City skyline (Vancouver) -->
+    <g class="cas-film-frame-1">
+      <rect x="-85" y="-50" width="170" height="100" fill="#1a3a5a"/>
+      <g fill="#f8d070" opacity="0.85">
+        <rect x="-65" y="-20" width="10" height="60"/>
+        <rect x="-50" y="-35" width="10" height="75"/>
+        <rect x="-35" y="-15" width="10" height="55"/>
+        <rect x="-20" y="-40" width="10" height="80"/>
+        <rect x="-5" y="-25" width="10" height="65"/>
+        <rect x="10" y="-30" width="10" height="70"/>
+        <rect x="25" y="-15" width="10" height="55"/>
+        <rect x="40" y="-45" width="10" height="85"/>
+        <rect x="55" y="-20" width="10" height="60"/>
+      </g>
+    </g>
+    <!-- Frame 2: Mountain scene -->
+    <g class="cas-film-frame-2">
+      <rect x="-85" y="-50" width="170" height="100" fill="#4a7a9a"/>
+      <polygon points="-85,50 -40,-30 -10,10 30,-50 60,0 85,-20 85,50" fill="#2a4a6a"/>
+      <polygon points="-40,-30 -30,-50 -20,-30" fill="#f8f8f8"/>
+      <polygon points="30,-50 40,-65 50,-50" fill="#f8f8f8"/>
+    </g>
+    <!-- Frame 3: Forest scene -->
+    <g class="cas-film-frame-3">
+      <rect x="-85" y="-50" width="170" height="100" fill="#3a6a3a"/>
+      <polygon points="-50,50 -40,-10 -30,50" fill="#1a3a1a"/>
+      <polygon points="-20,50 -10,-25 0,50" fill="#1a3a1a"/>
+      <polygon points="10,50 20,-15 30,50" fill="#1a3a1a"/>
+      <polygon points="40,50 50,-5 60,50" fill="#1a3a1a"/>
+    </g>
+    <!-- Frame 4: Coastline -->
+    <g class="cas-film-frame-4">
+      <rect x="-85" y="-50" width="170" height="100" fill="#5a8aaa"/>
+      <path d="M -85,0 Q -50,-10 -20,0 Q 0,5 20,-5 Q 50,-15 85,-5 L 85,50 L -85,50 Z" fill="#4a7a4a"/>
+      <circle cx="50" cy="-30" r="10" fill="#f8d070" opacity="0.85"/>
+    </g>
+  </g>
+
+  <!-- Clapperboard (right side, animated snap) -->
+  <g transform="translate(950,260)">
+    <!-- Base board -->
+    <rect x="-70" y="-10" width="140" height="80" fill="#1a1a1a" stroke="#4ecdc4" stroke-width="1.5"/>
+    <text x="0" y="20" text-anchor="middle" fill="#4ecdc4" font-family="monospace" font-size="10">SCENE 01 · TAKE 12</text>
+    <text x="0" y="38" text-anchor="middle" fill="#4ecdc4" font-family="monospace" font-size="9">PROD: CASCADIA</text>
+    <text x="0" y="55" text-anchor="middle" fill="#4ecdc4" font-family="monospace" font-size="9">DATE: 2026-10-04</text>
+    <!-- Top clapstick (animated) -->
+    <g class="cas-clapper" style="transform-origin: 770px 240px;">
+      <rect x="-75" y="-25" width="150" height="14" fill="#1a1a1a" stroke="#4ecdc4" stroke-width="1.5"/>
+      <!-- Diagonal stripes on clapstick -->
+      <polygon points="-65,-25 -50,-11 -55,-11 -70,-25" fill="#f8f8f8"/>
+      <polygon points="-40,-25 -25,-11 - -30,-11 -45,-25" fill="#f8f8f8"/>
+      <polygon points="-15,-25 0,-11 -5,-11 -20,-25" fill="#f8f8f8"/>
+      <polygon points="10,-25 25,-11 20,-11 5,-25" fill="#f8f8f8"/>
+      <polygon points="35,-25 50,-11 45,-11 30,-25" fill="#f8f8f8"/>
+      <polygon points="60,-25 75,-11 70,-11 55,-25" fill="#f8f8f8"/>
+    </g>
+    <!-- Hover target -->
+    <rect x="-80" y="-30" width="160" height="120" fill="transparent"
+          data-key="Portland animation studios"
+          data-val="LAIKA (Oscar-nominated) · BENT Image Labs · 25+ studios · feature film hub"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Sparkles -->
+  <g class="cas-sparkle" transform="translate(420,80)">
+    <polygon points="0,-6 1.5,-1.5 6,0 1.5,1.5 0,6 -1.5,1.5 -6,0 -1.5,-1.5" fill="#f8d070"/>
+  </g>
+  <g class="cas-sparkle s2" transform="translate(780,120)">
+    <polygon points="0,-5 1.2,-1.2 5,0 1.2,1.2 0,5 -1.2,1.2 -5,0 -1.2,-1.2" fill="#f8d070"/>
+  </g>
+  <g class="cas-sparkle s3" transform="translate(280,160)">
+    <polygon points="0,-4 1,-1 4,0 1,1 0,4 -1,1 -4,0 -1,-1" fill="#f8d070"/>
+  </g>
+  <g class="cas-sparkle s4" transform="translate(920,200)">
+    <polygon points="0,-5 1.2,-1.2 5,0 1.2,1.2 0,5 -1.2,1.2 -5,0 -1.2,-1.2" fill="#f8d070"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative"><strong>Vancouver</strong> is the 4th-largest film and TV production center in North America ("Hollywood North") with $3B+ annual industry revenue — driven by favorable currency, generous tax credits, and proximity to LA. <strong>Portland</strong> anchors animation through <strong>LAIKA</strong> (Oscar-nominated Coraline, Kubo and the Two Strings, Missing Link) and a robust stop-motion tradition. Seattle hosts <strong>Bungie</strong> (Destiny, Halo), <strong>Valve</strong> (Half-Life, Portal), and <strong>Pokémon</strong>'s Western HQ. The corridor produces 2,500+ creative technology jobs annually. The corridor's VFX cluster (MPC Vancouver, Image Engine, Sony Pictures Imageworks) handles feature film visual effects for global blockbusters including Marvel and Star Wars franchises.</p>
+</section>
+<section class="sector-card" id="sector-maritime">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 05 · Maritime</div>
+    <h2>Maritime</h2>
+    <p class="sector-tagline">Container ports + bulk cargo + inland barge + shipbuilding</p>
+    <p class="sector-mini-stats">Vancouver BC 4M TEU/year · Seattle 3.5M TEU · Columbia River 50M+ tonnes</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-maritime">
+  <img class="cas-scene-fallback" data-src="images/sectors/maritime.png" src="" alt="Cascadia Maritime sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Maritime</div>
+    <p class="scene-stats">hover cargo ship · hover gantry crane · hover tugboat</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('maritime')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-maritime" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Maritime sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#1a3a5a 0%,#4a6a8a 40%,#2a4a5a 100%);">
+  <defs>
+    <linearGradient id="mar-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5a"/>
+      <stop offset="40%" stop-color="#4a6a8a"/>
+      <stop offset="100%" stop-color="#7a9aba"/>
+    </linearGradient>
+    <linearGradient id="mar-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a4a5a"/>
+      <stop offset="100%" stop-color="#0a2a3a"/>
+    </linearGradient>
+    <linearGradient id="mar-ship" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a3a1a"/>
+      <stop offset="100%" stop-color="#3a1a0a"/>
+    </linearGradient>
+    <linearGradient id="mar-container-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c45a3a"/>
+      <stop offset="100%" stop-color="#8a3a1a"/>
+    </linearGradient>
+    <linearGradient id="mar-container-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a8a5a"/>
+      <stop offset="100%" stop-color="#1a5a3a"/>
+    </linearGradient>
+    <linearGradient id="mar-container-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a4a8a"/>
+      <stop offset="100%" stop-color="#2a2a5a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#mar-sky)"/>
+
+  <!-- Distant mountains (Olympic Peninsula backdrop) -->
+  <path d="M 0,310 L 80,260 L 200,290 L 320,240 L 440,280 L 560,250 L 680,290 L 800,260 L 920,290 L 1040,250 L 1200,280 L 1200,330 L 0,330 Z" fill="#3a4a5a" opacity="0.5"/>
+
+  <!-- Water -->
+  <rect x="0" y="330" width="1200" height="170" fill="url(#mar-water)"/>
+
+  <!-- Water surface highlights (3 wave layers) -->
+  <g class="cas-wave-1">
+    <path d="M 0,335 Q 60,328 120,335 T 240,335 T 360,335 T 480,335 T 600,335 T 720,335 T 840,335 T 960,335 T 1080,335 T 1200,335" stroke="#5a7a8a" stroke-width="1" fill="none" opacity="0.6"/>
+  </g>
+  <g class="cas-wave-2">
+    <path d="M 0,345 Q 80,338 160,345 T 320,345 T 480,345 T 640,345 T 800,345 T 960,345 T 1120,345 T 1200,345" stroke="#4a6a7a" stroke-width="1" fill="none" opacity="0.55"/>
+  </g>
+  <g class="cas-wave-3">
+    <path d="M 0,358 Q 70,352 140,358 T 280,358 T 420,358 T 560,358 T 700,358 T 840,358 T 980,358 T 1120,358 T 1200,358" stroke="#3a5a6a" stroke-width="1" fill="none" opacity="0.5"/>
+  </g>
+
+  <!-- Cargo ship (animated cruise across) -->
+  <g class="cas-ship">
+    <g transform="translate(200,290)">
+      <!-- Hull -->
+      <path d="M -90,40 L -85,0 L 85,0 L 90,40 Z" fill="url(#mar-ship)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <!-- Bow -->
+      <polygon points="90,40 110,20 110,0 90,0" fill="#3a1a0a"/>
+      <!-- Bridge (white tower) -->
+      <rect x="20" y="-30" width="40" height="30" fill="#e8e8e8" stroke="#1a1a1a" stroke-width="0.5"/>
+      <rect x="22" y="-26" width="6" height="6" fill="#4ecdc4" opacity="0.8"/>
+      <rect x="32" y="-26" width="6" height="6" fill="#4ecdc4" opacity="0.8"/>
+      <rect x="42" y="-26" width="6" height="6" fill="#4ecdc4" opacity="0.8"/>
+      <rect x="52" y="-26" width="6" height="6" fill="#4ecdc4" opacity="0.8"/>
+      <!-- Funnel -->
+      <rect x="35" y="-45" width="10" height="15" fill="#3a3a3a"/>
+      <rect x="35" y="-50" width="10" height="5" fill="#1a1a1a"/>
+      <!-- Container stack on deck -->
+      <g class="cas-container-stack">
+        <rect x="-75" y="-22" width="20" height="22" fill="url(#mar-container-1)"/>
+        <rect x="-55" y="-22" width="20" height="22" fill="url(#mar-container-2)"/>
+        <rect x="-35" y="-22" width="20" height="22" fill="url(#mar-container-3)"/>
+        <rect x="-15" y="-22" width="20" height="22" fill="url(#mar-container-1)"/>
+        <rect x="-75" y="-44" width="20" height="22" fill="url(#mar-container-2)"/>
+        <rect x="-55" y="-44" width="20" height="22" fill="url(#mar-container-3)"/>
+        <rect x="-35" y="-44" width="20" height="22" fill="url(#mar-container-1)"/>
+        <rect x="-15" y="-44" width="20" height="22" fill="url(#mar-container-2)"/>
+      </g>
+      <!-- Hover target over ship -->
+      <rect x="-100" y="-50" width="220" height="95" fill="transparent"
+            data-key="Port of Vancouver, BC"
+            data-val="4M TEU/year · Canada's largest port · 170M+ tonnes cargo"
+            style="cursor:help;"/>
+    </g>
+  </g>
+
+  <!-- Container terminal (right side) -->
+  <g transform="translate(960,310)">
+    <!-- Dock surface -->
+    <rect x="-100" y="0" width="200" height="20" fill="#3a3a3a" stroke="#1a1a1a" stroke-width="0.5"/>
+    <!-- 4 stacked containers -->
+    <g class="cas-container-stack">
+      <rect x="-85" y="-20" width="35" height="20" fill="url(#mar-container-1)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="-50" y="-20" width="35" height="20" fill="url(#mar-container-2)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="-15" y="-20" width="35" height="20" fill="url(#mar-container-3)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="20" y="-20" width="35" height="20" fill="url(#mar-container-1)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="55" y="-20" width="35" height="20" fill="url(#mar-container-2)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="-85" y="-40" width="35" height="20" fill="url(#mar-container-2)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="-50" y="-40" width="35" height="20" fill="url(#mar-container-3)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="-15" y="-40" width="35" height="20" fill="url(#mar-container-1)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="20" y="-40" width="35" height="20" fill="url(#mar-container-2)" stroke="#1a0a0a" stroke-width="0.5"/>
+      <rect x="55" y="-40" width="35" height="20" fill="url(#mar-container-3)" stroke="#1a0a0a" stroke-width="0.5"/>
+    </g>
+    <!-- Gantry crane -->
+    <g>
+      <!-- Legs -->
+      <rect x="-95" y="-90" width="6" height="90" fill="#4a4a4a"/>
+      <rect x="89" y="-90" width="6" height="90" fill="#4a4a4a"/>
+      <!-- Top beam -->
+      <rect x="-95" y="-100" width="190" height="14" fill="#3a3a3a"/>
+      <!-- Moving hoist -->
+      <rect x="-15" y="-86" width="30" height="8" fill="#5a5a5a"/>
+      <line x1="0" y1="-78" x2="0" y2="-60" stroke="#5a5a5a" stroke-width="1.5"/>
+      <rect x="-4" y="-62" width="8" height="4" fill="#4a4a4a"/>
+    </g>
+    <!-- Hover target over crane -->
+    <rect x="-100" y="-105" width="200" height="125" fill="transparent"
+          data-key="Port of Seattle"
+          data-val="3.5M TEU/year · container terminal · cruise ship hub"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Tugboat (smaller, left of ship) -->
+  <g transform="translate(70,360)">
+    <!-- Hull -->
+    <path d="M -25,15 L -22,0 L 22,0 L 25,15 Z" fill="#c45a3a" stroke="#1a0a0a" stroke-width="0.5"/>
+    <!-- Wheelhouse -->
+    <rect x="-8" y="-15" width="20" height="15" fill="#e8e8e8"/>
+    <rect x="-6" y="-12" width="4" height="4" fill="#4ecdc4" opacity="0.8"/>
+    <rect x="2" y="-12" width="4" height="4" fill="#4ecdc4" opacity="0.8"/>
+    <rect x="10" y="-12" width="4" height="4" fill="#4ecdc4" opacity="0.8"/>
+    <!-- Smokestack -->
+    <rect x="-4" y="-25" width="6" height="10" fill="#3a3a3a"/>
+    <!-- Smoke puff -->
+    <circle cx="0" cy="-30" r="3" fill="#aaaaaa" opacity="0.7"/>
+    <circle cx="-2" cy="-35" r="4" fill="#aaaaaa" opacity="0.5"/>
+    <!-- Hover target -->
+    <rect x="-30" y="-30" width="60" height="50" fill="transparent"
+          data-key="Columbia River barge traffic"
+          data-val="50M+ tonnes/year · Portland → Astoria · wheat + forest products"
+          style="cursor:help;"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative">Cascadia has the deepest natural ports on the North American Pacific coast. <strong>Port of Vancouver, BC</strong> handles 4M TEU containers per year (Canada's largest port, 170M+ tonnes total cargo) — the closest North American port to Asia with two-day transit time savings versus LA/Long Beach. <strong>Port of Seattle</strong> (3.5M TEU/year) specializes in Alaska-bound cargo and cruise ships. <strong>Port of Portland</strong> handles Columbia River barge traffic (50M+ tonnes/year of wheat, forest products, and minerals) flowing from as far inland as Lewiston, Idaho. <strong>Vigor Shipyards</strong> (Seattle) is the largest non-navy shipbuilder on the West Coast. The corridor is the US West Coast's primary grain export gateway — 25% of US wheat exports flow through Cascadia ports.</p>
+</section>
+<section class="sector-card" id="sector-tech-ai">
+  <div class="sector-header">
+    <div class="sector-tag">Sector 06 · Tech & AI</div>
+    <h2>Tech & AI</h2>
+    <p class="sector-tagline">Cloud computing + frontier AI + applied research</p>
+    <p class="sector-mini-stats">525K+ tech workers · 18K new AI positions Q3 2026 · $8.7B VC deployed 2025</p>
+  </div>
+  <div class="cas-scene-wrap" id="sector-wrap-tech-ai">
+  <img class="cas-scene-fallback" data-src="images/sectors/tech-ai.png" src="" alt="Cascadia Tech & AI sector visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Tech & AI</div>
+    <p class="scene-stats">hover input nodes · hover hidden layers · hover AI2 output node</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadSectorScene('tech-ai')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="tooltip-tech-ai" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia Tech & AI sector">
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#050a1a 0%,#0a1a3a 50%,#14233a 100%);">
+  <defs>
+    <linearGradient id="tech-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050a1a"/>
+      <stop offset="50%" stop-color="#0a1a3a"/>
+      <stop offset="100%" stop-color="#14233a"/>
+    </linearGradient>
+    <radialGradient id="tech-node-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#tech-bg)"/>
+
+  <!-- Subtle grid background -->
+  <g stroke="#4ecdc4" stroke-width="0.3" opacity="0.1">
+    <line x1="0" y1="50" x2="1200" y2="50"/>
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="250" x2="1200" y2="250"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="350" x2="1200" y2="350"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="100" y1="0" x2="100" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="300" y1="0" x2="300" y2="500"/>
+    <line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="500" y1="0" x2="500" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+    <line x1="700" y1="0" x2="700" y2="500"/>
+    <line x1="800" y1="0" x2="800" y2="500"/>
+    <line x1="900" y1="0" x2="900" y2="500"/>
+    <line x1="1000" y1="0" x2="1000" y2="500"/>
+    <line x1="1100" y1="0" x2="1100" y2="500"/>
+  </g>
+
+  <!-- Data flow lines (animated dashoffset to show data moving) -->
+  <!-- Layer 1 -> Layer 2 connections (4 input -> 6 hidden1) -->
+  <g stroke="#4ecdc4" stroke-width="1.2" fill="none" opacity="0.6">
+    <line class="cas-data-line" x1="150" y1="100" x2="450" y2="80"/>
+    <line class="cas-data-line d2" x1="150" y1="100" x2="450" y2="160"/>
+    <line class="cas-data-line d3" x1="150" y1="100" x2="450" y2="240"/>
+    <line class="cas-data-line d4" x1="150" y1="100" x2="450" y2="320"/>
+    <line class="cas-data-line" x1="150" y1="100" x2="450" y2="400"/>
+
+    <line class="cas-data-line d2" x1="150" y1="200" x2="450" y2="80"/>
+    <line class="cas-data-line d3" x1="150" y1="200" x2="450" y2="160"/>
+    <line class="cas-data-line d4" x1="150" y1="200" x2="450" y2="240"/>
+    <line class="cas-data-line" x1="150" y1="200" x2="450" y2="320"/>
+    <line class="cas-data-line d2" x1="150" y1="200" x2="450" y2="400"/>
+
+    <line class="cas-data-line d3" x1="150" y1="300" x2="450" y2="80"/>
+    <line class="cas-data-line d4" x1="150" y1="300" x2="450" y2="160"/>
+    <line class="cas-data-line" x1="150" y1="300" x2="450" y2="240"/>
+    <line class="cas-data-line d2" x1="150" y1="300" x2="450" y2="320"/>
+    <line class="cas-data-line d3" x1="150" y1="300" x2="450" y2="400"/>
+
+    <line class="cas-data-line d4" x1="150" y1="400" x2="450" y2="80"/>
+    <line class="cas-data-line" x1="150" y1="400" x2="450" y2="160"/>
+    <line class="cas-data-line d2" x1="150" y1="400" x2="450" y2="240"/>
+    <line class="cas-data-line d3" x1="150" y1="400" x2="450" y2="320"/>
+    <line class="cas-data-line d4" x1="150" y1="400" x2="450" y2="400"/>
+  </g>
+
+  <!-- Layer 2 -> Layer 3 (6 hidden1 -> 4 hidden2) -->
+  <g stroke="#4ecdc4" stroke-width="1.2" fill="none" opacity="0.55">
+    <line class="cas-data-line" x1="450" y1="80" x2="750" y2="160"/>
+    <line class="cas-data-line d2" x1="450" y1="80" x2="750" y2="240"/>
+    <line class="cas-data-line d3" x1="450" y1="80" x2="750" y2="320"/>
+    <line class="cas-data-line d4" x1="450" y1="80" x2="750" y2="400"/>
+
+    <line class="cas-data-line d2" x1="450" y1="160" x2="750" y2="160"/>
+    <line class="cas-data-line d3" x1="450" y1="160" x2="750" y2="240"/>
+    <line class="cas-data-line d4" x1="450" y1="160" x2="750" y2="320"/>
+    <line class="cas-data-line" x1="450" y1="160" x2="750" y2="400"/>
+
+    <line class="cas-data-line d3" x1="450" y1="240" x2="750" y2="160"/>
+    <line class="cas-data-line d4" x1="450" y1="240" x2="750" y2="240"/>
+    <line class="cas-data-line" x1="450" y1="240" x2="750" y2="320"/>
+    <line class="cas-data-line d2" x1="450" y1="240" x2="750" y2="400"/>
+
+    <line class="cas-data-line d4" x1="450" y1="320" x2="750" y2="160"/>
+    <line class="cas-data-line" x1="450" y1="320" x2="750" y2="240"/>
+    <line class="cas-data-line d2" x1="450" y1="320" x2="750" y2="320"/>
+    <line class="cas-data-line d3" x1="450" y1="320" x2="750" y2="400"/>
+
+    <line class="cas-data-line" x1="450" y1="400" x2="750" y2="160"/>
+    <line class="cas-data-line d2" x1="450" y1="400" x2="750" y2="240"/>
+    <line class="cas-data-line d3" x1="450" y1="400" x2="750" y2="320"/>
+    <line class="cas-data-line d4" x1="450" y1="400" x2="750" y2="400"/>
+  </g>
+
+  <!-- Layer 3 -> Output (4 hidden2 -> 1 center AI2 node) -->
+  <g stroke="#4ecdc4" stroke-width="1.5" fill="none" opacity="0.7">
+    <line class="cas-data-line" x1="750" y1="160" x2="1050" y2="250"/>
+    <line class="cas-data-line d2" x1="750" y1="240" x2="1050" y2="250"/>
+    <line class="cas-data-line d3" x1="750" y1="320" x2="1050" y2="250"/>
+    <line class="cas-data-line d4" x1="750" y1="400" x2="1050" y2="250"/>
+  </g>
+
+  <!-- Layer 1: Input nodes (4 nodes) -->
+  <g>
+    <g class="cas-node-glow">
+      <circle cx="150" cy="100" r="14" fill="url(#tech-node-glow)"/>
+      <circle cx="150" cy="100" r="8" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="1"/>
+      <rect x="125" y="70" width="50" height="40" fill="transparent" data-key="Input layer · procurement" data-val="Tenders + RFPs + RFQs from SAM.gov + BC Bid RSS feeds" style="cursor:help;"/>
+    </g>
+    <g class="cas-node-glow n2">
+      <circle cx="150" cy="200" r="14" fill="url(#tech-node-glow)"/>
+      <circle cx="150" cy="200" r="8" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="1"/>
+      <rect x="125" y="170" width="50" height="40" fill="transparent" data-key="Input layer · regulatory" data-val="WA CCA + BC DRIPA + USMCA + Indigenous procurement rules" style="cursor:help;"/>
+    </g>
+    <g class="cas-node-glow n3">
+      <circle cx="150" cy="300" r="14" fill="url(#tech-node-glow)"/>
+      <circle cx="150" cy="300" r="8" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="1"/>
+      <rect x="125" y="270" width="50" height="40" fill="transparent" data-key="Input layer · supply chain" data-val="Tier 1-3 supplier graph · consent layer · provenance ledger" style="cursor:help;"/>
+    </g>
+    <g class="cas-node-glow n4">
+      <circle cx="150" cy="400" r="14" fill="url(#tech-node-glow)"/>
+      <circle cx="150" cy="400" r="8" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="1"/>
+      <rect x="125" y="370" width="50" height="40" fill="transparent" data-key="Input layer · climate" data-val="Carbon MRV ledger · scope 1/2/3 emissions · climate risk scoring" style="cursor:help;"/>
+    </g>
+  </g>
+
+  <!-- Layer 2: Hidden layer 1 (5 nodes) -->
+  <g>
+    <g class="cas-node-glow"><circle cx="450" cy="80" r="11" fill="url(#tech-node-glow)"/><circle cx="450" cy="80" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n2"><circle cx="450" cy="160" r="11" fill="url(#tech-node-glow)"/><circle cx="450" cy="160" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n3"><circle cx="450" cy="240" r="11" fill="url(#tech-node-glow)"/><circle cx="450" cy="240" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n4"><circle cx="450" cy="320" r="11" fill="url(#tech-node-glow)"/><circle cx="450" cy="320" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow"><circle cx="450" cy="400" r="11" fill="url(#tech-node-glow)"/><circle cx="450" cy="400" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <!-- Layer 2 hover target -->
+    <rect x="425" y="60" width="50" height="360" fill="transparent" data-key="Microsoft Research" data-val="LLM frontier work · Redmond · 1,000+ researchers · partnered with OpenAI" style="cursor:help;"/>
+  </g>
+
+  <!-- Layer 3: Hidden layer 2 (4 nodes) -->
+  <g>
+    <g class="cas-node-glow"><circle cx="750" cy="160" r="11" fill="url(#tech-node-glow)"/><circle cx="750" cy="160" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n2"><circle cx="750" cy="240" r="11" fill="url(#tech-node-glow)"/><circle cx="750" cy="240" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n3"><circle cx="750" cy="320" r="11" fill="url(#tech-node-glow)"/><circle cx="750" cy="320" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <g class="cas-node-glow n4"><circle cx="750" cy="400" r="11" fill="url(#tech-node-glow)"/><circle cx="750" cy="400" r="6" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="0.8"/></g>
+    <!-- Layer 3 hover target -->
+    <rect x="725" y="140" width="50" height="280" fill="transparent" data-key="Cascadia AI corridor" data-val="525K+ tech workers · 18K new AI positions Q3 2026 · 8 VC firms · $8.7B deployed 2025" style="cursor:help;"/>
+  </g>
+
+  <!-- Output: AI2 (single big node) -->
+  <g>
+    <circle class="cas-node-glow" cx="1050" cy="250" r="32" fill="url(#tech-node-glow)"/>
+    <circle cx="1050" cy="250" r="20" fill="#4ecdc4" stroke="#a0f0e8" stroke-width="1.5"/>
+    <text x="1050" y="255" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#0a1a2f">AI2</text>
+    <!-- AI2 hover target -->
+    <rect x="1010" y="210" width="80" height="80" fill="transparent" data-key="Allen Institute for AI (AI2)" data-val="Seattle · open NLP + computer vision research · Semantic Scholar · $500M+ funded" style="cursor:help;"/>
+  </g>
+
+  <!-- Floating data labels -->
+  <g fill="#4ecdc4" opacity="0.6" font-family="monospace" font-size="10">
+    <text x="100" y="40" text-anchor="middle">INPUT</text>
+    <text x="450" y="40" text-anchor="middle">LAYER 1</text>
+    <text x="750" y="40" text-anchor="middle">LAYER 2</text>
+    <text x="1050" y="40" text-anchor="middle">OUTPUT</text>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="sector-narrative">Cascadia is the second-largest AI/ML research cluster in North America (behind only the Bay Area). <strong>Microsoft Research</strong> (Redmond, 1,000+ researchers) is partnered with OpenAI on the Stargate compute buildout. <strong>Allen Institute for AI (AI2)</strong> (Seattle) publishes open NLP and computer vision research (Semantic Scholar, AllenNLP, MosaicML prior to its acquisition). <strong>Amazon's Machine Learning lab</strong> (Seattle) powers Alexa, recommendation systems, and AWS AI services. <strong>UBC's Vector Institute affiliate</strong> and <strong>Quantum Matter Institute</strong> anchor Canada's AI research. The corridor produces 42,000 STEM graduates annually across UW + UBC + OHSU + 20+ regional colleges. AI/ML job growth is +34% YoY — fastest-growing skill segment. The 12,000 unfilled AI positions is the single largest constraint on regional growth — the HSR corridor addresses this by merging Seattle and Vancouver labor markets.</p>
+</section>
+
+</div>
+
+
+<script id="cascadia-sectors-js">
+(function() {
+  'use strict';
+
+  // === Lazy-load PNG fallbacks via IntersectionObserver ===
+  // Pattern: <img class="cas-scene-fallback" data-src="..." src="" loading="lazy">
+  // The IntersectionObserver fires when the wrapper enters viewport. If the
+  // user has already clicked the SVG button (wrapper has 'scene-loaded'
+  // class), the PNG never loads. Otherwise, set img.src = img.dataset.src.
+  var lazyObserver = null;
+  function initLazyLoader() {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: load all PNGs immediately (older browsers)
+      document.querySelectorAll('img.cas-scene-fallback[data-src]').forEach(function(img) {
+        if (!img.closest('.cas-scene-wrap').classList.contains('scene-loaded')) {
+          img.src = img.dataset.src;
+        }
+      });
+      return;
+    }
+    lazyObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          var wrap = img.closest('.cas-scene-wrap');
+          if (wrap && !wrap.classList.contains('scene-loaded')) {
+            img.src = img.dataset.src;
+          }
+          lazyObserver.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('img.cas-scene-fallback[data-src]').forEach(function(img) {
+      lazyObserver.observe(img);
+    });
+  }
+
+  // === Theme toggle (reuses localStorage pattern from other OS pages) ===
+  window.toggleTheme = function() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = (cur === 'dark') ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cas-theme', next); } catch(e) {}
+  };
+  try {
+    var saved = localStorage.getItem('cas-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+      document.documentElement.setAttribute('data-theme', 'light');
+  } catch(e) {}
+
+  // === Sector scene loader (parametrized for all 6 sectors) ===
+  window.loadSectorScene = function(sectorId) {
+    var wrap = document.getElementById('sector-wrap-' + sectorId);
+    if (!wrap) return;
+    var fallback = wrap.querySelector('.cas-scene-fallback');
+    var scene = wrap.querySelector('.cas-scene-loaded');
+    var btn = wrap.querySelector('.cas-load-btn');
+    var textOverlay = wrap.querySelector('.cas-scene-text-overlay');
+    if (!scene || !btn) return;
+    // Mark wrap as scene-loaded — this signals the IntersectionObserver to
+    // never load the PNG even if it hasn't fired yet
+    wrap.classList.add('scene-loaded');
+    if (fallback) { fallback.style.display = 'none'; if (fallback.src) fallback.src = ''; }
+    if (btn) btn.style.display = 'none';
+    if (textOverlay) textOverlay.style.display = 'none';
+    scene.style.display = 'block';
+    wireSceneInteractions(sectorId, scene);
+  };
+
+  function wireSceneInteractions(sectorId, scene) {
+    var tooltip = document.getElementById('tooltip-' + sectorId);
+    if (!tooltip) return;
+    var wrap = document.getElementById('sector-wrap-' + sectorId);
+    var hoverables = scene.querySelectorAll('[data-key]');
+    hoverables.forEach(function(el) {
+      el.addEventListener('mouseenter', function(e) {
+        var key = el.getAttribute('data-key');
+        var val = el.getAttribute('data-val');
+        tooltip.querySelector('.tooltip-key').textContent = key;
+        tooltip.querySelector('.tooltip-val').textContent = val;
+        var rect = el.getBoundingClientRect();
+        var wrapRect = wrap.getBoundingClientRect();
+        tooltip.style.left = (rect.left - wrapRect.left + rect.width / 2) + 'px';
+        tooltip.style.top = (rect.top - wrapRect.top - 8) + 'px';
+        tooltip.classList.add('visible');
+      });
+      el.addEventListener('mouseleave', function() { tooltip.classList.remove('visible'); });
+    });
+    // Wire click handlers (sector-specific)
+    if (sectorId === 'aerospace') {
+      var sat = scene.querySelector('[data-click-action="satellite-boost"]');
+      if (sat) sat.addEventListener('click', function() {
+        sat.style.animationDuration = '4s';
+        setTimeout(function(){ sat.style.animationDuration = ''; }, 5000);
+      });
+    }
+  }
+
+  // === Init on DOMContentLoaded ===
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLazyLoader);
+  } else {
+    initLazyLoader();
+  }
+})();
+</script>
+
+</body>
+</html>
