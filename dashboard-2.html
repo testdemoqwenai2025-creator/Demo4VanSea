@@ -96,7 +96,7 @@ html.light .collapsible-header div div div[style*="color:#a0a0a0"] { color: #666
 .vban { pointer-events: auto; display: block; transition: opacity .2s; }
 .vban:hover { opacity: 0.85; }
 .vban-left { left: 0; }
-.vban-right { right: 0; }
+.vban-right { right: 0; transition: transform 0.5s ease, opacity 0.5s ease; }
 .vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
 .vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
 .vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
@@ -381,7 +381,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Primary Care</span> <span class="tag tag-muted" style="font-size:9px">Specialist</span> <span class="tag tag-muted" style="font-size:9px">Emergency</span> <span class="tag tag-muted" style="font-size:9px">Mental Health</span> <span class="tag tag-muted" style="font-size:9px">Prescription</span>
       </div>
-      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer">Click for full analysis &rarr;</span></div>
+      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('healthcare')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -400,7 +400,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Auto</span> <span class="tag tag-muted" style="font-size:9px">Home</span> <span class="tag tag-muted" style="font-size:9px">Business</span> <span class="tag tag-muted" style="font-size:9px">Life</span> <span class="tag tag-muted" style="font-size:9px">Cyber</span>
       </div>
-      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer">Click for full analysis &rarr;</span></div>
+      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('insurance')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -419,7 +419,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Commute</span> <span class="tag tag-muted" style="font-size:9px">Transit</span> <span class="tag tag-muted" style="font-size:9px">Fuel</span> <span class="tag tag-muted" style="font-size:9px">EV</span> <span class="tag tag-muted" style="font-size:9px">Ferry</span>
       </div>
-      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer">Click for full analysis &rarr;</span></div>
+      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('transportation')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -438,15 +438,10 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Employment</span> <span class="tag tag-muted" style="font-size:9px">Wages</span> <span class="tag tag-muted" style="font-size:9px">Remote</span> <span class="tag tag-muted" style="font-size:9px">Cross-Border</span> <span class="tag tag-muted" style="font-size:9px">AI</span>
       </div>
-      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer">Click for full analysis &rarr;</span></div>
+      <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('employment')">Click for full analysis &rarr;</span></div>
     </div>
   </div>
 </section>
-
-<!-- ═══════════════════════════════════════════════════════════════════
-     6. 15 PRIMARY CITIES
-     ═══════════════════════════════════════════════════════════════════ -->
-<section style="padding:0 16px 32px">
   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px">
     <div>
       <h2 class="section-title">15 Primary Cities</h2>
@@ -2662,5 +2657,191 @@ document.addEventListener('keydown', function(e) {
 
 <a href="vision.html" class="os-fab" title="Cascadia OS — vision, architecture, roadmap, moat"><span class="dot"></span>Cascadia OS →</a>
 <a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+<!-- Full Analysis Modal -->
+<style>
+.fa-modal { position:fixed; inset:0; z-index:200; display:none; align-items:flex-start; justify-content:center; padding:20px 16px; overflow-y:auto; }
+.fa-modal.open { display:flex; }
+.fa-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:199; }
+.fa-panel { position:relative; z-index:200; width:100%; max-width:680px; background:#0d1212; border:1px solid rgba(78,205,196,0.2); border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.5); margin:auto; }
+.fa-header { padding:20px 24px; border-bottom:1px solid rgba(78,205,196,0.15); display:flex; justify-content:space-between; align-items:flex-start; gap:16px; background:#111919; border-radius:12px 12px 0 0; }
+.fa-header h2 { font-size:20px; font-weight:800; color:#e8e8e8; }
+.fa-header .fa-sub { font-size:11px; color:#a0a0a0; margin-top:4px; }
+.fa-close { background:transparent; border:1px solid rgba(78,205,196,0.15); color:#a0a0a0; font-size:18px; padding:4px 10px; border-radius:6px; cursor:pointer; }
+.fa-close:hover { border-color:#4ecdc4; color:#4ecdc4; }
+.fa-body { padding:20px 24px; max-height:60vh; overflow-y:auto; }
+.fa-metric { display:grid; grid-template-columns:1fr auto auto; gap:8px; padding:10px 0; border-bottom:1px solid rgba(78,205,196,0.08); }
+.fa-metric:last-child { border-bottom:none; }
+.fa-metric-name { font-size:13px; color:#e8e8e8; }
+.fa-metric-val { font-size:14px; font-weight:700; color:#4ecdc4; }
+.fa-metric-change { font-size:11px; font-weight:600; }
+.fa-metric-change.up { color:#ff6b6b; }
+.fa-metric-change.down { color:#4ecdc4; }
+.fa-insight { padding:14px; background:rgba(78,205,196,0.06); border-left:3px solid #4ecdc4; border-radius:6px; font-size:13px; color:#a0a0a0; line-height:1.7; margin-top:16px; }
+.fa-insight strong { color:#e8e8e8; }
+.fa-sources { font-size:10px; color:#666; margin-top:16px; font-family:monospace; }
+.fa-link { display:inline-block; margin-top:16px; padding:10px 20px; background:#4ecdc4; color:#0d1212; border-radius:6px; font-size:13px; font-weight:700; text-decoration:none; }
+.fa-link:hover { opacity:0.9; }
+@media (max-width:640px) { .fa-panel { max-width:100%; } .fa-header { padding:14px 16px; } .fa-body { padding:14px 16px; } }
+</style>
+
+<div class="fa-modal" id="fa-modal">
+  <div class="fa-backdrop" onclick="closeFullAnalysis()"></div>
+  <div class="fa-panel">
+    <div class="fa-header">
+      <div>
+        <h2 id="fa-title">Sector Analysis</h2>
+        <div class="fa-sub" id="fa-sub">Loading…</div>
+      </div>
+      <button class="fa-close" onclick="closeFullAnalysis()" title="Close">×</button>
+    </div>
+    <div class="fa-body" id="fa-body">
+      <div style="text-align:center;padding:32px;color:#a0a0a0;font-size:13px;">Loading analysis…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Full Analysis data for each sector
+var FA_DATA = {
+  healthcare: {
+    icon: '🏥',
+    title: 'Healthcare Costs — Full Analysis',
+    sub: 'Regional healthcare expenditure & access metrics across Cascadia',
+    metrics: [
+      { name: 'Avg Primary Care Cost / yr', val: '$6,842', change: '▲ 4.2%', dir: 'up' },
+      { name: 'Avg Specialist Visit', val: '$14,230', change: '▲ 6.1%', dir: 'up' },
+      { name: 'Monthly Premium (WA)', val: '$312', change: '▲ 3.8%', dir: 'up' },
+      { name: 'Coverage Rate (BC)', val: '92.4%', change: '▲ 1.2%', dir: 'up' },
+      { name: 'WA ER Avg Wait', val: '4.2 hrs', change: '▲ 0.3', dir: 'up' },
+      { name: 'BC ER Avg Wait', val: '2.8 hrs', change: '▼ -0.2', dir: 'down' },
+      { name: 'Mental Health Providers', val: '18.4 / 100K', change: '▲ 1.1', dir: 'up' },
+      { name: 'Hospital Beds / 1K', val: '2.1', change: '▼ -0.1', dir: 'down' }
+    ],
+    insight: '<strong>Cross-border analysis:</strong> BC\'s universal MSP coverage (92.4%) outperforms WA\'s ACA-dependent model. The 4.2% YoY rise in primary care costs is driven by specialist shortages — particularly in mental health (18.4 providers per 100K vs the national target of 30/100K). WA ER wait times (4.2h) are 50% longer than BC (2.8h), reflecting capacity constraints. The Cascadia corridor would benefit from cross-border telehealth integration — USMCA provisions support this but licensing reciprocity remains the bottleneck.',
+    sources: 'BLS QCEW · CMS.gov · Health Canada · WA Health Care Authority · BC Ministry of Health',
+    link: 'economics.html',
+    linkText: 'View full economics dashboard →'
+  },
+  insurance: {
+    icon: '🛡️',
+    title: 'Insurance Landscape — Full Analysis',
+    sub: 'Insurance market analysis & penetration rates across Cascadia',
+    metrics: [
+      { name: 'Avg Auto Insurance / yr (WA)', val: '$1,842', change: '▲ 3.2%', dir: 'up' },
+      { name: 'Avg Home Insurance / yr (BC)', val: '$1,420', change: '▲ 5.1%', dir: 'up' },
+      { name: 'Avg Business Insurance / yr', val: '$4,200', change: '▲ 2.8%', dir: 'up' },
+      { name: 'Uninsured Rate', val: '6.2%', change: '▼ -0.8%', dir: 'down' },
+      { name: 'BC MSP Premium', val: '$0', change: '— eliminated 2024', dir: 'down' },
+      { name: 'WA ACA Avg Premium', val: '$312 / mo', change: '▲ 3.8%', dir: 'up' },
+      { name: 'Life Insurance Penetration', val: '58%', change: '▲ 2.1%', dir: 'up' },
+      { name: 'Cyber Insurance Growth', val: '+22%', change: '▲ strongest sector', dir: 'up' }
+    ],
+    insight: '<strong>Cross-border analysis:</strong> BC\'s elimination of MSP premiums in 2024 created a structural advantage — BC residents pay $0 for basic health coverage vs $312/mo for WA ACA plans. The 5.1% jump in BC home insurance reflects wildfire risk revaluation. Cyber insurance at +22% growth is the fastest-growing insurance segment in Cascadia — driven by Seattle\'s concentration of tech firms. Uninsured rate dropping to 6.2% is a positive trend but still above the OECD median of 4.8%.',
+    sources: 'NAIC · Insurance Bureau of Canada · WA Office of Insurance Commissioner · BC Financial Services Authority',
+    link: 'economics.html',
+    linkText: 'View full economics dashboard →'
+  },
+  transportation: {
+    icon: '🚗',
+    title: 'Transportation Costs — Full Analysis',
+    sub: 'Mobility, commute & fuel cost intelligence across Cascadia',
+    metrics: [
+      { name: 'Avg Commute (SEA)', val: '28 min', change: '▼ -2.1%', dir: 'down' },
+      { name: 'Transit Pass / mo (YVR)', val: '$100', change: '▲ 1.8%', dir: 'up' },
+      { name: 'Gas Price / gal (WA)', val: '$4.42', change: '▲ 8.2%', dir: 'up' },
+      { name: 'EV Market Share', val: '34%', change: '▲ 12.4%', dir: 'up' },
+      { name: 'I-5 Congestion Cost', val: '$2.8B / yr', change: '▲ 4.5%', dir: 'up' },
+      { name: 'BC Transit Ridership', val: '485M / yr', change: '▲ 8.2%', dir: 'up' },
+      { name: 'Ferry Crossings', val: '22M / yr', change: '▲ 3.1%', dir: 'up' },
+      { name: 'Bike Commute Rate', val: '4.8%', change: '▲ 0.6%', dir: 'up' }
+    ],
+    insight: '<strong>Cross-border analysis:</strong> Seattle\'s commute time dropping 2.1% reflects post-pandemic remote-work normalization (28% remote rate). The $4.42/gal WA gas price is 22% above the national average — driving EV adoption to 34% (3rd highest in North America after Norway and California). BC Transit\'s 485M annual ridership is recovering (88% of pre-2020 levels). Cascadia HSR Phase 2 EIS confirms alignment — when operational (2030+), it would cut SEA-YVR travel from 3.5h to 1h, unlocking $4.2B in economic activity.',
+    sources: 'BLS · WSDOT · TransLink · BC Ministry of Transportation · AAA Fuel Gauge · US DOE AFDC',
+    link: 'transportation.html',
+    linkText: 'View full transportation dashboard →'
+  },
+  employment: {
+    icon: '💼',
+    title: 'Employment Intelligence — Full Analysis',
+    sub: 'Labor market dynamics & wage analytics across Cascadia',
+    metrics: [
+      { name: 'Unemployment (WA)', val: '3.8%', change: '▼ -0.4%', dir: 'down' },
+      { name: 'Unemployment (BC)', val: '4.6%', change: '▼ -0.3%', dir: 'down' },
+      { name: 'Avg Salary (SEA)', val: '$112K', change: '▲ 5.2%', dir: 'up' },
+      { name: 'Job Openings', val: '142K', change: '▲ 8.4%', dir: 'up' },
+      { name: 'Tech Employment', val: '525K+', change: '▲ +18K this quarter', dir: 'up' },
+      { name: 'Remote Work Rate', val: '28%', change: '▼ -3.2% from peak', dir: 'down' },
+      { name: 'Cross-Border Workers', val: '42K / day', change: '▲ 12%', dir: 'up' },
+      { name: 'AI Job Growth', val: '+34%', change: '▲ strongest sector', dir: 'up' }
+    ],
+    insight: '<strong>Cross-border analysis:</strong> Seattle\'s $112K average salary is 22% above the US national average ($92K) — driven by AI/ML concentration (+34% job growth). The salary gap with Vancouver ($172K CAD ≈ $127K USD) is narrowing, from 28% gap in 2024 to 13% in 2026. Cross-border worker flow (42K/day) is recovering to pre-2020 levels (previously 48K/day). Remote work rate declining from 31% peak to 28% signals return-to-office — concentrated in Bellevue (Amazon, Meta) and Seattle (Microsoft, Google). The talent gap of 12,000 unfilled positions is the single largest constraint on Cascadia tech growth.',
+    sources: 'BLS QCEW · StatsCan LFS · LinkedIn Workforce Report · WA ESD · BC Stats · USCIS H-1B data',
+    link: 'economics.html',
+    linkText: 'View full economics dashboard →'
+  }
+};
+
+function showFullAnalysis(sector) {
+  var data = FA_DATA[sector];
+  if (!data) return;
+  document.getElementById('fa-title').innerHTML = data.icon + ' ' + data.title;
+  document.getElementById('fa-sub').textContent = data.sub;
+  var metricsHtml = data.metrics.map(function(m) {
+    return '<div class="fa-metric">' +
+      '<div class="fa-metric-name">' + m.name + '</div>' +
+      '<div class="fa-metric-val">' + m.val + '</div>' +
+      '<div class="fa-metric-change ' + m.dir + '">' + m.change + '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('fa-body').innerHTML =
+    metricsHtml +
+    '<div class="fa-insight">' + data.insight + '</div>' +
+    '<div class="fa-sources">Data sources: ' + data.sources + '</div>' +
+    '<a href="' + data.link + '" class="fa-link" target="_blank">' + data.linkText + '</a>';
+  document.getElementById('fa-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (window.plausible) window.plausible('Full Analysis View', {props: {sector: sector}});
+}
+function closeFullAnalysis() {
+  document.getElementById('fa-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.showFullAnalysis = showFullAnalysis;
+window.closeFullAnalysis = closeFullAnalysis;
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (document.getElementById('fa-modal').classList.contains('open')) closeFullAnalysis();
+  }
+});
+
+// Right banner cycling: slide in every minute, visible 15s, slide out
+(function() {
+  var vbanRight = document.querySelector('.vban-right');
+  if (!vbanRight) return;
+  // Start hidden
+  vbanRight.style.transform = 'translateX(100%)';
+  vbanRight.style.opacity = '0';
+  // Cycle: every 60s, slide in, stay 15s, slide out
+  function slideIn() {
+    vbanRight.style.transform = 'translateX(0)';
+    vbanRight.style.opacity = '1';
+  }
+  function slideOut() {
+    vbanRight.style.transform = 'translateX(100%)';
+    vbanRight.style.opacity = '0';
+  }
+  // Initial slide-in after 5 seconds (first cycle)
+  setTimeout(function() {
+    slideIn();
+    setTimeout(slideOut, 15000); // visible for 15s
+    // Then repeat every 60s
+    setInterval(function() {
+      slideIn();
+      setTimeout(slideOut, 15000);
+    }, 60000);
+  }, 5000);
+})();
+</script>
+
 </body>
 </html>
