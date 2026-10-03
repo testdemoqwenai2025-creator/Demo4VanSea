@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24/7/365 Public Preview — No NDA Required</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+  /* Dark theme (default) */
+  --bg: #0a1628;
+  --bg-2: #0f1f3a;
+  --card: #14233f;
+  --border: #1e3458;
+  --fg: #e8eef7;
+  --fg-2: #a0b3cc;
+  --accent: #2dd4bf;
+  --accent-2: #5eead4;
+  --warm: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.10);
+}
+[data-theme="light"] {
+  /* Light theme — overrides */
+  --bg: #f4f7f7;
+  --bg-2: #ffffff;
+  --card: #ffffff;
+  --border: #dde2e3;
+  --fg: #1a1a2e;
+  --fg-2: #4a4a5a;
+  --accent: #0d9488;
+  --accent-2: #14b8a6;
+  --warm: #d97706;
+  --danger: #dc2626;
+  --ok: #0d9488;
+  --toggle-bg: rgba(0,0,0,0.03);
+  --toggle-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .2s, color .2s;
+}
+.os-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+.os-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px;
+  flex-wrap: wrap; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+}
+.os-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.os-brand-mark {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: var(--bg); font-size: 18px;
+}
+.os-brand-text { font-size: 14px; color: var(--fg-2); }
+.os-brand-text strong { color: var(--fg); display: block; font-size: 17px; }
+.os-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.os-nav a, .os-nav button {
+  text-decoration: none; color: var(--fg-2);
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  border: 1px solid transparent; transition: all .15s;
+  background: transparent; cursor: pointer; font-family: inherit;
+}
+.os-nav a:hover, .os-nav button:hover { color: var(--fg); background: var(--card); border-color: var(--border); }
+.os-nav a.active { color: var(--accent); border-color: var(--accent); }
+.os-home-btn {
+  background: var(--accent) !important; color: var(--bg) !important;
+  font-weight: 600 !important; border-color: var(--accent) !important;
+}
+.os-home-btn:hover { background: var(--accent-2) !important; color: var(--bg) !important; }
+.os-theme-toggle {
+  width: 32px; height: 32px; padding: 0 !important; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--toggle-border) !important;
+  background: var(--toggle-bg) !important;
+  color: var(--fg-2) !important;
+}
+.os-theme-toggle:hover { color: var(--fg) !important; background: var(--card) !important; }
+
+.os-hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.os-hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.os-hero h1 .accent { color: var(--accent); }
+.os-hero p.lede {
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--fg-2);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.os-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.os-tag {
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--card); border: 1px solid var(--border); color: var(--fg-2);
+}
+
+.os-section { margin-bottom: 56px; }
+.os-section h2 {
+  font-size: 24px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.os-section h2 .num {
+  display: inline-flex; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--accent); align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.os-section h3 { font-size: 17px; margin: 20px 0 8px; color: var(--fg); }
+.os-section p { color: var(--fg-2); margin-bottom: 14px; }
+.os-section p strong { color: var(--fg); font-weight: 600; }
+.os-section ul, .os-section ol { color: var(--fg-2); margin: 8px 0 16px 24px; }
+.os-section li { margin-bottom: 6px; }
+.os-section code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+
+.os-grid { display: grid; gap: 16px; }
+.os-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.os-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.os-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .os-grid.cols-2, .os-grid.cols-3, .os-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.os-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px;
+  transition: border-color .15s, transform .15s;
+}
+.os-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.os-card .icon {
+  width: 36px; height: 36px; border-radius: 8px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg); font-size: 18px; font-weight: 800;
+}
+.os-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.os-card p { font-size: 13.5px; color: var(--fg-2); margin: 0; line-height: 1.55; }
+
+.os-table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  background: var(--card); border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.os-table th, .os-table td {
+  padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.os-table th { background: var(--bg-2); color: var(--fg-2); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+.os-table tr:last-child td { border-bottom: none; }
+.os-table td.accent { color: var(--accent); font-weight: 600; }
+
+.os-callout {
+  background: linear-gradient(135deg, rgba(45,212,191,0.10), rgba(45,212,191,0.03));
+  border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px;
+  margin: 24px 0;
+}
+[data-theme="light"] .os-callout {
+  background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(13,148,136,0.02));
+}
+.os-callout .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.os-callout p { color: var(--fg); margin: 0; font-size: 15px; }
+
+.os-foot {
+  margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--fg-2);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.os-foot a { color: var(--accent); text-decoration: none; }
+.os-foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="os-shell">
+
+<header class="os-header">
+  <a href="index.html" class="os-brand">
+    <div class="os-brand-mark">OS</div>
+    <div class="os-brand-text">
+      <strong>Cascadia OS</strong>
+      Operating System for the Cascadia Economy
+    </div>
+  </a>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="active">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+</header>
+
+<section class="os-hero">
+  <h1>24/7/365 Public Preview — No NDA Required</h1>
+  <p class="lede">The Cascadia OS preview is operated 24 hours a day, 365 days a year. Investors, partners, policymakers, and the general public can observe the platform without any NDA, login, or access request.</p>
+  <div class="os-tag-row"><span class="os-tag">24/7/365</span><span class="os-tag">No NDA</span><span class="os-tag">No login</span><span class="os-tag">GitHub Pages CDN</span></div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">1</span> The Public Preview — What It Is</h2>
+  <p>The Cascadia OS preview is a static HTML site served via GitHub Pages from the public <code>Demo4VanSea</code> repository. The site is the public-facing summary of the private source-of-truth repository <code>AISeaVanBiz4</code>.</p>
+  <table class="os-table">
+    <thead><tr><th>Property</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Public URL</td><td><a href="https://testdemoqwenai2025-creator.github.io/Demo4VanSea/" style="color:var(--accent);">https://testdemoqwenai2025-creator.github.io/Demo4VanSea/</a></td></tr>
+      <tr><td>Source repo (private)</td><td><a href="https://github.com/testdemoqwenai2025-creator/AISeaVanBiz4" style="color:var(--accent);">github.com/.../AISeaVanBiz4</a></td></tr>
+      <tr><td>Preview repo (public)</td><td><a href="https://github.com/testdemoqwenai2025-creator/Demo4VanSea" style="color:var(--accent);">github.com/.../Demo4VanSea</a></td></tr>
+      <tr><td>Hosting</td><td>GitHub Pages (CDN-backed, global edge)</td></tr>
+      <tr><td>Cost</td><td>$0 (GitHub Free tier)</td></tr>
+      <tr><td>Uptime</td><td class="accent">24 hours / 365 days — no maintenance window, no login, no access list</td></tr>
+      <tr><td>NDA required</td><td>No</td></tr>
+      <tr><td>Login required</td><td>No</td></tr>
+      <tr><td>Access request required</td><td>No</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">2</span> What the Public Preview Contains</h2>
+  <p>Per the HTML-only public repo policy (October 2026), the public preview contains <strong>only <code>.html</code> files</strong>. All non-HTML artifacts (code, <code>.md</code>, <code>.pdf</code>, <code>.json</code>, <code>.js</code>, <code>.png</code>, banners, sector icons) live exclusively in the private <code>AISeaVanBiz4</code> repository. HTML pages in <code>built-output/</code> are fully self-contained — every asset is inlined as a base64 data URI or inline <code>&lt;script&gt;</code> block.</p>
+
+  <h3>Public-facing summary pages (vision + governance)</h3>
+  <div class="os-grid cols-3">
+    <div class="os-card"><div class="icon">V</div><h3><a href="vision.html" style="color:var(--accent);text-decoration:none;">Vision</a></h3><p>From dashboard to Operating System for the Cascadia Economy.</p></div>
+    <div class="os-card"><div class="icon">A</div><h3><a href="vision-architecture.html" style="color:var(--accent);text-decoration:none;">Architecture</a></h3><p>Data mesh + event-driven, versioned contracts.</p></div>
+    <div class="os-card"><div class="icon">R</div><h3><a href="vision-roadmap.html" style="color:var(--accent);text-decoration:none;">Roadmap</a></h3><p>5-phase wedge → canonical, 20-year horizon.</p></div>
+    <div class="os-card"><div class="icon">M</div><h3><a href="vision-moat.html" style="color:var(--accent);text-decoration:none;">Moat</a></h3><p>USMCA, BC Indigenous procurement, WA CCA.</p></div>
+    <div class="os-card"><div class="icon">S</div><h3><a href="skills.html" style="color:var(--accent);text-decoration:none;">Skills</a></h3><p>Agent fleet + workflow.</p></div>
+    <div class="os-card"><div class="icon">🔒</div><h3><a href="security.html" style="color:var(--accent);text-decoration:none;">Security</a></h3><p>Vulnerability reporting, safe harbor, scope.</p></div>
+  </div>
+
+  <h3>Existing demo pages (Cascadia 10-city corridor intelligence)</h3>
+  <p>The demo home at <a href="index.html" style="color:var(--accent);text-decoration:none;">index.html</a> links to 52 pages: per-city profiles (10 cities + suburbs), dashboard-2, economics, biodiversity, environment-agency, founder-enroll, research-hub, sports, what-if scenarios, city-compare, etc. These are the foundation on which the OS vision is built.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">3</span> What the Public Preview Does NOT Contain</h2>
+  <ul>
+    <li>The full source-of-truth architecture documents in <code>docs/architecture/</code> (these live in the private repo)</li>
+    <li>The source code for the agent fleet, the domain services, or the sync workflow</li>
+    <li>The consented Indigenous-nation partnership data</li>
+    <li>The compliance knowledge graph (it is built in the private repo and never mirrored)</li>
+    <li>The provenance ledger's pre-anchor content (only post-anchor Merkle roots are public)</li>
+    <li><strong>Any non-HTML file</strong> (enforced by the <code>Sync to Preview</code> GitHub Action, which fails the sync if any non-HTML file ends up in the public tree)</li>
+  </ul>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">4</span> How the Preview Stays 24/7/365</h2>
+  <p>The preview is served by GitHub Pages from the public <code>Demo4VanSea</code> repo's <code>main</code> branch. GitHub Pages is a globally distributed CDN with hundreds of edge locations. There is no scheduled downtime. There is no maintenance window.</p>
+  <p>The preview is updated automatically on every push to <code>main</code> on the private <code>AISeaVanBiz4</code> repo:</p>
+  <table class="os-table">
+    <thead><tr><th>Step</th><th>Action</th><th>Typical duration</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Push to private <code>main</code> (e.g., a contributor merges a PR that touches <code>built-output/</code>)</td><td>~0s</td></tr>
+      <tr><td>2</td><td><code>Sync to Preview</code> GitHub Action triggers — runs on a GitHub-hosted runner</td><td>~30s</td></tr>
+      <tr><td>3</td><td>Workflow wipes the public repo working tree (preserving <code>.git/</code>), then copies <strong>only the <code>.html</code> files</strong> from <code>built-output/</code> into the public repo root</td><td>~5s</td></tr>
+      <tr><td>4</td><td>Workflow asserts the HTML-only policy — if any non-HTML file ends up in the public tree, the workflow fails (no commit / no push)</td><td>~1s</td></tr>
+      <tr><td>5</td><td>Workflow commits and pushes to the public repo with message <code>Auto-sync HTML-only from AISeaVanBiz4 &lt;timestamp&gt;</code></td><td>~3s</td></tr>
+      <tr><td>6</td><td>GitHub Pages detects the push and rebuilds the site</td><td>~30–60s</td></tr>
+      <tr><td>7</td><td>CDN edge caches refresh</td><td>~1min globally</td></tr>
+      <tr><td colspan="2"><strong>End-to-end worst case</strong></td><td class="accent">~2–3 minutes</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">5</span> What Happens During a Regional-Scale Disruption</h2>
+  <p>The Pacific Northwest is the most seismically and climatically volatile region in North America (M9 Cascadia earthquake risk, atmospheric rivers, wildfire smoke). The preview is designed to keep operating during regional-scale disruption:</p>
+  <div class="os-grid cols-2">
+    <div class="os-card"><div class="icon">🌐</div><h3>GitHub Pages is hosted outside Cascadia</h3><p>GitHub's primary data centers are not in the Pacific Northwest. A regional Cascadia infrastructure failure does not take the preview down.</p></div>
+    <div class="os-card"><div class="icon">📦</div><h3>The source repo is also on GitHub</h3><p>The source-of-truth repo is not in Cascadia either. Both the preview and its source survive a regional event.</p></div>
+    <div class="os-card"><div class="icon">⚡</div><h3>CDN edge caches survive origin failures</h3><p>Even if the origin (GitHub Pages) is unreachable, edge caches continue serving the last-known version for hours.</p></div>
+    <div class="os-card"><div class="icon">🔧</div><h3>Sync runs on GitHub-hosted runners</h3><p>The sync workflow runs in GitHub's data centers, not on local Cascadia infrastructure.</p></div>
+  </div>
+  <div class="os-callout">
+    <div class="label">For everyone, not just Cascadia</div>
+    <p>The preview will continue to be accessible during a regional Cascadia disruption, even if Cascadia-based users cannot access the internet. The preview is for everyone, not just Cascadia.</p>
+  </div>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">6</span> Legal / Access Policy for Interested Parties</h2>
+  <p>The public preview is provided "as is" for observation by any interested party. There is no NDA to sign, no access request to file, no approval process. The preview is intended to:</p>
+  <ul>
+    <li><strong>Investors</strong> — evaluate the platform's vision and trajectory without disclosure gating</li>
+    <li><strong>Policymakers</strong> — observe the data products and the regional moat</li>
+    <li><strong>Academic researchers</strong> — cite the platform's methodology and the CIRS scoring rubric</li>
+    <li><strong>Indigenous-nation partners</strong> — observe before formally engaging (the public preview is the starting point for a relationship, not a substitute for one)</li>
+    <li><strong>General public</strong> — observe the use of public taxpayer-funded data (EPA, USGS, NOAA, iNaturalist, etc.) aggregated for the Cascadia corridor</li>
+  </ul>
+  <p>The public preview may be cited, screenshotted, and shared freely. Attribution to "Cascadia OS — <code>https://testdemoqwenai2025-creator.github.io/Demo4VanSea/</code>" is appreciated but not required.</p>
+</section>
+
+
+<footer class="os-foot">
+  <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
+  <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('cas-os-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      // Default: respect system preference
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
+    }
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+function casOSToggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = (cur === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('cas-os-theme', next); } catch (e) {}
+  // Update button label
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (next === 'dark') ? '☀' : '☾';
+    b.title = (next === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+  });
+}
+// Wait for DOM, then init button labels
+document.addEventListener('DOMContentLoaded', function(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.querySelectorAll('.os-theme-toggle').forEach(function(b){
+    b.innerHTML = (cur === 'dark') ? '☀' : '☾';
+    b.title = (cur === 'dark') ? 'Switch to light theme' : 'Switch to dark theme';
+    b.addEventListener('click', casOSToggleTheme);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pipeline Demo — End-to-End Output</title>
+<title>vLLM Status — LLM Deployment + Mock Server + Fallback Chain</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>OS</text></svg>">
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 <style>
@@ -206,174 +206,121 @@ body {
       Operating System for the Cascadia Economy
     </div>
   </a>
-  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="active">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="vllm-status.html" class="active">vLLM</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
 </header>
 
 <section class="os-hero">
-  <h1>Pipeline Demo — End-to-End Output</h1>
-  <p class="lede">Running ./pipeline --output summary produces 3 events: tender.published → compliance.assessment.completed → bid.draft_generated. Match confidence 52%, recommended action BID, 3 provenance footnotes. Full bid draft content shown.</p>
-  <div class="os-tag-row"><span class="os-tag">3 events</span><span class="os-tag">match_confidence 52%</span><span class="os-tag">BID</span><span class="os-tag">3 footnotes</span></div>
+  <h1>vLLM Status — LLM Deployment + Mock Server + Fallback Chain</h1>
+  <p class="lede">Deployment status for the Y2 LLM-based bid drafter. Mock vLLM server for testing without GPU. 3-tier fallback chain (Qwen → Claude → Template). Fine-tuning corpus plan. Cost estimate ~$20/month.</p>
+  <div class="os-tag-row"><span class="os-tag">Mock server ready</span><span class="os-tag">3-tier fallback</span><span class="os-tag">Corpus: 6/1,250</span><span class="os-tag">~$20/month</span></div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">1</span> End-to-End Pipeline Output</h2>
-  <p>Running <code>./pipeline --output summary</code> on the fixture tender produces 3 events in sequence. Here's the actual output:</p>
-  <div class="code-block"><span class="dim">2026/10/02 09:09:08</span> [compliance-reasoner] received tender.published: tender-01a0fb41
-<span class="dim">2026/10/02 09:09:08</span> [bid-drafter] received compliance.assessment.completed: assessment-assessme
-<span class="dim">2026/10/02 09:09:08</span> [compliance-reasoner] published compliance.assessment.completed: <span class="accent">match_confidence=0.52</span>
-<span class="dim">2026/10/02 09:09:08</span> [bid-drafter] published bid.draft_generated: <span class="accent">footnotes=3</span>
-<span class="dim">2026/10/02 09:09:08</span> [tenders-ingestor] published tender.published: Regional Hydrogen Hub Workforce Development Program
-
-╔══════════════════════════════════════════════════════════════════╗
-║         Cascadia OS Wedge Pipeline — End-to-End Summary          ║
-╚══════════════════════════════════════════════════════════════════╝
-
-Pipeline: tenders-ingestor → compliance-reasoner → bid-drafter
-State machine: [tender_ingested] → [compliance_assessed] → [bid_drafted]
-
-Events published: <span class="accent">3</span>
-  1. <span class="green">tender.published</span> (producer=tenders.ingestor, id=tender-01a0fb41)
-  2. <span class="green">compliance.assessment.completed</span> (producer=compliance.reasoner, id=assessment-assessme)
-  3. <span class="green">bid.draft_generated</span> (producer=bid.drafter, id=bid-bid-1790)
-
-Compliance Assessment:
-  match_confidence:   <span class="accent">0.52</span>
-  recommended_action: <span class="green">BID</span>
-  assessor_results:   3
-  evidence_chain:     3 entries
-  provenance_hash:    sha256:assessment-1790932148269805041
-
-Bid Draft:
-  bid_id:              bid-1790932148269891222
-  footnotes:           <span class="accent">3 provenance-anchored citations</span>
-  provenance_hash:    sha256:bid-1790932148269891537</div>
+  <h2><span class="num">1</span> vLLM Deployment Status</h2>
+  <p>The Y2 LLM-based bid drafter calls a local vLLM endpoint running Qwen 2.5 72B. Here's the deployment status + the mock server we built for testing without a GPU.</p>
+  <table class="os-table">
+    <thead><tr><th>Component</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>vLLM installation script</td><td class="accent">✅ Written</td><td><code>scripts/deploy-vllm.sh</code> — automates install + serve + health check</td></tr>
+      <tr><td>Mock vLLM server</td><td class="accent">✅ Written</td><td><code>scripts/mock-vllm-server.py</code> — mimics vLLM's /v1/chat/completions API for testing without GPU</td></tr>
+      <tr><td>Go LLMDrafter client</td><td class="accent">✅ Written</td><td><code>services/bid-drafter/internal/drafter/llm.go</code> — calls vLLM, falls back to template on error</td></tr>
+      <tr><td>Fine-tuning corpus v1</td><td class="accent">✅ Sample ready</td><td><code>services/bid-drafter/fine-tuning-corpus/corpus_v1_sample.jsonl</code> — 6 examples; full 1,250 Q1 2027</td></tr>
+      <tr><td>vLLM deployment guide</td><td class="accent">✅ Written</td><td><code>services/bid-drafter/vllm-deployment.md</code> — full guide with K8s YAML + systemd unit</td></tr>
+      <tr><td>LLM design doc</td><td class="accent">✅ Written</td><td><code>docs/architecture/17-llm-bid-drafting.md</code> — architecture + corpus + evaluation metrics + timeline</td></tr>
+      <tr><td>Real GPU deployment</td><td><span class="status-badge warn">⏳ Pending</span></td><td>Requires H100 80GB GPU server. Follow <code>deploy-vllm.sh</code> when a GPU is available.</td></tr>
+      <tr><td>First fine-tuning run</td><td><span class="status-badge warn">⏳ Q1 2027</span></td><td>Needs full 1,250-example corpus + H100 GPU. ~8-12 hours per epoch.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">2</span> Event 1: tender.published</h2>
-  <p>Published by <code>tenders-ingestor</code> when a new tender is ingested from SAM.gov / BC Bid / WA Commerce / OR Buys:</p>
-  <div class="code-block">{
-  "event_id": "tender-01a0fb41",
-  "event_type": "tender.published",
-  "event_version": "1.0.0",
-  "producer": "tenders.ingestor",
-  "produced_at": "2026-10-02T09:09:08Z",
-  "schema_url": "https://cascadia-os.ai/schemas/tender.published.1.0.0.json",
-  "provenance_hash": "sha256:9d85df351d3a6c2d9c29470e536c8ff5b64487d14932f192ec1eeb37df2e4f84",
-  "payload": {
-    "id": "01a0fb41-b0ce-7077-8099-aabbccddeeff",
-    "title": "Regional Hydrogen Hub Workforce Development Program",
-    "source": "sam.gov",
-    "naics_codes": ["611519"],
-    "geography": ["US-WA", "US-OR", "CA-BC"],
-    "set_asides": ["indigenous_preferred", "prevailing_wage", "usmca"],
-    "contracting_org": "US Department of Energy",
-    "value_lower_usd": 3500000,
-    "value_upper_usd": 4500000,
-    "provenance_hash": "sha256:9d85df35..."
-  }
-}</div>
+  <h2><span class="num">2</span> Mock vLLM Server — Testing Without GPU</h2>
+  <p>We built a mock vLLM server (<code>scripts/mock-vllm-server.py</code>) that mimics the OpenAI-compatible <code>/v1/chat/completions</code> API. This lets us test the Go <code>LLMDrafter</code> client <strong>without a GPU</strong> — the mock returns a pre-written bid response, and the Go client processes it identically to a real LLM response.</p>
+  <div class="os-callout">
+    <div class="label">How it works</div>
+    <p>1. Start the mock server: <code>python3 scripts/mock-vllm-server.py --port 8001</code><br>2. Run the bid-drafter with the mock endpoint: <code>./bid-drafter --once --vllm-endpoint http://localhost:8001/v1</code><br>3. The Go client calls the mock, gets a bid response, processes it — identical to a real vLLM call.</p>
+  </div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">3</span> Event 2: compliance.assessment.completed</h2>
-  <p>Published by <code>compliance-reasoner</code> after running 3 assessors (USMCA + Indigenous + CCA) on the tender + user profile:</p>
-  <div class="code-block">{
-  "event_id": "assessment-assessme",
-  "event_type": "compliance.assessment.completed",
-  "event_version": "1.0.0",
-  "producer": "compliance.reasoner",
-  "payload": {
-    "match_confidence": <span class="accent">0.52</span>,
-    "recommended_action": "<span class="green">BID</span>",
-    "assessor_results": [
-      {"assessor_name": "usmca.assessor", "pass": true, "score": 0.70,
-       "notes": "User RVC 65.0% exceeds threshold 60.0% (margin 5.0%)"},
-      {"assessor_name": "indigenous_procurement.assessor", "pass": true, "score": 0.60,
-       "notes": "PREFERRED; soft pass; engagement recommended per E.O. 14112"},
-      {"assessor_name": "cca.assessor", "pass": true, "score": 1.0,
-       "notes": "CCA applies; estimated compliance cost $100"}
-    ],
-    "evidence_chain": [
-      {"claim": "RVC 65% exceeds USMCA 60% threshold",
-       "source_url": "https://www.cbp.gov/trade/usmca",
-       "source_section": "USMCA Schedule IV §6"},
-      {"claim": "Indigenous participation preferred per E.O. 14112",
-       "source_url": "https://www2.gov.bc.ca/gov/content/business/procurement",
-       "source_section": "BC Bid — Indigenous Procurement"},
-      {"claim": "WA CCA compliance cost estimated at $100",
-       "source_url": "https://ecology.wa.gov/CCA",
-       "source_section": "WAC 173-442"}
-    ],
-    "provenance_hash": "sha256:a3940f16..."
-  }
-}</div>
+  <h2><span class="num">3</span> The 3-Tier Fallback Chain</h2>
+  <p>The Go <code>LLMDrafter</code> client has a 3-tier quality ladder — it's always available, even without a GPU:</p>
+  <table class="os-table">
+    <thead><tr><th>Tier</th><th>Source</th><th>Quality</th><th>Availability</th></tr></thead>
+    <tbody>
+      <tr><td>1 (primary)</td><td>Local vLLM serving fine-tuned Qwen 2.5 72B</td><td class="accent">Best — natural, context-aware, fine-tuned on Cascadia corpus</td><td><span class="status-badge warn">Requires GPU</span></td></tr>
+      <tr><td>2 (fallback)</td><td>Anthropic Claude Sonnet 4.5 (via API)</td><td>Good — general-purpose LLM, not Cascadia-specific</td><td><span class="status-badge ok">Always (with API key)</span></td></tr>
+      <tr><td>3 (always)</td><td>TemplateDrafter (Go text/template)</td><td>Basic — formulaic but always available</td><td><span class="status-badge ok">Always</span></td></tr>
+    </tbody>
+  </table>
+  <p>The Go client tries tier 1 first. If unreachable, falls to tier 2. If both fail, falls to tier 3. <strong>The bid-drafter is never unavailable</strong> — it degrades gracefully.</p>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">4</span> Event 3: bid.draft_generated</h2>
-  <p>Published by <code>bid-drafter</code> after generating the bid response with provenance footnotes. The full bid draft content:</p>
-  <div class="code-block"># Bid Response: Regional Hydrogen Hub Workforce Development Program
+  <h2><span class="num">4</span> Deployment Automation Script</h2>
+  <p><code>scripts/deploy-vllm.sh</code> automates the full vLLM deployment:</p>
+  <div class="code-block" style="background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:var(--fg-2);overflow-x:auto;">
+#!/bin/bash
+# deploy-vllm.sh — Automated vLLM deployment for Cascadia OS
 
-**To:** US Department of Energy
-**From:** Cascadia Electrical Contractors LLC
-**Date:** October 2, 2026
-**Re:** Tender ID 01a0fb41-b0ce-7077-8099-aabbccddeeff
+# 1. Create virtual environment
+python3 -m venv /opt/cascadia-os/vllm-env
+source /opt/cascadia-os/vllm-env/bin/activate
 
----
+# 2. Install vLLM
+pip install vllm
 
-## 1. Company Overview
+# 3. Download model (~150GB)
+huggingface-cli download Qwen/Qwen2.5-72B-Instruct
 
-Cascadia Electrical Contractors LLC is a Cascadia-based contractor with expertise in
-NAICS codes 238210, 238910. We operate in US-WA, US-OR and have prior performance
-on regional procurement contracts.
+# 4. Start serving (base model for Y1; add --enable-lora for Y2 fine-tuned)
+vllm serve Qwen/Qwen2.5-72B-Instruct \
+  --port 8000 \
+  --tensor-parallel-size 1 \
+  --gpu-memory-utilization 0.9 \
+  --max-model-len 8192 \
+  --trust-remote-code
 
-## 2. Compliance Summary
+# 5. Health check
+sleep 30
+curl http://localhost:8000/health && echo "vLLM is running!"
 
-Cascadia OS compliance assessment indicates a match confidence of <span class="accent">52%</span>.
-
-| Requirement | Status | Notes |
-|---|---|---|
-| usmca.assessor | <span class="green">PASS</span> | User RVC 65.0% exceeds threshold 60.0% (margin 5.0%) |
-| indigenous_procurement.assessor | <span class="green">PASS</span> | PREFERRED; soft pass; engagement recommended |
-| cca.assessor | <span class="green">PASS</span> | CCA applies; estimated compliance cost $100 |
-
-## 3. Regulatory Compliance
-
-- User RVC 65.0% exceeds USMCA 60% threshold (Schedule IV §6) <span class="accent">[1]</span>
-- Indigenous participation preferred per E.O. 14112 <span class="accent">[2]</span>
-- WA CCA compliance cost estimated at $100 (range $80-$120) <span class="accent">[3]</span>
-
-## 4. Scope of Work
-
-We propose to execute the work at a contract value of $3,500,000–$4,500,000 USD.
-
-## 5. Indigenous Engagement Plan
-
-Per the tender's Indigenous participation requirements, we commit to engaging with the
-relevant Indigenous nations. Our engagement will follow the principles of Free, Prior,
-and Informed Consent (FPIC) and the UN Declaration on the Rights of Indigenous Peoples
-(UNDRIP).
-
-## 6. Provenance + Verification
-
-Every claim in this bid response is traceable to a provenance-anchored source.
-
-### Footnotes
-
-<span class="accent">1.</span> RVC exceeds threshold — USMCA Schedule IV §6 — sha256:9d85df35...
-<span class="accent">2.</span> Indigenous preferred — E.O. 14112 — sha256:9d85df35...
-<span class="accent">3.</span> CCA cost — WAC 173-442 — sha256:9d85df35...</div>
+# 6. Test the Go client
+cd /opt/cascadia-os/services/bid-drafter
+go build -o /tmp/bid-drafter ./cmd/bid-drafter
+/tmp/bid-drafter --once --keypair /tmp/test-bd-keypair.json
+  </div>
 </section>
 
 <section class="os-section">
-  <h2><span class="num">5</span> How to Reproduce</h2>
-  <p>The pipeline binary is in the private <code>AISeaVanBiz4</code> repo at <code>services/pipeline/cmd/pipeline/main.go</code>. To run:</p>
-  <div class="code-block">cd services/pipeline
-go build -o /tmp/pipeline ./cmd/pipeline
-/tmp/pipeline --output summary      # visual summary (above)
-/tmp/pipeline --output bid-markdown # full bid markdown
-/tmp/pipeline --output json         # all events as JSON</div>
+  <h2><span class="num">5</span> Fine-Tuning Corpus Plan</h2>
+  <table class="os-table">
+    <thead><tr><th>Source</th><th>Y1 Target</th><th>Y2 Target</th><th>Format</th></tr></thead>
+    <tbody>
+      <tr><td>Template-drafted bids (tender + assessment → bid)</td><td>200</td><td>500</td><td>instruction → response</td></tr>
+      <tr><td>User-edited bid drafts (original → edited)</td><td>0</td><td>100</td><td>instruction → response</td></tr>
+      <tr><td>Public winning bids (FOIA)</td><td>50</td><td>200</td><td>instruction → response</td></tr>
+      <tr><td>Regulatory text snippets (regulation → summary)</td><td>1,000</td><td>5,000</td><td>instruction → response</td></tr>
+      <tr><td>Indigenous engagement letter templates</td><td>1</td><td>10</td><td>instruction → response</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>~1,250</strong></td><td><strong>~5,810</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  <p>Sample corpus: <code>services/bid-drafter/fine-tuning-corpus/corpus_v1_sample.jsonl</code> (6 examples). Generation script: <code>generate_corpus_v1.py</code>. Spec: <code>corpus-spec.md</code>.</p>
+</section>
+
+<section class="os-section">
+  <h2><span class="num">6</span> Cost Estimate</h2>
+  <table class="os-table">
+    <thead><tr><th>Item</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td>H100 80GB on-demand (GCP/AWS)</td><td>~$2-3/hour</td></tr>
+      <tr><td>H100 spot (GCP/AWS)</td><td>~$0.80/hour</td></tr>
+      <tr><td>Usage: 200 bid drafts/month × 30s each = ~1.7 GPU-hours/month</td><td>~$5/month (on-demand) / ~$1.50/month (spot)</td></tr>
+      <tr><td>Model storage (150GB persistent disk)</td><td>~$15/month</td></tr>
+      <tr><td><strong>Total monthly</strong></td><td><strong>~$20/month (on-demand) / ~$17/month (spot)</strong></td></tr>
+    </tbody>
+  </table>
+  <p>Negligible for the OS's Y2 budget.</p>
 </section>
 
 

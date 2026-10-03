@@ -9,12 +9,6 @@
   --primary: #4ecdc4; --primary-dim: rgba(78,205,196,0.1); --primary-border: rgba(78,205,196,0.3);
   --amber: #f0a500; --red: #ff6b6b; --green: #4ecdc4; --blue: #6c9bff;
   --radius: 8px;
-  /* Aliases for the cos-landing section (Cascadia OS landing cards) */
-  --border: var(--primary-border);
-  --card: var(--bg2);
-  --accent: var(--primary);
-  --fg-2: var(--fg2);
-  --bg-2: var(--bg2);
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
@@ -1159,9 +1153,6 @@ a:hover { text-decoration: underline; }
 [data-theme="light"] .vban-left { border-right-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .vban-right { border-left-color: rgba(0,0,0,0.06); }
 
-
-.vban-right { transition: transform 0.5s ease, opacity 0.5s ease; }
-.vban-right.vban-hidden { transform: translateX(120%); opacity: 0; }
 </style>
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 
@@ -1217,7 +1208,7 @@ a:hover { text-decoration: underline; }
       <div class="bvs-logo-mark">AI</div>
       <div class="bvs-logo-text">AI<span>BizVan360</span></div>
     </a>
-    <nav class="bvs-nav"><a href="index.html" class=" active">Overview</a><a href="government.html" class="">Government</a><a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html" class="">Dashboard 2</a><a href="command-center.html" class="" style="position:relative;">Command Center<span style="display:inline-block;margin-left:6px;padding:1px 6px;background:var(--primary);color:#0d1212;font-size:9px;font-weight:800;border-radius:4px;letter-spacing:0.05em;text-transform:uppercase;vertical-align:middle;">New</span></a><a href="economics.html" class="">Economics</a><a href="leisure.html" class="">Leisure</a><a href="travel.html" class="">Travel</a><a href="technology.html" class="">Technology</a><a href="transportation.html" class="">Transport</a><a href="demographics.html" class="">Demographics</a><a href="resources.html" class="">Resources</a><a href="environment.html" class="">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a><a href="sports.html" class="">Sports</a><a href="whatif-scenario.html" class="">What-If</a><a href="city-compare.html" class="">City vs City</a></nav>
+    <nav class="bvs-nav"><a href="index.html" class=" active">Overview</a><a href="government.html" class="">Government</a><a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html" class="">Dashboard 2</a><a href="economics.html" class="">Economics</a><a href="leisure.html" class="">Leisure</a><a href="travel.html" class="">Travel</a><a href="technology.html" class="">Technology</a><a href="transportation.html" class="">Transport</a><a href="demographics.html" class="">Demographics</a><a href="resources.html" class="">Resources</a><a href="environment.html" class="">Environment</a><a href="environment-agency.html" class="">Env Agency</a><a href="biodiversity.html" class="">Biodiversity</a><a href="founder-enroll.html">Founder Panel</a><a href="research-hub.html" class="">Research Hub</a><a href="sports.html" class="">Sports</a><a href="whatif-scenario.html" class="">What-If</a><a href="city-compare.html" class="">City vs City</a></nav>
     <div class="ai-actions">
       <a href="index.html" class="ai-home-btn" title="Home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -1233,7 +1224,7 @@ a:hover { text-decoration: underline; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10,17 15,12 10,7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         <span class="btn-label">Login</span>
       </a>
-      <a href="command-center.html" class="ai-action-btn primary-btn" title="Launch the Command Center — live tender dashboard, compliance matrix, provenance chain, and AI chat">
+      <a href="login.html" class="ai-action-btn primary-btn" title="Get Started">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v-2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
         <span class="btn-label">Get Started</span>
       </a>
@@ -1246,7 +1237,6 @@ a:hover { text-decoration: underline; }
     <a href="index.html" class=" active">Overview</a>
     <a href="government.html" class="">Government</a>
     <a href="dashboard.html" class="">Dashboard</a><a href="dashboard-2.html" class="">Dashboard 2</a>
-    <a href="command-center.html" style="position:relative;">Command Center <span style="display:inline-block;margin-left:4px;padding:1px 6px;background:var(--primary);color:#0d1212;font-size:9px;font-weight:800;border-radius:4px;letter-spacing:0.05em;text-transform:uppercase;vertical-align:middle;">New</span></a>
     <a href="economics.html" class="">Economics</a>
     <a href="leisure.html" class="">Leisure</a>
     <a href="travel.html" class="">Travel</a>
@@ -1296,20 +1286,6 @@ a:hover { text-decoration: underline; }
       <div><div class="val">525K+</div><div class="lbl">Tech Jobs</div></div>
       <div><div class="val">$38.2B</div><div class="lbl">Cross-Border Trade</div></div>
     </div>
-    <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-      <a href="command-center.html" class="ai-action-btn primary-btn" style="padding:12px 24px;font-size:15px;display:inline-flex;align-items:center;gap:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        <span class="btn-label" style="font-size:15px;">Launch Command Center</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
-      </a>
-      
-    </div>
-    <!-- Live founder enrollment counter -->
-    <div id="founder-counter" style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg2);border:1px solid rgba(78,205,196,0.2);border-radius:999px;font-size:12px;color:var(--fg2);">
-      <span style="display:inline-block;width:8px;height:8px;background:var(--ok);border-radius:50%;animation:pulse 2s ease-in-out infinite;"></span>
-      <span><strong id="founder-count" style="color:var(--primary);font-weight:800;font-size:14px;">12</strong> founders enrolled in the live panel</span>
-      <a href="founder-enroll.html" style="color:var(--primary);font-weight:600;margin-left:6px;text-decoration:none;">Join →</a>
-    </div>
   </div>
 </section>
 
@@ -1325,7 +1301,7 @@ a:hover { text-decoration: underline; }
         <strong>24/7/365 public preview — no NDA, no login, no access request</strong>
         <span>Served via GitHub Pages CDN from the public <code>Demo4VanSea</code> repo. The public repo holds only <strong>.html files</strong> — all other artifacts (code, .md, .pdf, .json, .js, .png) live exclusively in the private <code>AISeaVanBiz4</code> source-of-truth repo.</span>
       </div>
-      
+      <a href="preview-availability.html">Preview details →</a>
     </div>
 
     <div class="cos-cards">
@@ -1365,7 +1341,7 @@ a:hover { text-decoration: underline; }
         <p>USMCA rules of origin, BC Indigenous procurement, WA Climate Commitment Act. Three compounding pillars.</p>
         <span class="arrow">Read →</span>
       </a>
-      <a href="#" class="cos-card">
+      <a href="skills.html" class="cos-card">
         <div class="ic">S</div>
         <h3>Skills</h3>
         <p>Agent fleet + workflow. ~20 skills in Year 1, growing to ~100 by Year 7. LangGraph + Claude + Pydantic-AI.</p>
@@ -1401,7 +1377,7 @@ a:hover { text-decoration: underline; }
         <p>Interactive prototype of bid_ready_for_submission state. Review the drafted bid, make edits, click Submit (triggers irreversible bid_submitted state).</p>
         <span class="arrow">Try it →</span>
       </a>
-      <a href="#" class="cos-card">
+      <a href="why-explainability.html" class="cos-card">
         <div class="ic">?</div>
         <h3>Why? — Explainability</h3>
         <p>Every AI recommendation has a Why button. See the exact weighted factors + provenance anchor. No black boxes — auditable, not just explainable.</p>
@@ -1628,7 +1604,7 @@ a:hover { text-decoration: underline; }
       <span>Client Preview &mdash; No NDA Required</span>
     </div>
   </div>
-</div></footer>
+</div><div style="text-align:center;padding:16px;margin-top:24px;border-top:1px solid var(--border);"><a href="cascadia-hsr-blueprint.html" style="display:inline-block;padding:10px 20px;background:var(--primary);color:var(--bg);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">🚄 Cascadia HSR Blueprint — $42B flagship project →</a></div></footer>
 <script>
 (function(){
   /* THEME TOGGLE */
@@ -1764,125 +1740,4 @@ a:hover { text-decoration: underline; }
 </script>
 <a href="vision.html" class="os-fab" title="Cascadia OS — vision, architecture, roadmap, moat"><span class="dot"></span>Cascadia OS →</a>
 <a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
-<script>
-// === TOGGLE FIX (October 2026) ===
-// The original IIFE attaches an event listener to #ai-theme-btn, but it gets lost
-// during dynamic header rendering. This script uses event delegation (document-level)
-// which survives DOM replacement. It also syncs the localStorage key between
-// 'aibv360-theme' (demo) and 'cas-os-theme' (OS pages) for cross-page consistency.
-(function() {
-  // Initialize theme from either localStorage key (prefer cas-os-theme, fallback to aibv360-theme)
-  var saved = localStorage.getItem('cas-os-theme') || localStorage.getItem('aibv360-theme');
-  if (saved === 'light' || saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', saved);
-  } else {
-    // Default: respect system preference
-    var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', sysDark ? 'dark' : 'light');
-  }
-
-  function setIcon() {
-    var btn = document.getElementById('ai-theme-btn');
-    if (!btn) return;
-    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    btn.innerHTML = isLight
-      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
-      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-  }
-
-  // Event delegation — survives DOM replacement
-  document.addEventListener('click', function(e) {
-    var btn = e.target.closest('#ai-theme-btn');
-    if (!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try {
-      localStorage.setItem('aibv360-theme', next);
-      localStorage.setItem('cas-os-theme', next);
-    } catch(err) {}
-    setIcon();
-  }, true); // capture phase — runs before the original IIFE's listener
-
-  setIcon();
-})();
-</script>
-<!-- Live founder counter — fetches from Cloudflare Worker -->
-<script>
-(function(){
-  var ENROLLMENT_API_BASE = 'https://founder-enroll.aibizvan360.workers.dev';
-  var FALLBACK_COUNT = 12; // shown if Worker is unreachable
-  var countEl = document.getElementById('founder-count');
-  var lastUpdated = null;
-  // Fetch live count — fail silently to FALLBACK_COUNT
-  fetch(ENROLLMENT_API_BASE + '/', {cache: 'no-store'})
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (typeof data.count === 'number' && data.count >= 0) {
-        countEl.textContent = data.count;
-        lastUpdated = data.last_updated;
-        if (data.last_updated) {
-          var d = new Date(data.last_updated);
-          var ago = Math.round((Date.now() - d.getTime()) / 60000);
-          countEl.parentElement.title = 'Live count from Cloudflare Worker. Last enrollment: ' + (ago > 60 ? Math.round(ago/60) + 'h ago' : ago + 'm ago');
-        }
-      }
-    })
-    .catch(function(){
-      // Worker unreachable — keep FALLBACK_COUNT, mark as cached
-      var dot = countEl.parentElement.querySelector('span');
-      if (dot) dot.style.background = 'var(--fg3)';
-      countEl.parentElement.title = 'Worker unreachable — showing fallback count';
-    });
-})();
-</script>
-
-<script>
-// Right banner cycling: slide in every minute, visible 15s, slide out
-(function() {
-  var vbanRight = document.querySelector('.vban-right');
-  if (!vbanRight) return;
-  vbanRight.classList.add('vban-hidden');
-  void vbanRight.offsetWidth;
-  function slideIn() { vbanRight.classList.remove('vban-hidden'); }
-  function slideOut() { vbanRight.classList.add('vban-hidden'); }
-  setTimeout(function() {
-    slideIn();
-    setTimeout(slideOut, 15000);
-    setInterval(function() {
-      slideIn();
-      setTimeout(slideOut, 15000);
-    }, 60000);
-  }, 5000);
-})();
-</script>
-
-
-<script>
-// Universal theme toggle — works on all pages
-(function() {
-  var btn = document.getElementById('ai-theme-btn') || document.getElementById('theme-btn');
-  if (!btn) return;
-  // Load saved theme
-  var saved = localStorage.getItem('aibv360-theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    btn.textContent = saved === 'light' ? '☀️' : '🌙';
-  }
-  // Wire up click handler (only if not already wired)
-  if (!btn.dataset.themeWired) {
-    btn.dataset.themeWired = '1';
-    btn.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme') || 'dark';
-      var next = current === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('aibv360-theme', next);
-      btn.textContent = next === 'light' ? '☀️' : '🌙';
-    });
-  }
-})();
-</script>
-
 </body></html>
