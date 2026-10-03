@@ -314,6 +314,43 @@ body {
 /* === end upgraded-sector-scene-v2 === */
 </style>
 
+
+<style id="contact-consolidated-v1-css">
+/* === contact-consolidated-v1: Contact nav button + footer styling === */
+.os-nav a[data-contact-link="true"],
+.cas-topnav a[data-contact-link="true"] {
+  background: rgba(78,205,196,0.18) !important;
+  color: #4ecdc4 !important;
+  border: 1px solid rgba(78,205,196,0.4) !important;
+  font-weight: 600 !important;
+}
+.os-nav a[data-contact-link="true"]:hover,
+.cas-topnav a[data-contact-link="true"]:hover {
+  background: rgba(78,205,196,0.32) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78,205,196,0.3);
+}
+[data-theme="light"] .os-nav a[data-contact-link="true"],
+[data-theme="light"] .cas-topnav a[data-contact-link="true"] {
+  background: rgba(13,148,136,0.15) !important;
+  color: #0d9488 !important;
+  border: 1px solid rgba(13,148,136,0.4) !important;
+}
+.cas-contact-footer {
+  margin-top: 56px; padding: 20px 0; border-top: 1px solid var(--cas-card-border, #1e3458);
+  font-size: 13px; color: var(--cas-muted, #8aa0b0);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  align-items: center;
+}
+.cas-contact-footer a {
+  color: var(--cas-accent, #4ecdc4); text-decoration: none; font-weight: 600;
+  font-family: 'SF Mono', Monaco, 'Cascadia Mono', monospace;
+  font-size: 12px;
+}
+.cas-contact-footer a:hover { text-decoration: underline; }
+[data-theme="light"] .cas-contact-footer { border-top-color: rgba(26,133,128,0.2); }
+/* === end contact-consolidated-v1 === */
+</style>
 </head>
 <body>
 
@@ -327,7 +364,7 @@ body {
   <a href="cascadia-sectors.html" style="color:var(--cas-accent);font-weight:600;">Sectors</a>
   <a href="pricing.html">Pricing</a>
   <a href="federation.html">Federation</a>
-  <a href="security.html">Security</a>
+  <a href="security.html">Security</a><a href="mailto:testdemoqwenai2025@gmail.com?subject=[Contact] Cascadia OS" data-contact-link="true" title="Email Cascadia OS">✉ Contact</a>
   <span class="nav-spacer"></span>
   <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light theme">🌙</button>
 </nav>
@@ -2106,5 +2143,6 @@ body {
 })();
 </script>
 
+<footer class="cas-contact-footer contact-footer-v1"><div>Cascadia OS · Operating System for the Cascadia Economy</div><div>✉ <a href="mailto:testdemoqwenai2025@gmail.com?subject=[Contact] Cascadia OS">testdemoqwenai2025@gmail.com</a></div></footer>
 </body>
 </html>

@@ -202,6 +202,43 @@ body {
 @media(max-width:640px){.os-home-fab{font-size:12px;padding:6px 10px;bottom:8px;left:8px}}
 </style>
 
+
+<style id="contact-consolidated-v1-css">
+/* === contact-consolidated-v1: Contact nav button + footer styling === */
+.os-nav a[data-contact-link="true"],
+.cas-topnav a[data-contact-link="true"] {
+  background: rgba(78,205,196,0.18) !important;
+  color: #4ecdc4 !important;
+  border: 1px solid rgba(78,205,196,0.4) !important;
+  font-weight: 600 !important;
+}
+.os-nav a[data-contact-link="true"]:hover,
+.cas-topnav a[data-contact-link="true"]:hover {
+  background: rgba(78,205,196,0.32) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78,205,196,0.3);
+}
+[data-theme="light"] .os-nav a[data-contact-link="true"],
+[data-theme="light"] .cas-topnav a[data-contact-link="true"] {
+  background: rgba(13,148,136,0.15) !important;
+  color: #0d9488 !important;
+  border: 1px solid rgba(13,148,136,0.4) !important;
+}
+.cas-contact-footer {
+  margin-top: 56px; padding: 20px 0; border-top: 1px solid var(--cas-card-border, #1e3458);
+  font-size: 13px; color: var(--cas-muted, #8aa0b0);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  align-items: center;
+}
+.cas-contact-footer a {
+  color: var(--cas-accent, #4ecdc4); text-decoration: none; font-weight: 600;
+  font-family: 'SF Mono', Monaco, 'Cascadia Mono', monospace;
+  font-size: 12px;
+}
+.cas-contact-footer a:hover { text-decoration: underline; }
+[data-theme="light"] .cas-contact-footer { border-top-color: rgba(26,133,128,0.2); }
+/* === end contact-consolidated-v1 === */
+</style>
 </head>
 <body>
 <div class="os-shell">
@@ -214,7 +251,7 @@ body {
       Operating System for the Cascadia Economy
     </div>
   </a>
-  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="cascadia-hsr-blueprint.html" class="">HSR Blueprint</a><a href="cascadia-sectors.html" class="">Sectors</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
+  <nav class="os-nav"><a href="index.html" class="os-home-btn">Home</a><a href="vision.html" class="">Vision</a><a href="architecture-4-layer.html" class="">Architecture</a><a href="tech-stack-alignment.html" class="">Stack</a><a href="modules.html" class="">Modules</a><a href="services.html" class="">Services</a><a href="pipeline-demo.html" class="">Pipeline</a><a href="bid-review-prototype.html" class="">Bid Review</a><a href="cascadia-hsr-blueprint.html" class="">HSR Blueprint</a><a href="cascadia-sectors.html" class="">Sectors</a><a href="why-explainability.html" class="">Why?</a><a href="pricing.html" class="">Pricing</a><a href="federation.html" class="">Federation</a><a href="preview-availability.html" class="">24/7/365</a><a href="skills.html" class="">Skills</a><a href="security.html" class="">Security</a><a href="mailto:testdemoqwenai2025@gmail.com?subject=[Contact] Cascadia OS" data-contact-link="true" title="Email Cascadia OS">✉ Contact</a><button class="os-theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button></nav>
 </header>
 
 <section class="os-hero">
@@ -306,7 +343,8 @@ ALERT: WA Dept of Ecology published WAC 173-442 amendment (effective 2026-11-15)
 <footer class="os-foot">
   <div>Cascadia OS — private source-of-truth <code>AISeaVanBiz4</code> · public no-NDA preview <code>Demo4VanSea</code></div>
   <div>Strategic docs in <code>docs/architecture/</code> (private) · this is the public summary</div>
-</footer>
+  <div class="contact-os-foot-email-v1">✉ Contact: <a href="mailto:testdemoqwenai2025@gmail.com?subject=[Contact] Cascadia OS" style="color:var(--accent, #4ecdc4);text-decoration:none;font-family:monospace;font-size:12px;">testdemoqwenai2025@gmail.com</a></div>
+  </footer>
 
 </div>
 
