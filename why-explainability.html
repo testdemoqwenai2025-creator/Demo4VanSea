@@ -330,5 +330,34 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <a href="index.html" class="os-home-fab" title="Return to home (Cascadia OS landing)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+
+<!-- Theme toggle (floating) -->
+<button id="ai-theme-btn" style="position:fixed;bottom:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.7);color:#4ecdc4;border:1px solid rgba(78,205,196,0.3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;" title="Toggle dark/light theme">🌙</button>
+
+<script>
+// Universal theme toggle — works on all pages
+(function() {
+  var btn = document.getElementById('ai-theme-btn') || document.getElementById('theme-btn');
+  if (!btn) return;
+  // Load saved theme
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    btn.textContent = saved === 'light' ? '☀️' : '🌙';
+  }
+  // Wire up click handler (only if not already wired)
+  if (!btn.dataset.themeWired) {
+    btn.dataset.themeWired = '1';
+    btn.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('aibv360-theme', next);
+      btn.textContent = next === 'light' ? '☀️' : '🌙';
+    });
+  }
+})();
+</script>
+
 </body>
 </html>

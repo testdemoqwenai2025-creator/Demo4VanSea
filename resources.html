@@ -2093,4 +2093,30 @@ document.addEventListener('keydown',function(e){
 })();
 </script>
 
+
+<script>
+// Universal theme toggle — works on all pages
+(function() {
+  var btn = document.getElementById('ai-theme-btn') || document.getElementById('theme-btn');
+  if (!btn) return;
+  // Load saved theme
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    btn.textContent = saved === 'light' ? '☀️' : '🌙';
+  }
+  // Wire up click handler (only if not already wired)
+  if (!btn.dataset.themeWired) {
+    btn.dataset.themeWired = '1';
+    btn.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('aibv360-theme', next);
+      btn.textContent = next === 'light' ? '☀️' : '🌙';
+    });
+  }
+})();
+</script>
+
 </body></html>
