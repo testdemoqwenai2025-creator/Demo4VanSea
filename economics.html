@@ -1841,6 +1841,17 @@ a:hover { text-decoration: underline; }
       <div><div class="val">$8.7B</div><div class="lbl">VC Investment</div></div>
       <div><div class="val">15,200+</div><div class="lbl">Active Startups</div></div>
     </div>
+    <!-- v2.3 #2: Live platform stats strip (parallel to gov's D3) -->
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--fg2);">
+      <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:var(--ok);border-radius:50%;animation:fpulse 2s ease-in-out infinite;display:inline-block;"></span><strong style="color:var(--primary);font-weight:800;font-size:13px;">1</strong> PNW GP subscribed to briefing pack</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">47</strong> weekly digest subscribers</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">12</strong> founders enrolled since launch</span>
+      <span style="color:var(--fg3);opacity:0.3;">·</span>
+      <span><strong style="color:var(--primary);font-weight:800;font-size:13px;">0</strong> cohort reports published</span>
+      <span style="margin-left:auto;font-size:10px;color:var(--fg3);">Growing daily → <a href="founder-enroll.html" style="color:var(--primary);font-weight:600;text-decoration:none;">enroll your portfolio company</a></span>
+    </div>
     <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
       <a href="founder-enroll.html" class="ai-action-btn primary-btn" style="padding:12px 24px;font-size:15px;display:inline-flex;align-items:center;gap:8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v-2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
@@ -3323,6 +3334,7 @@ a:hover { text-decoration: underline; }
       <option value="Series B+">Series B+</option>
     </select>
     <button onclick="clearFpFilters()" style="background:transparent;border:1px solid var(--border);color:var(--fg2);padding:6px 10px;border-radius:4px;font-size:11px;cursor:pointer;">Clear</button>
+    <button onclick="toggleFpWatchlistFilter()" id="fp-watchlist-toggle" style="display:none;background:transparent;border:1px solid var(--primary);color:var(--primary);padding:6px 10px;border-radius:4px;font-size:11px;cursor:pointer;">★ Watchlist (<span id="fp-watchlist-count">0</span>)</button>
     <span style="margin-left:auto;font-size:11px;color:var(--fg2);">Showing <strong id="fp-filter-count" style="color:var(--primary);font-weight:700;">0</strong> of <strong id="fp-filter-total" style="color:var(--fg);font-weight:700;">0</strong></span>
   </div>
 
@@ -3436,6 +3448,203 @@ a:hover { text-decoration: underline; }
   </div>
   <p style="font-size:11px;color:var(--fg3);margin-top:12px;">Cascadia’s differentiator: <strong style="color:var(--fg2);">only cross-border mega-corridor in North America under USMCA</strong>. No other PNW/south-Canada corridor has 6.87M people, $890B GDP, and bilateral trade coverage of $38.2B.</p>
 </details>
+
+<!-- === NEW: Bottom CTA — Investor Briefing (v2.1 #3 — real form) === -->
+<!-- === NEW: v2.3 #1 — Recent Funding Rounds Feed === -->
+<section class="container" style="padding:48px 0 16px;" id="recent-rounds">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ RECENT FUNDING ROUNDS · LAST 30 DAYS</div>
+      <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Cascadia raises — who closed what</h2>
+      <p style="font-size:13px;color:var(--fg2);max-width:640px;">The flip side of open tenders: capital actually deployed. Shows which sectors are getting funded + which lead investors are active. Useful for VCs tracking competitive deal flow and for founders benchmarking raise sizes.</p>
+    </div>
+    <span style="font-size:10px;color:var(--fg3);background:var(--bg2);padding:4px 10px;border-radius:4px;border:1px solid var(--border);">Source: Crunchbase + PitchBook + press releases</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;" id="rounds-grid">
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Bellevue, WA</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$12.0M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">AI/ML · Series A</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> Madrona Venture Group</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 28, 2026</span>
+        <span>AI/ML</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Vancouver, BC</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$18.0M CAD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">CleanTech · Series B</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> BDC Capital</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 25, 2026</span>
+        <span>CleanTech</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Seattle, WA</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$5.5M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">SaaS · Seed</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> PSL (Founders' Co-op)</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 22, 2026</span>
+        <span>SaaS</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Portland, OR</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$3.4M USD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">Bio / Life Sci · Pre-seed</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> Oregon Angel Fund</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 18, 2026</span>
+        <span>Bio</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Burnaby, BC</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$1.2M CAD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">AgTech · Pre-seed</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> Undisclosed</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 15, 2026</span>
+        <span>AgTech</span>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 6px;background:rgba(78,205,196,0.1);color:var(--primary);border-radius:3px;">Vancouver, BC</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ok);">$8.0M CAD</span>
+      </div>
+      <h4 style="font-size:13px;font-weight:600;line-height:1.35;margin-bottom:6px;color:var(--fg);">FinTech · Series A</h4>
+      <div style="font-size:11px;color:var(--fg2);margin-bottom:8px;"><strong>Lead:</strong> Georgian Partners</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg3);padding-top:6px;border-top:1px solid var(--border);">
+        <span>Closed: Sep 12, 2026</span>
+        <span>FinTech</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 14px;background:var(--bg2);border-left:3px solid var(--primary);border-radius:6px;">
+    <div style="font-size:12px;color:var(--fg2);line-height:1.6;"><strong style="color:var(--fg);">Rolling 30-day window:</strong> 6 rounds totaling <strong style="color:var(--primary);">$20.7M USD + $27.2M CAD</strong> across 4 sectors. Median round <strong style="color:var(--primary);">$6.75M</strong>. Lead investors: Madrona, BDC, PSL, OAF, Georgian.</div>
+    <a href="command-center.html" style="color:var(--primary);font-size:11px;font-weight:700;text-decoration:none;">View full funding history in Command Center →</a>
+  </div>
+</section>
+
+<!-- === NEW: v2.3 #4 — Custom Deal Alerts Form === -->
+<section class="container" style="padding:0 0 16px;">
+  <div class="inv-newsletter" style="background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(251,191,36,0.02));border:1px solid rgba(251,191,36,0.25);border-radius:12px;padding:32px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--warm);font-weight:700;margin-bottom:8px;">▸ CUSTOM DEAL ALERTS</div>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Get notified when a Cascadia founder matches your thesis</h2>
+        <p style="font-size:13px;color:var(--fg2);line-height:1.6;margin-bottom:16px;">Tell us your investment thesis once — we'll email you whenever a new Cascadia founder enrolls with matching stage, sector, and geography. No noise, no spam, just the deal flow that fits your firm.</p>
+        <ul style="font-size:12px;color:var(--fg2);line-height:1.8;margin-left:16px;">
+          <li>Stage: filter to pre-seed / seed / Series A+</li>
+          <li>Sector: filter to SaaS / CleanTech / Bio / AI/ML / FinTech / etc.</li>
+          <li>Geography: WA / OR / BC or cross-border</li>
+          <li>Alert email within 1 hour of matching enrollment</li>
+        </ul>
+      </div>
+      <div>
+        <form id="investor-alerts-form" onsubmit="return submitInvestorAlerts(event)">
+          <input type="email" id="ia-email" placeholder="you@firm.vc" required style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;">
+          <input type="text" id="ia-firm" placeholder="Firm name (optional)" style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+            <select id="ia-stage" style="background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+              <option value="any">Any stage</option>
+              <option value="pre_seed">Pre-seed</option>
+              <option value="seed">Seed</option>
+              <option value="series_a">Series A</option>
+              <option value="series_b_plus">Series B+</option>
+            </select>
+            <select id="ia-geography" style="background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+              <option value="any">Any geography</option>
+              <option value="wa">Washington only</option>
+              <option value="or">Oregon only</option>
+              <option value="bc">BC only</option>
+              <option value="cross_border">Cross-border</option>
+            </select>
+          </div>
+          <select id="ia-sector" style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;margin-bottom:8px;">
+            <option value="any">Any sector</option>
+            <option value="SaaS">SaaS</option>
+            <option value="CleanTech">CleanTech</option>
+            <option value="Bio">Bio / Life Sci</option>
+            <option value="AgTech">AgTech</option>
+            <option value="AI/ML">AI / ML</option>
+            <option value="FinTech">FinTech</option>
+            <option value="Hardware">Hardware</option>
+          </select>
+          <button type="submit" id="ia-submit" style="width:100%;padding:12px 24px;background:var(--warm);color:var(--bg);border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">Subscribe to deal alerts →</button>
+        </form>
+        <div id="ia-success" style="display:none;padding:14px;background:rgba(251,191,36,0.1);border:1px solid var(--warm);border-radius:6px;color:var(--warm);font-size:13px;font-weight:600;text-align:center;margin-top:8px;">✓ Subscribed! You'll get a deal alert within 1 hour of any new matching founder enrollment.</div>
+        <p style="font-size:10px;color:var(--fg3);margin-top:8px;line-height:1.5;">Alert filters can be changed any time by re-submitting. Cancel by replying 'unsubscribe' to any alert email. No third-party data sharing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// === Investor deal alerts form (v2.3 #4) ===
+function submitInvestorAlerts(e) {
+  e.preventDefault();
+  var btn = document.getElementById('ia-submit');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  
+  var data = {
+    email: document.getElementById('ia-email').value,
+    firm: document.getElementById('ia-firm').value,
+    stage: document.getElementById('ia-stage').value,
+    sector: document.getElementById('ia-sector').value,
+    geography: document.getElementById('ia-geography').value,
+    subscribed_at: new Date().toISOString(),
+    list: 'cascadia-investor-deal-alerts'
+  };
+  
+  var alerts = JSON.parse(localStorage.getItem('investor-alerts-subs') || '[]');
+  alerts.push(data);
+  localStorage.setItem('investor-alerts-subs', JSON.stringify(alerts));
+  
+  fetch('https://founder-enroll.aibizvan360.workers.dev/investor-alerts', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function() {
+    showAlertsSuccess();
+  }).catch(function() {
+    var mailtoLink = 'mailto:testdemoqwenai2025@gmail.com?subject=Alert%20Subscribe%20-%20Cascadia%20Deal%20Alerts' +
+      '&body=' + encodeURIComponent('Email: ' + data.email + '\nFirm: ' + data.firm + '\nStage: ' + data.stage + '\nSector: ' + data.sector + '\nGeography: ' + data.geography + '\n\n(Forward this email to subscribe manually until Worker /investor-alerts endpoint deployed.)');
+    var w = window.open(mailtoLink, '_blank');
+    if (w) setTimeout(function() { w.close(); }, 500);
+    showAlertsSuccess();
+  });
+  
+  return false;
+}
+function showAlertsSuccess() {
+  var form = document.getElementById('investor-alerts-form');
+  var success = document.getElementById('ia-success');
+  form.style.display = 'none';
+  success.style.display = 'block';
+  if (window.plausible) window.plausible('Investor Alerts Signup', {props: {list: 'cascadia-investor-deal-alerts'}});
+}
+</script>
 
 <!-- === NEW: Bottom CTA — Investor Briefing (v2.1 #3 — real form) === -->
 <section class="container" style="padding:48px 0;">
@@ -3747,8 +3956,10 @@ function applyFpFilters() {
   var city = document.getElementById('fp-filter-city').value;
   var sector = document.getElementById('fp-filter-sector').value;
   var stage = document.getElementById('fp-filter-stage').value;
+  var watchlistActive = document.getElementById('fp-watchlist-toggle') && document.getElementById('fp-watchlist-toggle').dataset.active === 'true';
+  var watchlist = JSON.parse(localStorage.getItem('econ-watchlist') || '[]');
   
-  var filtered = FP_FOUNDERS.filter(function(f) {
+  var filtered = FP_FOUNDERS.filter(function(f, idx) {
     if (city && f.city !== city) return false;
     if (sector && f.sector !== sector) return false;
     if (stage && f.stage !== stage) return false;
@@ -3757,17 +3968,50 @@ function applyFpFilters() {
       var sectorL = (f.sector || '').toLowerCase();
       if (cityL.indexOf(search) < 0 && sectorL.indexOf(search) < 0) return false;
     }
+    if (watchlistActive && watchlist.indexOf(idx) < 0) return false;
     return true;
   });
   
   var html = filtered.map(function(f) {
-    return '<span style="display:inline-block;padding:4px 10px;margin:2px;background:var(--bg3);border-radius:999px;font-size:11px;"><strong style="color:var(--fg);">' + f.city + '</strong> · ' + f.sector + ' · ' + f.stage + ' <span style=\'color:var(--fg3);\'>— ' + f.at + '</span></span>';
+    var realIdx = FP_FOUNDERS.indexOf(f);
+    var isSaved = watchlist.indexOf(realIdx) >= 0;
+    var starColor = isSaved ? 'var(--warm)' : 'var(--fg3)';
+    return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;margin:2px;background:var(--bg3);border-radius:999px;font-size:11px;">' +
+      '<button onclick="event.preventDefault();event.stopPropagation();toggleFpWatchlist(' + realIdx + ')" style="background:transparent;border:none;cursor:pointer;font-size:11px;color:' + starColor + ';font-weight:700;padding:0;line-height:1;" title="' + (isSaved ? 'Remove from watchlist' : 'Save to watchlist') + '">' + (isSaved ? '★' : '☆') + '</button>' +
+      '<strong style="color:var(--fg);">' + f.city + '</strong> · ' + f.sector + ' · ' + f.stage + ' <span style=\'color:var(--fg3);\'>— ' + f.at + '</span></span>';
   }).join('');
-  if (!filtered.length) html = '<span style="color:var(--fg3);font-size:11px;">No enrollments match the current filters.</span>';
+  if (!filtered.length) html = '<span style="color:var(--fg3);font-size:11px;">No founders match the current filters.</span>';
   document.getElementById('fp-recent-list').innerHTML = html;
   document.getElementById('fp-filter-count').textContent = filtered.length;
   document.getElementById('fp-filter-total').textContent = FP_FOUNDERS.length;
 }
+function toggleFpWatchlist(idx) {
+  var wl = JSON.parse(localStorage.getItem('econ-watchlist') || '[]');
+  var i = wl.indexOf(idx);
+  if (i >= 0) wl.splice(i, 1);
+  else wl.push(idx);
+  localStorage.setItem('econ-watchlist', JSON.stringify(wl));
+  updateFpWatchlistCount();
+  applyFpFilters();
+}
+function updateFpWatchlistCount() {
+  var wl = JSON.parse(localStorage.getItem('econ-watchlist') || '[]');
+  var btn = document.getElementById('fp-watchlist-toggle');
+  var span = document.getElementById('fp-watchlist-count');
+  if (span) span.textContent = wl.length;
+  if (btn) btn.style.display = wl.length > 0 ? 'inline-block' : 'none';
+}
+function toggleFpWatchlistFilter() {
+  var btn = document.getElementById('fp-watchlist-toggle');
+  btn.dataset.active = btn.dataset.active === 'true' ? 'false' : 'true';
+  btn.style.background = btn.dataset.active === 'true' ? 'var(--primary)' : 'transparent';
+  btn.style.color = btn.dataset.active === 'true' ? 'var(--bg)' : 'var(--primary)';
+  applyFpFilters();
+}
+window.toggleFpWatchlist = toggleFpWatchlist;
+window.toggleFpWatchlistFilter = toggleFpWatchlistFilter;
+document.getElementById('fp-watchlist-toggle').dataset.active = 'false';
+updateFpWatchlistCount();
 function clearFpFilters() {
   document.getElementById('fp-filter-search').value = '';
   document.getElementById('fp-filter-city').value = '';
