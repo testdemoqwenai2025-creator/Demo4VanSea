@@ -103,6 +103,205 @@ h1 { font-size:36px; font-weight:800; margin-bottom:8px; line-height:1.1; }
 
 @media (max-width:768px) { h1 { font-size:26px; } .stats-grid { grid-template-columns:1fr 1fr; } }
 </style>
+
+<style id="hsr-interactive-scenes-css">
+/* === Shared click-to-load pattern === */
+.cas-scene-wrap {
+  position: relative;
+  margin-bottom: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a1a2f;
+  min-height: 340px;
+}
+.cas-scene-wrap img.cas-scene-fallback {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+.cas-scene-wrap .cas-scene-loaded {
+  width: 100%;
+  display: block;
+}
+.cas-load-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #4ecdc4 0%, #45b7af 100%);
+  color: #0a1a2f;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  z-index: 5;
+}
+.cas-load-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(78,205,196,0.5);
+}
+.cas-load-btn .play-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.cas-scene-text-overlay {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  z-index: 4;
+  max-width: 60%;
+}
+.cas-scene-text-overlay .scene-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4ecdc4;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.cas-scene-text-overlay .scene-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+.cas-scene-text-overlay .scene-stats {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  margin: 0;
+}
+.cas-scene-tooltip {
+  position: absolute;
+  background: rgba(10,26,47,0.96);
+  color: #4ecdc4;
+  border: 1px solid rgba(78,205,196,0.5);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.cas-scene-tooltip.visible { opacity: 1; }
+.cas-scene-tooltip .tooltip-key {
+  color: rgba(255,255,255,0.55);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+.cas-scene-tooltip .tooltip-val {
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+}
+.cas-scene-info-bar {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  z-index: 4;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.cas-scene-info-bar span { display: flex; align-items: center; gap: 4px; }
+.cas-scene-info-bar .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ecdc4;
+  box-shadow: 0 0 6px #4ecdc4;
+}
+[data-theme="light"] .cas-scene-text-overlay { color: #0a1a2f; text-shadow: 0 2px 8px rgba(255,255,255,0.5); }
+[data-theme="light"] .cas-scene-text-overlay .scene-stats { color: rgba(10,26,47,0.75); }
+
+/* === Scene 1: Maglev through forest — animation keyframes === */
+@keyframes cas-maglev-move {
+  0%   { transform: translateX(-300px); }
+  100% { transform: translateX(1300px); }
+}
+@keyframes cas-maglev-move-boost {
+  0%   { transform: translateX(-300px); }
+  100% { transform: translateX(1300px); }
+}
+@keyframes cas-mist-drift {
+  0%   { transform: translateX(-100px); }
+  100% { transform: translateX(100px); }
+}
+@keyframes cas-tree-sway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50%      { transform: rotate(1.2deg); }
+}
+@keyframes cas-headlight-pulse {
+  0%, 100% { opacity: 0.6; r: 8; }
+  50%      { opacity: 1.0; r: 14; }
+}
+@keyframes cas-snow-glint {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1.0; }
+}
+.cas-maglev-train { animation: cas-maglev-move 9s linear infinite; transform-origin: center; }
+.cas-maglev-train.boosted { animation: cas-maglev-move-boost 3s linear infinite; }
+.cas-mist-layer-1 { animation: cas-mist-drift 22s ease-in-out infinite alternate; }
+.cas-mist-layer-2 { animation: cas-mist-drift 18s ease-in-out infinite alternate-reverse; }
+.cas-tree-sway-1 { animation: cas-tree-sway 6s ease-in-out infinite; transform-origin: bottom center; }
+.cas-tree-sway-2 { animation: cas-tree-sway 7s ease-in-out infinite; transform-origin: bottom center; animation-delay: -1s; }
+.cas-tree-sway-3 { animation: cas-tree-sway 5.5s ease-in-out infinite; transform-origin: bottom center; animation-delay: -2s; }
+.cas-headlight { animation: cas-headlight-pulse 1.8s ease-in-out infinite; }
+.cas-snow-cap { animation: cas-snow-glint 4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cas-maglev-train, .cas-mist-layer-1, .cas-mist-layer-2,
+  .cas-tree-sway-1, .cas-tree-sway-2, .cas-tree-sway-3,
+  .cas-headlight, .cas-snow-cap,
+  .cas-rail-pulse, .cas-city-light, .cas-aurora-shift {
+    animation: none !important;
+  }
+}
+
+/* === Scene 2: Powerhouse at night — animation keyframes === */
+@keyframes cas-rail-pulse-flow {
+  0%   { offset-distance: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+@keyframes cas-city-twinkle {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+@keyframes cas-aurora-shift {
+  0%, 100% { opacity: 0.35; transform: translateX(0); }
+  50%      { opacity: 0.55; transform: translateX(-30px); }
+}
+.cas-aurora { animation: cas-aurora-shift 18s ease-in-out infinite; transform-origin: center; }
+.cas-city-light { animation: cas-city-twinkle 3.5s ease-in-out infinite; }
+.cas-rail-pulse {
+  offset-path: path('M 220,110 Q 360,160 580,220 Q 760,270 920,360');
+  offset-rotate: 0deg;
+  animation: cas-rail-pulse-flow 5s linear infinite;
+}
+.cas-rail-pulse.p2 { animation-delay: -1.7s; }
+.cas-rail-pulse.p3 { animation-delay: -3.4s; }
+
+[data-theme="light"] .cas-scene-wrap { background: #d4e4f0; }
+</style>
+
 </head>
 <body>
 
@@ -113,7 +312,172 @@ h1 { font-size:36px; font-weight:800; margin-bottom:8px; line-height:1.1; }
 
 <!-- Hero image -->
 <div style="margin-bottom:32px;border-radius:12px;overflow:hidden;">
-  <img src="images/hsr/hsr-hero.png" alt="Cascadia Ultra-High-Speed Corridor — maglev train through Pacific Northwest forest" style="width:100%;display:block;border-radius:12px;" loading="lazy">
+  <div class="cas-scene-wrap">
+  <img id="hsr-hero-fallback" class="cas-scene-fallback" src="images/hsr/hsr-hero.png" alt="Cascadia Ultra-High-Speed Corridor — maglev train through Pacific Northwest forest" loading="lazy">
+  <div id="hsr-hero-text-overlay" class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load</div>
+    <div class="scene-title">Cascadia Ultra-High-Speed Corridor</div>
+    <p class="scene-stats">277 miles · 250 mph · 0 emissions · hover peaks · click train to boost</p>
+  </div>
+  <button id="hsr-hero-load-btn" class="cas-load-btn" type="button" onclick="loadHSRHeroScene()">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="cas-scene-1-tooltip" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div id="hsr-hero-scene" class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: maglev train through Pacific Northwest forest">
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#1a2f4a 0%,#3a5a7a 30%,#5a7a6a 55%,#2a3a2a 100%);" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cas-sky-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2f4a"/>
+      <stop offset="35%" stop-color="#3a5a7a"/>
+      <stop offset="65%" stop-color="#7a9aaa"/>
+      <stop offset="100%" stop-color="#5a7a6a"/>
+    </linearGradient>
+    <linearGradient id="cas-mtn-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a6a8a"/>
+      <stop offset="100%" stop-color="#3a5a7a"/>
+    </linearGradient>
+    <linearGradient id="cas-mtn-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a4a5a"/>
+      <stop offset="100%" stop-color="#1a3a4a"/>
+    </linearGradient>
+    <linearGradient id="cas-train-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8f4f8"/>
+      <stop offset="50%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#2a8a85"/>
+    </linearGradient>
+    <radialGradient id="cas-headlight-grad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffefa0" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#ffdc60" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ffdc60" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cas-mist-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="cas-rail-tie" x="0" y="0" width="20" height="6" patternUnits="userSpaceOnUse">
+      <rect width="20" height="6" fill="#3a2a1a"/>
+      <rect x="2" y="1" width="16" height="4" fill="#5a4a2a"/>
+    </pattern>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="1200" height="500" fill="url(#cas-sky-grad)"/>
+
+  <!-- Far mountains (Rainier-like, with snow caps) -->
+  <g class="cas-far-mountains">
+    <path d="M 0,300 L 180,140 L 280,200 L 380,90 L 480,180 L 600,140 L 720,200 L 820,100 L 920,180 L 1080,160 L 1200,220 L 1200,500 L 0,500 Z" fill="url(#cas-mtn-far)" opacity="0.75"/>
+    <!-- Snow caps on the 3 highest peaks -->
+    <path class="cas-snow-cap" d="M 370,100 L 380,90 L 390,100 L 384,108 L 380,103 L 376,108 Z" fill="#f8fbff"/>
+    <path class="cas-snow-cap" d="M 810,108 L 820,100 L 830,108 L 824,116 L 820,111 L 816,116 Z" fill="#f8fbff" style="animation-delay:-1.5s"/>
+    <path class="cas-snow-cap" d="M 170,150 L 180,140 L 190,150 L 184,158 L 180,153 L 176,158 Z" fill="#f8fbff" style="animation-delay:-2.5s"/>
+  </g>
+
+  <!-- Mid mountain layer (darker) -->
+  <g class="cas-mid-mountains">
+    <path d="M 0,360 L 100,280 L 200,320 L 320,240 L 440,300 L 560,260 L 680,310 L 800,250 L 920,300 L 1040,270 L 1200,330 L 1200,500 L 0,500 Z" fill="url(#cas-mtn-mid)" opacity="0.9"/>
+  </g>
+
+  <!-- Mist layer 1 (slow drift) -->
+  <g class="cas-mist-layer-1" opacity="0.7">
+    <ellipse cx="300" cy="330" rx="200" ry="22" fill="url(#cas-mist-grad)"/>
+    <ellipse cx="700" cy="320" rx="180" ry="20" fill="url(#cas-mist-grad)"/>
+    <ellipse cx="1050" cy="335" rx="160" ry="18" fill="url(#cas-mist-grad)"/>
+  </g>
+
+  <!-- Mid pine forest (silhouette trees, varying depths) -->
+  <g class="cas-mid-pines" opacity="0.85">
+    <!-- Tree silhouettes — triangles stacked -->
+    <g transform="translate(50,330)">
+      <polygon points="0,0 -12,-30 -6,-30 -16,-50 -8,-50 -20,-72 0,-80 20,-72 8,-50 16,-50 6,-30 12,-30" fill="#1a3a2a"/>
+    </g>
+    <g transform="translate(150,335)"><polygon points="0,0 -10,-25 -5,-25 -14,-42 -7,-42 -18,-60 0,-67 18,-60 7,-42 14,-42 5,-25 10,-25" fill="#1a3a2a"/></g>
+    <g transform="translate(250,330)"><polygon points="0,0 -12,-30 -6,-30 -16,-50 -8,-50 -20,-72 0,-80 20,-72 8,-50 16,-50 6,-30 12,-30" fill="#1a3a2a"/></g>
+    <g transform="translate(380,335)"><polygon points="0,0 -10,-25 -5,-25 -14,-42 -7,-42 -18,-60 0,-67 18,-60 7,-42 14,-42 5,-25 10,-25" fill="#1a3a2a"/></g>
+    <g transform="translate(500,330)"><polygon points="0,0 -12,-30 -6,-30 -16,-50 -8,-50 -20,-72 0,-80 20,-72 8,-50 16,-50 6,-30 12,-30" fill="#1a3a2a"/></g>
+    <g transform="translate(620,335)"><polygon points="0,0 -10,-25 -5,-25 -14,-42 -7,-42 -18,-60 0,-67 18,-60 7,-42 14,-42 5,-25 10,-25" fill="#1a3a2a"/></g>
+    <g transform="translate(750,330)"><polygon points="0,0 -12,-30 -6,-30 -16,-50 -8,-50 -20,-72 0,-80 20,-72 8,-50 16,-50 6,-30 12,-30" fill="#1a3a2a"/></g>
+    <g transform="translate(880,335)"><polygon points="0,0 -10,-25 -5,-25 -14,-42 -7,-42 -18,-60 0,-67 18,-60 7,-42 14,-42 5,-25 10,-25" fill="#1a3a2a"/></g>
+    <g transform="translate(1000,330)"><polygon points="0,0 -12,-30 -6,-30 -16,-50 -8,-50 -20,-72 0,-80 20,-72 8,-50 16,-50 6,-30 12,-30" fill="#1a3a2a"/></g>
+    <g transform="translate(1110,335)"><polygon points="0,0 -10,-25 -5,-25 -14,-42 -7,-42 -18,-60 0,-67 18,-60 7,-42 14,-42 5,-25 10,-25" fill="#1a3a2a"/></g>
+  </g>
+
+  <!-- Mist layer 2 (faster drift) -->
+  <g class="cas-mist-layer-2" opacity="0.55">
+    <ellipse cx="200" cy="365" rx="220" ry="18" fill="url(#cas-mist-grad)"/>
+    <ellipse cx="600" cy="370" rx="200" ry="16" fill="url(#cas-mist-grad)"/>
+    <ellipse cx="950" cy="368" rx="180" ry="14" fill="url(#cas-mist-grad)"/>
+  </g>
+
+  <!-- Maglev track (foreground) -->
+  <g class="cas-track">
+    <rect x="0" y="395" width="1200" height="6" fill="url(#cas-rail-tie)"/>
+    <line x1="0" y1="385" x2="1200" y2="385" stroke="#6a7a8a" stroke-width="2" opacity="0.7"/>
+    <line x1="0" y1="410" x2="1200" y2="410" stroke="#6a7a8a" stroke-width="2" opacity="0.7"/>
+  </g>
+
+  <!-- Maglev train (animated translateX; click for boost) -->
+  <g class="cas-maglev-train" id="cas-maglev-train" style="cursor:pointer;">
+    <!-- Headlight glow (radial gradient circle) -->
+    <circle class="cas-headlight" cx="180" cy="378" r="10" fill="url(#cas-headlight-grad)"/>
+    <!-- Train body (elongated teardrop,指向right) -->
+    <path d="M 0,395 Q 0,355 30,350 L 130,348 Q 175,348 185,360 L 190,395 Z" fill="url(#cas-train-body)" stroke="#1a4a45" stroke-width="1"/>
+    <!-- Window strip (dark band with light glows for windows) -->
+    <rect x="35" y="358" width="120" height="12" fill="#0a1a2f" rx="2"/>
+    <rect x="42" y="360" width="14" height="8" fill="#ffefa0" opacity="0.85"/>
+    <rect x="62" y="360" width="14" height="8" fill="#ffefa0" opacity="0.85"/>
+    <rect x="82" y="360" width="14" height="8" fill="#ffefa0" opacity="0.85"/>
+    <rect x="102" y="360" width="14" height="8" fill="#ffefa0" opacity="0.85"/>
+    <rect x="122" y="360" width="14" height="8" fill="#ffefa0" opacity="0.85"/>
+    <!-- Nose tip accent -->
+    <path d="M 175,348 L 190,360 L 185,375 L 175,365 Z" fill="#2a8a85"/>
+    <!-- Maglev skirt (the levitation cushion glow) -->
+    <ellipse cx="95" cy="402" rx="100" ry="4" fill="#4ecdc4" opacity="0.6"/>
+    <ellipse cx="95" cy="402" rx="80" ry="2" fill="#a0f0e8" opacity="0.8"/>
+  </g>
+
+  <!-- Foreground pines (taller, swaying) -->
+  <g class="cas-foreground-pines">
+    <g class="cas-tree-sway-1" transform="translate(70,440)">
+      <polygon points="0,0 -18,-50 -9,-50 -24,-85 0,-95 24,-85 9,-50 18,-50" fill="#0a2a1a"/>
+      <rect x="-3" y="-5" width="6" height="20" fill="#3a2a1a"/>
+    </g>
+    <g class="cas-tree-sway-2" transform="translate(280,460)">
+      <polygon points="0,0 -16,-44 -8,-44 -22,-75 0,-84 22,-75 8,-44 16,-44" fill="#0a2a1a"/>
+      <rect x="-3" y="-5" width="6" height="18" fill="#3a2a1a"/>
+    </g>
+    <g class="cas-tree-sway-3" transform="translate(950,450)">
+      <polygon points="0,0 -20,-55 -10,-55 -26,-92 0,-103 26,-92 10,-55 20,-55" fill="#0a2a1a"/>
+      <rect x="-4" y="-5" width="8" height="22" fill="#3a2a1a"/>
+    </g>
+    <g class="cas-tree-sway-1" transform="translate(1130,460)" style="animation-delay:-3s">
+      <polygon points="0,0 -18,-50 -9,-50 -24,-85 0,-95 24,-85 9,-50 18,-50" fill="#0a2a1a"/>
+      <rect x="-3" y="-5" width="6" height="20" fill="#3a2a1a"/>
+    </g>
+  </g>
+
+  <!-- Foreground rocks/ferns -->
+  <g class="cas-foreground-details">
+    <ellipse cx="200" cy="478" rx="35" ry="10" fill="#3a2a1a"/>
+    <ellipse cx="200" cy="475" rx="32" ry="8" fill="#5a4a2a"/>
+    <ellipse cx="500" cy="485" rx="28" ry="8" fill="#3a2a1a"/>
+    <ellipse cx="800" cy="478" rx="40" ry="11" fill="#3a2a1a"/>
+    <ellipse cx="800" cy="475" rx="36" ry="9" fill="#5a4a2a"/>
+  </g>
+
+  <!-- Hidden tooltip layer (positioned dynamically by JS) -->
+  <g id="cas-scene-1-tooltip-layer"></g>
+
+  <!-- Mountain peak hover targets (invisible rects over the 3 snow caps) -->
+  <rect x="350" y="85" width="60" height="40" fill="transparent" data-mtn-name="Mount Rainier" data-mtn-elev="14,411 ft" data-mtn-note="Tallest volcano in Cascadia · visible from corridor" style="cursor:help;"/>
+  <rect x="790" y="95" width="60" height="40" fill="transparent" data-mtn-name="Mount Hood" data-mtn-elev="11,249 ft" data-mtn-note="South of Columbia River · Portland skyline anchor" style="cursor:help;"/>
+  <rect x="150" y="135" width="60" height="40" fill="transparent" data-mtn-name="Mount Baker" data-mtn-elev="10,781 ft" data-mtn-note="Northernmost Cascadia volcano · near BC border" style="cursor:help;"/>
+</svg>
+</div>
+</div>
 </div>
 
 <!-- Header -->
@@ -365,7 +729,204 @@ h1 { font-size:36px; font-weight:800; margin-bottom:8px; line-height:1.1; }
 <div class="section">
   <h2>Cascadia as a Global Powerhouse — The 20-Year Transformation</h2>
   <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;">
-    <img src="images/hsr/cascadia-powerhouse.png" alt="Cascadia mega-region at night — Vancouver Seattle Portland connected by ultra-high-speed rail corridor" style="width:100%;display:block;border-radius:12px;" loading="lazy">
+    <div class="cas-scene-wrap cas-scene-powerhouse-wrap">
+  <img id="hsr-powerhouse-fallback" class="cas-scene-fallback" src="images/hsr/cascadia-powerhouse.png" alt="Cascadia mega-region at night — Vancouver Seattle Portland connected by ultra-high-speed rail corridor" loading="lazy">
+  <div id="hsr-powerhouse-text-overlay" class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load</div>
+    <div class="scene-title">Cascadia Mega-Region at Night</div>
+    <p class="scene-stats">Vancouver ↔ Seattle ↔ Portland · hover cities for stats · click to highlight route</p>
+  </div>
+  <button id="hsr-powerhouse-load-btn" class="cas-load-btn" type="button" onclick="loadHSRPowerhouseScene()">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div id="cas-scene-2-tooltip" class="cas-scene-tooltip">
+    <div class="tooltip-key"></div>
+    <div class="tooltip-val"></div>
+  </div>
+  <div id="hsr-powerhouse-scene" class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Cascadia mega-region at night — Vancouver, Seattle, Portland connected by ultra-high-speed rail">
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#050a1a 0%,#0a1a2f 50%,#1a2a4a 100%);" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cas-night-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050a1a"/>
+      <stop offset="40%" stop-color="#0a1a2f"/>
+      <stop offset="100%" stop-color="#1a2a4a"/>
+    </linearGradient>
+    <linearGradient id="cas-aurora-grad" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#4ecdc4" stop-opacity="0.4"/>
+      <stop offset="55%" stop-color="#a070d0" stop-opacity="0.35"/>
+      <stop offset="80%" stop-color="#4ecdc4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cas-ocean-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0a1830"/>
+      <stop offset="100%" stop-color="#0a2535"/>
+    </linearGradient>
+    <linearGradient id="cas-land-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2a3a"/>
+      <stop offset="100%" stop-color="#0a1a2a"/>
+    </linearGradient>
+    <radialGradient id="cas-city-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffd070" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#ff9040" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ff9040" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cas-rail-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#4ecdc4" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Night sky background -->
+  <rect width="1200" height="500" fill="url(#cas-night-sky)"/>
+
+  <!-- Aurora (slowly shifting gradient overlay) -->
+  <g class="cas-aurora">
+    <path d="M 0,40 Q 300,10 600,50 Q 900,90 1200,30 L 1200,120 Q 900,180 600,140 Q 300,100 0,160 Z" fill="url(#cas-aurora-grad)" opacity="0.7"/>
+    <path d="M 0,70 Q 400,40 800,80 Q 1100,110 1200,60 L 1200,180 Q 900,220 600,180 Q 300,140 0,200 Z" fill="url(#cas-aurora-grad)" opacity="0.4"/>
+  </g>
+
+  <!-- Stars (twinkling dots scattered) -->
+  <g class="cas-stars" fill="#ffffff" opacity="0.6">
+    <circle cx="120" cy="35" r="1"/>
+    <circle cx="280" cy="55" r="1.2"/>
+    <circle cx="450" cy="25" r="0.8"/>
+    <circle cx="620" cy="70" r="1"/>
+    <circle cx="780" cy="40" r="1.3"/>
+    <circle cx="950" cy="60" r="0.9"/>
+    <circle cx="1080" cy="25" r="1.1"/>
+    <circle cx="180" cy="110" r="0.7"/>
+    <circle cx="370" cy="130" r="1"/>
+    <circle cx="540" cy="105" r="0.8"/>
+    <circle cx="700" cy="135" r="1.2"/>
+    <circle cx="870" cy="115" r="0.9"/>
+    <circle cx="1030" cy="140" r="1"/>
+  </g>
+
+  <!-- Pacific Ocean (left side, with coastline) -->
+  <path d="M 0,0 L 130,0 L 100,80 L 140,160 L 110,240 L 150,320 L 130,400 L 100,500 L 0,500 Z" fill="url(#cas-ocean-grad)"/>
+
+  <!-- Land mass (right of coastline) -->
+  <path d="M 130,0 L 1200,0 L 1200,500 L 100,500 L 130,400 L 150,320 L 110,240 L 140,160 L 100,80 Z" fill="url(#cas-land-grad)"/>
+
+  <!-- Cascade range silhouette (right side, vertical mountains) -->
+  <g class="cas-cascade-range" fill="#0a1825" opacity="0.95">
+    <path d="M 1180,500 L 1180,180 L 1150,160 L 1130,200 L 1110,140 L 1080,180 L 1060,150 L 1040,200 L 1020,170 L 1000,220 L 985,200 L 970,250 L 970,500 Z"/>
+  </g>
+  <!-- Snow caps on range -->
+  <g class="cas-cascade-snow" fill="#3a4a5a" opacity="0.7">
+    <polygon points="1125,160 1130,160 1135,170 1125,168 1115,170"/>
+    <polygon points="1075,180 1080,180 1085,190 1075,188 1065,190"/>
+  </g>
+
+  <!-- Major rivers (Fraser, Skagit, Columbia) -->
+  <g class="cas-rivers" stroke="#1a3a4a" stroke-width="3" fill="none" opacity="0.8">
+    <!-- Fraser River (near Vancouver) -->
+    <path d="M 220,180 Q 240,210 220,240 Q 200,270 230,310"/>
+    <!-- Skagit River (between Vancouver and Seattle) -->
+    <path d="M 280,260 Q 320,280 360,270 Q 400,260 440,290"/>
+    <!-- Columbia River (between Seattle and Portland) -->
+    <path d="M 620,360 Q 700,370 780,360 Q 860,350 940,380"/>
+  </g>
+
+  <!-- International border (dashed line between Vancouver BC and Seattle) -->
+  <line x1="0" y1="180" x2="1200" y2="200" stroke="#4ecdc4" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="980" y="195" fill="#4ecdc4" opacity="0.6" font-size="9" font-family="monospace">US / CA BORDER</text>
+
+  <!-- City clusters (Vancouver BC, Seattle, Portland) -->
+  <!-- VANCOUVER BC (top) -->
+  <g class="cas-city-cluster" id="cas-city-vancouver" data-city-name="Vancouver, BC" data-city-pop="2.46M metro" data-city-gdp="CAD $137B" data-city-travel="27 min → Seattle · 55 min → Portland" style="cursor:pointer;">
+    <!-- City glow halo -->
+    <circle cx="220" cy="110" r="50" fill="url(#cas-city-glow)"/>
+    <!-- City light dots (twinkling) -->
+    <circle class="cas-city-light" cx="200" cy="100" r="1.5" fill="#ffd070"/>
+    <circle class="cas-city-light" cx="215" cy="105" r="1.8" fill="#ffd070" style="animation-delay:-0.5s"/>
+    <circle class="cas-city-light" cx="230" cy="110" r="1.5" fill="#ffd070" style="animation-delay:-1s"/>
+    <circle class="cas-city-light" cx="240" cy="120" r="1.4" fill="#ffd070" style="animation-delay:-1.5s"/>
+    <circle class="cas-city-light" cx="210" cy="125" r="1.6" fill="#ffd070" style="animation-delay:-2s"/>
+    <circle class="cas-city-light" cx="195" cy="115" r="1.3" fill="#ffd070" style="animation-delay:-2.5s"/>
+    <circle class="cas-city-light" cx="225" cy="95" r="1.4" fill="#ffd070" style="animation-delay:-3s"/>
+    <!-- City label -->
+    <text x="220" y="80" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" font-family="inherit">VANCOUVER</text>
+    <text x="220" y="93" fill="#4ecdc4" font-size="9" text-anchor="middle" font-family="monospace">BC · CA</text>
+  </g>
+
+  <!-- SEATTLE (middle) -->
+  <g class="cas-city-cluster" id="cas-city-seattle" data-city-name="Seattle, WA" data-city-pop="4.02M metro" data-city-gdp="USD $483B" data-city-travel="27 min ← Vancouver · 38 min → Portland" style="cursor:pointer;">
+    <circle cx="580" cy="220" r="65" fill="url(#cas-city-glow)"/>
+    <circle class="cas-city-light" cx="565" cy="210" r="1.6" fill="#ffd070"/>
+    <circle class="cas-city-light" cx="580" cy="215" r="1.9" fill="#ffd070" style="animation-delay:-0.4s"/>
+    <circle class="cas-city-light" cx="595" cy="220" r="1.7" fill="#ffd070" style="animation-delay:-0.9s"/>
+    <circle class="cas-city-light" cx="605" cy="230" r="1.5" fill="#ffd070" style="animation-delay:-1.4s"/>
+    <circle class="cas-city-light" cx="570" cy="225" r="1.7" fill="#ffd070" style="animation-delay:-1.9s"/>
+    <circle class="cas-city-light" cx="555" cy="215" r="1.4" fill="#ffd070" style="animation-delay:-2.4s"/>
+    <circle class="cas-city-light" cx="585" cy="200" r="1.5" fill="#ffd070" style="animation-delay:-2.9s"/>
+    <circle class="cas-city-light" cx="600" cy="205" r="1.3" fill="#ffd070" style="animation-delay:-3.4s"/>
+    <!-- Space Needle silhouette (Seattle landmark) -->
+    <g fill="#ffdc60" opacity="0.85">
+      <rect x="587" y="175" width="3" height="20"/>
+      <polygon points="585,175 592,175 590,170 587,170"/>
+      <rect x="585" y="180" width="7" height="2"/>
+    </g>
+    <text x="580" y="265" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" font-family="inherit">SEATTLE</text>
+    <text x="580" y="278" fill="#4ecdc4" font-size="9" text-anchor="middle" font-family="monospace">WA · US</text>
+  </g>
+
+  <!-- PORTLAND (bottom) -->
+  <g class="cas-city-cluster" id="cas-city-portland" data-city-name="Portland, OR" data-city-pop="2.18M metro" data-city-gdp="USD $187B" data-city-travel="55 min ← Vancouver · 38 min ← Seattle" style="cursor:pointer;">
+    <circle cx="920" cy="360" r="55" fill="url(#cas-city-glow)"/>
+    <circle class="cas-city-light" cx="905" cy="350" r="1.5" fill="#ffd070"/>
+    <circle class="cas-city-light" cx="920" cy="355" r="1.8" fill="#ffd070" style="animation-delay:-0.7s"/>
+    <circle class="cas-city-light" cx="935" cy="360" r="1.6" fill="#ffd070" style="animation-delay:-1.2s"/>
+    <circle class="cas-city-light" cx="945" cy="370" r="1.4" fill="#ffd070" style="animation-delay:-1.7s"/>
+    <circle class="cas-city-light" cx="910" cy="365" r="1.6" fill="#ffd070" style="animation-delay:-2.2s"/>
+    <circle class="cas-city-light" cx="895" cy="355" r="1.3" fill="#ffd070" style="animation-delay:-2.7s"/>
+    <circle class="cas-city-light" cx="925" cy="345" r="1.4" fill="#ffd070" style="animation-delay:-3.2s"/>
+    <!-- Mt Hood silhouette (Portland landmark, distant) -->
+    <g fill="#ffdc60" opacity="0.6">
+      <polygon points="945,335 955,335 950,325"/>
+    </g>
+    <text x="920" y="405" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" font-family="inherit">PORTLAND</text>
+    <text x="920" y="418" fill="#4ecdc4" font-size="9" text-anchor="middle" font-family="monospace">OR · US</text>
+  </g>
+
+  <!-- Rail line connecting cities (with subtle glow) -->
+  <g class="cas-rail-line">
+    <path d="M 220,110 Q 360,160 580,220 Q 760,270 920,360" fill="none" stroke="#4ecdc4" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 220,110 Q 360,160 580,220 Q 760,270 920,360" fill="none" stroke="#4ecdc4" stroke-width="1" opacity="0.9"/>
+    <!-- Station markers (small squares at each city) -->
+    <rect x="216" y="106" width="8" height="8" fill="#4ecdc4" stroke="#fff" stroke-width="1"/>
+    <rect x="576" y="216" width="8" height="8" fill="#4ecdc4" stroke="#fff" stroke-width="1"/>
+    <rect x="916" y="356" width="8" height="8" fill="#4ecdc4" stroke="#fff" stroke-width="1"/>
+  </g>
+
+  <!-- Animated rail pulses (Vancouver → Seattle → Portland loop) -->
+  <!-- Note: offset-path is set in CSS so the pulses follow the curve -->
+  <g class="cas-rail-pulses">
+    <circle class="cas-rail-pulse" cx="0" cy="0" r="5" fill="#a0f0e8" opacity="0"/>
+    <circle class="cas-rail-pulse p2" cx="0" cy="0" r="4" fill="#a0f0e8" opacity="0"/>
+    <circle class="cas-rail-pulse p3" cx="0" cy="0" r="3" fill="#a0f0e8" opacity="0"/>
+  </g>
+
+  <!-- Compass + scale info -->
+  <g class="cas-compass" transform="translate(1090,440)">
+    <circle cx="0" cy="0" r="22" fill="rgba(10,26,47,0.7)" stroke="#4ecdc4" stroke-width="1" opacity="0.6"/>
+    <polygon points="0,-14 -3,0 0,-2 3,0" fill="#4ecdc4"/>
+    <polygon points="0,14 -3,0 0,2 3,0" fill="rgba(78,205,196,0.4)"/>
+    <text x="0" y="-26" fill="#4ecdc4" font-size="9" text-anchor="middle" font-family="monospace" opacity="0.7">N</text>
+  </g>
+
+  <!-- Scale bar -->
+  <g class="cas-scale-bar" transform="translate(60,460)">
+    <line x1="0" y1="0" x2="100" y2="0" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <line x1="0" y1="-4" x2="0" y2="4" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <line x1="50" y1="-3" x2="50" y2="3" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <line x1="100" y1="-4" x2="100" y2="4" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <text x="50" y="14" fill="#fff" font-size="9" text-anchor="middle" font-family="monospace" opacity="0.6">~100 mi</text>
+  </g>
+</svg>
+</div>
+</div>
   </div>
   
   <p>The Cascadia corridor is not just building a train. It is building the infrastructure layer for a bioregional superpower — the third mega-economy in North America after the Bay Area and Greater New York, with a unique cross-border advantage that neither competitor can replicate.</p>
@@ -506,6 +1067,120 @@ window.addEventListener('scroll', function() {
   var btn = document.getElementById('back-to-top');
   btn.style.display = window.scrollY > 500 ? 'flex' : 'none';
 });
+</script>
+
+
+<script id="hsr-interactive-scenes-js">
+(function() {
+  'use strict';
+
+  // === Scene 1 loader (maglev through forest) ===
+  window.loadHSRHeroScene = function() {
+    var fallback = document.getElementById('hsr-hero-fallback');
+    var scene = document.getElementById('hsr-hero-scene');
+    var btn = document.getElementById('hsr-hero-load-btn');
+    var textOverlay = document.getElementById('hsr-hero-text-overlay');
+    if (!scene || !btn) return;
+    // Hide fallback + button + text overlay; reveal scene
+    if (fallback) fallback.style.display = 'none';
+    if (btn) btn.style.display = 'none';
+    if (textOverlay) textOverlay.style.display = 'none';
+    scene.style.display = 'block';
+    // Wire up hover tooltips on mountain peaks
+    var svg = scene.querySelector('svg');
+    if (svg) {
+      var peaks = svg.querySelectorAll('[data-mtn-name]');
+      peaks.forEach(function(peak) {
+        peak.addEventListener('mouseenter', function(e) {
+          showScene1Tooltip(e, peak.getAttribute('data-mtn-name'),
+            peak.getAttribute('data-mtn-elev') + ' · ' + peak.getAttribute('data-mtn-note'));
+        });
+        peak.addEventListener('mouseleave', function() { hideScene1Tooltip(); });
+      });
+    }
+    // Wire up train click for speed boost
+    var train = document.getElementById('cas-maglev-train');
+    if (train) {
+      train.addEventListener('mouseenter', function(e) {
+        showScene1Tooltip(e, 'Cascadia Maglev', '250 mph · 277 mi · 0 emissions · click to boost');
+      });
+      train.addEventListener('mouseleave', function() { hideScene1Tooltip(); });
+      train.addEventListener('click', function() {
+        train.classList.add('boosted');
+        setTimeout(function() { train.classList.remove('boosted'); }, 4000);
+      });
+    }
+  };
+
+  function showScene1Tooltip(evt, key, val) {
+    var t = document.getElementById('cas-scene-1-tooltip');
+    if (!t) return;
+    var rect = evt.currentTarget.getBoundingClientRect();
+    var wrapRect = document.querySelector('.cas-scene-wrap').getBoundingClientRect();
+    t.querySelector('.tooltip-key').textContent = key;
+    t.querySelector('.tooltip-val').textContent = val;
+    t.style.left = (rect.left - wrapRect.left + rect.width / 2) + 'px';
+    t.style.top = (rect.top - wrapRect.top - 8) + 'px';
+    t.classList.add('visible');
+  }
+  function hideScene1Tooltip() {
+    var t = document.getElementById('cas-scene-1-tooltip');
+    if (t) t.classList.remove('visible');
+  }
+
+  // === Scene 2 loader (Cascadia powerhouse at night) ===
+  window.loadHSRPowerhouseScene = function() {
+    var fallback = document.getElementById('hsr-powerhouse-fallback');
+    var scene = document.getElementById('hsr-powerhouse-scene');
+    var btn = document.getElementById('hsr-powerhouse-load-btn');
+    var textOverlay = document.getElementById('hsr-powerhouse-text-overlay');
+    if (!scene || !btn) return;
+    if (fallback) fallback.style.display = 'none';
+    if (btn) btn.style.display = 'none';
+    if (textOverlay) textOverlay.style.display = 'none';
+    scene.style.display = 'block';
+    // Wire up city hover tooltips
+    var cities = scene.querySelectorAll('[data-city-name]');
+    cities.forEach(function(city) {
+      city.addEventListener('mouseenter', function(e) {
+        var name = city.getAttribute('data-city-name');
+        var pop = city.getAttribute('data-city-pop');
+        var gdp = city.getAttribute('data-city-gdp');
+        var travel = city.getAttribute('data-city-travel');
+        showScene2Tooltip(e, name, pop + ' · ' + gdp + ' · ' + travel);
+      });
+      city.addEventListener('mouseleave', function() { hideScene2Tooltip(); });
+      // Click city: highlight route (pulse the rail line)
+      city.addEventListener('click', function() {
+        var railLine = scene.querySelector('.cas-rail-line path');
+        if (railLine) {
+          railLine.setAttribute('stroke-width', '4');
+          railLine.setAttribute('opacity', '1');
+          setTimeout(function() {
+            railLine.setAttribute('stroke-width', '2.5');
+            railLine.setAttribute('opacity', '0.6');
+          }, 2500);
+        }
+      });
+    });
+  };
+
+  function showScene2Tooltip(evt, key, val) {
+    var t = document.getElementById('cas-scene-2-tooltip');
+    if (!t) return;
+    var rect = evt.currentTarget.getBoundingClientRect();
+    var wrapRect = document.querySelector('.cas-scene-powerhouse-wrap').getBoundingClientRect();
+    t.querySelector('.tooltip-key').textContent = key;
+    t.querySelector('.tooltip-val').textContent = val;
+    t.style.left = (rect.left - wrapRect.left + rect.width / 2) + 'px';
+    t.style.top = (rect.top - wrapRect.top - 8) + 'px';
+    t.classList.add('visible');
+  }
+  function hideScene2Tooltip() {
+    var t = document.getElementById('cas-scene-2-tooltip');
+    if (t) t.classList.remove('visible');
+  }
+})();
 </script>
 
 </body>
