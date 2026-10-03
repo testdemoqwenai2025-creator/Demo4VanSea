@@ -3262,6 +3262,7 @@ a:hover { text-decoration: underline; }
     <a href="founder-enroll.html" class="ai-action-btn primary-btn" style="padding:10px 18px;font-size:13px;display:inline-flex;align-items:center;gap:6px;">Enroll your startup
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
     </a>
+    <button onclick="openMatcher()" style="padding:10px 18px;font-size:13px;font-weight:700;color:var(--bg);background:var(--warm);border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;" title="Find matching enrolled founders">🎯 Find Matches</button>
   </div>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
@@ -4137,6 +4138,293 @@ setInterval(tickFpCountdowns, 1000);
     });
 })();
 </script>
+<!-- === NEW: Investor Profile Matching Modal (v2.4 — killer tool) === -->
+<section class="container" style="padding:32px 0;" id="matcher-intro">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--primary);font-weight:700;margin-bottom:6px;">▸ INVESTOR PROFILE MATCHING · v2.4</div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Find your next investment — matched from enrolled Cascadia founders</h2>
+  <p style="font-size:13px;color:var(--fg2);max-width:680px;margin-bottom:24px;">Click <code style="background:var(--bg2);padding:1px 6px;border-radius:3px;color:var(--warm);">🎯 Find Matches</code> above. Enter your investment thesis (stage + sector + geography) → get a ranked list of enrolled founders matching your criteria, with match score per founder. Saved to localStorage so your thesis persists across visits.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">🎯</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">3-criteria match</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Stage + Sector + Geography. Match score per founder.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">💾</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">Thesis persists</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Re-open the modal — your saved thesis reloads. Update any time.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">⚖️</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">No PII</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Only city + sector + stage shown. Founder names + emails are private until both sides opt-in.</div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">🔗</div>
+      <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">Warm intro path</div>
+      <div style="font-size:11px;color:var(--fg2);line-height:1.5;">Both sides opted-in. We facilitate the intro only if both agree.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Investor matching modal HTML + CSS + JS (v2.4) -->
+<style>
+.inv-matcher-modal { position:fixed; inset:0; z-index:200; display:none; align-items:flex-start; justify-content:center; padding:20px 16px; overflow-y:auto; }
+.inv-matcher-modal.open { display:flex; }
+.inv-matcher-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:199; }
+.inv-matcher-panel { position:relative; z-index:200; width:100%; max-width:820px; background:var(--bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.5); margin:auto; }
+.inv-matcher-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:flex-start; gap:16px; background:var(--bg2); border-radius:12px 12px 0 0; }
+.inv-matcher-eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--warm); font-weight:700; margin-bottom:6px; }
+.inv-matcher-header h2 { font-size:20px; font-weight:800; line-height:1.3; margin-bottom:6px; }
+.inv-matcher-meta { font-size:11px; color:var(--fg2); line-height:1.5; }
+.inv-matcher-close { background:transparent; border:1px solid var(--border); color:var(--fg2); font-size:18px; padding:4px 10px; border-radius:6px; cursor:pointer; line-height:1; flex-shrink:0; }
+.inv-matcher-close:hover { border-color:var(--primary); color:var(--primary); }
+.inv-matcher-body { padding:20px 24px; max-height:60vh; overflow-y:auto; }
+.inv-matcher-thesis-form { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; padding:14px; background:var(--bg2); border:1px solid var(--border); border-radius:8px; }
+.inv-matcher-thesis-form label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg3); margin-bottom:4px; display:block; }
+.inv-matcher-thesis-form select { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--fg); padding:8px 10px; border-radius:6px; font-size:12px; font-family:inherit; outline:none; cursor:pointer; }
+.inv-matcher-thesis-form select:focus { border-color:var(--primary); }
+.inv-matcher-find-btn { grid-column:1/-1; padding:10px 20px; background:var(--warm); color:var(--bg); border:none; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:opacity .15s; }
+.inv-matcher-find-btn:hover { opacity:0.9; }
+.inv-matcher-results-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.inv-matcher-results-count { font-size:12px; color:var(--fg2); }
+.inv-matcher-results-count strong { color:var(--primary); font-weight:700; }
+.inv-matcher-empty { text-align:center; padding:32px 16px; color:var(--fg2); font-size:13px; }
+.inv-match-item { padding:14px; background:var(--bg2); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; transition:border-color .15s; }
+.inv-match-item:hover { border-color:var(--primary); }
+.inv-match-score { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:var(--bg); flex-shrink:0; }
+.inv-match-score.high { background:var(--ok); }
+.inv-match-score.med { background:var(--warm); }
+.inv-match-score.low { background:var(--fg3); }
+.inv-match-info { min-width:0; }
+.inv-match-info strong { font-size:13px; color:var(--fg); display:block; margin-bottom:2px; }
+.inv-match-info span { font-size:11px; color:var(--fg2); }
+.inv-match-criteria { font-size:10px; color:var(--fg3); text-align:right; line-height:1.5; }
+.inv-match-criteria .match-yes { color:var(--ok); }
+.inv-match-criteria .match-no { color:var(--fg3); }
+.inv-matcher-footer { padding:16px 24px; border-top:1px solid var(--border); background:var(--bg2); border-radius:0 0 12px 12px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.inv-matcher-footer-info { font-size:11px; color:var(--fg2); line-height:1.5; }
+.inv-matcher-footer-info strong { color:var(--fg); }
+.inv-matcher-footer-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.inv-matcher-footer-actions button, .inv-matcher-footer-actions a { padding:8px 14px; border-radius:6px; font-size:12px; font-weight:600; text-decoration:none; cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg); font-family:inherit; display:inline-flex; align-items:center; gap:6px; }
+.inv-matcher-footer-actions button:hover, .inv-matcher-footer-actions a:hover { border-color:var(--primary); color:var(--primary); }
+.inv-matcher-footer-actions a.primary { background:var(--primary); color:var(--bg); border-color:var(--primary); }
+@media (max-width:640px) {
+  .inv-matcher-header { padding:14px 16px; flex-direction:column; }
+  .inv-matcher-body { padding:14px 16px; }
+  .inv-matcher-thesis-form { grid-template-columns:1fr; }
+  .inv-matcher-footer { padding:12px 16px; flex-direction:column; align-items:stretch; }
+  .inv-match-item { grid-template-columns:auto 1fr; }
+  .inv-match-criteria { grid-column:2; justify-self:start; margin-top:4px; text-align:left; }
+}
+@media print {
+  .inv-matcher-backdrop { display:none; }
+  .inv-matcher-modal { position:static; }
+  .inv-matcher-panel { box-shadow:none; max-width:100%; }
+  .inv-matcher-body { max-height:none; overflow:visible; }
+  .inv-matcher-footer-actions { display:none; }
+  body * { visibility:hidden; }
+  .inv-matcher-modal.open, .inv-matcher-modal.open * { visibility:visible; }
+}
+</style>
+
+<div class="inv-matcher-modal" id="inv-matcher-modal">
+  <div class="inv-matcher-backdrop" onclick="closeMatcher()"></div>
+  <div class="inv-matcher-panel">
+    <div class="inv-matcher-header">
+      <div>
+        <div class="inv-matcher-eyebrow">▸ INVESTOR PROFILE MATCHING · v2.4</div>
+        <h2>Find matching enrolled Cascadia founders</h2>
+        <div class="inv-matcher-meta">Enter your investment thesis → ranked match list with score per founder. No PII shown — warm intro path requires both-side opt-in.</div>
+      </div>
+      <button class="inv-matcher-close" onclick="closeMatcher()" title="Close">×</button>
+    </div>
+    <div class="inv-matcher-body">
+      <div class="inv-matcher-thesis-form">
+        <div>
+          <label for="im-stage">Stage focus</label>
+          <select id="im-stage">
+            <option value="">Any stage</option>
+            <option value="Pre-seed">Pre-seed</option>
+            <option value="Seed">Seed</option>
+            <option value="Series A">Series A</option>
+            <option value="Series B+">Series B+</option>
+            <option value="Bootstrapped">Bootstrapped</option>
+          </select>
+        </div>
+        <div>
+          <label for="im-sector">Sector</label>
+          <select id="im-sector">
+            <option value="">Any sector</option>
+            <option value="SaaS">SaaS</option>
+            <option value="CleanTech">CleanTech</option>
+            <option value="Bio">Bio / Life Sci</option>
+            <option value="AgTech">AgTech</option>
+            <option value="AI/ML">AI / ML</option>
+            <option value="FinTech">FinTech</option>
+            <option value="Hardware">Hardware</option>
+          </select>
+        </div>
+        <div>
+          <label for="im-geography">Geography</label>
+          <select id="im-geography">
+            <option value="">Any geography</option>
+            <option value="WA">Washington only</option>
+            <option value="OR">Oregon only</option>
+            <option value="BC">British Columbia only</option>
+            <option value="cross_border">Cross-border (US-CA)</option>
+          </select>
+        </div>
+        <button class="inv-matcher-find-btn" onclick="findMatches()">🎯 Find matching founders →</button>
+      </div>
+      <div class="inv-matcher-results-header">
+        <span class="inv-matcher-results-count" id="im-results-count">Click 'Find matching founders' above</span>
+        <span style="font-size:10px;color:var(--fg3);">Match score = criteria match %</span>
+      </div>
+      <div id="im-results-body">
+        <div class="inv-matcher-empty">Enter your thesis above and click Find.</div>
+      </div>
+    </div>
+    <div class="inv-matcher-footer">
+      <div class="inv-matcher-footer-info">
+        <strong>How matching works:</strong> 3 criteria (stage + sector + geography). Each founder scored 0-100%. Top matches at the top. Names hidden until both sides opt-in for warm intro.
+      </div>
+      <div class="inv-matcher-footer-actions">
+        <button onclick="window.print()">🖨️ Print matches</button>
+        <a href="command-center.html" class="primary">Open in Command Center →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === Investor profile matching (v2.4 killer tool) ===
+function openMatcher() {
+  // Load saved thesis from localStorage
+  var saved = JSON.parse(localStorage.getItem('inv-thesis') || '{}');
+  if (saved.stage) document.getElementById('im-stage').value = saved.stage;
+  if (saved.sector) document.getElementById('im-sector').value = saved.sector;
+  if (saved.geography) document.getElementById('im-geography').value = saved.geography;
+  document.getElementById('inv-matcher-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // If thesis was saved, auto-find matches
+  if (saved.stage || saved.sector || saved.geography) {
+    findMatches();
+  }
+}
+function closeMatcher() {
+  document.getElementById('inv-matcher-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function findMatches() {
+  var stage = document.getElementById('im-stage').value;
+  var sector = document.getElementById('im-sector').value;
+  var geography = document.getElementById('im-geography').value;
+  
+  // Save thesis to localStorage (persists across visits)
+  localStorage.setItem('inv-thesis', JSON.stringify({stage: stage, sector: sector, geography: geography}));
+  
+  // Use FP_FOUNDERS array (defined in v2.1 script)
+  if (typeof FP_FOUNDERS === 'undefined') {
+    document.getElementById('im-results-body').innerHTML = '<div class="inv-matcher-empty">Founder data not loaded.</div>';
+    return;
+  }
+  
+  // Score each founder
+  var matches = FP_FOUNDERS.map(function(f, idx) {
+    var score = 0;
+    var maxScore = 0;
+    var criteria = [];
+    
+    if (stage) {
+      maxScore += 1;
+      if (f.stage === stage) {
+        score += 1;
+        criteria.push({label: 'Stage', match: true, val: f.stage});
+      } else {
+        criteria.push({label: 'Stage', match: false, val: f.stage});
+      }
+    }
+    if (sector) {
+      maxScore += 1;
+      if (f.sector === sector) {
+        score += 1;
+        criteria.push({label: 'Sector', match: true, val: f.sector});
+      } else {
+        criteria.push({label: 'Sector', match: false, val: f.sector});
+      }
+    }
+    if (geography) {
+      maxScore += 1;
+      var fGeo = '';
+      if (f.city === 'Vancouver' || f.city === 'Burnaby' || f.city === 'Surrey') fGeo = 'BC';
+      else if (f.city === 'Portland') fGeo = 'OR';
+      else fGeo = 'WA'; // Seattle, Bellevue, Bellingham, Spokane
+      
+      var geoMatch = false;
+      if (geography === fGeo) geoMatch = true;
+      else if (geography === 'cross_border') geoMatch = true; // any city is part of cross-border corridor
+      
+      if (geoMatch) {
+        score += 1;
+        criteria.push({label: 'Geo', match: true, val: f.city + ', ' + fGeo});
+      } else {
+        criteria.push({label: 'Geo', match: false, val: f.city + ', ' + fGeo});
+      }
+    }
+    
+    var pct = maxScore === 0 ? 0 : Math.round((score / maxScore) * 100);
+    return {idx: idx, founder: f, score: score, maxScore: maxScore, pct: pct, criteria: criteria};
+  });
+  
+  // Filter to founders with at least 1 match (or all if no thesis specified)
+  var hasThesis = stage || sector || geography;
+  if (hasThesis) {
+    matches = matches.filter(function(m) { return m.score > 0; });
+  }
+  
+  // Sort by pct desc, then by score desc
+  matches.sort(function(a, b) { return b.pct - a.pct || b.score - a.score; });
+  
+  // Render
+  var countEl = document.getElementById('im-results-count');
+  var bodyEl = document.getElementById('im-results-body');
+  
+  if (!matches.length) {
+    countEl.innerHTML = '<strong>0</strong> matches found';
+    bodyEl.innerHTML = '<div class="inv-matcher-empty">No enrolled founders match your thesis. Try widening your filters, or <a href="founder-enroll.html" style="color:var(--primary);">refer a founder</a> to expand the panel.</div>';
+    return;
+  }
+  
+  countEl.innerHTML = '<strong>' + matches.length + '</strong> matching founders (of ' + FP_FOUNDERS.length + ' enrolled)';
+  
+  bodyEl.innerHTML = matches.map(function(m) {
+    var scoreCls = m.pct >= 67 ? 'high' : m.pct >= 34 ? 'med' : 'low';
+    var criteriaHtml = m.criteria.map(function(c) {
+      return '<div class="' + (c.match ? 'match-yes' : 'match-no') + '">' + c.label + ': ' + c.val + (c.match ? ' ✓' : '') + '</div>';
+    }).join('');
+    return '<div class="inv-match-item">' +
+      '<div class="inv-match-score ' + scoreCls + '" title="' + m.pct + '% match">' + m.pct + '%</div>' +
+      '<div class="inv-match-info">' +
+        '<strong>Founder #' + (m.idx + 1) + '</strong>' +
+        '<span>' + m.founder.city + ' · ' + m.founder.sector + ' · ' + m.founder.stage + '</span>' +
+      '</div>' +
+      '<div class="inv-match-criteria">' + criteriaHtml + '</div>' +
+    '</div>';
+  }).join('');
+}
+window.openMatcher = openMatcher;
+window.closeMatcher = closeMatcher;
+window.findMatches = findMatches;
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('inv-matcher-modal').classList.contains('open')) {
+    closeMatcher();
+  }
+});
+</script>
+
 </main>
 <div class='vban-wrap' id='vban-wrap'>
   <a class='vban vban-left' href='MARKET_ASSESSMENT.md' target='_blank' title='Cascadia Intelligence Vision &#8212; Read Market Assessment'>
