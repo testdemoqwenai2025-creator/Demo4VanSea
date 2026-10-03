@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia Climate + Sport — Interactive Visualizations | Cascadia OS</title>
+<meta name="description" content="Cascadia's climate assets (geothermal, solar, wind) + sports infrastructure (analytics warroom, futuristic stadium) — each as a click-to-load interactive SVG visualization with hover tooltips.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+
+<style id="cascadia-climate-sport-css">
+:root {
+  --cas-bg: #0a1a2f;
+  --cas-fg: #e6f1f5;
+  --cas-muted: #8aa0b0;
+  --cas-accent: #4ecdc4;
+  --cas-accent-soft: #2a8a85;
+  --cas-card-bg: #14233a;
+  --cas-card-border: rgba(78,205,196,0.15);
+}
+[data-theme="light"] {
+  --cas-bg: #f5f8fb;
+  --cas-fg: #0a1a2f;
+  --cas-muted: #4a6a8a;
+  --cas-accent: #1a8580;
+  --cas-accent-soft: #4ecdc4;
+  --cas-card-bg: #ffffff;
+  --cas-card-border: rgba(26,133,128,0.2);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: var(--cas-bg); color: var(--cas-fg); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.cas-topnav {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 14px 24px;
+  background: rgba(10,26,47,0.95);
+  border-bottom: 1px solid var(--cas-card-border);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+[data-theme="light"] .cas-topnav { background: rgba(245,248,251,0.95); }
+.cas-topnav a {
+  color: var(--cas-fg); text-decoration: none; font-size: 13px;
+  padding: 4px 8px; border-radius: 4px; transition: background 0.15s;
+}
+.cas-topnav a:hover { background: rgba(78,205,196,0.1); }
+.cas-topnav a.active { color: var(--cas-accent); font-weight: 600; background: rgba(78,205,196,0.15); }
+.cas-topnav .nav-spacer { flex: 1; }
+.cas-topnav .theme-btn {
+  background: rgba(78,205,196,0.1); color: var(--cas-accent);
+  border: 1px solid var(--cas-accent-soft);
+  padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;
+}
+.cas-hero { padding: 48px 0 32px; border-bottom: 1px solid var(--cas-card-border); margin-bottom: 48px; }
+.cas-hero .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cas-accent); margin-bottom: 12px; font-weight: 600; }
+.cas-hero h1 { font-size: 38px; line-height: 1.1; margin: 0 0 16px; font-weight: 800; letter-spacing: -0.02em; }
+.cas-hero .lede { font-size: 17px; color: var(--cas-muted); max-width: 760px; margin: 0 0 24px; }
+.cas-hero .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.cas-hero .hero-stat { background: var(--cas-card-bg); border: 1px solid var(--cas-card-border); padding: 12px 16px; border-radius: 6px; }
+.cas-hero .hero-stat .v { font-size: 22px; font-weight: 700; color: var(--cas-accent); }
+.cas-hero .hero-stat .l { font-size: 11px; color: var(--cas-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.scene-card {
+  background: var(--cas-card-bg); border: 1px solid var(--cas-card-border);
+  border-radius: 12px; padding: 32px; margin-bottom: 48px;
+}
+.scene-card .scene-header { margin-bottom: 20px; }
+.scene-card .scene-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--cas-accent); background: rgba(78,205,196,0.1); padding: 4px 10px;
+  border-radius: 4px; margin-bottom: 12px; font-weight: 600;
+}
+.scene-card h2 { font-size: 28px; margin: 0 0 8px; font-weight: 700; }
+.scene-card .scene-tagline { font-size: 15px; color: var(--cas-muted); margin: 0 0 8px; }
+.scene-card .scene-mini-stats { font-size: 13px; color: var(--cas-muted); font-family: 'SF Mono', 'Monaco', monospace; }
+.scene-card .scene-narrative { font-size: 15px; color: var(--cas-fg); margin: 20px 0 0; max-width: 800px; }
+.scene-card .scene-narrative strong { color: var(--cas-accent); }
+
+/* === Shared click-to-load pattern === */
+.cas-scene-wrap {
+  position: relative; border-radius: 12px; overflow: hidden;
+  background: linear-gradient(135deg, #0a1a2f 0%, #14233a 50%, #1a3a4a 100%);
+  min-height: 340px; margin-bottom: 16px;
+}
+[data-theme="light"] .cas-scene-wrap { background: linear-gradient(135deg, #d4e4f0 0%, #e0eaf0 50%, #d0e0d8 100%); }
+.cas-scene-wrap.scene-loaded { background: transparent; }
+.cas-scene-wrap img.cas-scene-fallback {
+  width: 100%; display: block; border-radius: 12px; min-height: 340px;
+}
+.cas-scene-wrap img.cas-scene-fallback[src=""] { display: none; }
+.cas-scene-wrap .cas-scene-loaded { width: 100%; display: none; }
+.cas-load-btn {
+  position: absolute; bottom: 20px; right: 20px;
+  background: linear-gradient(135deg, #4ecdc4 0%, #45b7af 100%);
+  color: #0a1a2f; border: none; padding: 12px 20px; border-radius: 6px;
+  font-weight: 600; cursor: pointer; font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: flex; align-items: center; gap: 8px;
+  font-family: inherit; transition: transform 0.15s ease, box-shadow 0.15s ease; z-index: 5;
+}
+.cas-load-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(78,205,196,0.5); }
+.cas-load-btn .play-icon { font-size: 18px; line-height: 1; }
+.cas-scene-text-overlay {
+  position: absolute; top: 24px; left: 24px;
+  color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  z-index: 4; max-width: 60%;
+}
+.cas-scene-text-overlay .scene-eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #4ecdc4; margin-bottom: 6px; font-weight: 600;
+}
+.cas-scene-text-overlay .scene-title { font-size: 22px; font-weight: 700; margin: 0 0 8px; line-height: 1.2; }
+.cas-scene-text-overlay .scene-stats { font-size: 12px; color: rgba(255,255,255,0.85); margin: 0; }
+[data-theme="light"] .cas-scene-text-overlay { color: #0a1a2f; text-shadow: 0 2px 8px rgba(255,255,255,0.6); }
+[data-theme="light"] .cas-scene-text-overlay .scene-stats { color: rgba(10,26,47,0.75); }
+.cas-scene-tooltip {
+  position: absolute; background: rgba(10,26,47,0.96); color: #4ecdc4;
+  border: 1px solid rgba(78,205,196,0.5); padding: 8px 12px; border-radius: 6px;
+  font-size: 12px; pointer-events: none; opacity: 0; transition: opacity 0.15s ease;
+  z-index: 10; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.cas-scene-tooltip.visible { opacity: 1; }
+.cas-scene-tooltip .tooltip-key { color: rgba(255,255,255,0.55); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.cas-scene-tooltip .tooltip-val { color: #fff; font-weight: 600; font-size: 13px; }
+
+/* === Floating Home button (matches other OS pages) === */
+.os-home-fab {
+  position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #4ecdc4 0%, #45b7af 100%);
+  color: #0a1a2f; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(78,205,196,0.4);
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+.os-home-fab:hover { transform: scale(1.08); }
+.os-home-fab svg { width: 22px; height: 22px; }
+
+/* === Scene 1: Geothermal BC animations === */
+@keyframes cs-geo-steam { 0%{transform:translateY(0);opacity:0;} 10%{opacity:0.7;} 90%{opacity:0.5;} 100%{transform:translateY(-80px);opacity:0;} }
+@keyframes cs-geo-flow { 0%{stroke-dashoffset:200;} 100%{stroke-dashoffset:0;} }
+@keyframes cs-geo-turbine { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+@keyframes cs-geo-glow { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
+.cs-geo-steam-1 { animation: cs-geo-steam 3s ease-in-out infinite; }
+.cs-geo-steam-2 { animation: cs-geo-steam 3s ease-in-out infinite; animation-delay: -1s; }
+.cs-geo-steam-3 { animation: cs-geo-steam 3s ease-in-out infinite; animation-delay: -2s; }
+.cs-geo-flow { stroke-dasharray: 200; animation: cs-geo-flow 2s linear infinite; }
+.cs-geo-turbine { animation: cs-geo-turbine 4s linear infinite; transform-origin: 800px 220px; transform-box: fill-box; }
+.cs-geo-glow { animation: cs-geo-glow 2.5s ease-in-out infinite; }
+
+/* === Scene 2: Solar Oregon animations === */
+@keyframes cs-sol-sun-pulse { 0%,100%{opacity:0.85;} 50%{opacity:1;} }
+@keyframes cs-sol-ray { 0%,100%{opacity:0.4;} 50%{opacity:0.8;} }
+@keyframes cs-sol-power-flow { 0%{stroke-dashoffset:100;} 100%{stroke-dashoffset:0;} }
+.cs-sol-sun { animation: cs-sol-sun-pulse 3s ease-in-out infinite; transform-origin: 600px 100px; transform-box: fill-box; }
+.cs-sol-ray-1 { animation: cs-sol-ray 2s ease-in-out infinite; }
+.cs-sol-ray-2 { animation: cs-sol-ray 2s ease-in-out infinite; animation-delay: -0.7s; }
+.cs-sol-ray-3 { animation: cs-sol-ray 2s ease-in-out infinite; animation-delay: -1.4s; }
+.cs-sol-flow { stroke-dasharray: 100; animation: cs-sol-power-flow 1.5s linear infinite; }
+
+/* === Scene 3: Wind Farm Coast animations === */
+@keyframes cs-wnd-turbine { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+@keyframes cs-wnd-wave { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+.cs-wnd-turbine-1 { animation: cs-wnd-turbine 4s linear infinite; transform-origin: 280px 220px; transform-box: fill-box; }
+.cs-wnd-turbine-2 { animation: cs-wnd-turbine 5s linear infinite; transform-origin: 600px 200px; transform-box: fill-box; }
+.cs-wnd-turbine-3 { animation: cs-wnd-turbine 4.5s linear infinite; transform-origin: 920px 230px; transform-box: fill-box; }
+.cs-wnd-wave-1 { animation: cs-wnd-wave 3.5s ease-in-out infinite; }
+.cs-wnd-wave-2 { animation: cs-wnd-wave 4s ease-in-out infinite; animation-delay: -1.5s; }
+.cs-wnd-wave-3 { animation: cs-wnd-wave 3.8s ease-in-out infinite; animation-delay: -0.8s; }
+
+/* === Scene 4: Analytics Warroom animations === */
+@keyframes cs-anlt-pulse { 0%,100%{opacity:0.7;} 50%{opacity:1;} }
+@keyframes cs-anlt-bar { 0%{transform:scaleX(0.3);} 50%{transform:scaleX(1);} 100%{transform:scaleX(0.3);} }
+@keyframes cs-anlt-alert { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+@keyframes cs-anlt-line { 0%{stroke-dashoffset:300;} 100%{stroke-dashoffset:0;} }
+.cs-anlt-led-1 { animation: cs-anlt-pulse 1.5s ease-in-out infinite; }
+.cs-anlt-led-2 { animation: cs-anlt-pulse 1.5s ease-in-out infinite; animation-delay: -0.5s; }
+.cs-anlt-led-3 { animation: cs-anlt-pulse 1.5s ease-in-out infinite; animation-delay: -1s; }
+.cs-anlt-bar { animation: cs-anlt-bar 4s ease-in-out infinite; transform-origin: left; transform-box: fill-box; }
+.cs-anlt-bar.b2 { animation-delay: -1s; }
+.cs-anlt-bar.b3 { animation-delay: -2s; }
+.cs-anlt-bar.b4 { animation-delay: -3s; }
+.cs-anlt-alert { animation: cs-anlt-alert 1.2s ease-in-out infinite; }
+.cs-anlt-line { stroke-dasharray: 300; animation: cs-anlt-line 3s linear infinite; }
+
+/* === Scene 5: Futuristic Stadium animations === */
+@keyframes cs-stad-crowd { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-2px);} }
+@keyframes cs-stad-light { 0%,100%{opacity:0.7;} 50%{opacity:1;} }
+@keyframes cs-stad-fireworks { 0%{opacity:0;transform:translateY(0) scale(0.5);} 50%{opacity:1;transform:translateY(-30px) scale(1);} 100%{opacity:0;transform:translateY(-60px) scale(0.3);} }
+.cs-stad-crowd-1 { animation: cs-stad-crowd 1.8s ease-in-out infinite; }
+.cs-stad-crowd-2 { animation: cs-stad-crowd 2s ease-in-out infinite; animation-delay: -0.9s; }
+.cs-stad-light-1 { animation: cs-stad-light 2.2s ease-in-out infinite; }
+.cs-stad-light-2 { animation: cs-stad-light 2.5s ease-in-out infinite; animation-delay: -1s; }
+.cs-stad-firework-1 { animation: cs-stad-fireworks 3s ease-out infinite; }
+.cs-stad-firework-2 { animation: cs-stad-fireworks 3s ease-out infinite; animation-delay: -1.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-geo-steam-1, .cs-geo-steam-2, .cs-geo-steam-3, .cs-geo-flow, .cs-geo-turbine, .cs-geo-glow,
+  .cs-sol-sun, .cs-sol-ray-1, .cs-sol-ray-2, .cs-sol-ray-3, .cs-sol-flow,
+  .cs-wnd-turbine-1, .cs-wnd-turbine-2, .cs-wnd-turbine-3, .cs-wnd-wave-1, .cs-wnd-wave-2, .cs-wnd-wave-3,
+  .cs-anlt-led-1, .cs-anlt-led-2, .cs-anlt-led-3, .cs-anlt-bar, .cs-anlt-alert, .cs-anlt-line,
+  .cs-stad-crowd-1, .cs-stad-crowd-2, .cs-stad-light-1, .cs-stad-light-2, .cs-stad-firework-1, .cs-stad-firework-2 {
+    animation: none !important;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<nav class="cas-topnav">
+  <span style="font-weight:700;color:var(--cas-accent);font-size:15px;">Cascadia OS</span>
+  <a href="index.html">Home</a>
+  <a href="vision.html">Vision</a>
+  <a href="architecture-4-layer.html">Architecture</a>
+  <a href="modules.html">Modules</a>
+  <a href="cascadia-hsr-blueprint.html">HSR Blueprint</a>
+  <a href="cascadia-sectors.html">Sectors</a>
+  <a href="cascadia-climate-sport.html" style="color:var(--cas-accent);font-weight:600;">Climate + Sport</a>
+  <a href="why-explainability.html">Why?</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="federation.html">Federation</a>
+  <a href="security.html">Security</a>
+  <span class="nav-spacer"></span>
+  <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light theme">🌙</button>
+</nav>
+
+<a href="index.html" class="os-home-fab" title="Return to Cascadia OS home" aria-label="Home">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 12l9-9 9 9M5 10v10h4v-6h6v6h4V10"/>
+  </svg>
+</a>
+
+<div class="container">
+
+<section class="cas-hero">
+  <div class="eyebrow">▸ Interactive · Click-to-Load · Lazy by user intent</div>
+  <h1>Cascadia Climate + Sport</h1>
+  <p class="lede">Five flagship visualizations of Cascadia's climate assets (geothermal, solar, wind) and sports infrastructure (analytics warroom, futuristic stadium) — each rendered as a click-to-load inline SVG. The 5 previously-unreferenced env + sports PNGs (totaling 964 KB) are now consumed as lazy-load fallbacks. Users who click before viewport entry never download the PNG bytes. Each scene includes sector-specific animations + hover tooltips + (where relevant) click interactions.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="v">5</div><div class="l">Scenes</div></div>
+    <div class="hero-stat"><div class="v">964 KB</div><div class="l">PNG fallbacks (now referenced)</div></div>
+    <div class="hero-stat"><div class="v">0 KB</div><div class="l">PNG bytes if user clicks first</div></div>
+    <div class="hero-stat"><div class="v">+34 KB</div><div class="l">Inline SVG + CSS + JS</div></div>
+  </div>
+</section>
+
+<section class="scene-card" id="scene-geothermal">
+  <div class="scene-header">
+    <div class="scene-tag">Climate 01 · Geothermal BC</div>
+    <h2>Geothermal BC</h2>
+    <p class="scene-tagline">Enhanced Geothermal Systems from Cascadia Subduction Zone</p>
+    <p class="scene-mini-stats">Newberry Volcano pilot · 2,500m wells · 180°C reservoir · 10 MW binary cycle</p>
+  </div>
+  <div class="cas-scene-wrap" id="cs-wrap-geothermal">
+  <img class="cas-scene-fallback" data-src="images/env/geothermal-bc.png" src="" alt="Cascadia Geothermal BC visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Geothermal BC</div>
+    <p class="scene-stats">hover wellheads · hover turbine · hover power line</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadClimateSportScene('geothermal')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div class="cas-scene-tooltip"><div class="tooltip-key"></div><div class="tooltip-val"></div></div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Geothermal BC">
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#1a2a3a 0%,#3a2a1a 50%,#1a0a0a 100%);">
+  <defs>
+    <radialGradient id="cs-geo-magma" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ff5a30" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#c43a1a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#3a0a0a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cs-geo-pipe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a5a5a"/>
+      <stop offset="100%" stop-color="#3a3a3a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="200" fill="#1a2a3a"/>
+
+  <!-- Underground (rock) -->
+  <rect x="0" y="200" width="1200" height="200" fill="#3a2a1a"/>
+  <!-- Magma chamber (heat reservoir) -->
+  <ellipse cx="500" cy="320" rx="280" ry="40" fill="url(#cs-geo-magma)"/>
+  <!-- Magma glow pulse -->
+  <ellipse class="cs-geo-glow" cx="500" cy="320" rx="200" ry="25" fill="#ff5a30" opacity="0.4"/>
+
+  <!-- Production well 1 (left, pipes down to magma) -->
+  <g transform="translate(380,200)">
+    <rect x="-4" y="0" width="8" height="120" fill="url(#cs-geo-pipe)"/>
+    <rect x="-12" y="-10" width="24" height="14" fill="#5a5a5a"/>
+    <rect x="-15" y="-15" width="30" height="6" fill="#7a7a7a"/>
+    <!-- Wellhead hover target -->
+    <rect x="-20" y="-25" width="40" height="40" fill="transparent"
+          data-key="Production well 1"
+          data-val="2,500m deep · taps 180°C reservoir · Newberry Volcano pilot"
+          style="cursor:help;"/>
+  </g>
+  <!-- Production well 2 (right) -->
+  <g transform="translate(620,200)">
+    <rect x="-4" y="0" width="8" height="120" fill="url(#cs-geo-pipe)"/>
+    <rect x="-12" y="-10" width="24" height="14" fill="#5a5a5a"/>
+    <rect x="-15" y="-15" width="30" height="6" fill="#7a7a7a"/>
+    <rect x="-20" y="-25" width="40" height="40" fill="transparent"
+          data-key="Production well 2"
+          data-val="2,500m deep · taps 180°C reservoir · binary cycle power plant"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Steam rising (animated) -->
+  <g>
+    <circle class="cs-geo-steam-1" cx="380" cy="190" r="5" fill="#ffffff" opacity="0.7"/>
+    <circle class="cs-geo-steam-2" cx="380" cy="190" r="6" fill="#ffffff" opacity="0.5"/>
+    <circle class="cs-geo-steam-3" cx="380" cy="190" r="4" fill="#ffffff" opacity="0.6"/>
+    <circle class="cs-geo-steam-1" cx="620" cy="190" r="5" fill="#ffffff" opacity="0.7" style="animation-delay:-1.5s"/>
+    <circle class="cs-geo-steam-2" cx="620" cy="190" r="6" fill="#ffffff" opacity="0.5" style="animation-delay:-0.5s"/>
+  </g>
+
+  <!-- Power plant (turbo-generator + cooling tower) -->
+  <g transform="translate(800,160)">
+    <!-- Plant building -->
+    <rect x="0" y="0" width="80" height="50" fill="#5a5a5a" stroke="#3a3a3a" stroke-width="1"/>
+    <rect x="0" y="0" width="80" height="6" fill="#7a7a7a"/>
+    <!-- Cooling tower -->
+    <path d="M 90,-20 Q 90,-30 95,-30 L 105,-30 Q 110,-30 110,-20 L 105,0 L 95,0 Z" fill="#7a7a7a" stroke="#5a5a5a" stroke-width="1"/>
+    <!-- Turbine (rotating) -->
+    <g transform="translate(40,25)">
+      <g class="cs-geo-turbine">
+        <circle cx="0" cy="0" r="10" fill="#4ecdc4" opacity="0.3"/>
+        <line x1="0" y1="0" x2="0" y2="-10" stroke="#4ecdc4" stroke-width="2"/>
+        <line x1="0" y1="0" x2="9" y2="5" stroke="#4ecdc4" stroke-width="2"/>
+        <line x1="0" y1="0" x2="-9" y2="5" stroke="#4ecdc4" stroke-width="2"/>
+      </g>
+      <circle cx="0" cy="0" r="3" fill="#4ecdc4"/>
+    </g>
+    <!-- Plant hover target -->
+    <rect x="-10" y="-40" width="130" height="100" fill="transparent"
+          data-key="Binary cycle turbine"
+          data-val="10 MW pilot · ORC binary cycle · 90% uptime · baseload renewable"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Steam flow from wells to plant -->
+  <g stroke="#a0a0a0" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,3">
+    <path class="cs-geo-flow" d="M 380,190 Q 500,170 800,180"/>
+    <path class="cs-geo-flow" d="M 620,190 Q 700,170 800,180" style="animation-delay:-1s"/>
+  </g>
+
+  <!-- Power transmission line (right side, going off-screen to grid) -->
+  <g>
+    <line x1="880" y1="185" x2="1180" y2="100" stroke="#4ecdc4" stroke-width="2"/>
+    <!-- Transmission towers -->
+    <g transform="translate(950,140)">
+      <line x1="-10" y1="20" x2="-5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+      <line x1="10" y1="20" x2="5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+      <line x1="-5" y1="-20" x2="5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+    </g>
+    <g transform="translate(1080,115)">
+      <line x1="-10" y1="15" x2="-5" y2="-15" stroke="#7a7a7a" stroke-width="1.5"/>
+      <line x1="10" y1="15" x2="5" y2="-15" stroke="#7a7a7a" stroke-width="1.5"/>
+      <line x1="-5" y1="-15" x2="5" y2="-15" stroke="#7a7a7a" stroke-width="1.5"/>
+    </g>
+    <!-- Power line hover target -->
+    <rect x="880" y="80" width="320" height="120" fill="transparent"
+          data-key="Power transmission to BC grid"
+          data-val="10 MW export · interconnection at BC Hydro 230kV substation"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Layer labels -->
+  <g fill="#4ecdc4" opacity="0.6" font-family="monospace" font-size="9">
+    <text x="20" y="20">SKY</text>
+    <text x="20" y="220">UNDERGROUND (rock)</text>
+    <text x="450" y="350" text-anchor="middle">MAGMA RESERVOIR · 180°C</text>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="scene-narrative">The <strong>Cascadia Subduction Zone</strong> — long known as a seismic risk — is also the region's most promising geothermal energy reserve. The <strong>Newberry Volcano</strong> site in Oregon (US Department of Energy flagship enhanced geothermal systems pilot) demonstrates the pattern: 2,500m wells tap a 180°C reservoir, an ORC binary cycle turbine converts the heat to ~10 MW of baseload renewable electricity, and the system achieves 90%+ uptime. BC's geothermal potential runs along the same volcanic belt (Mt. Meager, Mt. Cayley) and is being explored in partnership with First Nations whose Traditional Territory overlays the resource. Geothermal's killer advantage for Cascadia: <strong>baseload renewable</strong> — it runs 24/7, complementing the intermittent wind + solar that dominates the regional grid's recent growth.</p>
+</section>
+<section class="scene-card" id="scene-solar">
+  <div class="scene-header">
+    <div class="scene-tag">Climate 02 · Solar Oregon</div>
+    <h2>Solar Oregon</h2>
+    <p class="scene-tagline">Eastern Oregon high-irradiance utility-scale solar</p>
+    <p class="scene-mini-stats">580 MW installed · 22% YoY growth · 1,800+ annual sun hours</p>
+  </div>
+  <div class="cas-scene-wrap" id="cs-wrap-solar">
+  <img class="cas-scene-fallback" data-src="images/env/solar-oregon.png" src="" alt="Cascadia Solar Oregon visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Solar Oregon</div>
+    <p class="scene-stats">hover sun · hover panel array · hover inverter</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadClimateSportScene('solar')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div class="cas-scene-tooltip"><div class="tooltip-key"></div><div class="tooltip-val"></div></div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Solar Oregon">
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#5aaad4 0%,#9ac4d4 60%,#3a5a3a 100%);">
+  <defs>
+    <radialGradient id="cs-sol-sun-grad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffefa0"/>
+      <stop offset="60%" stop-color="#ffd070"/>
+      <stop offset="100%" stop-color="#ff9040" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cs-sol-panel-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3a6a"/>
+      <stop offset="50%" stop-color="#3a5a8a"/>
+      <stop offset="100%" stop-color="#1a3a6a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="400" fill="#5aaad4"/>
+
+  <!-- Sun -->
+  <g class="cs-sol-sun">
+    <circle cx="600" cy="100" r="35" fill="url(#cs-sol-sun-grad)"/>
+    <!-- Sun rays (alternating) -->
+    <g stroke="#ffefa0" stroke-width="2.5" opacity="0.8">
+      <line class="cs-sol-ray-1" x1="600" y1="50" x2="600" y2="35"/>
+      <line class="cs-sol-ray-2" x1="600" y1="150" x2="600" y2="165"/>
+      <line class="cs-sol-ray-3" x1="550" y1="100" x2="535" y2="100"/>
+      <line class="cs-sol-ray-1" x1="650" y1="100" x2="665" y2="100"/>
+      <line class="cs-sol-ray-2" x1="565" y1="65" x2="555" y2="55"/>
+      <line class="cs-sol-ray-3" x1="635" y1="135" x2="645" y2="145"/>
+      <line class="cs-sol-ray-1" x1="565" y1="135" x2="555" y2="145"/>
+      <line class="cs-sol-ray-2" x1="635" y1="65" x2="645" y2="55"/>
+    </g>
+  </g>
+  <!-- Sun hover target -->
+  <rect x="540" y="40" width="120" height="120" fill="transparent"
+        data-key="Oregon sun resource"
+        data-val="Eastern Oregon · 1,800+ annual sun hours · high irradiance zone"
+        style="cursor:help;"/>
+
+  <!-- Mountain backdrop (Cascade range) -->
+  <path d="M 0,250 L 100,200 L 200,230 L 320,180 L 440,220 L 560,190 L 680,230 L 800,180 L 920,220 L 1040,200 L 1200,240 L 1200,400 L 0,400 Z" fill="#3a4a3a" opacity="0.7"/>
+
+  <!-- Solar panel array (foreground, tilted toward sun) -->
+  <g transform="translate(200,250)">
+    <!-- 4 rows of 5 panels each -->
+    <g class="cs-sol-flow">
+      <polygon points="0,0 80,-12 100,8 20,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="100,0 180,-12 200,8 120,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="200,0 280,-12 300,8 220,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="300,0 380,-12 400,8 320,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="400,0 480,-12 500,8 420,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <!-- Panel cell grid lines -->
+      <g stroke="#4ecdc4" stroke-width="0.3" opacity="0.4">
+        <line x1="20" y1="20" x2="100" y2="8"/>
+        <line x1="40" y1="14" x2="60" y2="17"/>
+        <line x1="60" y1="11" x2="80" y2="14"/>
+      </g>
+    </g>
+    <!-- Row 2 (offset) -->
+    <g class="cs-sol-flow" transform="translate(0,30)" style="animation-delay:-0.5s">
+      <polygon points="0,0 80,-12 100,8 20,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="100,0 180,-12 200,8 120,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="200,0 280,-12 300,8 220,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="300,0 380,-12 400,8 320,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="400,0 480,-12 500,8 420,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <!-- Row 3 (offset) -->
+    <g class="cs-sol-flow" transform="translate(0,60)" style="animation-delay:-1s">
+      <polygon points="0,0 80,-12 100,8 20,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="100,0 180,-12 200,8 120,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="200,0 280,-12 300,8 220,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="300,0 380,-12 400,8 320,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+      <polygon points="400,0 480,-12 500,8 420,20" fill="url(#cs-sol-panel-grad)" stroke="#1a2a4a" stroke-width="0.5"/>
+    </g>
+    <!-- Panel array hover target -->
+    <rect x="-10" y="-20" width="510" height="100" fill="transparent"
+          data-key="Solar panel array"
+          data-val="15-panel pilot · 580 MW Oregon capacity · growing 22% YoY"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Inverter (right side, with power flow) -->
+  <g transform="translate(820,290)">
+    <rect x="0" y="0" width="60" height="40" fill="#4a4a4a" stroke="#4ecdc4" stroke-width="1"/>
+    <rect x="5" y="5" width="50" height="20" fill="#0a1a2f"/>
+    <text x="30" y="20" text-anchor="middle" fill="#4ecdc4" font-size="9" font-family="monospace">DC→AC</text>
+    <circle cx="30" cy="35" r="3" fill="#4ecdc4" opacity="0.85"/>
+    <!-- Inverter hover target -->
+    <rect x="-5" y="-10" width="70" height="60" fill="transparent"
+          data-key="Power inverter"
+          data-val="DC→AC conversion · grid-synchronized · 98.5% efficiency"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Power flow lines (panels → inverter → grid) -->
+  <g stroke="#4ecdc4" stroke-width="1.5" fill="none" opacity="0.85">
+    <path class="cs-sol-flow" d="M 700,290 Q 760,280 820,310"/>
+    <path class="cs-sol-flow" d="M 880,310 Q 950,280 1100,250" style="animation-delay:-0.5s"/>
+  </g>
+
+  <!-- Transmission tower (right edge) -->
+  <g transform="translate(1080,200)">
+    <line x1="-10" y1="50" x2="-5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+    <line x1="10" y1="50" x2="5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+    <line x1="-5" y1="-20" x2="5" y2="-20" stroke="#7a7a7a" stroke-width="1.5"/>
+  </g>
+
+  <!-- Ground -->
+  <rect x="0" y="350" width="1200" height="50" fill="#3a4a3a"/>
+</svg>
+  </div>
+</div>
+  <p class="scene-narrative"><strong>Eastern Oregon</strong> sits in the rain shadow of the Cascade Range — a high-irradiance zone with 1,800+ annual sun hours that makes it the Pacific Northwest's natural home for utility-scale solar. The state has 580 MW installed and growing 22% YoY, driven by falling module costs (now under $0.30/W) and Oregon's Renewable Portfolio Standard targeting 50% renewables by 2040. The Pilot array shows the standard pattern: monocrystalline panels on single-axis trackers, grid-synchronized inverters at 98.5% efficiency, and interconnection at Bonneville Power Administration's 230kV substations. The opportunity: solar pairs naturally with BC's hydro surplus (peak solar hours offset peak draw, freeing hydro for evening ramp) — Cascadia's clean grid is the grid decarbonization template.</p>
+</section>
+<section class="scene-card" id="scene-wind">
+  <div class="scene-header">
+    <div class="scene-tag">Climate 03 · Wind Farm Coast</div>
+    <h2>Wind Farm Coast</h2>
+    <p class="scene-tagline">Offshore wind at the Columbia River Bar</p>
+    <p class="scene-mini-stats">12-14 MW turbines · 8.5 m/s avg wind · floating platforms · HVDC substation</p>
+  </div>
+  <div class="cas-scene-wrap" id="cs-wrap-wind">
+  <img class="cas-scene-fallback" data-src="images/env/wind-farm-coast.png" src="" alt="Cascadia Wind Farm Coast visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Wind Farm Coast</div>
+    <p class="scene-stats">hover turbines · hover waves · hover substation</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadClimateSportScene('wind')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div class="cas-scene-tooltip"><div class="tooltip-key"></div><div class="tooltip-val"></div></div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Wind Farm Coast">
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#5a8aaa 0%,#7aa0ba 50%,#2a4a5a 100%);">
+  <defs>
+    <linearGradient id="cs-wnd-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a6a8a"/>
+      <stop offset="100%" stop-color="#0a2a3a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="280" fill="#5a8aaa"/>
+
+  <!-- Distant mountains (coastal range) -->
+  <path d="M 0,260 L 100,200 L 200,230 L 320,180 L 440,220 L 560,190 L 680,230 L 800,180 L 920,220 L 1040,200 L 1200,240 L 1200,280 L 0,280 Z" fill="#3a4a5a" opacity="0.55"/>
+
+  <!-- Ocean -->
+  <rect x="0" y="280" width="1200" height="120" fill="url(#cs-wnd-water)"/>
+
+  <!-- Wave layers (3 animated) -->
+  <g class="cs-wnd-wave-1">
+    <path d="M 0,290 Q 60,283 120,290 T 240,290 T 360,290 T 480,290 T 600,290 T 720,290 T 840,290 T 960,290 T 1080,290 T 1200,290" stroke="#5a7a8a" stroke-width="1" fill="none" opacity="0.7"/>
+  </g>
+  <g class="cs-wnd-wave-2">
+    <path d="M 0,300 Q 80,293 160,300 T 320,300 T 480,300 T 640,300 T 800,300 T 960,300 T 1120,300 T 1200,300" stroke="#4a6a7a" stroke-width="1" fill="none" opacity="0.65"/>
+  </g>
+  <g class="cs-wnd-wave-3">
+    <path d="M 0,315 Q 70,308 140,315 T 280,315 T 420,315 T 560,315 T 700,315 T 840,315 T 980,315 T 1120,315 T 1200,315" stroke="#3a5a6a" stroke-width="1" fill="none" opacity="0.6"/>
+  </g>
+
+  <!-- Offshore wind turbines (3, different sizes/positions) -->
+  <!-- Turbine 1 (left) -->
+  <g transform="translate(280,280)">
+    <!-- Floating platform (semi-submersible) -->
+    <rect x="-30" y="0" width="60" height="8" fill="#5a5a5a"/>
+    <rect x="-25" y="8" width="50" height="6" fill="#3a3a3a"/>
+    <!-- Tower -->
+    <polygon points="-2,0 2,0 1,-120 -1,-120" fill="#dcdcdc"/>
+    <rect x="-5" y="-122" width="10" height="6" fill="#9a9a9a"/>
+    <!-- Blades (rotating around hub center at (0,-122)) -->
+    <g class="cs-wnd-turbine-1" style="transform-origin: 280px 158px;">
+      <line x1="0" y1="-122" x2="0" y2="-175" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="-122" x2="46" y2="-94" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="-122" x2="-46" y2="-94" stroke="#dcdcdc" stroke-width="3"/>
+      <circle cx="0" cy="-122" r="3" fill="#4a4a4a"/>
+    </g>
+    <!-- Mooring lines (visual indication of floating) -->
+    <line x1="-30" y1="8" x2="-50" y2="30" stroke="#3a3a3a" stroke-width="0.8" opacity="0.6"/>
+    <line x1="30" y1="8" x2="50" y2="30" stroke="#3a3a3a" stroke-width="0.8" opacity="0.6"/>
+    <!-- Hover target -->
+    <rect x="-40" y="-180" width="80" height="200" fill="transparent"
+          data-key="Offshore turbine 1"
+          data-val="12 MW capacity · 150m rotor diameter · semi-submersible platform · Columbia River Bar"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Turbine 2 (center, larger) -->
+  <g transform="translate(600,260)">
+    <rect x="-35" y="20" width="70" height="10" fill="#5a5a5a"/>
+    <rect x="-30" y="30" width="60" height="6" fill="#3a3a3a"/>
+    <polygon points="-2,20 2,20 1,-140 -1,-140" fill="#dcdcdc"/>
+    <rect x="-5" y="-142" width="10" height="6" fill="#9a9a9a"/>
+    <g class="cs-wnd-turbine-2" style="transform-origin: 600px 120px;">
+      <line x1="0" y1="-140" x2="0" y2="-200" stroke="#dcdcdc" stroke-width="3.5"/>
+      <line x1="0" y1="-140" x2="52" y2="-108" stroke="#dcdcdc" stroke-width="3.5"/>
+      <line x1="0" y1="-140" x2="-52" y2="-108" stroke="#dcdcdc" stroke-width="3.5"/>
+      <circle cx="0" cy="-140" r="3" fill="#4a4a4a"/>
+    </g>
+    <!-- Hover target -->
+    <rect x="-45" y="-205" width="90" height="240" fill="transparent"
+          data-key="Offshore turbine 2 (largest)"
+          data-val="14 MW capacity · 160m rotor diameter · deeper-water mooring · grid-tied"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Turbine 3 (right) -->
+  <g transform="translate(920,280)">
+    <rect x="-30" y="0" width="60" height="8" fill="#5a5a5a"/>
+    <rect x="-25" y="8" width="50" height="6" fill="#3a3a3a"/>
+    <polygon points="-2,0 2,0 1,-130 -1,-130" fill="#dcdcdc"/>
+    <rect x="-5" y="-132" width="10" height="6" fill="#9a9a9a"/>
+    <g class="cs-wnd-turbine-3" style="transform-origin: 920px 148px;">
+      <line x1="0" y1="-130" x2="0" y2="-185" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="-130" x2="48" y2="-100" stroke="#dcdcdc" stroke-width="3"/>
+      <line x1="0" y1="-130" x2="-48" y2="-100" stroke="#dcdcdc" stroke-width="3"/>
+      <circle cx="0" cy="-130" r="3" fill="#4a4a4a"/>
+    </g>
+    <!-- Hover target -->
+    <rect x="-40" y="-190" width="80" height="210" fill="transparent"
+          data-key="Offshore turbine 3"
+          data-val="12 MW capacity · grid-tied · Columbia River Bar pilot · operational 2027"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Offshore substation + grid cable -->
+  <g transform="translate(1080,280)">
+    <!-- Substation platform -->
+    <rect x="-20" y="0" width="40" height="14" fill="#5a5a5a"/>
+    <rect x="-15" y="-20" width="30" height="20" fill="#7a7a7a"/>
+    <rect x="-12" y="-17" width="24" height="14" fill="#4ecdc4" opacity="0.3"/>
+    <text x="0" y="-7" text-anchor="middle" fill="#4ecdc4" font-size="7" font-family="monospace">SUB</text>
+    <!-- Submarine cable to shore -->
+    <path d="M 0,14 Q -100,30 -200,40" stroke="#4ecdc4" stroke-width="1.5" fill="none" opacity="0.7" stroke-dasharray="6,3"/>
+    <!-- Hover target -->
+    <rect x="-30" y="-30" width="60" height="80" fill="transparent"
+          data-key="Offshore substation"
+          data-val="HVDC converter · 230kV submarine cable to shore · 3-turbine array interconnect"
+          style="cursor:help;"/>
+  </g>
+
+  <!-- Wave hover target (whole ocean) -->
+  <rect x="0" y="290" width="1200" height="40" fill="transparent"
+        data-key="Pacific Ocean waves"
+        data-val="Columbia River Bar · 4-6m swells · consistent wind resource 8.5 m/s avg"
+        style="cursor:help;"/>
+</svg>
+  </div>
+</div>
+  <p class="scene-narrative"><strong>Columbia River Bar</strong> — the most dangerous rivermouth in the Pacific — is also one of the most consistent offshore wind resources on the West Coast. Average wind speeds of 8.5 m/s make floating offshore wind economically viable, and the deep-water approach to the Pacific means mooring systems don't compete with shipping lanes. The pilot array: three 12-14 MW turbines on semi-submersible platforms, interconnect through a single HVDC substation, and export via 230kV submarine cable to shore. The technical promise: offshore wind complements the existing onshore fleet (different wind profile = smoother aggregate output). The opportunity: <strong>WA + OR state renewable targets call for 5+ GW of offshore wind by 2035</strong>, and Cascadia OS will help site the interconnect.</p>
+</section>
+<section class="scene-card" id="scene-analytics">
+  <div class="scene-header">
+    <div class="scene-tag">Sport 01 · Analytics Warroom</div>
+    <h2>Analytics Warroom</h2>
+    <p class="scene-tagline">Cascadia OS live operations dashboard</p>
+    <p class="scene-mini-stats">1,847 tenders ingested 24h · 0.58 avg match · 87 bid drafts · $2.3M pipeline</p>
+  </div>
+  <div class="cas-scene-wrap" id="cs-wrap-analytics">
+  <img class="cas-scene-fallback" data-src="images/sports/analytics-warroom.png" src="" alt="Cascadia Analytics Warroom visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Analytics Warroom</div>
+    <p class="scene-stats">hover KPI tiles · hover bar chart · hover line chart · hover alert queue</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadClimateSportScene('analytics')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div class="cas-scene-tooltip"><div class="tooltip-key"></div><div class="tooltip-val"></div></div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Analytics Warroom">
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#0a1a2a 0%,#14233a 100%);">
+  <defs>
+    <linearGradient id="cs-anlt-bar-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#a0f0e8"/>
+    </linearGradient>
+    <radialGradient id="cs-anlt-led-1" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background grid (subtle) -->
+  <g stroke="#4ecdc4" stroke-width="0.3" opacity="0.1">
+    <line x1="0" y1="50" x2="1200" y2="50"/>
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="250" x2="1200" y2="250"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="350" x2="1200" y2="350"/>
+    <line x1="100" y1="0" x2="100" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="300" y1="0" x2="300" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="500" y1="0" x2="500" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+    <line x1="700" y1="0" x2="700" y2="400"/>
+    <line x1="800" y1="0" x2="800" y2="400"/>
+    <line x1="900" y1="0" x2="900" y2="400"/>
+    <line x1="1000" y1="0" x2="1000" y2="400"/>
+    <line x1="1100" y1="0" x2="1100" y2="400"/>
+  </g>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="1200" height="40" fill="rgba(10,26,47,0.9)" stroke="#4ecdc4" stroke-width="0.5"/>
+  <text x="20" y="25" fill="#4ecdc4" font-size="13" font-weight="bold" font-family="monospace">CASCADIA OS · ANALYTICS WARROOM</text>
+  <text x="1180" y="25" text-anchor="end" fill="#4ecdc4" font-size="11" font-family="monospace">LIVE</text>
+  <!-- Live indicator LED -->
+  <circle class="cs-anlt-led-1" cx="1145" cy="20" r="6" fill="#4ecdc4" opacity="0.5"/>
+  <circle cx="1145" cy="20" r="3" fill="#4ecdc4"/>
+
+  <!-- KPI tile 1: Tenders ingested -->
+  <g transform="translate(40,70)">
+    <rect x="0" y="0" width="180" height="80" fill="rgba(78,205,196,0.1)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace" opacity="0.7">TENDERS INGESTED (24H)</text>
+    <text x="10" y="50" fill="#fff" font-size="24" font-weight="bold" font-family="monospace">1,847</text>
+    <text x="10" y="70" fill="#a0f0e8" font-size="9" font-family="monospace">+12.3% vs. 7-day avg</text>
+    <!-- LED -->
+    <circle class="cs-anlt-led-1" cx="165" cy="15" r="3" fill="#4ecdc4"/>
+    <rect x="-5" y="-5" width="190" height="90" fill="transparent" data-key="Tenders ingested" data-val="1,847 in last 24 hours · SAM.gov + BC Bid RSS · +12.3% vs. 7-day avg" style="cursor:help;"/>
+  </g>
+
+  <!-- KPI tile 2: Match confidence avg -->
+  <g transform="translate(240,70)">
+    <rect x="0" y="0" width="180" height="80" fill="rgba(78,205,196,0.1)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace" opacity="0.7">MATCH CONFIDENCE AVG</text>
+    <text x="10" y="50" fill="#fff" font-size="24" font-weight="bold" font-family="monospace">0.58</text>
+    <text x="10" y="70" fill="#a0f0e8" font-size="9" font-family="monospace">BID threshold: 0.50</text>
+    <circle class="cs-anlt-led-1" cx="165" cy="15" r="3" fill="#4ecdc4" style="animation-delay:-0.5s"/>
+    <rect x="-5" y="-5" width="190" height="90" fill="transparent" data-key="Match confidence avg" data-val="0.58 average across today's 1,847 tenders · BID threshold 0.50 · 412 above threshold" style="cursor:help;"/>
+  </g>
+
+  <!-- KPI tile 3: Compliance checks -->
+  <g transform="translate(440,70)">
+    <rect x="0" y="0" width="180" height="80" fill="rgba(78,205,196,0.1)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace" opacity="0.7">COMPLIANCE CHECKS</text>
+    <text x="10" y="50" fill="#fff" font-size="24" font-weight="bold" font-family="monospace">5,541</text>
+    <text x="10" y="70" fill="#a0f0e8" font-size="9" font-family="monospace">3 assessors × 1,847</text>
+    <circle class="cs-anlt-led-1" cx="165" cy="15" r="3" fill="#4ecdc4" style="animation-delay:-1s"/>
+    <rect x="-5" y="-5" width="190" height="90" fill="transparent" data-key="Compliance checks" data-val="5,541 compliance assessments run today · USMCA + Indigenous + CCA assessors" style="cursor:help;"/>
+  </g>
+
+  <!-- KPI tile 4: Bid drafts generated -->
+  <g transform="translate(640,70)">
+    <rect x="0" y="0" width="180" height="80" fill="rgba(78,205,196,0.1)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace" opacity="0.7">BID DRAFTS GENERATED</text>
+    <text x="10" y="50" fill="#fff" font-size="24" font-weight="bold" font-family="monospace">87</text>
+    <text x="10" y="70" fill="#a0f0e8" font-size="9" font-family="monospace">$2.3M pipeline value</text>
+    <circle class="cs-anlt-led-1" cx="165" cy="15" r="3" fill="#4ecdc4" style="animation-delay:-1.5s"/>
+    <rect x="-5" y="-5" width="190" height="90" fill="transparent" data-key="Bid drafts generated" data-val="87 drafts today · $2.3M pipeline · provenance-anchored · human review queue" style="cursor:help;"/>
+  </g>
+
+  <!-- Map (right side, simplified Cascadia) -->
+  <g transform="translate(860,60)">
+    <rect x="0" y="0" width="300" height="100" fill="rgba(10,26,47,0.6)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="15" fill="#4ecdc4" font-size="9" font-family="monospace" opacity="0.7">CASCADIA MAP · ACTIVE TENDERS</text>
+    <!-- City dots -->
+    <g fill="#f8d070">
+      <circle cx="60" cy="40" r="3"/>
+      <circle cx="150" cy="55" r="4"/>
+      <circle cx="240" cy="75" r="3"/>
+    </g>
+    <text x="60" y="35" text-anchor="middle" fill="#fff" font-size="8" font-family="monospace">VAN</text>
+    <text x="150" y="50" text-anchor="middle" fill="#fff" font-size="8" font-family="monospace">SEA</text>
+    <text x="240" y="70" text-anchor="middle" fill="#fff" font-size="8" font-family="monospace">PDX</text>
+    <!-- Pulsing alert markers (animated) -->
+    <circle class="cs-anlt-alert" cx="60" cy="40" r="6" fill="none" stroke="#f8a070" stroke-width="1"/>
+    <circle class="cs-anlt-alert" cx="150" cy="55" r="8" fill="none" stroke="#f8a070" stroke-width="1" style="animation-delay:-0.5s"/>
+    <!-- Map hover target -->
+    <rect x="-5" y="-5" width="310" height="110" fill="transparent" data-key="Cascadia active tenders map" data-val="3 hot spots: Vancouver BC (12 active), Seattle (24 active), Portland (8 active) · hover LED pulse" style="cursor:help;"/>
+  </g>
+
+  <!-- Bar chart (bottom-left): today's tenders by NAICS -->
+  <g transform="translate(40,200)">
+    <rect x="0" y="0" width="500" height="170" fill="rgba(10,26,47,0.6)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace">TODAY'S TENDERS BY NAICS</text>
+    <!-- Axes -->
+    <line x1="20" y1="150" x2="490" y2="150" stroke="#4ecdc4" stroke-width="0.5" opacity="0.5"/>
+    <line x1="20" y1="30" x2="20" y2="150" stroke="#4ecdc4" stroke-width="0.5" opacity="0.5"/>
+    <!-- Bars (animated growing + shrinking) -->
+    <rect class="cs-anlt-bar" x="35" y="60" width="60" height="90" fill="url(#cs-anlt-bar-grad)"/>
+    <rect class="cs-anlt-bar b2" x="105" y="80" width="60" height="70" fill="url(#cs-anlt-bar-grad)"/>
+    <rect class="cs-anlt-bar b3" x="175" y="50" width="60" height="100" fill="url(#cs-anlt-bar-grad)"/>
+    <rect class="cs-anlt-bar b4" x="245" y="90" width="60" height="60" fill="url(#cs-anlt-bar-grad)"/>
+    <rect class="cs-anlt-bar" x="315" y="70" width="60" height="80" fill="url(#cs-anlt-bar-grad)" style="animation-delay:-2.5s"/>
+    <rect class="cs-anlt-bar b2" x="385" y="100" width="60" height="50" fill="url(#cs-anlt-bar-grad)" style="animation-delay:-3.5s"/>
+    <!-- Bar labels -->
+    <g fill="#4ecdc4" opacity="0.8" font-family="monospace" font-size="8">
+      <text x="65" y="165" text-anchor="middle">238221</text>
+      <text x="135" y="165" text-anchor="middle">237120</text>
+      <text x="205" y="165" text-anchor="middle">541611</text>
+      <text x="275" y="165" text-anchor="middle">238210</text>
+      <text x="345" y="165" text-anchor="middle">423840</text>
+      <text x="415" y="165" text-anchor="middle">611519</text>
+    </g>
+    <!-- Hover target -->
+    <rect x="-5" y="-5" width="510" height="180" fill="transparent" data-key="Tenders by NAICS" data-val="6 Cascadia-relevant NAICS codes today · 237120 (highway) leads · 541611 (mgmt consulting) growing fastest" style="cursor:help;"/>
+  </g>
+
+  <!-- Time series line chart (bottom-right): 7-day trend -->
+  <g transform="translate(560,200)">
+    <rect x="0" y="0" width="600" height="170" fill="rgba(10,26,47,0.6)" stroke="#4ecdc4" stroke-width="0.8" rx="4"/>
+    <text x="10" y="20" fill="#4ecdc4" font-size="10" font-family="monospace">7-DAY MATCH CONFIDENCE TREND</text>
+    <!-- Axes -->
+    <line x1="20" y1="150" x2="590" y2="150" stroke="#4ecdc4" stroke-width="0.5" opacity="0.5"/>
+    <line x1="20" y1="30" x2="20" y2="150" stroke="#4ecdc4" stroke-width="0.5" opacity="0.5"/>
+    <!-- Threshold line (BID threshold 0.50) -->
+    <line x1="20" y1="90" x2="590" y2="90" stroke="#f8a070" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+    <text x="595" y="93" fill="#f8a070" font-size="9" font-family="monospace">BID</text>
+    <!-- Animated line (data flow visualization) -->
+    <path class="cs-anlt-line" d="M 30,120 L 110,100 L 190,80 L 270,95 L 350,70 L 430,60 L 510,75 L 580,55" stroke="#4ecdc4" stroke-width="2" fill="none"/>
+    <!-- Data points -->
+    <g fill="#4ecdc4">
+      <circle cx="30" cy="120" r="3"/>
+      <circle cx="110" cy="100" r="3"/>
+      <circle cx="190" cy="80" r="3"/>
+      <circle cx="270" cy="95" r="3"/>
+      <circle cx="350" cy="70" r="3"/>
+      <circle cx="430" cy="60" r="3"/>
+      <circle cx="510" cy="75" r="3"/>
+      <circle cx="580" cy="55" r="3"/>
+    </g>
+    <!-- X-axis day labels -->
+    <g fill="#4ecdc4" opacity="0.7" font-family="monospace" font-size="8">
+      <text x="30" y="165" text-anchor="middle">D-6</text>
+      <text x="110" y="165" text-anchor="middle">D-5</text>
+      <text x="190" y="165" text-anchor="middle">D-4</text>
+      <text x="270" y="165" text-anchor="middle">D-3</text>
+      <text x="350" y="165" text-anchor="middle">D-2</text>
+      <text x="430" y="165" text-anchor="middle">D-1</text>
+      <text x="510" y="165" text-anchor="middle">T-12</text>
+      <text x="580" y="165" text-anchor="middle">NOW</text>
+    </g>
+    <!-- Hover target -->
+    <rect x="-5" y="-5" width="610" height="180" fill="transparent" data-key="7-day match confidence trend" data-val="Rising trend · 0.42 → 0.58 · 38% above BID threshold · 412 actionable tenders today" style="cursor:help;"/>
+  </g>
+
+  <!-- Alert bar (bottom strip) -->
+  <g transform="translate(40,380)">
+    <rect x="0" y="0" width="1120" height="15" fill="rgba(248,160,112,0.2)" stroke="#f8a070" stroke-width="0.5" rx="2"/>
+    <text x="10" y="11" fill="#f8d070" font-size="9" font-family="monospace">⚠ ALERT: 3 high-value tenders above 0.85 match confidence awaiting review</text>
+    <circle class="cs-anlt-alert" cx="1100" cy="7" r="3" fill="#f8a070"/>
+    <rect x="-5" y="-5" width="1130" height="25" fill="transparent" data-key="Alert queue" data-val="3 high-confidence tenders (>0.85) awaiting human review · escalate within 2h SLA" style="cursor:help;"/>
+  </g>
+</svg>
+  </div>
+</div>
+  <p class="scene-narrative">The <strong>Analytics Warroom</strong> is the real-time pulse of Cascadia OS. It's where the wedge's three production services — <strong>tenders-ingestor</strong> (publishes tender.published events), <strong>compliance-reasoner</strong> (consumes tender.published, runs 3 assessors, publishes compliance.assessment.completed), and <strong>bid-drafter</strong> (consumes compliance.assessment.completed, drafts bid with provenance footnotes) — converge in a single operational view. Today's snapshot: 1,847 tenders ingested in the last 24 hours (12.3% above 7-day average), average match confidence of 0.58 (above the 0.50 BID threshold), 87 bid drafts queued for human review representing $2.3M of pipeline value. The dashboard is itself hash-anchored to the provenance ledger — every KPI tile carries a clickable provenance trail back to the underlying tender.published event.</p>
+</section>
+<section class="scene-card" id="scene-stadium">
+  <div class="scene-header">
+    <div class="scene-tag">Sport 02 · Futuristic Stadium</div>
+    <h2>Futuristic Stadium</h2>
+    <p class="scene-tagline">Climate-controlled multi-use venue for Cascadia mega-region</p>
+    <p class="scene-mini-stats">70,000 capacity · solar canopy roof · rainwater capture · multi-surface</p>
+  </div>
+  <div class="cas-scene-wrap" id="cs-wrap-stadium">
+  <img class="cas-scene-fallback" data-src="images/sports/futuristic-stadium.png" src="" alt="Cascadia Futuristic Stadium visualization" loading="lazy">
+  <div class="cas-scene-text-overlay">
+    <div class="scene-eyebrow">▸ Interactive · click to load · PNG lazy on scroll</div>
+    <div class="scene-title">Futuristic Stadium</div>
+    <p class="scene-stats">hover stadium structure · hover crowd · hover flood lights</p>
+  </div>
+  <button class="cas-load-btn" type="button" onclick="loadClimateSportScene('stadium')">
+    <span class="play-icon">▶</span> Load interactive scene
+  </button>
+  <div class="cas-scene-tooltip"><div class="tooltip-key"></div><div class="tooltip-val"></div></div>
+  <div class="cas-scene-loaded" style="display:none;" aria-label="Interactive scene: Futuristic Stadium">
+    <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+     style="width:100%;height:auto;display:block;background:linear-gradient(180deg,#050a1a 0%,#1a2a3a 50%,#0a1a2a 100%);">
+  <defs>
+    <radialGradient id="cs-stad-light-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#f8d070" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#f8d070" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cs-stad-field" cx="0.5" cy="0" r="0.7">
+      <stop offset="0%" stop-color="#3a8a3a"/>
+      <stop offset="100%" stop-color="#1a3a1a"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Night sky -->
+  <rect width="1200" height="400" fill="#050a1a"/>
+
+  <!-- Stars -->
+  <g fill="#ffffff" opacity="0.5">
+    <circle cx="80" cy="30" r="0.8"/><circle cx="280" cy="50" r="1.1"/>
+    <circle cx="460" cy="25" r="0.9"/><circle cx="620" cy="70" r="1.2"/>
+    <circle cx="780" cy="40" r="1"/><circle cx="950" cy="60" r="0.9"/>
+    <circle cx="1080" cy="30" r="1.1"/>
+  </g>
+
+  <!-- Fireworks (top of sky, animated) -->
+  <g class="cs-stad-firework-1" transform="translate(300,80)">
+    <g stroke="#f8d070" stroke-width="1.5" fill="none" opacity="0.85">
+      <line x1="0" y1="0" x2="0" y2="-15"/>
+      <line x1="0" y1="0" x2="11" y2="-11"/>
+      <line x1="0" y1="0" x2="15" y2="0"/>
+      <line x1="0" y1="0" x2="11" y2="11"/>
+      <line x1="0" y1="0" x2="0" y2="15"/>
+      <line x1="0" y1="0" x2="-11" y2="11"/>
+      <line x1="0" y1="0" x2="-15" y2="0"/>
+      <line x1="0" y1="0" x2="-11" y2="-11"/>
+    </g>
+    <circle cx="0" cy="0" r="2" fill="#fff"/>
+  </g>
+  <g class="cs-stad-firework-2" transform="translate(900,100)">
+    <g stroke="#a0f0e8" stroke-width="1.5" fill="none" opacity="0.85">
+      <line x1="0" y1="0" x2="0" y2="-13"/>
+      <line x1="0" y1="0" x2="9" y2="-9"/>
+      <line x1="0" y1="0" x2="13" y2="0"/>
+      <line x1="0" y1="0" x2="9" y2="9"/>
+      <line x1="0" y1="0" x2="0" y2="13"/>
+      <line x1="0" y1="0" x2="-9" y2="9"/>
+      <line x1="0" y1="0" x2="-13" y2="0"/>
+      <line x1="0" y1="0" x2="-9" y2="-9"/>
+    </g>
+    <circle cx="0" cy="0" r="2" fill="#fff"/>
+  </g>
+
+  <!-- Stadium structure (oval bowl) -->
+  <g transform="translate(600,250)">
+    <!-- Outer bowl rim -->
+    <ellipse cx="0" cy="0" rx="500" ry="100" fill="#1a3a4a" stroke="#4ecdc4" stroke-width="1.5" opacity="0.9"/>
+    <!-- Upper tier -->
+    <ellipse cx="0" cy="-5" rx="470" ry="85" fill="none" stroke="#4ecdc4" stroke-width="0.8" opacity="0.5"/>
+    <!-- Lower tier -->
+    <ellipse cx="0" cy="20" rx="420" ry="65" fill="none" stroke="#4ecdc4" stroke-width="0.8" opacity="0.6"/>
+    <!-- Field (center) -->
+    <ellipse cx="0" cy="40" rx="180" ry="32" fill="url(#cs-stad-field)" stroke="#4a8a4a" stroke-width="1"/>
+    <!-- Field lines -->
+    <ellipse cx="0" cy="40" rx="120" ry="22" fill="none" stroke="#f8f8f8" stroke-width="0.5" opacity="0.5"/>
+    <line x1="-180" y1="40" x2="180" y2="40" stroke="#f8f8f8" stroke-width="0.5" opacity="0.4"/>
+    <!-- Stadium hover target -->
+    <rect x="-510" y="-110" width="1020" height="220" fill="transparent" data-key="Cascadia futuristic stadium" data-val="Climate-controlled · 70,000 capacity · solar canopy roof · rainwater capture" style="cursor:help;"/>
+  </g>
+
+  <!-- Flood lights (4 towers at corners, animated) -->
+  <g>
+    <!-- Light tower 1 (top-left) -->
+    <g transform="translate(150,140)">
+      <rect x="-3" y="0" width="6" height="60" fill="#4a4a4a"/>
+      <rect x="-15" y="-15" width="30" height="15" fill="#5a5a5a"/>
+      <!-- Light glow -->
+      <circle class="cs-stad-light-1" cx="0" cy="-7" r="20" fill="url(#cs-stad-light-glow)"/>
+      <circle cx="0" cy="-7" r="6" fill="#fff"/>
+      <!-- Hover target -->
+      <rect x="-25" y="-25" width="50" height="100" fill="transparent" data-key="Flood light tower 1" data-val="LED array · 80,000 lumens · solar-powered · dimmable for concerts" style="cursor:help;"/>
+    </g>
+    <!-- Light tower 2 (top-right) -->
+    <g transform="translate(1050,140)">
+      <rect x="-3" y="0" width="6" height="60" fill="#4a4a4a"/>
+      <rect x="-15" y="-15" width="30" height="15" fill="#5a5a5a"/>
+      <circle class="cs-stad-light-2" cx="0" cy="-7" r="20" fill="url(#cs-stad-light-glow)"/>
+      <circle cx="0" cy="-7" r="6" fill="#fff"/>
+      <rect x="-25" y="-25" width="50" height="100" fill="transparent" data-key="Flood light tower 2" data-val="LED array · 80,000 lumens · solar-powered · dimmable for concerts" style="cursor:help;"/>
+    </g>
+    <!-- Light tower 3 (bottom-left, smaller, behind) -->
+    <g transform="translate(300,310)" opacity="0.7">
+      <rect x="-3" y="0" width="6" height="40" fill="#4a4a4a"/>
+      <rect x="-12" y="-10" width="24" height="10" fill="#5a5a5a"/>
+      <circle class="cs-stad-light-1" cx="0" cy="-5" r="15" fill="url(#cs-stad-light-glow)" style="animation-delay:-0.5s"/>
+      <circle cx="0" cy="-5" r="4" fill="#fff"/>
+    </g>
+    <!-- Light tower 4 (bottom-right) -->
+    <g transform="translate(900,310)" opacity="0.7">
+      <rect x="-3" y="0" width="6" height="40" fill="#4a4a4a"/>
+      <rect x="-12" y="-10" width="24" height="10" fill="#5a5a5a"/>
+      <circle class="cs-stad-light-2" cx="0" cy="-5" r="15" fill="url(#cs-stad-light-glow)" style="animation-delay:-1.5s"/>
+      <circle cx="0" cy="-5" r="4" fill="#fff"/>
+    </g>
+  </g>
+
+  <!-- Crowd (2 layers of dots in the stands, animated bobbing) -->
+  <g class="cs-stad-crowd-1">
+    <!-- Upper tier crowd (scattered dots) -->
+    <g fill="#f8d070" opacity="0.85">
+      <circle cx="200" cy="240" r="1.5"/><circle cx="250" cy="245" r="1.5"/>
+      <circle cx="320" cy="250" r="1.5"/><circle cx="380" cy="245" r="1.5"/>
+      <circle cx="440" cy="240" r="1.5"/><circle cx="510" cy="245" r="1.5"/>
+      <circle cx="580" cy="240" r="1.5"/><circle cx="640" cy="245" r="1.5"/>
+      <circle cx="710" cy="250" r="1.5"/><circle cx="780" cy="245" r="1.5"/>
+      <circle cx="850" cy="240" r="1.5"/><circle cx="920" cy="245" r="1.5"/>
+      <circle cx="990" cy="250" r="1.5"/>
+    </g>
+    <g fill="#a0f0e8" opacity="0.7">
+      <circle cx="220" cy="248" r="1.2"/><circle cx="290" cy="252" r="1.2"/>
+      <circle cx="360" cy="248" r="1.2"/><circle cx="430" cy="252" r="1.2"/>
+      <circle cx="550" cy="248" r="1.2"/><circle cx="620" cy="252" r="1.2"/>
+      <circle cx="730" cy="248" r="1.2"/><circle cx="820" cy="252" r="1.2"/>
+      <circle cx="950" cy="248" r="1.2"/>
+    </g>
+  </g>
+  <g class="cs-stad-crowd-2">
+    <!-- Lower tier crowd (denser) -->
+    <g fill="#f8a070" opacity="0.85">
+      <circle cx="210" cy="265" r="1.3"/><circle cx="270" cy="270" r="1.3"/>
+      <circle cx="330" cy="265" r="1.3"/><circle cx="390" cy="270" r="1.3"/>
+      <circle cx="450" cy="265" r="1.3"/><circle cx="520" cy="270" r="1.3"/>
+      <circle cx="590" cy="265" r="1.3"/><circle cx="660" cy="270" r="1.3"/>
+      <circle cx="730" cy="265" r="1.3"/><circle cx="800" cy="270" r="1.3"/>
+      <circle cx="870" cy="265" r="1.3"/><circle cx="940" cy="270" r="1.3"/>
+      <circle cx="1010" cy="265" r="1.3"/>
+    </g>
+    <g fill="#f8f8f8" opacity="0.6">
+      <circle cx="240" cy="273" r="1"/><circle cx="310" cy="275" r="1"/>
+      <circle cx="380" cy="273" r="1"/><circle cx="460" cy="275" r="1"/>
+      <circle cx="540" cy="273" r="1"/><circle cx="610" cy="275" r="1"/>
+      <circle cx="680" cy="273" r="1"/><circle cx="770" cy="275" r="1"/>
+      <circle cx="860" cy="273" r="1"/><circle cx="950" cy="275" r="1"/>
+    </g>
+  </g>
+  <!-- Crowd hover target -->
+  <rect x="180" y="230" width="850" height="50" fill="transparent" data-key="Stadium crowd" data-val="70,000 capacity · multi-use · Seahawks / Sounders / concerts · animated by Cascadia OS ticket flow" style="cursor:help;"/>
+
+  <!-- Field hover target -->
+  <rect x="420" y="250" width="360" height="50" fill="transparent" data-key="Field" data-val="Multi-surface · retractable roof ready · rainwater capture for irrigation" style="cursor:help;"/>
+</svg>
+  </div>
+</div>
+  <p class="scene-narrative">The <strong>Cascadia Futuristic Stadium</strong> represents the region's sports infrastructure standard: 70,000 capacity, climate-controlled via solar canopy roof (which also generates ~5 MW year-round), rainwater capture for field irrigation, and multi-surface field for Seahawks / Sounders / concerts. The stadium is a natural host for cross-border mega-events (USA-Canada World Cup 2026, FIFA friendlies, Pacific Northwest sports championships). Cascadia's sports-tech cluster — <strong>STATS Perform</strong> (Seattle-based sports analytics), <strong>Modern Sky Sports</strong> (Portland), and the University of Washington's Center for Sports Cardiology — make the stadium an integrated sports-medicine + broadcast + analytics hub. The animated crowd visualization is fed by Cascadia OS's ticket-flow data feed.</p>
+</section>
+
+</div>
+
+
+<script id="cascadia-climate-sport-js">
+(function() {
+  'use strict';
+
+  var lazyObserver = null;
+  function initLazyLoader() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('img.cas-scene-fallback[data-src]').forEach(function(img) {
+        if (!img.closest('.cas-scene-wrap').classList.contains('scene-loaded')) {
+          img.src = img.dataset.src;
+        }
+      });
+      return;
+    }
+    lazyObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          var wrap = img.closest('.cas-scene-wrap');
+          if (wrap && !wrap.classList.contains('scene-loaded')) {
+            img.src = img.dataset.src;
+          }
+          lazyObserver.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('img.cas-scene-fallback[data-src]').forEach(function(img) {
+      lazyObserver.observe(img);
+    });
+  }
+
+  window.toggleTheme = function() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = (cur === 'dark') ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cas-theme', next); } catch(e) {}
+  };
+  try {
+    var saved = localStorage.getItem('cas-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+      document.documentElement.setAttribute('data-theme', 'light');
+  } catch(e) {}
+
+  window.loadClimateSportScene = function(sceneId) {
+    var wrap = document.getElementById('cs-wrap-' + sceneId);
+    if (!wrap) return;
+    var fallback = wrap.querySelector('.cas-scene-fallback');
+    var scene = wrap.querySelector('.cas-scene-loaded');
+    var btn = wrap.querySelector('.cas-load-btn');
+    var textOverlay = wrap.querySelector('.cas-scene-text-overlay');
+    if (!scene || !btn) return;
+    wrap.classList.add('scene-loaded');
+    if (fallback) { fallback.style.display = 'none'; if (fallback.src) fallback.src = ''; }
+    if (btn) btn.style.display = 'none';
+    if (textOverlay) textOverlay.style.display = 'none';
+    scene.style.display = 'block';
+    wireInteractions(sceneId, scene, wrap);
+  };
+
+  function wireInteractions(sceneId, scene, wrap) {
+    var tooltip = wrap.querySelector('.cas-scene-tooltip');
+    if (!tooltip) return;
+    var hoverables = scene.querySelectorAll('[data-key]');
+    hoverables.forEach(function(el) {
+      el.addEventListener('mouseenter', function(e) {
+        tooltip.querySelector('.tooltip-key').textContent = el.getAttribute('data-key');
+        tooltip.querySelector('.tooltip-val').textContent = el.getAttribute('data-val');
+        var rect = el.getBoundingClientRect();
+        var wrapRect = wrap.getBoundingClientRect();
+        tooltip.style.left = (rect.left - wrapRect.left + rect.width / 2) + 'px';
+        tooltip.style.top = (rect.top - wrapRect.top - 8) + 'px';
+        tooltip.classList.add('visible');
+      });
+      el.addEventListener('mouseleave', function() { tooltip.classList.remove('visible'); });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLazyLoader);
+  } else {
+    initLazyLoader();
+  }
+})();
+</script>
+
+</body>
+</html>
