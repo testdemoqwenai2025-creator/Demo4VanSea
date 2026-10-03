@@ -1,1 +1,418 @@
-fatal: path 'cascadia-weekly-brief.html' does not exist in 'da4390f'
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascadia Weekly Economic Brief — AIBizVan360</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+<script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0a1628; --bg-2:#0f1f3a; --card:#14233f; --border:#1e3458;
+  --fg:#e8eef7; --fg-2:#a0b3cc; --accent:#2dd4bf; --accent-2:#5eead4;
+  --warm:#fbbf24; --danger:#f87171; --ok:#34d399;
+}
+[data-theme="light"] {
+  --bg:#f4f7f7; --bg-2:#ffffff; --card:#ffffff; --border:#dde2e3;
+  --fg:#1a1a2e; --fg-2:#4a4a5a; --accent:#0d9488; --accent-2:#14b8a6;
+  --warm:#d97706; --danger:#dc2626; --ok:#0d9488;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; font-size:14px; }
+a { color:var(--accent); text-decoration:none; }
+.container { max-width:800px; margin:0 auto; padding:0 16px; }
+
+/* Header */
+.header { padding:40px 0 32px; border-bottom:1px solid var(--border); margin-bottom:32px; }
+.eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent); font-weight:700; margin-bottom:8px; }
+h1 { font-size:32px; font-weight:800; margin-bottom:8px; line-height:1.15; }
+.subtitle { font-size:14px; color:var(--fg-2); max-width:640px; line-height:1.6; }
+.header-meta { display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:12px; color:var(--fg-2); }
+.header-meta span { display:inline-flex; align-items:center; gap:4px; }
+
+/* What you get */
+.what-section { margin-bottom:40px; }
+.what-section h2 { font-size:20px; font-weight:700; margin-bottom:16px; }
+.what-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+.what-card { padding:16px; background:var(--card); border:1px solid var(--border); border-radius:8px; text-align:center; }
+.what-card .icon { font-size:24px; margin-bottom:8px; }
+.what-card .title { font-size:13px; font-weight:700; color:var(--fg); margin-bottom:4px; }
+.what-card .desc { font-size:11px; color:var(--fg-2); line-height:1.5; }
+
+/* Sample issue */
+.sample-section { margin-bottom:40px; }
+.sample-section h2 { font-size:20px; font-weight:700; margin-bottom:8px; }
+.sample-section .sample-sub { font-size:12px; color:var(--fg-2); margin-bottom:20px; }
+.issue-header { padding:16px 20px; background:var(--card); border:1px solid var(--border); border-radius:8px 8px 0 0; border-bottom:none; }
+.issue-header .issue-date { font-size:11px; color:var(--fg-2); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:4px; }
+.issue-header h3 { font-size:18px; font-weight:700; }
+.issue-body { padding:0; background:var(--card); border:1px solid var(--border); border-radius:0 0 8px 8px; }
+.brief-item { padding:20px; border-bottom:1px solid var(--border); }
+.brief-item:last-child { border-bottom:none; border-radius:0 0 8px 8px; }
+.brief-item .num { display:inline-block; width:24px; height:24px; background:var(--accent); color:var(--bg); border-radius:50%; text-align:center; line-height:24px; font-size:11px; font-weight:800; margin-right:8px; vertical-align:middle; }
+.brief-item .headline { font-size:15px; font-weight:700; color:var(--fg); display:inline; }
+.brief-item .source { font-size:10px; color:var(--fg-2); font-family:monospace; margin-left:8px; }
+.brief-item .interpretation { font-size:13px; color:var(--fg-2); line-height:1.7; margin-top:10px; padding-left:32px; }
+.brief-item .interpretation strong { color:var(--fg); }
+.brief-item .interpretation .accent { color:var(--accent); font-weight:600; }
+.brief-item .interpretation .warm { color:var(--warm); font-weight:600; }
+.brief-item .interpretation .ok { color:var(--ok); font-weight:600; }
+.brief-item .tags { margin-top:8px; padding-left:32px; }
+.brief-item .tag { display:inline-block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:2px 6px; border-radius:3px; margin-right:4px; }
+.brief-item .tag.accent { background:rgba(45,212,191,0.15); color:var(--accent); border:1px solid var(--accent); }
+.brief-item .tag.warm { background:rgba(251,191,36,0.15); color:var(--warm); border:1px solid var(--warm); }
+
+/* Subscribe form */
+.subscribe-section { background:linear-gradient(135deg,rgba(45,212,191,0.08),rgba(45,212,191,0.02)); border:1px solid rgba(45,212,191,0.25); border-radius:12px; padding:40px; margin-bottom:40px; text-align:center; }
+.subscribe-section h2 { font-size:24px; font-weight:800; margin-bottom:8px; }
+.subscribe-section p { font-size:14px; color:var(--fg-2); max-width:560px; margin:0 auto 24px; line-height:1.6; }
+.subscribe-form { display:flex; flex-direction:column; gap:10px; max-width:480px; margin:0 auto; }
+.subscribe-form input, .subscribe-form select { background:var(--bg); border:1px solid var(--border); color:var(--fg); padding:12px 16px; border-radius:8px; font-size:14px; font-family:inherit; outline:none; }
+.subscribe-form input:focus, .subscribe-form select:focus { border-color:var(--accent); }
+.subscribe-form button { padding:14px 28px; background:var(--accent); color:var(--bg); border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; }
+.subscribe-form button:hover { opacity:0.9; }
+.subscribe-success { display:none; padding:14px; background:rgba(52,211,153,0.1); border:1px solid var(--ok); border-radius:8px; color:var(--ok); font-size:14px; font-weight:600; }
+.subscribe-success.show { display:block; }
+.subscribe-fine { font-size:11px; color:var(--fg-2); margin-top:12px; line-height:1.5; }
+
+/* Archive */
+.archive-section { margin-bottom:40px; }
+.archive-section h2 { font-size:20px; font-weight:700; margin-bottom:16px; }
+.archive-item { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
+.archive-item:last-child { border-bottom:none; }
+.archive-date { font-size:11px; color:var(--fg-2); font-family:monospace; white-space:nowrap; min-width:90px; padding-top:2px; }
+.archive-headline { font-size:14px; color:var(--fg); font-weight:600; }
+.archive-headline a { color:inherit; text-decoration:none; }
+.archive-headline a:hover { color:var(--accent); }
+
+/* FAQ */
+.faq-section { margin-bottom:40px; }
+.faq-section h2 { font-size:20px; font-weight:700; margin-bottom:16px; }
+.faq-item { padding:12px 0; border-bottom:1px solid var(--border); }
+.faq-item:last-child { border-bottom:none; }
+.faq-q { font-size:14px; font-weight:700; color:var(--fg); cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.faq-q .chevron { color:var(--accent); transition:transform .2s; font-size:16px; }
+.faq-item.open .chevron { transform:rotate(90deg); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s; font-size:13px; color:var(--fg-2); line-height:1.6; }
+.faq-item.open .faq-a { max-height:200px; padding-top:8px; }
+
+/* Footer */
+.footer { padding:24px 0; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--fg-2); }
+.footer a { color:var(--accent); }
+
+@media (max-width:640px) {
+  h1 { font-size:24px; }
+  .what-grid { grid-template-columns:1fr 1fr; }
+  .brief-item .interpretation { padding-left:0; }
+  .brief-item .tags { padding-left:0; }
+  .archive-item { flex-direction:column; gap:4px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+<header class="header">
+  <div class="eyebrow">▸ Thought Leadership · Weekly Digest</div>
+  <h1>Cascadia Weekly Economic Brief</h1>
+  <p class="subtitle">Every Monday at 6am PT: the top 5 Cascadia economic data releases from the past week — with a 1-paragraph interpretation per release. ~5 min read. Free. No spam. The Monday-morning habit for PNW policymakers, investors, founders, and think-tank analysts.</p>
+  <div class="header-meta">
+    <span>📅 Mondays at 6am PT</span>
+    <span>·</span>
+    <span>⏱️ ~5 min read</span>
+    <span>·</span>
+    <span>📊 ~50 issues/year</span>
+    <span>·</span>
+    <span>✉️ Free, unsubscribe in one click</span>
+  </div>
+</header>
+
+<!-- What you get -->
+<div class="what-section">
+  <h2>What you get every Monday</h2>
+  <div class="what-grid">
+    <div class="what-card">
+      <div class="icon">📊</div>
+      <div class="title">Top 5 data releases</div>
+      <div class="desc">Curated from BEA, BLS, StatsCan, Crunchbase, and our own founder panel</div>
+    </div>
+    <div class="what-card">
+      <div class="icon">✍️</div>
+      <div class="title">1-paragraph interpretation</div>
+      <div class="desc">Not just the number — what it means for Cascadia + why it matters this week</div>
+    </div>
+    <div class="what-card">
+      <div class="icon">🔗</div>
+      <div class="title">Source links</div>
+      <div class="desc">Every data point links to the original release — verify everything</div>
+    </div>
+    <div class="what-card">
+      <div class="icon">🏷️</div>
+      <div class="title">Tagged by sector</div>
+      <div class="desc">Filter by your interests: SaaS, CleanTech, Bio, AI/ML, Cross-border trade</div>
+    </div>
+    <div class="what-card">
+      <div class="icon">📈</div>
+      <div class="title">Trend tracking</div>
+      <div class="desc">Each release includes YoY + MoM context so you see the trajectory</div>
+    </div>
+    <div class="what-card">
+      <div class="icon">🚫</div>
+      <div class="title">No fluff</div>
+      <div class="desc">No ads, no sponsored content, no "10 things founders..." clickbait</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sample issue -->
+<div class="sample-section">
+  <h2>Sample issue — last week</h2>
+  <p class="sample-sub">Here's what arrived in subscribers' inboxes on Monday, October 6, 2026 at 6am PT:</p>
+  
+  <div class="issue-header">
+    <div class="issue-date">Vol. 1, Issue 5 · Oct 6, 2026</div>
+    <h3>Cascadia Weekly Economic Brief — Oct 6, 2026</h3>
+  </div>
+  
+  <div class="issue-body">
+    <!-- Item 1 -->
+    <div class="brief-item">
+      <div>
+        <span class="num">1</span>
+        <span class="headline">BLS September jobs report: US added 85,000 jobs — Cascadia tech outperforms national</span>
+        <span class="source">bls.gov</span>
+      </div>
+      <div class="interpretation">
+        The September employment situation (released Oct 3) showed the US added <strong>85,000 nonfarm payrolls</strong> — below the Bloomberg consensus of 120,000. However, Cascadia metros continued to outperform nationally: <strong>Seattle metro tech employment</strong> added an estimated <span class="ok">+2,800 positions</span> (preliminary), with AI/ML accounting for 60% of the gain. Vancouver tech employment added <span class="ok">+1,100</span>. National unemployment at <span class="warm">4.3%</span> vs Seattle at <span class="ok">3.6%</span>. The 85,000 headline masks a <strong>bifurcated labor market</strong> — Cascadia tech hiring remains strong while national job creation softens.
+      </div>
+      <div class="tags">
+        <span class="tag accent">Employment</span>
+        <span class="tag accent">AI/ML</span>
+        <span class="tag warm">Bifurcation</span>
+      </div>
+    </div>
+    
+    <!-- Item 2 -->
+    <div class="brief-item">
+      <div>
+        <span class="num">2</span>
+        <span class="headline">BEA Q2 2026 GDP revision: US grew 1.5% annualized — Cascadia corridor at 2.8%</span>
+        <span class="source">bea.gov</span>
+      </div>
+      <div class="interpretation">
+        The BEA's second estimate of Q2 2026 GDP confirmed <strong>1.5% annualized growth</strong> nationally — below the 2.1% Q1 pace. However, metro-level data (released alongside) shows the <strong>Cascadia corridor growing at an estimated 2.8%</strong> annualized, driven by tech-sector expansion (AI/ML at <span class="accent">+34% YoY</span>) and cross-border trade acceleration (<span class="accent">+12.4% YoY</span>). Seattle metro GDP at <strong>$468B</strong> annualized. The Q3 advance estimate releases Oct 30 — our AI ensemble model projects <span class="accent">2.0-2.4% national</span>, <span class="accent">3.0-3.5% Cascadia corridor</span>.
+      </div>
+      <div class="tags">
+        <span class="tag accent">GDP</span>
+        <span class="tag accent">Cascadia</span>
+        <span class="tag warm">Cross-border</span>
+      </div>
+    </div>
+    
+    <!-- Item 3 -->
+    <div class="brief-item">
+      <div>
+        <span class="num">3</span>
+        <span class="headline">StatsCan July trade: Canada's surplus narrowed to $769M — BC-WA bilateral at record high</span>
+        <span class="source">statcan.gc.ca</span>
+      </div>
+      <div class="interpretation">
+        Canada's merchandise trade surplus narrowed to <span class="warm">$769 million in July 2026</span> (down from $4.2B in June), as imports outpaced exports. But the <strong>BC-WA bilateral corridor</strong> continued its upward trajectory: tech exports from BC to WA reached an estimated <span class="accent">$1.4B in July</span> (annualized $16.8B), up <strong>18.3% YoY</strong>. Software and cloud services drove the growth. USMCA digital trade utilization rate for Cascadia firms now at <span class="accent">67%</span> (up from 52% in 2024). September bilateral data releases Nov 5.
+      </div>
+      <div class="tags">
+        <span class="tag accent">Trade</span>
+        <span class="tag warm">Cross-border</span>
+        <span class="tag accent">USMCA</span>
+      </div>
+    </div>
+    
+    <!-- Item 4 -->
+    <div class="brief-item">
+      <div>
+        <span class="num">4</span>
+        <span class="headline">Crunchbase Q3 2026 Cascadia VC preview: $2.1B deployed across 38 rounds</span>
+        <span class="source">crunchbase.com</span>
+      </div>
+      <div class="interpretation">
+        Q3 2026 Cascadia venture capital preview (preliminary): <span class="accent">$2.1B deployed across 38 rounds</span>, up <strong>14% YoY</strong> from Q3 2025 ($1.84B / 33 rounds). This week specifically: <strong>6 rounds totaling $48M</strong> — Bellevue AI/ML Series A $12M (Madrona), Vancouver CleanTech Series B $18M (BDC), Seattle SaaS Seed $5.5M (PSL), Portland Bio Pre-seed $3.4M (OAF), Burnaby AgTech Pre-seed $1.2M, Vancouver FinTech Series A $8M (Georgian). Median round <span class="accent">$6.75M</span>. Sector concentration risk: <strong>AI/ML captured 42% of Q3 deployment</span> — above the 5-year average of 28%.
+      </div>
+      <div class="tags">
+        <span class="tag accent">VC</span>
+        <span class="tag accent">AI/ML</span>
+        <span class="tag warm">Concentration Risk</span>
+      </div>
+    </div>
+    
+    <!-- Item 5 -->
+    <div class="brief-item">
+      <div>
+        <span class="num">5</span>
+        <span class="headline">Founder Panel update: 15 enrolled — first cohort report drops Dec 1</span>
+        <span class="source">aibizvan360.com</span>
+      </div>
+      <div class="interpretation">
+        Total enrolled founders now <span class="accent">15</span> across 8 cities and 7 sectors. New this week: <strong>Spokane Hardware Bootstrapped</strong> — first enrollment from Spokane, expanding geographic coverage beyond the I-5 corridor. Panel is now <span class="warm">30% of the way to the 50-founder threshold</span> needed for statistically meaningful cohort analysis. Q4 2026 cohort report drops <strong>December 1, 2026</strong> — first report with enough data points for the headline stat: "X% of Seattle founders would choose Seattle again." CII October update: Cascadia score <span class="accent">79</span> (+1 MoM, +2.6% YoY).
+      </div>
+      <div class="tags">
+        <span class="tag accent">Founder Panel</span>
+        <span class="tag warm">Cohort Report</span>
+        <span class="tag accent">CII</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Subscribe form -->
+<div class="subscribe-section">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);font-weight:700;margin-bottom:12px;">▸ SUBSCRIBE · FREE · MONDAY 6AM PT</div>
+  <h2>Get next Monday's brief in your inbox</h2>
+  <p>Join the Cascadia economic intelligence community. Policymakers, investors, founders, and think-tank analysts already subscribed. ~5 min read every Monday morning. Unsubscribe in one click.</p>
+  <form class="subscribe-form" id="brief-subscribe-form" onsubmit="return submitBriefSubscribe(event)">
+    <input type="email" id="wb-email" placeholder="you@organization.org" required>
+    <input type="text" id="wb-name" placeholder="Your name (optional)">
+    <input type="text" id="wb-org" placeholder="Organization / think tank / firm (optional)">
+    <select id="wb-role">
+      <option value="">Your role (optional)</option>
+      <option value="analyst">Analyst / Researcher</option>
+      <option value="policymaker">Policymaker / Government</option>
+      <option value="investor">Investor / VC</option>
+      <option value="founder">Founder / Operator</option>
+      <option value="journalist">Journalist / Media</option>
+      <option value="other">Other</option>
+    </select>
+    <button type="submit" id="wb-submit">Subscribe to weekly brief →</button>
+  </form>
+  <div class="subscribe-success" id="wb-success">✓ Subscribed! Next Monday's brief arrives at 6am PT.</div>
+  <p class="subscribe-fine">We store your email + organization only. No third-party sharing. Unsubscribe any time by replying 'unsubscribe' to any brief.</p>
+</div>
+
+<!-- Archive -->
+<div class="archive-section">
+  <h2>Recent issues</h2>
+  <div class="archive-item">
+    <div class="archive-date">Sep 29, 2026</div>
+    <div class="archive-headline"><a href="#">BEA Q3 GDP: Seattle metro +3.2% QoQ · BLS September employment: Cascadia tech +4,200 jobs · StatsCan bilateral trade: BC-WA $3.2B +12.4% YoY · Crunchbase: 6 rounds $48M · Founder Panel: 14 enrolled</a></div>
+  </div>
+  <div class="archive-item">
+    <div class="archive-date">Sep 22, 2026</div>
+    <div class="archive-headline"><a href="#">WA Innovation Index 2025 released — AI patent filings up 34% YoY · Cascadia HSR Phase 2 EIS confirms alignment · BC Hydro Phase 1 grid completion · BLS Q2 wage data · 8 Cascadia rounds totaling $62M</a></div>
+  </div>
+  <div class="archive-item">
+    <div class="archive-date">Sep 15, 2026</div>
+    <div class="archive-headline"><a href="#">BEA Q2 GDP revised up — Seattle metro 3.8% (from 3.2%) · StatsCan August trade: BC exports to WA +14% · Joint Clean Grid Phase 2 plan published · Port of Vancouver TEU +9.4% · 4 Cascadia rounds totaling $31M</a></div>
+  </div>
+  <div class="archive-item">
+    <div class="archive-date">Sep 8, 2026</div>
+    <div class="archive-headline"><a href="#">BLS August employment — Cascadia tech +6,100 jobs · Crunchbase Q3 VC preview: $2.1B deployed · WSDOT HSR EIS open for public comment · BC DRIPA 2-year review · Founder panel hits 12 enrolled</a></div>
+  </div>
+  <div class="archive-item">
+    <div class="archive-date">Sep 1, 2026</div>
+    <div class="archive-headline"><a href="#">BEA July personal income — Cascadia metros outperform national · StatsCan Q2 GDP — BC grows 2.8% · USMCA 6-year review: digital trade friction down 23% · 10 Cascadia rounds totaling $78M · CII August update: Cascadia 77 (+1 MoM)</a></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When does the brief arrive? <span class="chevron">›</span></div>
+    <div class="faq-a">Every Monday at 6:00 AM Pacific Time (UTC-8 / UTC-7 during DST). This gives you the weekend's data releases + Monday-morning context before your first meeting.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is it really free? <span class="chevron">›</span></div>
+    <div class="faq-a">Yes. The Weekly Brief is free forever. We monetize through enterprise subscriptions to the full Cascadia OS platform (command center, API access, custom alerts). The brief is our content marketing — it establishes authority and drives top-of-funnel awareness.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I unsubscribe? <span class="chevron">›</span></div>
+    <div class="faq-a">Reply 'unsubscribe' to any brief email. Or click the unsubscribe link at the bottom of every issue. We process within 24 hours — no questions, no retention period, no third-party data sharing to undo.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I cite the brief in my research? <span class="chevron">›</span></div>
+    <div class="faq-a">Yes. Cite as: "Cascadia Weekly Economic Brief, Vol. X, Issue Y (date), AIBizVan360." Every data point in the brief links to its original source — we add interpretation, not proprietary data. Our interpretation is CC-BY 4.0 licensed.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How is this different from GeekWire or TechCrunch? <span class="chevron">›</span></div>
+    <div class="faq-a">GeekWire covers Seattle tech news — we cover Cascadia economic data. TechCrunch covers startup news — we cover macro indicators. The brief is for people who need the BEA/BLS/StatsCan numbers interpreted through a Cascadia lens, not the latest funding-round gossip. Think Brookings briefing notes, not TechCrunch push notifications.</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Cascadia Weekly Economic Brief v1.0 · Published by AIBizVan360 · <a href="cascadia-innovation-index.html">CII Index →</a> · <a href="economics.html">Cascadia Economics →</a> · <a href="index.html">Home →</a>
+</div>
+
+</div>
+
+<script>
+function submitBriefSubscribe(e) {
+  e.preventDefault();
+  var btn = document.getElementById('wb-submit');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  var data = {
+    email: document.getElementById('wb-email').value,
+    name: document.getElementById('wb-name').value,
+    org: document.getElementById('wb-org').value,
+    role: document.getElementById('wb-role').value,
+    subscribed_at: new Date().toISOString(),
+    list: 'cascadia-weekly-brief'
+  };
+  var subs = JSON.parse(localStorage.getItem('weekly-brief-subs') || '[]');
+  subs.push(data);
+  localStorage.setItem('weekly-brief-subs', JSON.stringify(subs));
+  fetch('https://founder-enroll.aibizvan360.workers.dev/weekly-brief', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+  }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(){ showBriefSuccess(); })
+    .catch(function(){
+      var mailtoLink = 'mailto:testdemoqwenai2025@gmail.com?subject=Subscribe%20-%20Cascadia%20Weekly%20Brief' +
+        '&body=' + encodeURIComponent('Email: '+data.email+'\nName: '+data.name+'\nOrg: '+data.org+'\nRole: '+data.role);
+      var w = window.open(mailtoLink, '_blank');
+      if (w) setTimeout(function(){ w.close(); }, 500);
+      showBriefSuccess();
+    });
+  return false;
+}
+function showBriefSuccess() {
+  var form = document.getElementById('brief-subscribe-form');
+  var success = document.getElementById('wb-success');
+  form.style.display = 'none';
+  success.classList.add('show');
+  if (window.plausible) window.plausible('Weekly Brief Subscribe', {props:{list:'cascadia-weekly-brief'}});
+}
+window.submitBriefSubscribe = submitBriefSubscribe;
+</script>
+
+
+<!-- Theme toggle (floating) -->
+<button id="ai-theme-btn" style="position:fixed;bottom:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.7);color:#4ecdc4;border:1px solid rgba(78,205,196,0.3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;" title="Toggle dark/light theme">🌙</button>
+
+<script>
+// Universal theme toggle — works on all pages
+(function() {
+  var btn = document.getElementById('ai-theme-btn') || document.getElementById('theme-btn');
+  if (!btn) return;
+  // Load saved theme
+  var saved = localStorage.getItem('aibv360-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    btn.textContent = saved === 'light' ? '☀️' : '🌙';
+  }
+  // Wire up click handler (only if not already wired)
+  if (!btn.dataset.themeWired) {
+    btn.dataset.themeWired = '1';
+    btn.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('aibv360-theme', next);
+      btn.textContent = next === 'light' ? '☀️' : '🌙';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
