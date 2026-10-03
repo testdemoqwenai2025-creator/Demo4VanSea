@@ -1159,6 +1159,9 @@ a:hover { text-decoration: underline; }
 [data-theme="light"] .vban-left { border-right-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .vban-right { border-left-color: rgba(0,0,0,0.06); }
 
+
+.vban-right { transition: transform 0.5s ease, opacity 0.5s ease; }
+.vban-right.vban-hidden { transform: translateX(120%); opacity: 0; }
 </style>
 <script defer data-domain="testdemoqwenai2025-creator.github.io" src="https://plausible.io/js/script.js"></script>
 
@@ -1835,4 +1838,25 @@ a:hover { text-decoration: underline; }
     });
 })();
 </script>
+
+<script>
+// Right banner cycling: slide in every minute, visible 15s, slide out
+(function() {
+  var vbanRight = document.querySelector('.vban-right');
+  if (!vbanRight) return;
+  vbanRight.classList.add('vban-hidden');
+  void vbanRight.offsetWidth;
+  function slideIn() { vbanRight.classList.remove('vban-hidden'); }
+  function slideOut() { vbanRight.classList.add('vban-hidden'); }
+  setTimeout(function() {
+    slideIn();
+    setTimeout(slideOut, 15000);
+    setInterval(function() {
+      slideIn();
+      setTimeout(slideOut, 15000);
+    }, 60000);
+  }, 5000);
+})();
+</script>
+
 </body></html>
