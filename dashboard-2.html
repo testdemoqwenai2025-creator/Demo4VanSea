@@ -97,6 +97,7 @@ html.light .collapsible-header div div div[style*="color:#a0a0a0"] { color: #666
 .vban:hover { opacity: 0.85; }
 .vban-left { left: 0; }
 .vban-right { right: 0; transition: transform 0.5s ease, opacity 0.5s ease; }
+.vban-right.vban-hidden { transform: translateX(120%); opacity: 0; }
 .vban img { width: 120px; height: 400px; object-fit: cover; display: block; }
 .vban-left img { border-radius: 0 8px 8px 0; border-right: 1px solid rgba(78,205,196,0.2); }
 .vban-right img { border-radius: 8px 0 0 8px; border-left: 1px solid rgba(78,205,196,0.2); }
@@ -2818,18 +2819,12 @@ document.addEventListener('keydown', function(e) {
 (function() {
   var vbanRight = document.querySelector('.vban-right');
   if (!vbanRight) return;
-  // Start hidden
-  vbanRight.style.transform = 'translateX(100%)';
-  vbanRight.style.opacity = '0';
-  // Cycle: every 60s, slide in, stay 15s, slide out
-  function slideIn() {
-    vbanRight.style.transform = 'translateX(0)';
-    vbanRight.style.opacity = '1';
-  }
-  function slideOut() {
-    vbanRight.style.transform = 'translateX(100%)';
-    vbanRight.style.opacity = '0';
-  }
+  // Start hidden using CSS class (not inline style — cleaner transition)
+  vbanRight.classList.add('vban-hidden');
+  // Force reflow to ensure browser has painted the hidden state
+  void vbanRight.offsetWidth;
+  function slideIn() { vbanRight.classList.remove('vban-hidden'); }
+  function slideOut() { vbanRight.classList.add('vban-hidden'); }
   // Initial slide-in after 5 seconds (first cycle)
   setTimeout(function() {
     slideIn();
