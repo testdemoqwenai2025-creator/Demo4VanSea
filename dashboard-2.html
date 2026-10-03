@@ -281,6 +281,16 @@ function toggleTheme() {
 <!-- ═══════════════════════════════════════════════════════════════════
      4. KPI CARDS ROW
      ═══════════════════════════════════════════════════════════════════ -->
+<!-- Daily Cascadia Insight (#2) -->
+<div id="daily-insight" style="margin:16px 16px 0;padding:16px 20px;background:linear-gradient(135deg,rgba(78,205,196,0.06),rgba(78,205,196,0.02));border:1px solid rgba(78,205,196,0.2);border-left:3px solid #4ecdc4;border-radius:8px;display:flex;align-items:center;gap:12px;">
+  <span style="font-size:24px;flex-shrink:0;">💡</span>
+  <div style="flex:1;min-width:0;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#4ecdc4;font-weight:700;margin-bottom:4px;">▸ Daily Cascadia Insight · <span id="daily-insight-date"></span></div>
+    <div id="daily-insight-text" style="font-size:13px;color:#e8e8e8;line-height:1.6;">Loading today's insight…</div>
+  </div>
+  <a id="daily-insight-link" href="#" style="font-size:11px;color:#4ecdc4;font-weight:600;text-decoration:none;border-bottom:1px dashed #4ecdc4;padding-bottom:1px;white-space:nowrap;flex-shrink:0;">See full analysis →</a>
+</div>
+
 <section style="padding:24px 16px">
   <div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px">
     
@@ -382,6 +392,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Primary Care</span> <span class="tag tag-muted" style="font-size:9px">Specialist</span> <span class="tag tag-muted" style="font-size:9px">Emergency</span> <span class="tag tag-muted" style="font-size:9px">Mental Health</span> <span class="tag tag-muted" style="font-size:9px">Prescription</span>
       </div>
+      <svg width="100%" height="24" viewBox="0 0 200 24" style="display:block;margin-top:8px"><polyline points="0,20 18,18 36,19 54,16 72,17 90,14 108,15 126,12 144,13 162,10 180,11 200,8" fill="none" stroke="#ff6b6b" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
       <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('healthcare')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
@@ -401,6 +412,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Auto</span> <span class="tag tag-muted" style="font-size:9px">Home</span> <span class="tag tag-muted" style="font-size:9px">Business</span> <span class="tag tag-muted" style="font-size:9px">Life</span> <span class="tag tag-muted" style="font-size:9px">Cyber</span>
       </div>
+      <svg width="100%" height="24" viewBox="0 0 200 24" style="display:block;margin-top:8px"><polyline points="0,18 18,16 36,17 54,14 72,15 90,12 108,13 126,10 144,11 162,8 180,9 200,6" fill="none" stroke="#f0a500" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
       <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('insurance')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
@@ -420,6 +432,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Commute</span> <span class="tag tag-muted" style="font-size:9px">Transit</span> <span class="tag tag-muted" style="font-size:9px">Fuel</span> <span class="tag tag-muted" style="font-size:9px">EV</span> <span class="tag tag-muted" style="font-size:9px">Ferry</span>
       </div>
+      <svg width="100%" height="24" viewBox="0 0 200 24" style="display:block;margin-top:8px"><polyline points="0,16 18,14 36,15 54,12 72,10 90,11 108,8 126,6 144,7 162,4 180,5 200,2" fill="none" stroke="#4ecdc4" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
       <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('transportation')">Click for full analysis &rarr;</span></div>
     </div>
     <div class="card">
@@ -439,6 +452,7 @@ function toggleTheme() {
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <span class="tag tag-muted" style="font-size:9px">Employment</span> <span class="tag tag-muted" style="font-size:9px">Wages</span> <span class="tag tag-muted" style="font-size:9px">Remote</span> <span class="tag tag-muted" style="font-size:9px">Cross-Border</span> <span class="tag tag-muted" style="font-size:9px">AI</span>
       </div>
+      <svg width="100%" height="24" viewBox="0 0 200 24" style="display:block;margin-top:8px"><polyline points="0,20 18,18 36,16 54,14 72,12 90,10 108,8 126,6 144,5 162,4 180,3 200,2" fill="none" stroke="#4ecdc4" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
       <div style="text-align:right;margin-top:12px"><span style="font-size:9px;color:#4ecdc4;cursor:pointer" onclick="showFullAnalysis('employment')">Click for full analysis &rarr;</span></div>
     </div>
   </div>
@@ -2835,6 +2849,68 @@ document.addEventListener('keydown', function(e) {
       setTimeout(slideOut, 15000);
     }, 60000);
   }, 5000);
+})();
+</script>
+
+<!-- Back to top button (#3) -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="position:fixed;bottom:80px;right:16px;z-index:9999;display:none;align-items:center;justify-content:center;background:#4ecdc4;color:#0d1212;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s,transform 0.15s;" title="Back to top" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">↑</button>
+
+<script>
+// === #2: Daily Cascadia Insight ===
+var DAILY_INSIGHTS = [
+  { text: 'Seattle metro AI/ML employment crossed 50K for the first time this quarter. Vancouver is 18 months behind at 42K but closing at +34% YoY — the salary gap narrowed from 28% to 13% in 24 months.', link: 'economics.html' },
+  { text: 'BC-WA bilateral trade hit $3.2B in September, up 12.4% YoY. USMCA digital trade utilization rate for Cascadia firms now at 67% (up from 52% in 2024) — 23 fewer cross-border friction incidents reported.', link: 'economics.html' },
+  { text: 'Cascadia HSR Phase 2 EIS confirms Vancouver-Seattle alignment. $50M federal grant secured. When operational (2030+), travel time drops from 3.5h to 1h — unlocking $4.2B in corridor economic activity.', link: 'transportation.html' },
+  { text: 'EV adoption rate in Washington hit 34% — 3rd highest in North America after Norway (91%) and California (38%). Gas at $4.42/gal in WA is 22% above national average, driving the shift.', link: 'transportation.html' },
+  { text: 'Q3 2026 Cascadia VC preview: $2.1B deployed across 38 rounds (+14% YoY). AI/ML captured 42% of deployment — above the 5-year average of 28%. Concentration risk flagged.', link: 'economics.html' },
+  { text: 'BC eliminated MSP premiums in 2024 — BC residents pay $0 for basic health coverage vs $312/mo for WA ACA plans. The structural advantage is attracting cross-border healthcare tech startups to Vancouver.', link: 'economics.html' },
+  { text: 'Cascadia corridor GDP at $890B annualized, on track for $1T by 2028 per AI ensemble models (72% probability). Monte Carlo: 10,000 runs, 200+ variables. Key risk: housing affordability could constrain labor supply by 8,000 workers annually.', link: 'cascadia-innovation-index.html' },
+  { text: 'Joint Clean Grid Initiative Phase 1 delivered 2.1 GW cross-border transmission capacity. Phase 2 targets 3.2 GW additional by 2030. $4.8B total investment — largest cross-border energy project in North America.', link: 'environment-agency.html' },
+  { text: 'Tech sector employment in Cascadia crossed 525K, up 18K this quarter. AI/ML drove 60% of the gain. The 12,000-position talent gap remains the single largest constraint on corridor growth.', link: 'economics.html' },
+  { text: 'PNW Hydrogen Hub DOE application covers WA, OR, BC partnership. $4M workforce development program. Indigenous participation required per E.O. 14112. USMCA cross-border compliance applies.', link: 'government.html' },
+  { text: 'WA Climate Commitment Act (CCA) allowance price at ~$50/tonne CO2. Compliance cost now an allowable line item in bid pricing. Cascadia OS assessor flags CCA for any WA construction contract with fuel-intensive equipment.', link: 'government.html' },
+  { text: 'Seattle\'s average commute dropped to 28 minutes (-2.1% YoY) — reflecting 28% remote work rate. Bellevue commute is 24 min, Vancouver 32 min. Cascadia HSR would cut SEA-YVR travel from 3.5h to 1h.', link: 'transportation.html' },
+  { text: 'Port of Vancouver TEU throughput up 9.4% YoY. Port of Seattle maritime ops diversifying into shore power — Muckleshoot Indian Tribe has expressed interest in workforce training partnership for Pier 66 electrification.', link: 'environment-agency.html' },
+  { text: 'Founder Panel update: 15 founders enrolled across 8 cities and 7 sectors. 30% of the way to the 50-founder threshold for statistically meaningful cohort analysis. Q4 2026 cohort report drops December 1.', link: 'economics.html' },
+  { text: 'CII October 2026: Cascadia score 79 (+1 MoM, +3.2% YoY). Toronto-Waterloo gained fastest at +20% YoY (from 55 to 66). Bay Area declined 2% (from 100 to 98) — first contraction since 2022.', link: 'cascadia-innovation-index.html' },
+  { text: 'Cross-border worker flow recovering: 42K workers/day crossing the US-CA border in Cascadia corridor (was 48K pre-2020). H-1B approval rate for Cascadia employers at 78% (up from 74% in Q2).', link: 'economics.html' },
+  { text: 'Amazon Bellevue campus expansion: 2.8M sq ft, creating 15,000 new tech roles. Meta and Google also expanding Seattle presence. Combined: 22,000 new tech positions announced in Q3 2026.', link: 'economics.html' },
+  { text: 'BC AI workforce program launches $680M investment in AI training and education. Targets: 10,000 AI-literate workers by 2028, with Indigenous participation preferred per DRIPA consent standard.', link: 'environment-agency.html' },
+  { text: 'WA Clean energy manufacturing package: $2.1B announced. Includes solar panel production (Snohomish), battery storage (Moses Lake), and EV charging infrastructure across I-5 corridor. Construction start Q1 2027.', link: 'government.html' },
+  { text: 'Cyber insurance growth in Cascadia at +22% — the fastest-growing insurance segment. Driven by Seattle\'s concentration of tech firms (525K+ tech workers). Average business cyber premium: $4,200/yr (+2.8% YoY).', link: 'economics.html' },
+  { text: 'Regional startup count surpassed 15,200 — up from 12,800 in 2024 (+18.8%). Seattle metro leads at 7,400, Vancouver at 4,100, Portland at 2,600, Bellevue at 1,100. Spillover into Bellingham and Surrey.', link: 'economics.html' },
+  { text: 'I-5 congestion cost estimated at $2.8B/yr for the Cascadia corridor. BC Transit ridership at 485M/yr (88% of pre-2020 levels). Ferry crossings: 22M/yr. Bike commute rate: 4.8% (up from 3.2% in 2020).', link: 'transportation.html' },
+  { text: 'Mental health providers in Cascadia at 18.4 per 100K population — below the national target of 30/100K. WA ER average wait: 4.2 hours vs BC at 2.8 hours. The gap reflects capacity constraints in WA\'s ACA-dependent system.', link: 'economics.html' },
+  { text: 'Buy Clean WA (ESHB 1181) now in effect for all public works projects above $1M using structural steel, concrete, or asphalt. EPDs (Environmental Product Declarations) required from suppliers. Cascadia OS assessor flags this automatically for WA construction tenders.', link: 'government.html' },
+  { text: 'Cascadia Innovation Corridor signed 6 bilateral MOUs across housing, energy, and AI governance in 2025. The AI governance MOU is the first cross-border AI regulatory cooperation framework in North America.', link: 'economics.html' },
+  { text: 'BLS September jobs report: US added 85,000 nonfarm payrolls — below Bloomberg consensus of 120,000. But Cascadia tech outperformed: Seattle +2,800, Vancouver +1,100. Bifurcated labor market: national softens, Cascadia tech stays strong.', link: 'cascadia-weekly-brief.html' },
+  { text: 'BEA Q2 2026 GDP revision confirmed 1.5% annualized nationally. But Cascadia corridor estimated at 2.8% — nearly double the national rate. Q3 advance estimate releases Oct 30. AI ensemble projects 3.0-3.5% Cascadia.', link: 'cascadia-weekly-brief.html' },
+  { text: 'StatsCan July trade: Canada surplus narrowed to $769M (from $4.2B in June). But BC-WA bilateral at record high — tech exports from BC to WA estimated at $1.4B monthly ($16.8B annualized), up 18.3% YoY.', link: 'cascadia-weekly-brief.html' },
+  { text: 'Cascadia OS Sovereignty Assessment tool now live: pick a project (type + geography + size + Nation) → get a 12-item FPIC + data sovereignty checklist tailored to that project. Every item cites a real regulation (UNDRIP, RCW 39.80, DRIPA).', link: 'environment-agency.html' },
+  { text: 'Cascadia OS Compliance Checklist Generator: click any tender → get a 12-item tailored checklist with citation links. Buy America, Davis-Bacon, WA CCA, Indigenous Participation, USMCA RVC, bonds, past performance, insurance — all conditionally applied based on tender attributes.', link: 'government.html' },
+  { text: 'Weekly Economic Brief Issue 5 (Oct 6): BLS +85K jobs (below consensus), BEA Q2 GDP 1.5% (Cascadia 2.8%), StatsCan trade surplus narrowed but BC-WA bilateral at record, Crunchbase Q3 VC $2.1B/38 rounds, Founder Panel 15 enrolled. Subscribe for next Monday\'s issue.', link: 'cascadia-weekly-brief.html' }
+];
+(function() {
+  var dayOfYear = Math.floor(Date.now() / 86400000);
+  var insight = DAILY_INSIGHTS[dayOfYear % DAILY_INSIGHTS.length];
+  var dateStr = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('daily-insight-date').textContent = dateStr;
+  document.getElementById('daily-insight-text').textContent = insight.text;
+  document.getElementById('daily-insight-link').href = insight.link;
+})();
+
+// === #3: Back to top button ===
+(function() {
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 500) {
+      btn.style.display = 'flex';
+      btn.style.opacity = '1';
+    } else {
+      btn.style.opacity = '0';
+      setTimeout(function() { if (window.scrollY <= 500) btn.style.display = 'none'; }, 300);
+    }
+  });
 })();
 </script>
 
