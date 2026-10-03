@@ -189,30 +189,30 @@ h1 { font-size:32px; font-weight:800; margin-bottom:8px; line-height:1.15; }
 
 <!-- Footer -->
 <div class="footer">
-  Cascadia Innovation Index (CII) v1.0 · Methodology last updated Oct 2026 · <a href="economics.html">Cascadia Economics →</a> · <a href="index.html">Home →</a>
+  Cascadia Innovation Index (CII) v1.0 · <strong style="color:var(--accent);">October 2026 update</strong> · Next update: Nov 4, 2026 · <a href="economics.html">Cascadia Economics →</a> · <a href="cascadia-weekly-brief.html">Weekly Brief →</a> · <a href="index.html">Home →</a>
 </div>
 
 </div>
 
 <script>
 // === CII Data (24 months: Oct 2024 → Sep 2026) ===
-var CII_MONTHS = ['Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26','Jul 26','Aug 26','Sep 26'];
+var CII_MONTHS = ['Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26','Jul 26','Aug 26','Sep 26','Oct 26'];
 
 var CII_CORRIDORS = [
   { name:'Cascadia', short:'Cascadia (VAN-SEA-PDX)', color:'#2dd4bf', cssVar:'--accent',
-    scores:[62,63,64,64,65,66,67,68,69,70,71,72,72,73,74,75,75,76,76,77,77,78,78,78],
-    change:'+2.6% YoY', changeDir:'up' },
+    scores:[62,63,64,64,65,66,67,68,69,70,71,72,72,73,74,75,75,76,76,77,77,78,78,78,79],
+    change:'+3.2% YoY', changeDir:'up' },
   { name:'Bay Area', short:'Bay Area', color:'#a855f7', cssVar:'--bay',
-    scores:[100,99,98,97,96,96,95,95,96,96,97,97,98,98,98,98,98,98,98,98,98,98,98,98],
+    scores:[100,99,98,97,96,96,95,95,96,96,97,97,98,98,98,98,98,98,98,98,98,98,98,98,98],
     change:'−2.0% YoY', changeDir:'down' },
   { name:'Greater NYC', short:'Greater NYC', color:'#f97316', cssVar:'--nyc',
-    scores:[88,88,89,89,90,90,90,91,91,91,91,92,92,92,92,92,92,92,92,92,92,92,92,92],
+    scores:[88,88,89,89,90,90,90,91,91,91,91,92,92,92,92,92,92,92,92,92,92,92,92,92,92],
     change:'+4.5% YoY', changeDir:'up' },
   { name:'Toronto-Waterloo', short:'Toronto-Waterloo', color:'#3b82f6', cssVar:'--tor',
-    scores:[55,55,56,56,57,58,58,59,60,60,61,62,62,63,63,64,64,65,65,65,65,65,65,65],
-    change:'+18.2% YoY', changeDir:'up' },
+    scores:[55,55,56,56,57,58,58,59,60,60,61,62,62,63,63,64,64,65,65,65,65,65,65,65,66],
+    change:'+20.0% YoY', changeDir:'up' },
   { name:'Austin Triangle', short:'Austin Triangle', color:'#22c55e', cssVar:'--aus',
-    scores:[60,60,61,61,62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,68,68,68,68],
+    scores:[60,60,61,61,62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,68,68,68,68,68],
     change:'+13.3% YoY', changeDir:'up' }
 ];
 
@@ -357,11 +357,11 @@ var CII_COMPONENTS = [
 
 // === Render component breakdown for Cascadia ===
 var CASCADIA_BREAKDOWN = [
-  { name:'VC Deployment', score:72, color:'var(--accent)', max:100 },
-  { name:'Patent Filings', score:65, color:'var(--accent)', max:100 },
-  { name:'Startup Formation', score:82, color:'var(--accent)', max:100 },
-  { name:'Talent Migration', score:78, color:'var(--accent)', max:100 },
-  { name:'IPO Count', score:58, color:'var(--accent)', max:100 }
+  { name:'VC Deployment', score:74, color:'var(--accent)', max:100 },
+  { name:'Patent Filings', score:66, color:'var(--accent)', max:100 },
+  { name:'Startup Formation', score:84, color:'var(--accent)', max:100 },
+  { name:'Talent Migration', score:80, color:'var(--accent)', max:100 },
+  { name:'IPO Count', score:59, color:'var(--accent)', max:100 }
 ];
 
 (function(){
